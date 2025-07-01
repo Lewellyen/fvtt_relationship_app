@@ -1,0 +1,44 @@
+{
+  "id": "relationship-app",
+  "title": "Relationship App",
+  "description": "Ein Modul zur Verwaltung und Visualisierung von Beziehungsnetzwerken in Foundry VTT.",
+  "version": "0.1.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13",
+    "maximum": "13"
+  },
+  "authors": [
+    {
+      "name": "Andreas Rothe",
+      "email": "forenadmin.tir+iads@gmail.com",
+      "discord": "lewellyen"
+    }
+  ],
+  "socket": true,
+  "esmodules": [
+    "dist/module.js"
+  ],
+  "styles": [
+  ],
+  "languages": [
+    {
+      "lang": "de",
+      "name": "Deutsch",
+      "path": "lang/de.json"
+    }
+  ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "socketlib",
+        "type": "module",
+        "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json"
+      }
+    ]
+  },
+  "url": "",
+  "manifest": "",
+  "download": "",
+  "license": "LICENSE.txt"
+}
