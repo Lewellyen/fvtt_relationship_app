@@ -1,0 +1,71 @@
+{
+  "name": "relationship-app",
+  "version": "0.1.1",
+  "type": "module",
+  "description": "Foundry VTT Relationship App",
+  "main": "dist/relationship-app.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "build:prod": "NODE_ENV=production vite build",
+    "build:analyze": "vite build --mode analyze",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "clean": "rm -rf dist",
+    "linter": "eslint . --ext .js,.ts,.svelte --fix",
+    "format": "prettier --write src/**/*.{ts,svelte}",
+    "check-all": "npm run typecheck && npm run linter && npm run format",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
+    "postinstall": "patch-package"
+  },
+  "keywords": [],
+  "author": "Andreas Rothe",
+  "license": "MIT",
+  "dependencies": {
+    "cytoscape": "^3.32.0",
+    "flowbite": "^3.1.2",
+    "flowbite-svelte": "^1.8.1",
+    "jquery": "^3.7.1"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3.3.1",
+    "@eslint/js": "^9.29.0",
+    "@sveltejs/vite-plugin-svelte": "^6.0.0-next.1",
+    "@tailwindcss/postcss": "^4.1.10",
+    "@testing-library/svelte": "^5.2.8",
+    "@types/handlebars": "^4.1.0",
+    "@types/jquery": "^3.5.32",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
+    "autoprefixer": "^10.4.21",
+    "eslint": "^9.29.0",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.0",
+    "eslint-plugin-svelte": "^3.10.1",
+    "fvtt-types": "github:League-of-Foundry-Developers/foundry-vtt-types#main",
+    "globals": "^16.2.0",
+    "handlebars": "^4.7.8",
+    "jsdom": "^26.1.0",
+    "patch-package": "^8.0.0",
+    "postcss": "^8.5.6",
+    "prettier": "^3.6.0",
+    "svelte": "^5.0.0-next.272",
+    "svelte-eslint-parser": "^1.2.0",
+    "svelte-preprocess": "^6.0.3",
+    "tailwindcss": "^4.1.10",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5",
+    "vite-bundle-analyzer": "^0.23.0",
+    "vite-plugin-handlebars": "^2.0.0",
+    "vite-tsconfig-paths": "^5.1.4",
+    "vitest": "^3.2.4"
+  },
+  "overrides": {
+    "eslint-plugin-svelte3": {
+      "peerDependencies": {
+        "svelte": ">=5.0.0"
+      }
+    }
+  }
+}

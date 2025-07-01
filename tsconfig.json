@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "verbatimModuleSyntax": true,
+    "moduleResolution": "bundler",
+    "types": [
+      "fvtt-types",
+      "@types/jquery",
+      "svelte",
+      "vitest"
+    ],
+    "lib": ["DOM", "ES2021"],
+    "rootDir": "./src",
+    "allowUmdGlobalAccess": true,
+    "target": "ES6",
+    "module": "ESNext",
+    "jsx": "react",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "strictNullChecks": true,
+    "forceConsistentCasingInFileNames": true,
+    "outDir": "dist",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    }
+  },
+  "include": ["src/**/*", "src/**/*.svelte"],
+  "exclude": ["node_modules/**/*"]
+} 
