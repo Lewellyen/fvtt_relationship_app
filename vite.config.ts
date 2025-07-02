@@ -45,14 +45,14 @@ export default defineConfig(({ mode }) => {
         },
         output: {
           // Foundry VTT erwartet eine spezifische Datei
-          entryFileNames: "deathwatch.js",
+          entryFileNames: "relationship-app.js",
           chunkFileNames: "assets/[name]-[hash].js",
           assetFileNames: "assets/[name]-[hash].[ext]",
           // manualChunks darf nicht gesetzt werden, wenn inlineDynamicImports true ist
           inlineDynamicImports: true,
           // Foundry VTT IIFE Format
           format: "iife",
-          name: "DeathwatchModule",
+          name: "RelationshipApp",
           extend: true,
           globals: {
             jquery: "$",
