@@ -1,6 +1,5 @@
 /// <reference types="fvtt-types" />
 
-
 // Map the Actor document to the DeathwatchActor subclass for typing
 declare global {
   namespace foundry.abstract {

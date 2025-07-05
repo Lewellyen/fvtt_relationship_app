@@ -1,5 +1,3 @@
-import type { DeathwatchActor } from "@/entities/DeathwatchActor";
-import { AttributeInitializationService } from "@/services/AttributeInitializationService";
 import { LoggerService } from "../../services/LoggerService";
 
 /**
@@ -8,9 +6,8 @@ import { LoggerService } from "../../services/LoggerService";
 export function registerCreateActorHook(): void {
   Hooks.on<"createActor">(
     "createActor",
-    async (actor: DeathwatchActor, options, userId) => {
+    async (actor: Actor, options, userId) => {
       LoggerService.getInstance().debug("createActor", actor, options, userId);
-      await AttributeInitializationService.initialize(actor);
     },
   );
 }

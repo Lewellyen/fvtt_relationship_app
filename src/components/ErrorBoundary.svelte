@@ -9,7 +9,9 @@
   <div class="error-boundary">
     <div class="error-header">
       <h3>⚠️ Ein Fehler ist aufgetreten</h3>
-      <button class="error-reset" onclick={() => reset()}>Erneut versuchen</button>
+      <button class="error-reset" onclick={() => reset()}
+        >Erneut versuchen</button
+      >
     </div>
     <div class="error-content">
       <p class="error-message">{(error as Error).message}</p>
@@ -21,9 +23,7 @@
   </div>
 {/snippet}
 
-<svelte:boundary failed={failed}>
-  {@render children()}
-</svelte:boundary>
+<svelte:boundary {failed}>{@render children()}</svelte:boundary>
 
 <style>
   .error-boundary {

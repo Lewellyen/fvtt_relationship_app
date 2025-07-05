@@ -7,4 +7,4 @@
   {#snippet children()}
     <Thrower />
   {/snippet}
-</ErrorBoundary> 
+</ErrorBoundary>

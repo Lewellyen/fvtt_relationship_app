@@ -3,4 +3,4 @@
   throw new Error("Test-Error");
 </script>
 
-<p>Das darf nie angezeigt werden</p> 
+<p>Das darf nie angezeigt werden</p>

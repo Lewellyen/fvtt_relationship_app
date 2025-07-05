@@ -10,6 +10,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 ### Fehlerbehebungen
 
+## [0.3.1] - 2025-07-05
+### Hinzugefügt
+- Keine Einträge
+
+### Geändert
+- Linter und Formatter-Fehler behoben
+
+### Fehlerbehebungen
+- Keine Einträge
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.3.0] - 2025-07-05
 ### Hinzugefügt
 - Keine Einträge

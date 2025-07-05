@@ -73,4 +73,4 @@ module.exports = defineConfig([{
             project: ["./tsconfig.json"]
         }
     }
-}, globalIgnores(["**/*.svelte", "**/dist/", "**/node_modules/", "**/references/", "eslint.config.cjs", ".eslintrc.cjs", "scripts/**"])]); 
+}, globalIgnores(["**/*.svelte", "**/dist/", "**/node_modules/", "**/references/", "eslint.config.cjs", ".eslintrc.cjs", "scripts/**", "backup/**"])]); 

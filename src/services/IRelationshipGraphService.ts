@@ -3,7 +3,6 @@ import type {
   RelationshipNode,
   RelationshipEdge,
 } from "@/types/relationship";
-import type { DeathwatchActor } from "@/entities/DeathwatchActor";
 import type { IRelationshipGraphPersistenceService } from "./IRelationshipGraphPersistenceService";
 import type { IRelationshipGraphValidationService } from "./IRelationshipGraphValidationService";
 import type { IRelationshipGraphCytoscapeService } from "./IRelationshipGraphCytoscapeService";
@@ -19,10 +18,10 @@ export interface IRelationshipGraphService
   /**
    * Loads the relationship graph from an actor.
    */
-  loadGraph(actor: DeathwatchActor): RelationshipGraph;
+  loadGraph(actor: Actor): RelationshipGraph;
 
   /**
    * Gets all available nodes for selection in dropdowns.
    */
-  getAvailableNodes(actor: DeathwatchActor): RelationshipNode[];
+  getAvailableNodes(actor: Actor): RelationshipNode[];
 }

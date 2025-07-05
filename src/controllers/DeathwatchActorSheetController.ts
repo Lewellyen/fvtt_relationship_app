@@ -1,12 +1,12 @@
 // TypeScript strict checking enabled
 
 // Using global foundry.applications.api.DocumentSheetV2 for types
-import type { DeathwatchActor } from "../entities/DeathwatchActor";
+//import type { DeathwatchActor } from "../entities/DeathwatchActor";
 
 /** Context provided to the Svelte sheet */
 // Removed custom context interface – use minimal typed override
 
-import PlayerCharacterSheet from "@/svelte/PlayerCharacterSheet.svelte";
+/*import PlayerCharacterSheet from "@/svelte/PlayerCharacterSheet.svelte";
 import SvelteApplicationMixin from "@/mixins/SvelteApplicationMixin.svelte";
 import { ActorContextBuilder } from "@/services/ActorContextBuilder";
 import { ItemDropService } from "@/services/ItemDropService";
@@ -17,7 +17,7 @@ export class DeathwatchActorSheet extends SvelteApplicationMixin(
 ) {
   static type = "dw-character";
   /** Use V2 static DEFAULT_OPTIONS which are auto-merged */
-  static override DEFAULT_OPTIONS = {
+/*  static override DEFAULT_OPTIONS = {
     id: "deathwatch-actorsheet",
     classes: ["wh40k-deathwatch", "sheet", this.type],
     tag: "form",
@@ -51,7 +51,7 @@ export class DeathwatchActorSheet extends SvelteApplicationMixin(
   }
 
   /** V2 DropItem: Handle dropped Item-Dokument direkt */
-  protected async _onDropItem(event: DragEvent, item: Item) {
+/* protected async _onDropItem(event: DragEvent, item: Item) {
     return ItemDropService.handleDrop(this.document as DeathwatchActor, item);
   }
-}
+}*/

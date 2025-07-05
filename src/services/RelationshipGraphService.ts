@@ -3,7 +3,6 @@ import type {
   RelationshipNode,
   RelationshipEdge,
 } from "@/types/relationship";
-import type { DeathwatchActor } from "@/entities/DeathwatchActor";
 import type { IRelationshipGraphService } from "./IRelationshipGraphService";
 import { relationshipGraphPersistenceService } from "./RelationshipGraphPersistenceService";
 import { relationshipGraphValidationService } from "./RelationshipGraphValidationService";
@@ -21,22 +20,19 @@ import { PerformanceMonitor } from "./PerformanceMonitor";
  * Dependency Inversion: Depends on abstractions, not concretions
  */
 export class RelationshipGraphService implements IRelationshipGraphService {
-  loadGraph(actor: DeathwatchActor): RelationshipGraph {
-    return (actor.system.props.relationshipGraph || {
+  loadGraph(actor: Actor): RelationshipGraph {
+    return {
       nodes: [],
       edges: [],
-    }) as RelationshipGraph;
+    } as RelationshipGraph;
   }
 
-  getAvailableNodes(actor: DeathwatchActor): RelationshipNode[] {
+  getAvailableNodes(actor: Actor): RelationshipNode[] {
     return this.loadGraph(actor).nodes;
   }
 
   // Persistence operations
-  async saveGraph(
-    actor: DeathwatchActor,
-    graph: RelationshipGraph,
-  ): Promise<void> {
+  async saveGraph(actor: Actor, graph: RelationshipGraph): Promise<void> {
     await PerformanceMonitor.getInstance().measureAsync(
       "saveGraph",
       async () => {
@@ -54,7 +50,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
     );
   }
 
-  async addNode(actor: DeathwatchActor, node: RelationshipNode): Promise<void> {
+  async addNode(actor: Actor, node: RelationshipNode): Promise<void> {
     await PerformanceMonitor.getInstance().measureAsync("addNode", async () => {
       // Validate node before adding
       const validation = relationshipGraphValidationService.validateNode(node);
@@ -73,11 +69,11 @@ export class RelationshipGraphService implements IRelationshipGraphService {
     });
   }
 
-  async removeNode(actor: DeathwatchActor, nodeId: string): Promise<void> {
+  async removeNode(actor: Actor, nodeId: string): Promise<void> {
     await relationshipGraphPersistenceService.removeNode(actor, nodeId);
   }
 
-  async addEdge(actor: DeathwatchActor, edge: RelationshipEdge): Promise<void> {
+  async addEdge(actor: Actor, edge: RelationshipEdge): Promise<void> {
     await PerformanceMonitor.getInstance().measureAsync("addEdge", async () => {
       // Validate edge before adding
       const graph = this.loadGraph(actor);
@@ -99,12 +95,12 @@ export class RelationshipGraphService implements IRelationshipGraphService {
     });
   }
 
-  async removeEdge(actor: DeathwatchActor, edgeId: string): Promise<void> {
+  async removeEdge(actor: Actor, edgeId: string): Promise<void> {
     await relationshipGraphPersistenceService.removeEdge(actor, edgeId);
   }
 
   async updateNode(
-    actor: DeathwatchActor,
+    actor: Actor,
     nodeId: string,
     updates: Partial<RelationshipNode>,
   ): Promise<void> {
@@ -116,7 +112,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
   }
 
   async updateEdge(
-    actor: DeathwatchActor,
+    actor: Actor,
     edgeId: string,
     updates: Partial<RelationshipEdge>,
   ): Promise<void> {

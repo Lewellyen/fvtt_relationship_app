@@ -6,4 +6,4 @@
   {#snippet children()}
     <p>Alles gut!</p>
   {/snippet}
-</ErrorBoundary> 
+</ErrorBoundary>
