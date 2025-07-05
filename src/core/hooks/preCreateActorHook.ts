@@ -1,3 +1,4 @@
+import type { DeathwatchActor } from "@/entities/DeathwatchActor";
 import { LoggerService } from "../../services/LoggerService";
 
 /**
@@ -6,7 +7,7 @@ import { LoggerService } from "../../services/LoggerService";
 export function registerPreCreateActorHook(): void {
   Hooks.on<"preCreateActor">(
     "preCreateActor",
-    (actor: Actor, updates, options, userId) => {
+    (actor: DeathwatchActor, updates, options, userId) => {
       LoggerService.getInstance().debug(
         "preCreateActor",
         actor,

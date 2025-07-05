@@ -1,6 +1,9 @@
-const { EmbeddedDataField, ArrayField, StringField } = foundry.data.fields;
+const { SchemaField, EmbeddedDataField, ArrayField, StringField } =
+  foundry.data.fields;
 
 export class RelationshipNodeDataModel extends foundry.abstract.DataModel<
+  any,
+  any,
   any,
   any,
   any
@@ -17,6 +20,8 @@ export class RelationshipNodeDataModel extends foundry.abstract.DataModel<
 export class RelationshipEdgeDataModel extends foundry.abstract.DataModel<
   any,
   any,
+  any,
+  any,
   any
 > {
   static defineSchema(): foundry.data.fields.DataSchema {
@@ -31,6 +36,8 @@ export class RelationshipEdgeDataModel extends foundry.abstract.DataModel<
 }
 
 export class RelationshipGraphDataModel extends foundry.abstract.DataModel<
+  any,
+  any,
   any,
   any,
   any

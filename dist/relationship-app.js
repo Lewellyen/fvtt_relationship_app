@@ -164,14 +164,19 @@
       };
     }
   }
+  class RelationshipGraphDocument extends foundry.documents.JournalEntry {
+    /**
+     * Wir übernehmen alle Default-Metadaten von JournalEntry und ändern nur Name, Label und Collection.
+     */
+  }
   class SystemRegistrar {
     /**
      * Registriere Helpers, Actor- und Sheet-Klassen beim init-Hook.
      */
     static registerInit() {
-      registerHooks();
       HandlebarsHelperService.register();
-      CONFIG.Actor.dataModels["relationshipGraph"] = RelationshipGraphDataModel;
+      foundry.applications.apps.DocumentSheetConfig;
+      CONFIG.JournalEntry.documentClass = RelationshipGraphDocument;
     }
     /**
      * Registriere Anwendungs-Hooks beim ready-Hook.

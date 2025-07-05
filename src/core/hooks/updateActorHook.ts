@@ -1,3 +1,4 @@
+import type { DeathwatchActor } from "@/entities/DeathwatchActor";
 import { LoggerService } from "../../services/LoggerService";
 
 /**
@@ -6,7 +7,7 @@ import { LoggerService } from "../../services/LoggerService";
 export function registerUpdateActorHook(): void {
   Hooks.on<"updateActor">(
     "updateActor",
-    async (actor: Actor, updates, options, userId) => {
+    async (actor: DeathwatchActor, updates, options, userId) => {
       LoggerService.getInstance().debug(
         "updateActor",
         actor,

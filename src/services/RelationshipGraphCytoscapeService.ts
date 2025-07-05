@@ -1,18 +1,76 @@
-import type { RelationshipGraph } from "../types/relationship";
+import type { RelationshipGraph } from "@/types/relationship";
+import type { IRelationshipGraphCytoscapeService } from "./IRelationshipGraphCytoscapeService";
+import type { RelationshipNode, RelationshipEdge } from "@/types/relationship";
 import { LoggerService } from "./LoggerService";
 
-export class RelationshipGraphCytoscapeService {
+/**
+ * Concrete implementation of Cytoscape.js graph visualization operations.
+ * Single Responsibility: Handles only Cytoscape-specific operations.
+ */
+export class RelationshipGraphCytoscapeService
+  implements IRelationshipGraphCytoscapeService
+{
   private logger = LoggerService.getInstance();
 
+  addElements(cy: any, elements: any[]): void {
+    if (!cy) {
+      this.logger.warn("Cytoscape instance is not properly initialized");
+      return;
+    }
+    try {
+      cy.add(elements);
+    } catch (error) {
+      this.logger.error("Error adding elements to Cytoscape", error as Error);
+    }
+  }
+
+  removeElements(cy: any, elementIds: string[]): void {
+    if (!cy) {
+      this.logger.warn("Cytoscape instance is not properly initialized");
+      return;
+    }
+    try {
+      const elems = cy.getElementById(elementIds);
+      elems.remove();
+    } catch (error) {
+      this.logger.error(
+        "Error removing elements from Cytoscape",
+        error as Error,
+      );
+    }
+  }
+
+  applyLayout(cy: any, layoutName: string, options?: any): void {
+    if (!cy) {
+      this.logger.warn("Cytoscape instance is not properly initialized");
+      return;
+    }
+    try {
+      const layout = cy.layout({ name: layoutName, ...options });
+      layout.run();
+    } catch (error) {
+      this.logger.error("Error applying layout to Cytoscape", error as Error);
+    }
+  }
+
   convertToCytoscapeElements(graph: RelationshipGraph): any[] {
-    const plain = JSON.parse(JSON.stringify(graph)) as RelationshipGraph;
     const elements: any[] = [];
-    elements.push(...plain.nodes.map((n) => ({ data: n })));
+    // Deep-clone the graph to plain objects to avoid DataModel instances
+    const plainGraph = JSON.parse(JSON.stringify(graph)) as RelationshipGraph;
+
+    // Convert nodes
+    elements.push(...plainGraph.nodes.map((n) => ({ data: n })));
+
+    // Convert edges with colors
     elements.push(
-      ...plain.edges.map((e) => ({
-        data: { ...e, color: this.getEdgeColor(e.type || "") },
+      ...plainGraph.edges.map((e) => ({
+        data: {
+          ...e,
+          color: this.getEdgeColor(e.type || ""),
+        },
       })),
     );
+
     return elements;
   }
 
@@ -66,43 +124,8 @@ export class RelationshipGraphCytoscapeService {
       cy && typeof cy.add === "function" && typeof cy.remove === "function"
     );
   }
-
-  addElements(cy: any, elements: any[]): void {
-    if (!this.isCytoscapeInitialized(cy)) {
-      this.logger.warn("Cytoscape instance not initialized");
-      return;
-    }
-    try {
-      cy.add(elements);
-    } catch (err) {
-      this.logger.error("Error adding elements to Cytoscape", err as Error);
-    }
-  }
-
-  removeElements(cy: any, ids: string[]): void {
-    if (!this.isCytoscapeInitialized(cy)) {
-      this.logger.warn("Cytoscape instance not initialized");
-      return;
-    }
-    try {
-      cy.getElementById(ids).remove();
-    } catch (err) {
-      this.logger.error("Error removing elements from Cytoscape", err as Error);
-    }
-  }
-
-  applyLayout(cy: any, layoutName: string): void {
-    if (!this.isCytoscapeInitialized(cy)) {
-      this.logger.warn("Cytoscape instance not initialized");
-      return;
-    }
-    try {
-      cy.layout({ name: layoutName }).run();
-    } catch (err) {
-      this.logger.error("Error applying layout to Cytoscape", err as Error);
-    }
-  }
 }
 
+// Singleton instance for dependency injection
 export const relationshipGraphCytoscapeService =
   new RelationshipGraphCytoscapeService();

@@ -52,7 +52,7 @@ export default defineConfig(({ mode }) => {
           inlineDynamicImports: true,
           // Foundry VTT IIFE Format
           format: "iife",
-          name: "RelationshipApp",
+          name: "Relationship-App",
           extend: true,
           globals: {
             jquery: "$",

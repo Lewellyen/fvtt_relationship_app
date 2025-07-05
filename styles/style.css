@@ -1,0 +1,14 @@
+/* Styles für WH40K Deathwatch System */
+.wh40k-deathwatch .deathwatch-actorsheet nav.tabs a {
+  cursor: pointer;
+}
+.wh40k-deathwatch .deathwatch-actorsheet nav.tabs a.active {
+  font-weight: bold;
+  color: var(--active-tab-color);
+}
+.wh40k-deathwatch .deathwatch-actorsheet .sheet-body section.tab {
+  display: none;
+}
+.wh40k-deathwatch .deathwatch-actorsheet .sheet-body section.tab.active {
+  display: block;
+} 
