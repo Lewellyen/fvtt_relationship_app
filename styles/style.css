@@ -12,3 +12,293 @@
 .wh40k-deathwatch .deathwatch-actorsheet .sheet-body section.tab.active {
   display: block;
 } 
+
+/* Relationship Graph Styles */
+.relationship-graph-container {
+  padding: 1rem;
+  max-width: 100%;
+}
+
+.graph-header {
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.graph-header h2 {
+  margin: 0 0 0.5rem 0;
+}
+
+.graph-header p {
+  margin: 0;
+}
+
+.graph-controls {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.graph-controls button {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.graph-controls button:hover {
+  background: #357abd;
+}
+
+.graph-stats {
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.graph-content {
+  margin-bottom: 1rem;
+}
+
+.nodes-list,
+.edges-list {
+  margin-bottom: 1rem;
+}
+
+.nodes-list h3,
+.edges-list h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.node-item,
+.edge-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  margin-bottom: 0.25rem;
+  border-radius: 4px;
+}
+
+.node-label,
+.edge-label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.edit-node-btn,
+.remove-node-btn,
+.edit-edge-btn,
+.remove-edge-btn {
+  padding: 0.25rem 0.5rem;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.edit-node-btn,
+.edit-edge-btn {
+  background: #28a745;
+  color: white;
+}
+
+.remove-node-btn,
+.remove-edge-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.edit-node-btn:hover,
+.edit-edge-btn:hover {
+  background: #218838;
+}
+
+.remove-node-btn:hover,
+.remove-edge-btn:hover {
+  background: #c82333;
+}
+
+.graph-settings {
+  margin-top: 1rem;
+  padding-top: 1rem;
+}
+
+.graph-settings h3 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.setting-group {
+  margin-bottom: 0.5rem;
+}
+
+.setting-group label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+}
+
+.setting-group input,
+.setting-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.setting-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* Modal Styles */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  max-width: 90vw;
+  max-height: 90vh;
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal-header {
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.modal-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: 4px;
+}
+
+.modal-close:hover {
+  background-color: #f0f0f0;
+}
+
+.modal-body {
+  padding: 1rem;
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.modal-footer {
+  padding: 1rem;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+/* Form Styles */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  box-sizing: border-box;
+}
+
+.form-group textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.form-group input[type="color"] {
+  width: 60px;
+  height: 40px;
+  padding: 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-group input[type="range"] {
+  width: calc(100% - 50px);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.form-group span[id$="-value"] {
+  display: inline-block;
+  width: 40px;
+  text-align: center;
+  margin-left: 0.5rem;
+  font-weight: 500;
+  color: #666;
+}
+
+/* Button Styles */
+.btn-primary,
+.btn-secondary {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #545b62;
+} 

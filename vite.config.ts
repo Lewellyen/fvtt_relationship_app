@@ -1,5 +1,4 @@
 import { defineConfig } from "vite";
-import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { resolve } from "path";
 import { analyzer } from "vite-bundle-analyzer";
 
@@ -9,16 +8,6 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [
-      svelte({
-        compilerOptions: {
-          runes: true,
-          ...(isTest ? { compatibility: { componentApi: 4 } } : {}),
-        },
-        onwarn(warning, handler) {
-          if (warning.code === "slot_element_deprecated") return;
-          handler(warning);
-        },
-      }),
       // Bundle analyzer nur im analyze mode
       isAnalyze &&
         analyzer({
@@ -38,7 +27,7 @@ export default defineConfig(({ mode }) => {
       outDir: "dist",
       assetsDir: "assets",
       sourcemap: true,
-      minify: false, // Für Svelte 5 Kompatibilität
+      minify: false,
       rollupOptions: {
         input: {
           main: resolve(__dirname, "src/index.ts"),

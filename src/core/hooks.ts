@@ -1,14 +1,8 @@
-import { registerPreCreateActorHook } from "./hooks/preCreateActorHook";
-import { registerCreateActorHook } from "./hooks/createActorHook";
-import { registerPreUpdateActorHook } from "./hooks/preUpdateActorHook";
-import { registerUpdateActorHook } from "./hooks/updateActorHook";
+import { registerJournalEntryPageHooks } from "./hooks/journalEntryPageHooks";
 
 /**
- * Registriert alle Actor-bezogenen Hooks.
+ * Registriert alle Hooks für das Relationship App Modul.
  */
 export function registerHooks(): void {
-  registerPreCreateActorHook();
-  registerCreateActorHook();
-  registerPreUpdateActorHook();
-  registerUpdateActorHook();
+  registerJournalEntryPageHooks();
 }

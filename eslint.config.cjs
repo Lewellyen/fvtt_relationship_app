@@ -6,7 +6,6 @@ const {
 const globals = require("globals");
 const tsParser = require("@typescript-eslint/parser");
 const typescriptEslint = require("@typescript-eslint/eslint-plugin");
-const sveltePlugin = require("eslint-plugin-svelte");
 const prettier = require("eslint-plugin-prettier");
 const js = require("@eslint/js");
 
@@ -37,7 +36,6 @@ module.exports = defineConfig([{
 
     plugins: {
         "@typescript-eslint": typescriptEslint,
-        svelte: sveltePlugin,
         prettier,
     },
 
@@ -53,24 +51,8 @@ module.exports = defineConfig([{
         '@typescript-eslint/no-namespace': 'off',
         'linebreak-style': ['error', 'windows'],
     },
-
-    settings: {
-        "svelte3/typescript": () => require("typescript"),
-        "svelte3/compiler": require("svelte/compiler"),
-    },
 }, {
     // TypeScript type-aware linting for source files only
     files: ["src/**/*.ts", "src/**/*.tsx"],
     languageOptions: { parserOptions: { project: ["./tsconfig.json"], tsconfigRootDir: __dirname } }
-}, {
-    files: ["**/*.svelte"],
-    languageOptions: {
-        parser: "svelte-eslint-parser",
-        parserOptions: {
-            extraFileExtensions: [".svelte"],
-            parser: tsParser,
-            tsconfigRootDir: __dirname,
-            project: ["./tsconfig.json"]
-        }
-    }
-}, globalIgnores(["**/*.svelte", "**/dist/", "**/node_modules/", "**/references/", "eslint.config.cjs", ".eslintrc.cjs", "scripts/**", "backup/**"])]); 
+}, globalIgnores(["**/dist/", "**/node_modules/", "**/references/", "eslint.config.cjs", ".eslintrc.cjs", "scripts/**", "backup/**"])]); 

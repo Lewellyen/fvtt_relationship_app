@@ -99,8 +99,7 @@ export class ServiceFactory {
   static initialize(): void {
     this.logger.info("Initializing services...");
 
-    // Hier können Services vorab registriert werden
-    // z.B. für Services, die spezielle Initialisierung benötigen
+    // TODO: Initialize services when needed for DataModel/Sheet implementation
 
     this.logger.info("Services initialized");
   }

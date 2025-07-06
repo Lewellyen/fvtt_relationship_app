@@ -1,0 +1,353 @@
+{{!-- Relationship Graph Combined Template (Edit + View Mode) --}}
+<div class="relationship-graph {{#if isEditMode}}relationship-graph-edit{{else}}relationship-graph-view{{/if}}">
+  {{!-- Header Section --}}
+  <div class="graph-header">
+    <div class="header-controls">
+      {{#if isEditMode}}
+        {{!-- Edit Mode Header --}}
+        <div class="title-section">
+          <input 
+            type="text" 
+            name="settings.title" 
+            value="{{graphData.settings.title}}" 
+            placeholder="{{localize 'RELATIONSHIP_APP.GRAPH_TITLE_PLACEHOLDER'}}"
+            class="graph-title-input"
+          />
+        </div>
+        <div class="description-section">
+          <textarea 
+            name="settings.description" 
+            placeholder="{{localize 'RELATIONSHIP_APP.GRAPH_DESCRIPTION_PLACEHOLDER'}}"
+            class="graph-description-input"
+          >{{graphData.settings.description}}</textarea>
+        </div>
+      {{else}}
+        {{!-- View Mode Header --}}
+        <h2 class="graph-title">{{graphData.settings.title}}</h2>
+        {{#if graphData.settings.description}}
+          <p class="graph-description">{{graphData.settings.description}}</p>
+        {{/if}}
+      {{/if}}
+    </div>
+    
+    <div class="graph-stats">
+      <span class="stat">{{localize "RELATIONSHIP_APP.NODES"}}: {{graphData.nodeCount}}</span>
+      <span class="stat">{{localize "RELATIONSHIP_APP.EDGES"}}: {{graphData.edgeCount}}</span>
+    </div>
+
+    {{!-- Mode Toggle Buttons --}}
+    <div class="graph-actions">
+      {{#if isEditMode}}
+        {{#if canView}}
+          <button type="button" class="icon fa-solid fa-eye" 
+                  data-tooltip="{{localize 'JOURNAL.ViewPage'}}" 
+                  data-action="viewPage"
+                  aria-label="{{localize 'JOURNAL.ViewPage'}}">
+          </button>
+        {{/if}}
+      {{else}}
+        {{#if canEdit}}
+          <button type="button" class="icon fa-solid fa-pen-to-square" 
+                  data-tooltip="{{localize 'JOURNAL.EditPage'}}" 
+                  data-action="editPage"
+                  aria-label="{{localize 'JOURNAL.EditPage'}}">
+          </button>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+
+  {{#if isEditMode}}
+    {{!-- Edit Mode Toolbar --}}
+    <div class="graph-toolbar">
+      <div class="toolbar-group">
+        <button type="button" class="add-node-btn" title="{{localize 'RELATIONSHIP_APP.ADD_NODE'}}">
+          <i class="fas fa-plus-circle"></i>
+          {{localize "RELATIONSHIP_APP.ADD_NODE"}}
+        </button>
+        <button type="button" class="add-edge-btn" title="{{localize 'RELATIONSHIP_APP.ADD_EDGE'}}">
+          <i class="fas fa-link"></i>
+          {{localize "RELATIONSHIP_APP.ADD_EDGE"}}
+        </button>
+      </div>
+      
+      <div class="toolbar-group">
+        <button type="button" class="clear-graph-btn" title="{{localize 'RELATIONSHIP_APP.CLEAR_GRAPH'}}">
+          <i class="fas fa-trash"></i>
+          {{localize "RELATIONSHIP_APP.CLEAR_GRAPH"}}
+        </button>
+        <button type="button" class="export-graph-btn" title="{{localize 'RELATIONSHIP_APP.EXPORT_GRAPH'}}">
+          <i class="fas fa-download"></i>
+          {{localize "RELATIONSHIP_APP.EXPORT_GRAPH"}}
+        </button>
+      </div>
+
+      <div class="toolbar-group">
+        <label class="setting-label">
+          <input type="checkbox" name="settings.showProperties" {{#if graphData.settings.showProperties}}checked{{/if}} />
+          {{localize "RELATIONSHIP_APP.SHOW_PROPERTIES"}}
+        </label>
+        <label class="setting-label">
+          <input type="checkbox" name="settings.showLabels" {{#if graphData.settings.showLabels}}checked{{/if}} />
+          {{localize "RELATIONSHIP_APP.SHOW_LABELS"}}
+        </label>
+      </div>
+    </div>
+  {{/if}}
+
+  {{!-- Main Content Area --}}
+  <div class="graph-main-content">
+    {{!-- Graph Container --}}
+    <div class="graph-container" id="relationship-graph-canvas">
+      {{!-- Cytoscape.js will render the graph here --}}
+    </div>
+
+    {{#if isEditMode}}
+      {{!-- Edit Mode Sidebar --}}
+      <div class="graph-sidebar">
+        {{!-- Node List --}}
+        <div class="sidebar-section">
+          <h3>{{localize "RELATIONSHIP_APP.NODES"}} ({{graphData.nodeCount}})</h3>
+          <div class="node-list" id="node-list">
+            {{#each graphData.nodes as |node|}}
+              <div class="node-item" data-node-id="{{node.id}}">
+                <div class="node-item-header">
+                  <span class="node-color-indicator" style="background-color: {{node.color}}"></span>
+                  <span class="node-label">{{node.label}}</span>
+                  <div class="node-actions">
+                    <button type="button" class="edit-node-btn" data-node-id="{{node.id}}" title="{{localize 'RELATIONSHIP_APP.EDIT_NODE'}}">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button" class="remove-node-btn" data-node-id="{{node.id}}" title="{{localize 'RELATIONSHIP_APP.REMOVE_NODE'}}">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="node-item-details">
+                  <span class="node-type">{{node.type}}</span>
+                  {{#if node.properties}}
+                    <span class="node-properties-count">({{objectLength node.properties}} {{localize "RELATIONSHIP_APP.PROPERTIES"}})</span>
+                  {{/if}}
+                </div>
+              </div>
+            {{else}}
+              <p class="no-nodes">{{localize "RELATIONSHIP_APP.NO_NODES"}}</p>
+            {{/each}}
+          </div>
+        </div>
+
+        {{!-- Edge List --}}
+        <div class="sidebar-section">
+          <h3>{{localize "RELATIONSHIP_APP.EDGES"}} ({{graphData.edgeCount}})</h3>
+          <div class="edge-list" id="edge-list">
+            {{#each graphData.edges as |edge|}}
+              <div class="edge-item" data-source="{{edge.source}}" data-target="{{edge.target}}">
+                <div class="edge-item-header">
+                  <span class="edge-label">{{edge.label}}</span>
+                  <div class="edge-actions">
+                    <button type="button" class="edit-edge-btn" data-source="{{edge.source}}" data-target="{{edge.target}}" title="{{localize 'RELATIONSHIP_APP.EDIT_EDGE'}}">
+                      <i class="fas fa-edit"></i>
+                    </button>
+                    <button type="button" class="remove-edge-btn" data-source="{{edge.source}}" data-target="{{edge.target}}" title="{{localize 'RELATIONSHIP_APP.REMOVE_EDGE'}}">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+                <div class="edge-item-details">
+                  <span class="edge-connection">{{edge.source}} → {{edge.target}}</span>
+                  <span class="edge-type">{{edge.type}}</span>
+                </div>
+              </div>
+            {{else}}
+              <p class="no-edges">{{localize "RELATIONSHIP_APP.NO_EDGES"}}</p>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    {{else}}
+      {{!-- View Mode Legend --}}
+      {{#if graphData.nodes.length}}
+        <div class="graph-legend">
+          <h3>{{localize "RELATIONSHIP_APP.LEGEND"}}</h3>
+          <div class="legend-items">
+            {{#each graphData.nodes as |node|}}
+              <div class="legend-item" data-node-id="{{node.id}}">
+                <span class="legend-color" style="background-color: {{node.color}}"></span>
+                <span class="legend-label">{{node.label}}</span>
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+    {{/if}}
+  </div>
+
+  {{!-- Node Details Panel (View Mode) --}}
+  {{#unless isEditMode}}
+    <div class="node-details-panel" id="node-details" style="display: none;">
+      <h3>{{localize "RELATIONSHIP_APP.NODE_DETAILS"}}</h3>
+      <div class="node-info">
+        <div class="info-row">
+          <label>{{localize "RELATIONSHIP_APP.LABEL"}}:</label>
+          <span id="node-label"></span>
+        </div>
+        <div class="info-row">
+          <label>{{localize "RELATIONSHIP_APP.TYPE"}}:</label>
+          <span id="node-type"></span>
+        </div>
+        <div class="info-row">
+          <label>{{localize "RELATIONSHIP_APP.COLOR"}}:</label>
+          <span id="node-color"></span>
+        </div>
+        {{#if graphData.settings.showProperties}}
+          <div class="node-properties" id="node-properties">
+            <h4>{{localize "RELATIONSHIP_APP.PROPERTIES"}}</h4>
+            <div id="properties-list"></div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="edge-details-panel" id="edge-details" style="display: none;">
+      <h3>{{localize "RELATIONSHIP_APP.EDGE_DETAILS"}}</h3>
+      <div class="edge-info">
+        <div class="info-row">
+          <label>{{localize "RELATIONSHIP_APP.SOURCE"}}:</label>
+          <span id="edge-source"></span>
+        </div>
+        <div class="info-row">
+          <label>{{localize "RELATIONSHIP_APP.TARGET"}}:</label>
+          <span id="edge-target"></span>
+        </div>
+        <div class="info-row">
+          <label>{{localize "RELATIONSHIP_APP.LABEL"}}:</label>
+          <span id="edge-label"></span>
+        </div>
+        <div class="info-row">
+          <label>{{localize "RELATIONSHIP_APP.TYPE"}}:</label>
+          <span id="edge-type"></span>
+        </div>
+        {{#if graphData.settings.showProperties}}
+          <div class="edge-properties" id="edge-properties">
+            <h4>{{localize "RELATIONSHIP_APP.PROPERTIES"}}</h4>
+            <div id="edge-properties-list"></div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  {{/unless}}
+
+  {{#if isEditMode}}
+    {{!-- Edit Mode Modals --}}
+    {{!-- Node Editor Modal --}}
+    <div class="modal" id="node-editor-modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>{{localize "RELATIONSHIP_APP.EDIT_NODE"}}</h3>
+          <button type="button" class="modal-close" id="node-modal-close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="node-editor-form">
+            <div class="form-group">
+              <label for="node-label-input">{{localize "RELATIONSHIP_APP.LABEL"}}:</label>
+              <input type="text" id="node-label-input" name="label" required />
+            </div>
+            <div class="form-group">
+              <label for="node-type-input">{{localize "RELATIONSHIP_APP.TYPE"}}:</label>
+              <select id="node-type-input" name="type">
+                <option value="default">{{localize "RELATIONSHIP_APP.DEFAULT"}}</option>
+                <option value="character">{{localize "RELATIONSHIP_APP.CHARACTER"}}</option>
+                <option value="location">{{localize "RELATIONSHIP_APP.LOCATION"}}</option>
+                <option value="item">{{localize "RELATIONSHIP_APP.ITEM"}}</option>
+                <option value="event">{{localize "RELATIONSHIP_APP.EVENT"}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="node-color-input">{{localize "RELATIONSHIP_APP.COLOR"}}:</label>
+              <input type="color" id="node-color-input" name="color" value="#4a90e2" />
+            </div>
+            <div class="form-group">
+              <label for="node-size-input">{{localize "RELATIONSHIP_APP.SIZE"}}:</label>
+              <input type="range" id="node-size-input" name="size" min="10" max="50" value="20" />
+              <span id="node-size-value">20</span>
+            </div>
+            <div class="form-group">
+              <label for="node-properties-input">{{localize "RELATIONSHIP_APP.PROPERTIES"}}:</label>
+              <textarea id="node-properties-input" name="properties" placeholder="{{localize 'RELATIONSHIP_APP.PROPERTIES_PLACEHOLDER'}}"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="node-modal-cancel">{{localize "RELATIONSHIP_APP.CANCEL"}}</button>
+          <button type="button" class="btn-primary" id="node-modal-save">{{localize "RELATIONSHIP_APP.SAVE"}}</button>
+        </div>
+      </div>
+    </div>
+
+    {{!-- Edge Editor Modal --}}
+    <div class="modal" id="edge-editor-modal" style="display: none;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>{{localize "RELATIONSHIP_APP.EDIT_EDGE"}}</h3>
+          <button type="button" class="modal-close" id="edge-modal-close">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="edge-editor-form">
+            <div class="form-group">
+              <label for="edge-source-input">{{localize "RELATIONSHIP_APP.SOURCE"}}:</label>
+              <select id="edge-source-input" name="source" required>
+                {{#each graphData.nodes as |node|}}
+                  <option value="{{node.id}}">{{node.label}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edge-target-input">{{localize "RELATIONSHIP_APP.TARGET"}}:</label>
+              <select id="edge-target-input" name="target" required>
+                {{#each graphData.nodes as |node|}}
+                  <option value="{{node.id}}">{{node.label}}</option>
+                {{/each}}
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edge-label-input">{{localize "RELATIONSHIP_APP.LABEL"}}:</label>
+              <input type="text" id="edge-label-input" name="label" />
+            </div>
+            <div class="form-group">
+              <label for="edge-type-input">{{localize "RELATIONSHIP_APP.TYPE"}}:</label>
+              <select id="edge-type-input" name="type">
+                <option value="default">{{localize "RELATIONSHIP_APP.DEFAULT"}}</option>
+                <option value="friendship">{{localize "RELATIONSHIP_APP.FRIENDSHIP"}}</option>
+                <option value="romance">{{localize "RELATIONSHIP_APP.ROMANCE"}}</option>
+                <option value="family">{{localize "RELATIONSHIP_APP.FAMILY"}}</option>
+                <option value="enemy">{{localize "RELATIONSHIP_APP.ENEMY"}}</option>
+                <option value="business">{{localize "RELATIONSHIP_APP.BUSINESS"}}</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edge-color-input">{{localize "RELATIONSHIP_APP.COLOR"}}:</label>
+              <input type="color" id="edge-color-input" name="color" value="#666666" />
+            </div>
+            <div class="form-group">
+              <label for="edge-width-input">{{localize "RELATIONSHIP_APP.WIDTH"}}:</label>
+              <input type="range" id="edge-width-input" name="width" min="1" max="10" value="1" />
+              <span id="edge-width-value">1</span>
+            </div>
+            <div class="form-group">
+              <label for="edge-properties-input">{{localize "RELATIONSHIP_APP.PROPERTIES"}}:</label>
+              <textarea id="edge-properties-input" name="properties" placeholder="{{localize 'RELATIONSHIP_APP.PROPERTIES_PLACEHOLDER'}}"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" id="edge-modal-cancel">{{localize "RELATIONSHIP_APP.CANCEL"}}</button>
+          <button type="button" class="btn-primary" id="edge-modal-save">{{localize "RELATIONSHIP_APP.SAVE"}}</button>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+</div> 

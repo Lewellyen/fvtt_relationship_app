@@ -18,6 +18,23 @@ Ein Foundry VTT System für Warhammer 40K Deathwatch RPG.
    ```
 3. Optional: Installiere weitere Python-Abhängigkeiten, falls benötigt.
 
+## Abhängigkeiten
+
+- Alpine.js (Reaktivität und UI-Logik)
+- Flowbite (UI-Komponenten, basiert auf Tailwind)
+- Tailwind CSS (Styling)
+
+### Installation
+
+```bash
+npm install alpinejs flowbite
+```
+
+### Integration
+
+- Alpine.js und Flowbite werden im Code über `import 'alpinejs'` und `import 'flowbite'` eingebunden.
+- Svelte wird nicht mehr verwendet.
+
 ## Release-Manager
 
 Um einen neuen Release durchzuführen, starte die GUI über die `release.bat`:

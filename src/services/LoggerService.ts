@@ -1,5 +1,5 @@
 /**
- * Zentraler Logger-Service für das WH40K Deathwatch System.
+ * Zentraler Logger-Service für das Relationship App System.
  * Ersetzt console.log/warn/error mit strukturiertem Logging.
  */
 export class LoggerService {
@@ -30,7 +30,7 @@ export class LoggerService {
    */
   info(message: string, ...args: unknown[]): void {
     if (this.debugMode) {
-      console.log(`[WH40K Deathwatch] ℹ️ ${message}`, ...args);
+      console.log(`[Relationship App] ℹ️ ${message}`, ...args);
     }
   }
 
@@ -38,14 +38,14 @@ export class LoggerService {
    * Log-Level: Warnung (immer sichtbar)
    */
   warn(message: string, ...args: unknown[]): void {
-    console.warn(`[WH40K Deathwatch] ⚠️ ${message}`, ...args);
+    console.warn(`[Relationship App] ⚠️ ${message}`, ...args);
   }
 
   /**
    * Log-Level: Fehler (immer sichtbar)
    */
   error(message: string, error?: Error): void {
-    console.error(`[WH40K Deathwatch] ❌ ${message}`, error);
+    console.error(`[Relationship App] ❌ ${message}`, error);
   }
 
   /**
@@ -53,7 +53,7 @@ export class LoggerService {
    */
   debug(message: string, ...args: unknown[]): void {
     if (this.debugMode) {
-      console.debug(`[WH40K Deathwatch] 🐛 ${message}`, ...args);
+      console.debug(`[Relationship App] 🐛 ${message}`, ...args);
     }
   }
 
@@ -64,7 +64,7 @@ export class LoggerService {
     if (this.debugMode) {
       const status = duration > 100 ? "⚠️" : "✅";
       console.log(
-        `[WH40K Deathwatch] ${status} ${operation}: ${duration.toFixed(2)}ms`,
+        `[Relationship App] ${status} ${operation}: ${duration.toFixed(2)}ms`,
       );
     }
   }
@@ -73,6 +73,6 @@ export class LoggerService {
    * Log-Level: System-Initialisierung
    */
   system(message: string): void {
-    console.log(`[WH40K Deathwatch] 🚀 ${message}`);
+    console.log(`[Relationship App] 🚀 ${message}`);
   }
 }

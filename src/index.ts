@@ -1,4 +1,6 @@
 import "../styles/style.css";
 import "../styles/overrides.css";
-import "./core/init";
+import "alpinejs";
+import "flowbite";
 import "../styles/tailwind.css";
+import "./core/init";

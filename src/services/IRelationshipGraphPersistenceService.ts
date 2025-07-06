@@ -3,43 +3,43 @@ import type {
   RelationshipNode,
   RelationshipEdge,
 } from "@/types/relationship";
-import type { DeathwatchActor } from "@/entities/DeathwatchActor";
 
 /**
  * Interface for relationship graph persistence operations.
  * Single Responsibility: Handles only data persistence.
+ * Generic to support both Actor and JournalEntryPage implementations.
  */
-export interface IRelationshipGraphPersistenceService {
+export interface IRelationshipGraphPersistenceService<T = any> {
   /**
-   * Saves the relationship graph to the actor.
+   * Saves the relationship graph to the document.
    */
-  saveGraph(actor: DeathwatchActor, graph: RelationshipGraph): Promise<void>;
+  saveGraph(document: T, graph: RelationshipGraph): Promise<void>;
 
   /**
    * Adds a new node to the graph.
    */
-  addNode(actor: DeathwatchActor, node: RelationshipNode): Promise<void>;
+  addNode(document: T, node: RelationshipNode): Promise<void>;
 
   /**
    * Removes a node and all its connected edges from the graph.
    */
-  removeNode(actor: DeathwatchActor, nodeId: string): Promise<void>;
+  removeNode(document: T, nodeId: string): Promise<void>;
 
   /**
    * Adds a new edge to the graph.
    */
-  addEdge(actor: DeathwatchActor, edge: RelationshipEdge): Promise<void>;
+  addEdge(document: T, edge: RelationshipEdge): Promise<void>;
 
   /**
    * Removes an edge from the graph.
    */
-  removeEdge(actor: DeathwatchActor, edgeId: string): Promise<void>;
+  removeEdge(document: T, edgeId: string): Promise<void>;
 
   /**
    * Updates an existing node in the graph.
    */
   updateNode(
-    actor: DeathwatchActor,
+    document: T,
     nodeId: string,
     updates: Partial<RelationshipNode>,
   ): Promise<void>;
@@ -48,7 +48,7 @@ export interface IRelationshipGraphPersistenceService {
    * Updates an existing edge in the graph.
    */
   updateEdge(
-    actor: DeathwatchActor,
+    document: T,
     edgeId: string,
     updates: Partial<RelationshipEdge>,
   ): Promise<void>;
