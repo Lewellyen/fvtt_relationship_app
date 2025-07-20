@@ -1,58 +1,28 @@
-const {
-    defineConfig,
-    globalIgnores,
-} = require("eslint/config");
+const typescript = require('@typescript-eslint/eslint-plugin');
+const typescriptParser = require('@typescript-eslint/parser');
 
-const globals = require("globals");
-const tsParser = require("@typescript-eslint/parser");
-const typescriptEslint = require("@typescript-eslint/eslint-plugin");
-const prettier = require("eslint-plugin-prettier");
-const js = require("@eslint/js");
-
-const {
-    FlatCompat,
-} = require("@eslint/eslintrc");
-
-const compat = new FlatCompat({
-    baseDirectory: __dirname,
-    recommendedConfig: js.configs.recommended,
-    allConfig: js.configs.all
-});
-
-module.exports = defineConfig([{
+module.exports = [
+  {
+    files: ['**/*.{ts,js}'],
     languageOptions: {
-        globals: {
-            ...globals.browser,
-            ...globals.node,
-        },
-
-        parser: tsParser,
-        sourceType: "module",
-
-        parserOptions: {
-            tsconfigRootDir: __dirname,
-        },
+      parser: typescriptParser,
+      parserOptions: {
+        project: './tsconfig.json',
+        tsconfigRootDir: __dirname,
+        sourceType: 'module'
+      }
     },
-
     plugins: {
-        "@typescript-eslint": typescriptEslint,
-        prettier,
+      '@typescript-eslint': typescript
     },
-
-    extends: compat.extends(
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended",
-    ),
-
     rules: {
-        '@typescript-eslint/no-explicit-any': 'off',
-        '@typescript-eslint/no-unused-vars': 'off',
-        '@typescript-eslint/no-namespace': 'off',
-        'linebreak-style': ['error', 'windows'],
-    },
-}, {
-    // TypeScript type-aware linting for source files only
-    files: ["src/**/*.ts", "src/**/*.tsx"],
-    languageOptions: { parserOptions: { project: ["./tsconfig.json"], tsconfigRootDir: __dirname } }
-}, globalIgnores(["**/dist/", "**/node_modules/", "**/references/", "eslint.config.cjs", ".eslintrc.cjs", "scripts/**", "backup/**"])]); 
+      ...typescript.configs.recommended.rules,
+      '@typescript-eslint/no-unused-vars': 'error',
+      '@typescript-eslint/no-explicit-any': 'warn',
+      'prefer-const': 'error'
+    }
+  },
+  {
+    ignores: ['node_modules/', 'dist/', 'packs/', 'assets/']
+  }
+]; 

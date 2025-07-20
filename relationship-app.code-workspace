@@ -1,8 +1,11 @@
 {
-	"folders": [
-		{
-			"path": "."
-		}
-	],
-	"settings": {}
+  "folders": [
+    {
+      "path": "."
+    },
+    {
+      "path": "C:/Program Files/Foundry Virtual Tabletop"
+    }
+  ],
+  "settings": {},
 }

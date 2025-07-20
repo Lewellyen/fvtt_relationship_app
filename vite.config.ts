@@ -1,20 +1,16 @@
 import { defineConfig } from "vite";
+import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { resolve } from "path";
-import { analyzer } from "vite-bundle-analyzer";
 
-export default defineConfig(({ mode }) => {
-  const isAnalyze = mode === "analyze";
-  const isTest = mode === "test";
-
+export default defineConfig(() => {
   return {
     plugins: [
-      // Bundle analyzer nur im analyze mode
-      isAnalyze &&
-        analyzer({
-          analyzerMode: "static",
-          openAnalyzer: true,
-        }),
-    ].filter(Boolean),
+      svelte({
+        compilerOptions: {
+          runes: true
+        }
+      })
+    ],
     // Simple alias mapping
     resolve: {
       alias: {
@@ -47,18 +43,13 @@ export default defineConfig(({ mode }) => {
             jquery: "$",
             handlebars: "Handlebars",
           },
-        },
+        } as any,
         external: ["jquery", "handlebars"],
       },
     },
     server: {
       port: 3000,
       open: false,
-    },
-    test: {
-      globals: true,
-      environment: "jsdom",
-      setupFiles: ["./src/test/setup.ts"],
     },
   };
 });

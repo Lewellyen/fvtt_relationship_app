@@ -1,11 +1,13 @@
-import flowbitePlugin from "flowbite/plugin";
-
 /** @type {import('tailwindcss').Config} */
 export default {
   content: [
     "./src/**/*.{html,js,ts,hbs}",
     "./templates/**/*.hbs",
-    "node_modules/flowbite/**/*.js",
+    "./styles/**/*.css",
+  ],
+  safelist: [
+    { pattern: /^(px|py|rounded|font|transition|duration)-/ },
+    { pattern: /^(bg|hover:bg|focus:ring)-/ }
   ],
   darkMode: ["class", ".dark-theme"],
   theme: {
@@ -18,5 +20,4 @@ export default {
       },
     },
   },
-  plugins: [flowbitePlugin],
 };

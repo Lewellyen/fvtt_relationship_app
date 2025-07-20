@@ -10,3 +10,4 @@ declare module "*.svelte" {
 }
 
 declare module "flowbite-svelte";
+declare module "@sveltejs/vite-plugin-svelte";

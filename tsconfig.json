@@ -2,13 +2,9 @@
   "compilerOptions": {
     "verbatimModuleSyntax": true,
     "moduleResolution": "bundler",
-    "types": [
-      "fvtt-types",
-      "@types/jquery",
-      "vitest"
-    ],
+    "types": ["fvtt-types", "jquery"],
     "lib": ["DOM", "ES2021"],
-    "rootDir": "./src",
+    "rootDir": ".",
     "allowUmdGlobalAccess": true,
     "target": "ES6",
     "module": "ESNext",
@@ -24,6 +20,10 @@
       "@/*": ["src/*"]
     }
   },
-  "include": ["src/**/*", "templates/**/*.hbs"],
+  "include": [
+    "src/**/*",
+    "templates/**/*.hbs",
+    "vite.config.ts"
+  ],
   "exclude": ["node_modules/**/*"]
-} 
+}
