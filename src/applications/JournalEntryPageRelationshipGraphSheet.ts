@@ -1,6 +1,13 @@
 import RelationshipGraphEdit from "../svelte/RelationshipGraphEdit.svelte";
 import RelationshipGraphView from "../svelte/RelationshipGraphView.svelte";
 import { mount, unmount } from "svelte";
+import {
+  ServiceFactory,
+  type IServiceFactory,
+} from "../services/ServiceFactory";
+import type {
+  IRelationshipGraphService,
+} from "../services/RelationshipGraphService";
 
 /**
  * V2 JournalEntryPageSheet subclass drawing a simple relationship graph.
@@ -8,6 +15,16 @@ import { mount, unmount } from "svelte";
  */
 export default class JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets
   .journal.JournalEntryPageHandlebarsSheet {
+  private serviceFactory: IServiceFactory;
+  private graphService: IRelationshipGraphService;
+
+  constructor(...args: any[]) {
+    super(...args);
+    this.serviceFactory = new ServiceFactory();
+    this.graphService = this.serviceFactory.createRelationshipGraphService(
+      (this as any).document
+    );
+  }
   /**
    * Merge the default parts, inserting our graph part between header and footer.
    */
@@ -61,9 +78,11 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
 
   /** @override */
   async _prepareContext(options: any) {
-    // No dynamic context needed for hard-coded POC
     const context = await super._prepareContext(options);
-    (context as any).graphData = (this as any).document.system;
+    (context as any).graphData = {
+      nodes: this.graphService.getNodes(),
+      edges: this.graphService.getEdges(),
+    };
     return context;
   }
 
@@ -94,11 +113,20 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
 
     const graphData = (context as any).graphData;
     if (graphData.nodes.length === 0) {
-      graphData.nodes = [ { id: "Bauer", x: 150, y: 200 }, { id: "Müller", x: 450, y: 200 } ];
+      await this.graphService.addNode({ id: "Bauer", x: 150, y: 200 });
+      await this.graphService.addNode({ id: "Müller", x: 450, y: 200 });
+      graphData.nodes = this.graphService.getNodes();
     }
 
     if (graphData.edges.length === 0) {
-      graphData.edges = [ { from: "Bauer", to: "Müller", label: "Weizen" } ];
+      await this.graphService.addEdge({
+        from: "Bauer",
+        to: "Müller",
+        label: "Weizen",
+        type: "trade",
+        color: "#ff0000",
+      });
+      graphData.edges = this.graphService.getEdges();
     }
 
     const props = {
