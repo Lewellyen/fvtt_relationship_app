@@ -1,11 +1,11 @@
 # Relationship App
 
-A Foundry VTT module for creating and managing relationship graphs between actors and other entities. Built with Alpine.js, Flowbite, and Tailwind CSS for a modern, reactive user experience.
+A Foundry VTT module for creating and managing relationship graphs between actors and other entities. Built with **Svelte 5**, Flowbite, and Tailwind CSS for a modern, reactive user experience.
 
 ## Features
 
 - **Interactive Relationship Graphs**: Create and visualize relationships between characters, locations, items, and organizations
-- **Modern UI**: Built with Alpine.js for reactivity and Flowbite for beautiful components
+- **Modern UI**: Built with Svelte 5 for reactivity and Flowbite for beautiful components
 - **SOLID Architecture**: Clean, maintainable code following SOLID principles
 - **Foundry Integration**: Seamless integration with Foundry VTT's journal system
 - **Dark Mode Support**: Automatically adapts to Foundry's theme
@@ -14,7 +14,7 @@ A Foundry VTT module for creating and managing relationship graphs between actor
 
 ## Technology Stack
 
-- **Frontend**: Alpine.js for reactivity, Flowbite for UI components
+- **Frontend**: Svelte 5 for reactivity, Flowbite for UI components
 - **Styling**: Tailwind CSS with Foundry-compatible theming
 - **Graph Visualization**: Cytoscape.js for interactive graph rendering
 - **Architecture**: SOLID principles with dependency injection
@@ -94,7 +94,7 @@ The module follows SOLID principles:
 - **RelationshipGraphCytoscapeService**: Graph visualization
 - **ServiceFactory**: Dependency injection container
 
-### Alpine.js Integration
+### Svelte Integration
 
 - **Reactive Stores**: Graph data and UI state management
 - **Component System**: Modular, reusable components
@@ -152,7 +152,7 @@ You can customize the appearance by modifying the CSS variables in `styles/tailw
 
 ## API Reference
 
-### Alpine.js Components
+### Svelte Components
 
 #### relationshipGraphComponent(document)
 
