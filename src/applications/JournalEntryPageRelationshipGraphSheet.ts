@@ -1,13 +1,8 @@
 import RelationshipGraphEdit from "../svelte/RelationshipGraphEdit.svelte";
 import RelationshipGraphView from "../svelte/RelationshipGraphView.svelte";
 import { mount, unmount } from "svelte";
-import {
-  ServiceFactory,
-  type IServiceFactory,
-} from "../services/ServiceFactory";
-import type {
-  IRelationshipGraphService,
-} from "../services/RelationshipGraphService";
+import { ServiceFactory, type IServiceFactory } from "../services/ServiceFactory";
+import type { IRelationshipGraphService, IDocument } from "../services/RelationshipGraphService";
 
 /**
  * V2 JournalEntryPageSheet subclass drawing a simple relationship graph.
@@ -22,7 +17,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     super(...args);
     this.serviceFactory = new ServiceFactory();
     this.graphService = this.serviceFactory.createRelationshipGraphService(
-      (this as any).document
+      (this as any).document as IDocument
     );
   }
   /**
@@ -131,16 +126,19 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
 
     const props = {
       nodes: graphData.nodes,
-      edges: graphData.edges
-    }
+      edges: graphData.edges,
+    };
 
     const svelteOptions = {
       target,
       props: props,
-    }
+    };
     console.log("🚀 Relationship App: Svelte options:", svelteOptions);
     // Mount the Svelte component using the v5 mount API
-    this.svelteApp = mount((this as any).isView ? RelationshipGraphView : RelationshipGraphEdit, svelteOptions);
+    this.svelteApp = mount(
+      (this as any).isView ? RelationshipGraphView : RelationshipGraphEdit,
+      svelteOptions
+    );
   }
 
   /** @override */
