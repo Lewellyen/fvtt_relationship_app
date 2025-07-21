@@ -10,6 +10,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 ### Fehlerbehebungen
 
+## [0.5.2] - 2025-07-22
+### Hinzugefügt
+- Keine Einträge
+
+### Geändert
+- Schrittweise Anpassung für SOLID Part 1
+
+### Fehlerbehebungen
+- Keine Einträge
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.5.1] - 2025-07-21
 ### Hinzugefügt
 - Keine Einträge
