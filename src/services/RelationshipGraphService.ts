@@ -1,0 +1,57 @@
+export interface NodeData {
+  id: string;
+  x: number;
+  y: number;
+  label?: string;
+}
+
+export interface EdgeData {
+  id?: string;
+  from: string;
+  to: string;
+  label?: string;
+  type?: string;
+  color?: string;
+}
+
+export interface IRelationshipGraphService {
+  getNodes(): NodeData[];
+  getEdges(): EdgeData[];
+  addNode(node: NodeData): Promise<void>;
+  addEdge(edge: EdgeData): Promise<void>;
+  removeNode(id: string): Promise<void>;
+  removeEdge(id: string): Promise<void>;
+}
+
+export class RelationshipGraphService implements IRelationshipGraphService {
+  constructor(private readonly document: any) {}
+
+  getNodes(): NodeData[] {
+    return this.document.system.nodes ?? [];
+  }
+
+  getEdges(): EdgeData[] {
+    return this.document.system.edges ?? [];
+  }
+
+  async addNode(node: NodeData): Promise<void> {
+    const nodes = [...this.getNodes(), node];
+    await this.document.update({ 'system.nodes': nodes });
+  }
+
+  async addEdge(edge: EdgeData): Promise<void> {
+    const newEdge = { id: edge.id ?? crypto.randomUUID(), ...edge };
+    const edges = [...this.getEdges(), newEdge];
+    await this.document.update({ 'system.edges': edges });
+  }
+
+  async removeNode(id: string): Promise<void> {
+    const nodes = this.getNodes().filter((n) => n.id !== id);
+    await this.document.update({ 'system.nodes': nodes });
+  }
+
+  async removeEdge(id: string): Promise<void> {
+    const edges = this.getEdges().filter((e) => e.id !== id);
+    await this.document.update({ 'system.edges': edges });
+  }
+}
