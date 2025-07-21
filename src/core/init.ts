@@ -1,5 +1,4 @@
-import JournalEntryPageRelationshipGraphSheet from "../applications/JournalEntryPageRelationshipGraphSheet";
-import { RelationshipGraphModel } from "../models/RelationsShipGraphModel";
+import { RegistrationService, type IRegistrationService } from "../services/RegistrationService";
 
 // Minimale Initialisierung
 console.log("📦 Relationship App: Core init loaded");
@@ -12,28 +11,16 @@ Hooks.once("init", () => {
 
 Hooks.once("ready", () => {
   console.log("🚀 Relationship App: Ready-Phase...");
-  console.log("🚀 Relationship App: Registering JournalEntryPageRelationshipGraphSheet...");
-  const DocumentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
+  const registrationService: IRegistrationService = new RegistrationService();
   try {
-    DocumentSheetConfig.registerSheet(
-      JournalEntryPage, // Die Dokumenten-Klasse
-      "relationship-app", // Dein Modul-Scope (module.json → name)
-      JournalEntryPageRelationshipGraphSheet, // Deine Sheet-Klasse
-      {
-        label: "Relationship App.RelationshipGraph", // Lokalisierbarer Schlüssel für den Namen im Dropdown
-        makeDefault: true,
-        types: ["relationship-app.relationship-graph"], // Soll es als default angeboten werden?
-      }
-    );
+    registrationService.registerSheet();
     console.log("✅ Relationship App: Sheet registered successfully");
   } catch (error) {
     console.error("🚨 Relationship App: Error registering sheet:", error);
   }
 
-  console.log("🚀 Relationship App: Registering RelationshipGraphModel...");
   try {
-    CONFIG.JournalEntryPage.dataModels["relationship-app.relationship-graph"] =
-      RelationshipGraphModel;
+    registrationService.registerModel();
     console.log("✅ Relationship App: Model registered successfully");
   } catch (error) {
     console.error("🚨 Relationship App: Error registering model:", error);
