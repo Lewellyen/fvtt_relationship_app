@@ -40,7 +40,12 @@ export class RelationshipGraphService implements IRelationshipGraphService {
   }
 
   async addEdge(edge: EdgeData): Promise<void> {
-    const newEdge = { id: edge.id ?? crypto.randomUUID(), ...edge };
+    const newEdge: EdgeData = {
+      id: edge.id ?? crypto.randomUUID(),
+      type: edge.type ?? "relation",
+      color: edge.color ?? "#000000",
+      ...edge,
+    };
     const edges = [...this.getEdges(), newEdge];
     await this.document.update({ 'system.edges': edges });
   }

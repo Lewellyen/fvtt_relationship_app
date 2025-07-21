@@ -119,7 +119,13 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     }
 
     if (graphData.edges.length === 0) {
-      await this.graphService.addEdge({ from: "Bauer", to: "Müller", label: "Weizen" });
+      await this.graphService.addEdge({
+        from: "Bauer",
+        to: "Müller",
+        label: "Weizen",
+        type: "trade",
+        color: "#ff0000",
+      });
       graphData.edges = this.graphService.getEdges();
     }
 

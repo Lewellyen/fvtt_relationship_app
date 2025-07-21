@@ -1,4 +1,6 @@
-import { IRelationshipGraphService, RelationshipGraphService } from './RelationshipGraphService';
+import type { IRelationshipGraphService } from './RelationshipGraphService';
+import { RelationshipGraphService } from './RelationshipGraphService';
+
 
 export interface IServiceFactory {
   createRelationshipGraphService(document: any): IRelationshipGraphService;
