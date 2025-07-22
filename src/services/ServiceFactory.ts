@@ -6,6 +6,15 @@ export interface IServiceFactory {
 }
 
 export class ServiceFactory implements IServiceFactory {
+  private static instance: ServiceFactory;
+
+  static getInstance(): ServiceFactory {
+    if (!ServiceFactory.instance) {
+      ServiceFactory.instance = new ServiceFactory();
+    }
+    return ServiceFactory.instance;
+  }
+
   createRelationshipGraphService(document: IDocument): IRelationshipGraphService {
     return new RelationshipGraphService(document);
   }

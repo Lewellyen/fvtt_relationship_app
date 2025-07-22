@@ -1,7 +1,8 @@
 import RelationshipGraphEdit from "../svelte/RelationshipGraphEdit.svelte";
 import RelationshipGraphView from "../svelte/RelationshipGraphView.svelte";
 import { mount, unmount } from "svelte";
-import { ServiceFactory, type IServiceFactory } from "../services/ServiceFactory";
+import { ServiceFactory } from "../services/ServiceFactory";
+import { ServiceManager, type IServiceManager } from "../services/ServiceManager";
 import type { IRelationshipGraphService, IDocument } from "../services/RelationshipGraphService";
 
 /**
@@ -10,13 +11,13 @@ import type { IRelationshipGraphService, IDocument } from "../services/Relations
  */
 export default class JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets
   .journal.JournalEntryPageHandlebarsSheet {
-  private serviceFactory: IServiceFactory;
+  private serviceManager: IServiceManager;
   private graphService: IRelationshipGraphService;
 
   constructor(...args: any[]) {
     super(...args);
-    this.serviceFactory = new ServiceFactory();
-    this.graphService = this.serviceFactory.createRelationshipGraphService(
+    this.serviceManager = ServiceManager.getInstance(ServiceFactory.getInstance());
+    this.graphService = this.serviceManager.getRelationshipGraphService(
       (this as any).document as IDocument
     );
   }
