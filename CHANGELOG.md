@@ -10,6 +10,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 ### Fehlerbehebungen
 
+## [0.5.3] - 2025-07-22
+### Hinzugefügt
+- docs/solid-review.md
+
+### Geändert
+- Keine Einträge
+
+### Fehlerbehebungen
+- Keine Einträge
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.5.2] - 2025-07-22
 ### Hinzugefügt
 - Keine Einträge
