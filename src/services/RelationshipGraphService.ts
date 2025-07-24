@@ -1,67 +1,91 @@
-export interface NodeData {
-  id: string;
-  x: number;
-  y: number;
-  label?: string;
-}
-
-export interface EdgeData {
-  id?: string;
-  from: string;
-  to: string;
-  label?: string;
-  type?: string;
-  color?: string;
-}
-
-export interface IDocument {
-  system: any;
-  update(data: any): Promise<void>;
-}
-
-export interface IRelationshipGraphService {
-  getNodes(): NodeData[];
-  getEdges(): EdgeData[];
-  addNode(node: NodeData): Promise<void>;
-  addEdge(edge: EdgeData): Promise<void>;
-  removeNode(id: string): Promise<void>;
-  removeEdge(id: string): Promise<void>;
-}
+import type { NodeData, EdgeData } from "../models/RelationsShipGraphModel";
+import type {
+  IDocument,
+  IRelationshipGraphService,
+} from "./IRelationshipGraphService";
 
 export class RelationshipGraphService implements IRelationshipGraphService {
-  constructor(private readonly document: IDocument) {}
+  private nodes: NodeData[] = [];
+  private edges: EdgeData[] = [];
+
+  constructor(private document: IDocument) {
+    this.loadData();
+  }
 
   getNodes(): NodeData[] {
-    return this.document.system.nodes ?? [];
+    return [...this.nodes];
   }
 
   getEdges(): EdgeData[] {
-    return this.document.system.edges ?? [];
+    return [...this.edges];
   }
 
   async addNode(node: NodeData): Promise<void> {
-    const nodes = [...this.getNodes(), node];
-    await this.document.update({ "system.nodes": nodes });
+    const existingNodeIndex = this.nodes.findIndex((n) => n.id === node.id);
+    if (existingNodeIndex >= 0) {
+      this.nodes[existingNodeIndex] = node;
+    } else {
+      this.nodes.push(node);
+    }
+    await this.saveData();
   }
 
   async addEdge(edge: EdgeData): Promise<void> {
     const newEdge: EdgeData = {
-      id: edge.id ?? crypto.randomUUID(),
-      type: edge.type ?? "relation",
-      color: edge.color ?? "#000000",
-      ...edge,
+      id: edge.id || foundry.utils.randomID(),
+      from: edge.from,
+      to: edge.to,
+      label: edge.label,
+      type: edge.type || "relation",
+      color: edge.color || "#000000",
     };
-    const edges = [...this.getEdges(), newEdge];
-    await this.document.update({ "system.edges": edges });
+
+    const existingEdgeIndex = this.edges.findIndex((e) => e.id === newEdge.id);
+    if (existingEdgeIndex >= 0) {
+      this.edges[existingEdgeIndex] = newEdge;
+    } else {
+      this.edges.push(newEdge);
+    }
+    await this.saveData();
   }
 
-  async removeNode(id: string): Promise<void> {
-    const nodes = this.getNodes().filter((n) => n.id !== id);
-    await this.document.update({ "system.nodes": nodes });
+  async updateNode(nodeId: string, updates: Partial<NodeData>): Promise<void> {
+    const nodeIndex = this.nodes.findIndex((n) => n.id === nodeId);
+    if (nodeIndex >= 0) {
+      this.nodes[nodeIndex] = { ...this.nodes[nodeIndex], ...updates };
+      await this.saveData();
+    }
   }
 
-  async removeEdge(id: string): Promise<void> {
-    const edges = this.getEdges().filter((e) => e.id !== id);
-    await this.document.update({ "system.edges": edges });
+  async removeNode(nodeId: string): Promise<void> {
+    this.nodes = this.nodes.filter((n) => n.id !== nodeId);
+    this.edges = this.edges.filter((e) => e.from !== nodeId && e.to !== nodeId);
+    await this.saveData();
+  }
+
+  async updateEdge(edgeId: string, updates: Partial<EdgeData>): Promise<void> {
+    const edgeIndex = this.edges.findIndex((e) => e.id === edgeId);
+    if (edgeIndex >= 0) {
+      this.edges[edgeIndex] = { ...this.edges[edgeIndex], ...updates };
+      await this.saveData();
+    }
+  }
+
+  async removeEdge(edgeId: string): Promise<void> {
+    this.edges = this.edges.filter((e) => e.id !== edgeId);
+    await this.saveData();
+  }
+
+  private loadData(): void {
+    const system = this.document.system;
+    this.nodes = system.nodes || [];
+    this.edges = system.edges || [];
+  }
+
+  private async saveData(): Promise<void> {
+    await this.document.update({
+      "system.nodes": this.nodes,
+      "system.edges": this.edges,
+    });
   }
 }

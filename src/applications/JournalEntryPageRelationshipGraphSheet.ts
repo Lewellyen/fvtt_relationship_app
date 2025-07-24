@@ -1,9 +1,9 @@
 import RelationshipGraphEdit from "../svelte/RelationshipGraphEdit.svelte";
 import RelationshipGraphView from "../svelte/RelationshipGraphView.svelte";
 import { mount, unmount } from "svelte";
-import { ServiceFactory } from "../services/ServiceFactory";
-import { ServiceManager, type IServiceManager } from "../services/ServiceManager";
-import type { IRelationshipGraphService, IDocument } from "../services/RelationshipGraphService";
+import { ServiceManager } from "../services/ServiceManager";
+import { SERVICE_IDENTIFIERS } from "../services/IServiceFactory";
+import type { IRelationshipGraphService, IDocument } from "../services/IRelationshipGraphService";
 
 /**
  * V2 JournalEntryPageSheet subclass drawing a simple relationship graph.
@@ -11,16 +11,15 @@ import type { IRelationshipGraphService, IDocument } from "../services/Relations
  */
 export default class JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets
   .journal.JournalEntryPageHandlebarsSheet {
-  private serviceManager: IServiceManager;
-  private graphService: IRelationshipGraphService;
-
-  constructor(...args: any[]) {
-    super(...args);
-    this.serviceManager = ServiceManager.getInstance(ServiceFactory.getInstance());
-    this.graphService = this.serviceManager.getRelationshipGraphService(
+  // ✅ Nur eine Methode, die bei Bedarf den Service holt
+  private getGraphService(): IRelationshipGraphService {
+    return ServiceManager.getInstance().getService<IRelationshipGraphService>(
+      SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH,
+      (this as any).document as IDocument,
       (this as any).document as IDocument
     );
   }
+
   /**
    * Merge the default parts, inserting our graph part between header and footer.
    */
@@ -72,12 +71,12 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     return this.options.window.title;
   }
 
-  /** @override */
   async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
+    const service = this.getGraphService();
     (context as any).graphData = {
-      nodes: this.graphService.getNodes(),
-      edges: this.graphService.getEdges(),
+      nodes: service.getNodes(),
+      edges: service.getEdges(),
     };
     return context;
   }
@@ -94,10 +93,8 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     return super._replaceHTML(html, options, context);
   }
 
-  /** @override */
   async _onRender(context: any, options: any) {
     await super._onRender(context, options);
-    // After the sheet content (including parts) is rendered, draw the graph
     const target = this.element.querySelector("#relationship-graph-svelte");
     if (!target) return console.warn("Svelte mount point not found");
 
@@ -106,40 +103,30 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
       await unmount(this.svelteApp);
       this.svelteApp = null;
     }
+    // ✅ Service direkt holen, wenn gebraucht
+    const service = this.getGraphService();
 
-    const graphData = (context as any).graphData;
-    if (graphData.nodes.length === 0) {
-      await this.graphService.addNode({ id: "Bauer", x: 150, y: 200 });
-      await this.graphService.addNode({ id: "Müller", x: 450, y: 200 });
-      graphData.nodes = this.graphService.getNodes();
-    }
-
-    if (graphData.edges.length === 0) {
-      await this.graphService.addEdge({
+    // Demo-Daten falls leer
+    if (service.getNodes().length === 0) {
+      await service.addNode({ id: "Bauer", x: 150, y: 200 });
+      await service.addNode({ id: "Müller", x: 450, y: 200 });
+      await service.addEdge({
         from: "Bauer",
         to: "Müller",
         label: "Weizen",
         type: "trade",
         color: "#ff0000",
       });
-      graphData.edges = this.graphService.getEdges();
     }
 
-    const props = {
-      nodes: graphData.nodes,
-      edges: graphData.edges,
-    };
-
-    const svelteOptions = {
+    // ✅ Direkt vom Service holen
+    this.svelteApp = mount((this as any).isView ? RelationshipGraphView : RelationshipGraphEdit, {
       target,
-      props: props,
-    };
-    console.log("🚀 Relationship App: Svelte options:", svelteOptions);
-    // Mount the Svelte component using the v5 mount API
-    this.svelteApp = mount(
-      (this as any).isView ? RelationshipGraphView : RelationshipGraphEdit,
-      svelteOptions
-    );
+      props: {
+        nodes: service.getNodes(),
+        edges: service.getEdges(),
+      },
+    });
   }
 
   /** @override */

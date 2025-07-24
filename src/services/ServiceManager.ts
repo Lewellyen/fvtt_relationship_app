@@ -1,15 +1,10 @@
-import { ServiceFactory, type IServiceFactory } from "./ServiceFactory";
-import type { IRelationshipGraphService, IDocument } from "./RelationshipGraphService";
-
-export interface IServiceManager {
-  getRelationshipGraphService(document: IDocument): IRelationshipGraphService;
-  disposeRelationshipGraphService(document: IDocument): void;
-  disposeAll(): void;
-}
+import type { IServiceManager } from "./IServiceManager";
+import type { IServiceFactory } from "./IServiceFactory";
+import { ServiceFactory } from "./ServiceFactory";
 
 export class ServiceManager implements IServiceManager {
   private static instance: ServiceManager;
-  private readonly relationshipGraphServices = new Map<IDocument, IRelationshipGraphService>();
+  private readonly serviceCache = new Map<string, Map<any, any>>();
 
   private constructor(private readonly factory: IServiceFactory) {}
 
@@ -20,20 +15,36 @@ export class ServiceManager implements IServiceManager {
     return ServiceManager.instance;
   }
 
-  getRelationshipGraphService(document: IDocument): IRelationshipGraphService {
-    let service = this.relationshipGraphServices.get(document);
+  getService<T>(serviceIdentifier: string, cacheKey?: any, ...args: any[]): T {
+    // If no cache key provided, create service directly
+    if (cacheKey === undefined) {
+      return this.factory.createService<T>(serviceIdentifier, ...args);
+    }
+
+    // Get or create service cache for this service type
+    let serviceTypeCache = this.serviceCache.get(serviceIdentifier);
+    if (!serviceTypeCache) {
+      serviceTypeCache = new Map<any, T>();
+      this.serviceCache.set(serviceIdentifier, serviceTypeCache);
+    }
+
+    // Get cached service or create new one
+    let service = serviceTypeCache.get(cacheKey);
     if (!service) {
-      service = this.factory.createRelationshipGraphService(document);
-      this.relationshipGraphServices.set(document, service);
+      service = this.factory.createService<T>(serviceIdentifier, ...args);
+      serviceTypeCache.set(cacheKey, service);
     }
     return service;
   }
 
-  disposeRelationshipGraphService(document: IDocument): void {
-    this.relationshipGraphServices.delete(document);
+  disposeService(serviceIdentifier: string, cacheKey?: any): void {
+    const serviceTypeCache = this.serviceCache.get(serviceIdentifier);
+    if (serviceTypeCache && cacheKey !== undefined) {
+      serviceTypeCache.delete(cacheKey);
+    }
   }
 
   disposeAll(): void {
-    this.relationshipGraphServices.clear();
+    this.serviceCache.clear();
   }
 }

@@ -1,25 +1,24 @@
 <script lang="ts">
+  import type { GraphComponentProps } from "../services/IRelationshipGraphService";
+  
   // Props mit Svelte 5 Runes-Syntax
-  const props = $props<{
-    nodes: Array<{ id: string; x: number; y: number }>;
-    edges: Array<{ from: string; to: string; label: string }>;
-  }>();
+  let { nodes, edges }: GraphComponentProps = $props();
 
-  console.log("[RelationshipGraph] Props received:", props);
+  console.log("[RelationshipGraph] Props received:", { nodes, edges });
 </script>
 
 <div class="relationship-graph-container">
   <h2>Beziehungsgraph</h2>
   
   <div class="graph-info">
-    <p>Nodes: {props.nodes.length}</p>
-    <p>Edges: {props.edges.length}</p>
+    <p>Nodes: {nodes.length}</p>
+    <p>Edges: {edges.length}</p>
   </div>
 
   <div class="graph-content">
     <div class="nodes">
       <h3>Nodes:</h3>
-      {#each props.nodes as node}
+      {#each nodes as node}
         <div class="node">
           <strong>{node.id}</strong> ({node.x}, {node.y})
         </div>
@@ -28,7 +27,7 @@
 
     <div class="edges">
       <h3>Edges:</h3>
-      {#each props.edges as edge}
+      {#each edges as edge}
         <div class="edge">
           <strong>{edge.from}</strong> → <strong>{edge.to}</strong> ({edge.label})
         </div>
