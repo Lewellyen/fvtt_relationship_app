@@ -10,6 +10,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 ### Fehlerbehebungen
 
+## [0.5.6] - 2025-07-24
+### Hinzugefügt
+- Keine Einträge
+
+### Geändert
+- Keine Einträge
+
+### Fehlerbehebungen
+- Importe korrigiert für Interfaces
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.5.5] - 2025-07-24
 ### Hinzugefügt
 - Interfaces upgedated

@@ -9,6 +9,7 @@ export class RelationshipGraphModel extends foundry.abstract.TypeDataModel<any, 
           label: new fields.StringField({ blank: false }),
           x: new fields.NumberField({ required: true }),
           y: new fields.NumberField({ required: true }),
+          type: new fields.StringField({ required: true, blank: false }),
         }),
         { required: true, blank: true }
       ),

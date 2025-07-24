@@ -1,8 +1,5 @@
-import type { NodeData, EdgeData } from "../models/RelationsShipGraphModel";
-import type {
-  IDocument,
-  IRelationshipGraphService,
-} from "./IRelationshipGraphService";
+import type { NodeData, EdgeData, IDocument } from "../global";
+import type { IRelationshipGraphService } from "./IRelationshipGraphService";
 
 export class RelationshipGraphService implements IRelationshipGraphService {
   private nodes: NodeData[] = [];
@@ -18,6 +15,31 @@ export class RelationshipGraphService implements IRelationshipGraphService {
 
   getEdges(): EdgeData[] {
     return [...this.edges];
+  }
+
+  getNode(nodeId: string): NodeData | undefined {
+    return this.nodes.find((n) => n.id === nodeId);
+  }
+  getEdge(edgeId: string): EdgeData | undefined {
+    return this.edges.find((e) => e.id === edgeId);
+  }
+  getNodeByLabel(label: string): NodeData | undefined {
+    return this.nodes.find((n) => n.label === label);
+  }
+  getEdgeByLabel(label: string): EdgeData | undefined {
+    return this.edges.find((e) => e.label === label);
+  }
+  getNodeByType(type: string): NodeData | undefined {
+    return this.nodes.find((n) => n.type === type);
+  }
+  getEdgeByType(type: string): EdgeData | undefined {
+    return this.edges.find((e) => e.type === type);
+  }
+  getNodeById(id: string): NodeData | undefined {
+    return this.nodes.find((n) => n.id === id);
+  }
+  getEdgeById(id: string): EdgeData | undefined {
+    return this.edges.find((e) => e.id === id);
   }
 
   async addNode(node: NodeData): Promise<void> {

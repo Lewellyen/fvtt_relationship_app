@@ -109,11 +109,12 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
 
     // Demo-Daten falls leer
     if (service.getNodes().length === 0) {
-      await service.addNode({ id: "Bauer", x: 150, y: 200 });
-      await service.addNode({ id: "Müller", x: 450, y: 200 });
+      await service.addNode({ id: foundry.utils.randomID(), x: 150, y: 200, label: "Bauer", type: "person" });
+      await service.addNode({ id: foundry.utils.randomID(), x: 450, y: 200, label: "Müller", type: "person" });
       await service.addEdge({
-        from: "Bauer",
-        to: "Müller",
+        id: foundry.utils.randomID(),
+        from: service.getNodeByLabel("Bauer")?.id ?? "",
+        to: service.getNodeByLabel("Müller")?.id ?? "",
         label: "Weizen",
         type: "trade",
         color: "#ff0000",

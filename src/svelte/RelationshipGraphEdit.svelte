@@ -1,5 +1,5 @@
 <script lang="ts">
-  import type { GraphComponentProps } from "../services/IRelationshipGraphService";
+  import type { GraphComponentProps } from "../global";
   
   // Props mit Svelte 5 Runes-Syntax
   let { nodes, edges }: GraphComponentProps = $props();

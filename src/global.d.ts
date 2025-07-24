@@ -12,6 +12,7 @@ interface NodeData {
   label: string;
   x: number;
   y: number;
+  type: string;
 }
 
 export interface GraphComponentProps {

@@ -1,11 +1,12 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import cytoscape from 'cytoscape';
+  import type { NodeData, EdgeData } from '../global';
 
   // Props mit Svelte 5 Runes-Syntax
   const props = $props<{
-    nodes: Array<{ id: string; x: number; y: number; label?: string }>;
-    edges: Array<{ from: string; to: string; label?: string }>;
+    nodes: NodeData[];
+    edges: EdgeData[];
     width?: string;
     height?: string;
     interactive?: boolean;
@@ -24,20 +25,23 @@
   // Convert props to Cytoscape format
   function createCytoscapeData() {
     return {
-      nodes: props.nodes.map((node: any) => ({
+      nodes: props.nodes.map((node: NodeData) => ({
         data: { 
           id: node.id,
           label: node.label || node.id,
           x: node.x,
-          y: node.y
+          y: node.y,
+          type: node.type
         }
       })),
-      edges: props.edges.map((edge: any) => ({
+      edges: props.edges.map((edge: EdgeData) => ({
         data: {
-          id: `${edge.from}-${edge.to}`,
+          id: edge.id,
+          label: edge.label || `${edge.from} → ${edge.to}`,
           source: edge.from,
           target: edge.to,
-          label: edge.label || `${edge.from} → ${edge.to}`
+          type: edge.type,
+          color: edge.color
         }
       }))
     };
@@ -50,7 +54,7 @@
       style: {
         'background-color': '#4a90e2',
         'label': 'data(label)',
-        'color': '#fff',
+        'color': 'data(color)',
         'text-valign': 'center',
         'text-halign': 'center',
         'width': 60,
@@ -72,8 +76,8 @@
       selector: 'edge',
       style: {
         'width': 3,
-        'line-color': '#34495e',
-        'target-arrow-color': '#34495e',
+        'line-color': 'data(color)',
+        'target-arrow-color': 'data(color)',
         'target-arrow-shape': 'triangle',
         'curve-style': 'bezier',
         'label': 'data(label)',
@@ -103,7 +107,7 @@
       selector: 'edge:selected',
       style: {
         'width': 5,
-        'line-color': '#2c3e50'
+        'line-color': 'data(color)'
       }
     }
   ];
