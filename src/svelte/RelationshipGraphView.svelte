@@ -1,13 +1,11 @@
 <script lang="ts">
+  import type { GraphComponentProps } from "../services/IRelationshipGraphService";
   import CytoscapeGraph from './CytoscapeGraph.svelte';
+  
+  // Props mit Svelte 5 Runes-Syntax  
+  let { nodes, edges }: GraphComponentProps = $props();
 
-  // Props mit Svelte 5 Runes-Syntax
-  const props = $props<{
-    nodes: Array<{ id: string; x: number; y: number }>;
-    edges: Array<{ from: string; to: string; label: string }>;
-  }>();
-
-  console.log("[RelationshipGraphView] Props received:", props);
+  console.log("[RelationshipGraphView] Props received:", { nodes, edges });
 
   // Event handlers
   function handleNodeClick(nodeId: string) {
@@ -23,14 +21,14 @@
   <h2>Beziehungsgraph (Ansicht)</h2>
   
   <div class="graph-info">
-    <p>Nodes: {props.nodes.length} | Edges: {props.edges.length}</p>
+    <p>Nodes: {nodes.length} | Edges: {edges.length}</p>
   </div>
 
   <!-- Cytoscape Graph -->
   <div class="cytoscape-wrapper">
     <CytoscapeGraph 
-      nodes={props.nodes}
-      edges={props.edges}
+      nodes={nodes}
+      edges={edges}
       width="100%"
       height="500px"
       interactive={true}
@@ -42,8 +40,8 @@
   <!-- Info Panel -->
   <div class="info-panel">
     <div class="nodes-info">
-      <h3>Nodes ({props.nodes.length}):</h3>
-      {#each props.nodes as node}
+      <h3>Nodes ({nodes.length}):</h3>
+      {#each nodes as node}
         <div class="node-item">
           <strong>{node.id}</strong> ({node.x}, {node.y})
         </div>
@@ -51,8 +49,8 @@
     </div>
 
     <div class="edges-info">
-      <h3>Edges ({props.edges.length}):</h3>
-      {#each props.edges as edge}
+      <h3>Edges ({edges.length}):</h3>
+      {#each edges as edge}
         <div class="edge-item">
           <strong>{edge.from}</strong> → <strong>{edge.to}</strong> ({edge.label})
         </div>
