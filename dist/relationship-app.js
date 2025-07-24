@@ -5,7 +5,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   "use strict";
   var _a;
   var __vite_style__ = document.createElement("style");
-  __vite_style__.textContent = "\r\n  .relationship-graph-container.svelte-1pcjct6 {\r\n    padding: 1rem;\r\n    border-radius: 8px;\r\n    margin: 1rem;\r\n  }\r\n\r\n  .graph-info.svelte-1pcjct6 {\r\n    padding: 0.5rem;\r\n    border-radius: 4px;\r\n    margin-bottom: 1rem;\r\n  }\r\n\r\n  .graph-content.svelte-1pcjct6 {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1fr;\r\n    gap: 1rem;\r\n  }\r\n\r\n  .nodes.svelte-1pcjct6, .edges.svelte-1pcjct6 {\r\n    padding: 1rem;\r\n    border-radius: 4px;\r\n  }\r\n\r\n  .node.svelte-1pcjct6, .edge.svelte-1pcjct6 {\r\n    padding: 0.25rem 0;\r\n  }\r\n\r\n  .node.svelte-1pcjct6:last-child, .edge.svelte-1pcjct6:last-child {\r\n    border-bottom: none;\r\n  }\r\n\r\n  .cytoscape-graph-container.svelte-yi65y3 {\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 8px;\r\n    overflow: hidden;\r\n    background: #f8f9fa;\r\n  }\r\n\r\n  .cytoscape-container.svelte-yi65y3 {\r\n    width: 100%;\r\n    height: 100%;\r\n  }\r\n\r\n  .relationship-graph-view.svelte-1bk0qhz {\r\n    padding: 1rem;\r\n    height: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n  }\r\n\r\n  .graph-info.svelte-1bk0qhz {\r\n    background: #e8f5e8;\r\n    padding: 0.5rem;\r\n    border-radius: 4px;\r\n    margin-bottom: 1rem;\r\n    text-align: center;\r\n  }\r\n\r\n  .cytoscape-wrapper.svelte-1bk0qhz {\r\n    flex: 1;\r\n    margin-bottom: 1rem;\r\n  }\r\n\r\n  .info-panel.svelte-1bk0qhz {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1fr;\r\n    gap: 1rem;\r\n    background: #f8f9fa;\r\n    padding: 1rem;\r\n    border-radius: 8px;\r\n  }\r\n\r\n  .nodes-info.svelte-1bk0qhz, .edges-info.svelte-1bk0qhz {\r\n    background: white;\r\n    padding: 1rem;\r\n    border-radius: 4px;\r\n    border: 1px solid #dee2e6;\r\n  }\r\n\r\n  .node-item.svelte-1bk0qhz, .edge-item.svelte-1bk0qhz {\r\n    padding: 0.25rem 0;\r\n    border-bottom: 1px solid #f1f3f4;\r\n  }\r\n\r\n  .node-item.svelte-1bk0qhz:last-child, .edge-item.svelte-1bk0qhz:last-child {\r\n    border-bottom: none;\r\n  }\r\n/*$vite$:1*/";
+  __vite_style__.textContent = "\r\n  .info-panel.svelte-2t3t4k {\r\n    display: flex;\r\n    gap: 2rem;\r\n    margin-top: 1rem;\r\n  }\r\n  .nodes-info.svelte-2t3t4k, .edges-info.svelte-2t3t4k {\r\n    flex: 1;\r\n  }\r\n  .node-item.svelte-2t3t4k, .edge-item.svelte-2t3t4k {\r\n    margin-bottom: 0.25rem;\r\n  }\r\n\r\n  .relationship-graph-container.svelte-o6tj79 {\r\n    padding: 1rem;\r\n    border-radius: 8px;\r\n    margin: 1rem;\r\n  }\r\n\r\n  .info-panel-wrapper.svelte-o6tj79 {\r\n    flex: 1;\r\n    margin-bottom: 1rem;\r\n  }\r\n\r\n  .cytoscape-graph-container.svelte-yi65y3 {\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 8px;\r\n    overflow: hidden;\r\n    background: #f8f9fa;\r\n  }\r\n\r\n  .cytoscape-container.svelte-yi65y3 {\r\n    width: 100%;\r\n    height: 100%;\r\n  }\r\n\r\n  .relationship-graph-view.svelte-1e6kfk1 {\r\n    padding: 1rem;\r\n    height: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n  }\r\n\r\n  .cytoscape-wrapper.svelte-1e6kfk1 {\r\n    flex: 1;\r\n    margin-bottom: 1rem;\r\n  }\r\n\r\n  .info-panel-wrapper.svelte-1e6kfk1 {\r\n    flex: 1;\r\n    margin-bottom: 1rem;\r\n  }\r\n/*$vite$:1*/";
   document.head.appendChild(__vite_style__);
   Object.assign = function(target, ...sources) {
     for (const source2 of sources) {
@@ -1670,88 +1670,73 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     });
     return element_or_component;
   }
-  const rest_props_handler = {
-    get(target, key) {
-      if (target.exclude.includes(key)) return;
-      return target.props[key];
-    },
-    set(target, key) {
-      return false;
-    },
-    getOwnPropertyDescriptor(target, key) {
-      if (target.exclude.includes(key)) return;
-      if (key in target.props) {
-        return {
-          enumerable: true,
-          configurable: true,
-          value: target.props[key]
-        };
-      }
-    },
-    has(target, key) {
-      if (target.exclude.includes(key)) return false;
-      return key in target.props;
-    },
-    ownKeys(target) {
-      return Reflect.ownKeys(target.props).filter((key) => !target.exclude.includes(key));
-    }
-  };
-  // @__NO_SIDE_EFFECTS__
-  function rest_props(props, exclude, name) {
-    return new Proxy(
-      { props, exclude },
-      rest_props_handler
-    );
-  }
-  var root_1$1 = /* @__PURE__ */ from_html(`<div class="node svelte-1pcjct6"><strong> </strong> </div>`);
-  var root_2$1 = /* @__PURE__ */ from_html(`<div class="edge svelte-1pcjct6"><strong> </strong> → <strong> </strong> </div>`);
-  var root$2 = /* @__PURE__ */ from_html(`<div class="relationship-graph-container svelte-1pcjct6"><h2>Beziehungsgraph</h2> <div class="graph-info svelte-1pcjct6"><p> </p> <p> </p></div> <div class="graph-content svelte-1pcjct6"><div class="nodes svelte-1pcjct6"><h3>Nodes:</h3> <!></div> <div class="edges svelte-1pcjct6"><h3>Edges:</h3> <!></div></div></div>`);
-  function RelationshipGraphEdit($$anchor, $$props) {
+  var root_1 = /* @__PURE__ */ from_html(`<div class="node-item svelte-2t3t4k"><strong> </strong> </div>`);
+  var root_2 = /* @__PURE__ */ from_html(`<div class="edge-item svelte-2t3t4k"><strong> </strong> → <strong> </strong> </div>`);
+  var root$3 = /* @__PURE__ */ from_html(`<div class="info-panel svelte-2t3t4k"><div class="nodes-info svelte-2t3t4k"><h3> </h3> <!></div> <div class="edges-info svelte-2t3t4k"><h3> </h3> <!></div></div>`);
+  function GraphInfoPanel($$anchor, $$props) {
     push($$props, true);
-    const props = /* @__PURE__ */ rest_props($$props, ["$$slots", "$$events", "$$legacy"]);
-    console.log("[RelationshipGraph] Props received:", props);
-    var div = root$2();
-    var div_1 = sibling(child(div), 2);
-    var p = child(div_1);
-    var text = child(p);
-    var p_1 = sibling(p, 2);
-    var text_1 = child(p_1);
-    var div_2 = sibling(div_1, 2);
-    var div_3 = child(div_2);
-    var node_1 = sibling(child(div_3), 2);
+    var div = root$3();
+    var div_1 = child(div);
+    var h3 = child(div_1);
+    var text = child(h3);
+    var node_1 = sibling(h3, 2);
     each(node_1, 17, () => $$props.nodes, index, ($$anchor2, node) => {
-      var div_4 = root_1$1();
-      var strong = child(div_4);
-      var text_2 = child(strong);
-      var text_3 = sibling(strong);
+      var div_2 = root_1();
+      var strong = child(div_2);
+      var text_1 = child(strong);
+      var text_2 = sibling(strong);
       template_effect(() => {
-        set_text(text_2, get(node).id);
-        set_text(text_3, ` (${get(node).x ?? ""}, ${get(node).y ?? ""})`);
+        set_text(text_1, get(node).label);
+        set_text(text_2, ` (${get(node).x ?? ""}, ${get(node).y ?? ""})`);
       });
-      append($$anchor2, div_4);
+      append($$anchor2, div_2);
     });
-    var div_5 = sibling(div_3, 2);
-    var node_2 = sibling(child(div_5), 2);
+    var div_3 = sibling(div_1, 2);
+    var h3_1 = child(div_3);
+    var text_3 = child(h3_1);
+    var node_2 = sibling(h3_1, 2);
     each(node_2, 17, () => $$props.edges, index, ($$anchor2, edge) => {
-      var div_6 = root_2$1();
-      var strong_1 = child(div_6);
+      var div_4 = root_2();
+      var strong_1 = child(div_4);
       var text_4 = child(strong_1);
       var strong_2 = sibling(strong_1, 2);
       var text_5 = child(strong_2);
       var text_6 = sibling(strong_2);
-      template_effect(() => {
-        set_text(text_4, get(edge).from);
-        set_text(text_5, get(edge).to);
-        set_text(text_6, ` (${get(edge).label ?? ""})`);
-      });
-      append($$anchor2, div_6);
+      template_effect(
+        ($0, $1) => {
+          set_text(text_4, $0);
+          set_text(text_5, $1);
+          set_text(text_6, ` (${get(edge).label ?? ""})`);
+        },
+        [
+          () => $$props.nodes.find((n) => n.id === get(edge).source)?.label || get(edge).source,
+          () => $$props.nodes.find((n) => n.id === get(edge).target)?.label || get(edge).target
+        ]
+      );
+      append($$anchor2, div_4);
     });
     template_effect(() => {
-      set_text(text, `Nodes: ${$$props.nodes.length ?? ""}`);
-      set_text(text_1, `Edges: ${$$props.edges.length ?? ""}`);
+      set_text(text, `Nodes (${$$props.nodes.length ?? ""}):`);
+      set_text(text_3, `Edges (${$$props.edges.length ?? ""}):`);
     });
     append($$anchor, div);
     pop();
+  }
+  var root$2 = /* @__PURE__ */ from_html(`<div class="relationship-graph-container svelte-o6tj79"><div class="info-panel-wrapper svelte-o6tj79"><!></div></div>`);
+  function RelationshipGraphEdit($$anchor, $$props) {
+    console.log("[RelationshipGraph] Props received:", { nodes: $$props.nodes, edges: $$props.edges });
+    var div = root$2();
+    var div_1 = child(div);
+    var node = child(div_1);
+    GraphInfoPanel(node, {
+      get nodes() {
+        return $$props.nodes;
+      },
+      get edges() {
+        return $$props.edges;
+      }
+    });
+    append($$anchor, div);
   }
   var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
   function getDefaultExportFromCjs(x) {
@@ -31862,22 +31847,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     const interactive = $$props.interactive ?? true;
     function createCytoscapeData() {
       return {
-        nodes: $$props.nodes.map((node) => ({
-          data: {
-            id: node.id,
-            label: node.label || node.id,
-            x: node.x,
-            y: node.y
-          }
-        })),
-        edges: $$props.edges.map((edge) => ({
-          data: {
-            id: `${edge.from}-${edge.to}`,
-            source: edge.from,
-            target: edge.to,
-            label: edge.label || `${edge.from} → ${edge.to}`
-          }
-        }))
+        nodes: $$props.nodes.map((node) => ({ data: node })),
+        edges: $$props.edges.map((edge) => ({ data: edge }))
       };
     }
     const styles = [
@@ -31886,7 +31857,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         style: {
           "background-color": "#4a90e2",
           "label": "data(label)",
-          "color": "#fff",
+          "color": "data(color)",
           "text-valign": "center",
           "text-halign": "center",
           "width": 60,
@@ -31908,8 +31879,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         selector: "edge",
         style: {
           "width": 3,
-          "line-color": "#34495e",
-          "target-arrow-color": "#34495e",
+          "line-color": "data(color)",
+          "target-arrow-color": "data(color)",
           "target-arrow-shape": "triangle",
           "curve-style": "bezier",
           "label": "data(label)",
@@ -31937,7 +31908,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       },
       {
         selector: "edge:selected",
-        style: { "width": 5, "line-color": "#2c3e50" }
+        style: { "width": 5, "line-color": "data(color)" }
       }
     ];
     function initCytoscape() {
@@ -32012,13 +31983,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     append($$anchor, div);
     pop();
   }
-  var root_1 = /* @__PURE__ */ from_html(`<div class="node-item svelte-1bk0qhz"><strong> </strong> </div>`);
-  var root_2 = /* @__PURE__ */ from_html(`<div class="edge-item svelte-1bk0qhz"><strong> </strong> → <strong> </strong> </div>`);
-  var root = /* @__PURE__ */ from_html(`<div class="relationship-graph-view svelte-1bk0qhz"><h2>Beziehungsgraph (Ansicht)</h2> <div class="graph-info svelte-1bk0qhz"><p> </p></div> <div class="cytoscape-wrapper svelte-1bk0qhz"><!></div> <div class="info-panel svelte-1bk0qhz"><div class="nodes-info svelte-1bk0qhz"><h3> </h3> <!></div> <div class="edges-info svelte-1bk0qhz"><h3> </h3> <!></div></div></div>`);
+  var root = /* @__PURE__ */ from_html(`<div class="relationship-graph-view svelte-1e6kfk1"><div class="cytoscape-wrapper svelte-1e6kfk1"><!></div> <div class="info-panel-wrapper svelte-1e6kfk1"><!></div></div>`);
   function RelationshipGraphView($$anchor, $$props) {
-    push($$props, true);
-    const props = /* @__PURE__ */ rest_props($$props, ["$$slots", "$$events", "$$legacy"]);
-    console.log("[RelationshipGraphView] Props received:", props);
+    console.log("[RelationshipGraphView] Props received:", { nodes: $$props.nodes, edges: $$props.edges });
     function handleNodeClick(nodeId) {
       console.log("Node clicked in view mode:", nodeId);
     }
@@ -32026,12 +31993,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       console.log("Edge clicked in view mode:", edgeId);
     }
     var div = root();
-    var div_1 = sibling(child(div), 2);
-    var p = child(div_1);
-    var text = child(p);
-    var div_2 = sibling(div_1, 2);
-    var node_1 = child(div_2);
-    CytoscapeGraph(node_1, {
+    var div_1 = child(div);
+    var node = child(div_1);
+    CytoscapeGraph(node, {
       get nodes() {
         return $$props.nodes;
       },
@@ -32044,92 +32008,199 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       onNodeClick: handleNodeClick,
       onEdgeClick: handleEdgeClick
     });
-    var div_3 = sibling(div_2, 2);
-    var div_4 = child(div_3);
-    var h3 = child(div_4);
-    var text_1 = child(h3);
-    var node_2 = sibling(h3, 2);
-    each(node_2, 17, () => $$props.nodes, index, ($$anchor2, node) => {
-      var div_5 = root_1();
-      var strong = child(div_5);
-      var text_2 = child(strong);
-      var text_3 = sibling(strong);
-      template_effect(() => {
-        set_text(text_2, get(node).id);
-        set_text(text_3, ` (${get(node).x ?? ""}, ${get(node).y ?? ""})`);
-      });
-      append($$anchor2, div_5);
-    });
-    var div_6 = sibling(div_4, 2);
-    var h3_1 = child(div_6);
-    var text_4 = child(h3_1);
-    var node_3 = sibling(h3_1, 2);
-    each(node_3, 17, () => $$props.edges, index, ($$anchor2, edge) => {
-      var div_7 = root_2();
-      var strong_1 = child(div_7);
-      var text_5 = child(strong_1);
-      var strong_2 = sibling(strong_1, 2);
-      var text_6 = child(strong_2);
-      var text_7 = sibling(strong_2);
-      template_effect(() => {
-        set_text(text_5, get(edge).from);
-        set_text(text_6, get(edge).to);
-        set_text(text_7, ` (${get(edge).label ?? ""})`);
-      });
-      append($$anchor2, div_7);
-    });
-    template_effect(() => {
-      set_text(text, `Nodes: ${$$props.nodes.length ?? ""} | Edges: ${$$props.edges.length ?? ""}`);
-      set_text(text_1, `Nodes (${$$props.nodes.length ?? ""}):`);
-      set_text(text_4, `Edges (${$$props.edges.length ?? ""}):`);
+    var div_2 = sibling(div_1, 2);
+    var node_1 = child(div_2);
+    GraphInfoPanel(node_1, {
+      get nodes() {
+        return $$props.nodes;
+      },
+      get edges() {
+        return $$props.edges;
+      }
     });
     append($$anchor, div);
-    pop();
   }
+  const SERVICE_IDENTIFIERS = {
+    RELATIONSHIP_GRAPH: "RelationshipGraphService"
+  };
   class RelationshipGraphService {
     constructor(document2) {
       this.document = document2;
+      this.nodes = [];
+      this.edges = [];
+      this.loadData();
     }
     getNodes() {
-      return this.document.system.nodes ?? [];
+      return [...this.nodes];
     }
     getEdges() {
-      return this.document.system.edges ?? [];
+      return [...this.edges];
+    }
+    getNode(nodeId) {
+      return this.nodes.find((n) => n.id === nodeId);
+    }
+    getEdge(edgeId) {
+      return this.edges.find((e) => e.id === edgeId);
+    }
+    getNodeByLabel(label) {
+      return this.nodes.find((n) => n.label === label);
+    }
+    getEdgeByLabel(label) {
+      return this.edges.find((e) => e.label === label);
+    }
+    getNodeByType(type) {
+      return this.nodes.find((n) => n.type === type);
+    }
+    getEdgeByType(type) {
+      return this.edges.find((e) => e.type === type);
+    }
+    getNodeById(id) {
+      return this.nodes.find((n) => n.id === id);
+    }
+    getEdgeById(id) {
+      return this.edges.find((e) => e.id === id);
     }
     async addNode(node) {
-      const nodes = [...this.getNodes(), node];
-      await this.document.update({ "system.nodes": nodes });
+      const existingNodeIndex = this.nodes.findIndex((n) => n.id === node.id);
+      if (existingNodeIndex >= 0) {
+        this.nodes[existingNodeIndex] = node;
+      } else {
+        this.nodes.push(node);
+      }
+      await this.saveData();
     }
     async addEdge(edge) {
       const newEdge = {
-        id: edge.id ?? crypto.randomUUID(),
-        type: edge.type ?? "relation",
-        color: edge.color ?? "#000000",
-        ...edge
+        ...edge,
+        id: edge.id || foundry.utils.randomID(),
+        label: edge.label || `${edge.source} → ${edge.target}`,
+        type: edge.type || "relation",
+        color: edge.color || "#000000"
       };
-      const edges = [...this.getEdges(), newEdge];
-      await this.document.update({ "system.edges": edges });
+      const existingEdgeIndex = this.edges.findIndex((e) => e.id === newEdge.id);
+      if (existingEdgeIndex >= 0) {
+        this.edges[existingEdgeIndex] = newEdge;
+      } else {
+        this.edges.push(newEdge);
+      }
+      await this.saveData();
     }
-    async removeNode(id) {
-      const nodes = this.getNodes().filter((n) => n.id !== id);
-      await this.document.update({ "system.nodes": nodes });
+    async updateNode(nodeId, updates) {
+      const nodeIndex = this.nodes.findIndex((n) => n.id === nodeId);
+      if (nodeIndex >= 0) {
+        this.nodes[nodeIndex] = { ...this.nodes[nodeIndex], ...updates };
+        await this.saveData();
+      }
     }
-    async removeEdge(id) {
-      const edges = this.getEdges().filter((e) => e.id !== id);
-      await this.document.update({ "system.edges": edges });
+    async removeNode(nodeId) {
+      this.nodes = this.nodes.filter((n) => n.id !== nodeId);
+      this.edges = this.edges.filter((e) => e.source !== nodeId && e.target !== nodeId);
+      await this.saveData();
+    }
+    async updateEdge(edgeId, updates) {
+      const edgeIndex = this.edges.findIndex((e) => e.id === edgeId);
+      if (edgeIndex >= 0) {
+        this.edges[edgeIndex] = { ...this.edges[edgeIndex], ...updates };
+        await this.saveData();
+      }
+    }
+    async removeEdge(edgeId) {
+      this.edges = this.edges.filter((e) => e.id !== edgeId);
+      await this.saveData();
+    }
+    loadData() {
+      const system = this.document.system;
+      this.nodes = system.nodes || [];
+      this.edges = system.edges || [];
+    }
+    async saveData() {
+      await this.document.update({
+        "system.nodes": this.nodes,
+        "system.edges": this.edges
+      });
     }
   }
   class ServiceFactory {
-    createRelationshipGraphService(document2) {
-      return new RelationshipGraphService(document2);
+    constructor() {
+      this.serviceRegistry = /* @__PURE__ */ new Map();
+      this.registerDefaultServices();
+    }
+    static getInstance() {
+      if (!ServiceFactory.instance) {
+        ServiceFactory.instance = new ServiceFactory();
+      }
+      return ServiceFactory.instance;
+    }
+    registerService(identifier, constructor) {
+      this.serviceRegistry.set(identifier, constructor);
+    }
+    createService(identifier, ...args) {
+      const ServiceConstructor = this.serviceRegistry.get(identifier);
+      if (!ServiceConstructor) {
+        throw new Error(
+          `Service '${identifier}' is not registered. Available services: ${this.getRegisteredServices().join(", ")}`
+        );
+      }
+      return new ServiceConstructor(...args);
+    }
+    hasService(identifier) {
+      return this.serviceRegistry.has(identifier);
+    }
+    getRegisteredServices() {
+      return Array.from(this.serviceRegistry.keys());
+    }
+    // Register default services
+    registerDefaultServices() {
+      this.registerService(SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH, RelationshipGraphService);
+    }
+  }
+  class ServiceManager {
+    constructor(factory) {
+      this.factory = factory;
+      this.serviceCache = /* @__PURE__ */ new Map();
+    }
+    static getInstance(factory = ServiceFactory.getInstance()) {
+      if (!ServiceManager.instance) {
+        ServiceManager.instance = new ServiceManager(factory);
+      }
+      return ServiceManager.instance;
+    }
+    getService(serviceIdentifier, cacheKey, ...args) {
+      if (cacheKey === void 0) {
+        return this.factory.createService(serviceIdentifier, ...args);
+      }
+      let serviceTypeCache = this.serviceCache.get(serviceIdentifier);
+      if (!serviceTypeCache) {
+        serviceTypeCache = /* @__PURE__ */ new Map();
+        this.serviceCache.set(serviceIdentifier, serviceTypeCache);
+      }
+      let service = serviceTypeCache.get(cacheKey);
+      if (!service) {
+        service = this.factory.createService(serviceIdentifier, ...args);
+        serviceTypeCache.set(cacheKey, service);
+      }
+      return service;
+    }
+    disposeService(serviceIdentifier, cacheKey) {
+      const serviceTypeCache = this.serviceCache.get(serviceIdentifier);
+      if (serviceTypeCache && cacheKey !== void 0) {
+        serviceTypeCache.delete(cacheKey);
+      }
+    }
+    disposeAll() {
+      this.serviceCache.clear();
     }
   }
   const _JournalEntryPageRelationshipGraphSheet = class _JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet {
-    constructor(...args) {
-      super(...args);
+    constructor() {
+      super(...arguments);
       this.svelteApp = null;
-      this.serviceFactory = new ServiceFactory();
-      this.graphService = this.serviceFactory.createRelationshipGraphService(
+    }
+    // ✅ Nur eine Methode, die bei Bedarf den Service holt
+    getGraphService() {
+      return ServiceManager.getInstance().getService(
+        SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH,
+        this.document,
         this.document
       );
     }
@@ -32137,12 +32208,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     get title() {
       return this.options.window.title;
     }
-    /** @override */
     async _prepareContext(options) {
       const context = await super._prepareContext(options);
+      const service = this.getGraphService();
       context.graphData = {
-        nodes: this.graphService.getNodes(),
-        edges: this.graphService.getEdges()
+        nodes: service.getNodes(),
+        edges: service.getEdges()
       };
       return context;
     }
@@ -32154,7 +32225,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     _replaceHTML(html, options, context) {
       return super._replaceHTML(html, options, context);
     }
-    /** @override */
     async _onRender(context, options) {
       await super._onRender(context, options);
       const target = this.element.querySelector("#relationship-graph-svelte");
@@ -32163,32 +32233,26 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         await unmount(this.svelteApp);
         this.svelteApp = null;
       }
-      const graphData = context.graphData;
-      if (graphData.nodes.length === 0) {
-        await this.graphService.addNode({ id: "Bauer", x: 150, y: 200 });
-        await this.graphService.addNode({ id: "Müller", x: 450, y: 200 });
-        graphData.nodes = this.graphService.getNodes();
-      }
-      if (graphData.edges.length === 0) {
-        await this.graphService.addEdge({
-          from: "Bauer",
-          to: "Müller",
+      const service = this.getGraphService();
+      if (service.getNodes().length === 0) {
+        await service.addNode({ id: foundry.utils.randomID(), x: 150, y: 200, label: "Bauer", type: "person", color: "#ff0000" });
+        await service.addNode({ id: foundry.utils.randomID(), x: 450, y: 200, label: "Müller", type: "person", color: "#00ff00" });
+        await service.addEdge({
+          id: foundry.utils.randomID(),
+          source: service.getNodeByLabel("Bauer")?.id ?? "",
+          target: service.getNodeByLabel("Müller")?.id ?? "",
           label: "Weizen",
           type: "trade",
-          color: "#ff0000"
+          color: "#0000ff"
         });
-        graphData.edges = this.graphService.getEdges();
       }
-      const props = {
-        nodes: graphData.nodes,
-        edges: graphData.edges
-      };
-      const svelteOptions = {
+      this.svelteApp = mount(this.isView ? RelationshipGraphView : RelationshipGraphEdit, {
         target,
-        props
-      };
-      console.log("🚀 Relationship App: Svelte options:", svelteOptions);
-      this.svelteApp = mount(this.isView ? RelationshipGraphView : RelationshipGraphEdit, svelteOptions);
+        props: {
+          nodes: service.getNodes(),
+          edges: service.getEdges()
+        }
+      });
     }
     /** @override */
     async _onClose(options) {
@@ -32241,7 +32305,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             id: new fields.StringField({ required: true, blank: false }),
             label: new fields.StringField({ blank: false }),
             x: new fields.NumberField({ required: true }),
-            y: new fields.NumberField({ required: true })
+            y: new fields.NumberField({ required: true }),
+            type: new fields.StringField({ required: true, blank: false }),
+            color: new fields.ColorField({ required: true, blank: false })
           }),
           { required: true, blank: true }
         ),
@@ -32249,14 +32315,34 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           new fields.SchemaField({
             id: new fields.StringField({ required: true, blank: false }),
             label: new fields.StringField({ blank: false }),
-            from: new fields.StringField({ required: true, blank: false }),
-            to: new fields.StringField({ required: true, blank: false }),
+            source: new fields.StringField({ required: true, blank: false }),
+            target: new fields.StringField({ required: true, blank: false }),
             type: new fields.StringField({ required: true, blank: false }),
             color: new fields.ColorField({ required: true, blank: false })
           }),
           { required: true, blank: true }
         )
       };
+    }
+  }
+  class RegistrationService {
+    registerSheet() {
+      console.log("🚀 Relationship App: Registering JournalEntryPageRelationshipGraphSheet...");
+      const DocumentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
+      DocumentSheetConfig.registerSheet(
+        JournalEntryPage,
+        "relationship-app",
+        JournalEntryPageRelationshipGraphSheet,
+        {
+          label: "Relationship App.RelationshipGraph",
+          makeDefault: true,
+          types: ["relationship-app.relationship-graph"]
+        }
+      );
+    }
+    registerModel() {
+      console.log("🚀 Relationship App: Registering RelationshipGraphModel...");
+      CONFIG.JournalEntryPage.dataModels["relationship-app.relationship-graph"] = RelationshipGraphModel;
     }
   }
   console.log("📦 Relationship App: Core init loaded");
@@ -32266,31 +32352,15 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   });
   Hooks.once("ready", () => {
     console.log("🚀 Relationship App: Ready-Phase...");
-    console.log("🚀 Relationship App: Registering JournalEntryPageRelationshipGraphSheet...");
-    const DocumentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
+    const registrationService = new RegistrationService();
     try {
-      DocumentSheetConfig.registerSheet(
-        JournalEntryPage,
-        // Die Dokumenten-Klasse
-        "relationship-app",
-        // Dein Modul-Scope (module.json → name)
-        JournalEntryPageRelationshipGraphSheet,
-        // Deine Sheet-Klasse
-        {
-          label: "Relationship App.RelationshipGraph",
-          // Lokalisierbarer Schlüssel für den Namen im Dropdown
-          makeDefault: true,
-          types: ["relationship-app.relationship-graph"]
-          // Soll es als default angeboten werden?
-        }
-      );
+      registrationService.registerSheet();
       console.log("✅ Relationship App: Sheet registered successfully");
     } catch (error) {
       console.error("🚨 Relationship App: Error registering sheet:", error);
     }
-    console.log("🚀 Relationship App: Registering RelationshipGraphModel...");
     try {
-      CONFIG.JournalEntryPage.dataModels["relationship-app.relationship-graph"] = RelationshipGraphModel;
+      registrationService.registerModel();
       console.log("✅ Relationship App: Model registered successfully");
     } catch (error) {
       console.error("🚨 Relationship App: Error registering model:", error);

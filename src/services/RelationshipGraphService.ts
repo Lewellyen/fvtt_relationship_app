@@ -54,13 +54,12 @@ export class RelationshipGraphService implements IRelationshipGraphService {
 
   async addEdge(edge: EdgeData): Promise<void> {
     const newEdge: EdgeData = {
+      ...edge,
       id: edge.id || foundry.utils.randomID(),
-      from: edge.from,
-      to: edge.to,
-      label: edge.label,
+      label: edge.label || `${edge.source} → ${edge.target}`,
       type: edge.type || "relation",
       color: edge.color || "#000000",
-    };
+    }
 
     const existingEdgeIndex = this.edges.findIndex((e) => e.id === newEdge.id);
     if (existingEdgeIndex >= 0) {
@@ -81,7 +80,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
 
   async removeNode(nodeId: string): Promise<void> {
     this.nodes = this.nodes.filter((n) => n.id !== nodeId);
-    this.edges = this.edges.filter((e) => e.from !== nodeId && e.to !== nodeId);
+    this.edges = this.edges.filter((e) => e.source !== nodeId && e.target !== nodeId);
     await this.saveData();
   }
 

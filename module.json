@@ -2,7 +2,7 @@
   "id": "relationship-app",
   "title": "Relationship App",
   "description": "Ein Modul zur Verwaltung und Visualisierung von Beziehungsnetzwerken in Foundry VTT.",
-  "version": "0.5.6",
+  "version": "0.5.7",
   "compatibility": {
     "minimum": 13,
     "verified": 13,

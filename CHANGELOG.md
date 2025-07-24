@@ -10,6 +10,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 ### Fehlerbehebungen
 
+## [0.5.7] - 2025-07-25
+### Hinzugefügt
+- Graph-Info-Panel ausgelagert in eigene Komponente
+
+### Geändert
+- Keine Einträge
+
+### Fehlerbehebungen
+- Keine Einträge
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.5.6] - 2025-07-24
 ### Hinzugefügt
 - Keine Einträge

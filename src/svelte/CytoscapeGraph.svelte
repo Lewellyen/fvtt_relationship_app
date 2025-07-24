@@ -26,23 +26,10 @@
   function createCytoscapeData() {
     return {
       nodes: props.nodes.map((node: NodeData) => ({
-        data: { 
-          id: node.id,
-          label: node.label || node.id,
-          x: node.x,
-          y: node.y,
-          type: node.type
-        }
+        data: node
       })),
       edges: props.edges.map((edge: EdgeData) => ({
-        data: {
-          id: edge.id,
-          label: edge.label || `${edge.from} → ${edge.to}`,
-          source: edge.from,
-          target: edge.to,
-          type: edge.type,
-          color: edge.color
-        }
+        data: edge
       }))
     };
   }

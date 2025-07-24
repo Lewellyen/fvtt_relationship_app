@@ -1,8 +1,8 @@
 interface EdgeData {
   id: string;
   label: string;
-  from: string;
-  to: string;
+  source: string;
+  target: string;
   type: string;
   color: string;
 }
@@ -13,6 +13,7 @@ interface NodeData {
   x: number;
   y: number;
   type: string;
+  color: string;
 }
 
 export interface GraphComponentProps {
