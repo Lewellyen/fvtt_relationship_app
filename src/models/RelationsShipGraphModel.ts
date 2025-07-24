@@ -26,25 +26,3 @@ export class RelationshipGraphModel extends foundry.abstract.TypeDataModel<any, 
     };
   }
 }
-
-// Automatisch abgeleitete Typen aus dem Schema
-import type { DataOfModel } from "../services/SchemaToTypeScriptConvertService";
-
-// Explizit typisiertes RawSchema für RelationshipGraphModel
-// (damit InferSchema korrekt funktioniert)
-// type RawSchema = ReturnType<typeof RelationshipGraphModel.defineSchema>;
-
-export type RelationshipGraphData = DataOfModel<typeof RelationshipGraphModel>;
-export type NodeData = RelationshipGraphData["nodes"] extends Array<infer T> ? T : never;
-export type EdgeData = RelationshipGraphData["edges"] extends Array<infer T> ? T : never;
-
-// ✅ Centralized component props interfaces
-export interface GraphComponentProps {
-  nodes: NodeData[];
-  edges: EdgeData[];
-}
-
-export interface IDocument {
-  system: any;
-  update(data: any): Promise<void>;
-}

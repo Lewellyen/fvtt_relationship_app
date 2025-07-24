@@ -3,7 +3,8 @@ import RelationshipGraphView from "../svelte/RelationshipGraphView.svelte";
 import { mount, unmount } from "svelte";
 import { ServiceManager } from "../services/ServiceManager";
 import { SERVICE_IDENTIFIERS } from "../services/IServiceFactory";
-import type { IRelationshipGraphService, IDocument } from "../services/IRelationshipGraphService";
+import type { IRelationshipGraphService } from "../services/IRelationshipGraphService";
+import type { IDocument } from "../global";
 
 /**
  * V2 JournalEntryPageSheet subclass drawing a simple relationship graph.
