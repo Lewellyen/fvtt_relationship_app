@@ -10,6 +10,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 ### Fehlerbehebungen
 
+## [0.8.0] - 2025-07-26
+### Hinzugefügt
+- Keine Einträge
+
+### Geändert
+- Keine Einträge
+
+### Fehlerbehebungen
+- Probleme mit dem Mapping von Datamodel auf Cytoscape-Styles gelöst.
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.7.0] - 2025-07-26
 ### Hinzugefügt
 - Keine Einträge

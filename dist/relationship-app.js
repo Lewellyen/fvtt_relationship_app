@@ -31845,58 +31845,59 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     const width = $$props.width || "100%";
     const height = $$props.height || "400px";
     const interactive = $$props.interactive ?? true;
+    function convertToCytoscapeData(obj) {
+      if (!obj) return obj;
+      const result = {};
+      for (const [key, value] of Object.entries(obj)) {
+        const cytoscapeKey = key.replace(/-/g, "_");
+        result[cytoscapeKey] = value;
+      }
+      return result;
+    }
     function createCytoscapeData() {
-      return {
-        nodes: $$props.nodes.map((node) => ({
-          data: {
-            id: node.id,
-            label: node.label?.value || node.id,
-            x: node.x,
-            y: node.y,
-            type: node.type.value,
-            // Cytoscape-Attribute verwenden
-            ...node.cytoScapeAttributes
-          }
-        })),
-        edges: $$props.edges.map((edge) => ({
-          data: {
-            id: edge.id,
-            source: edge.source,
-            target: edge.target,
-            label: edge.label?.value || "",
-            type: edge.type,
-            // Cytoscape-Attribute verwenden
-            ...edge.cytoScapeAttributes
-          }
-        }))
-      };
+      const nodes = $$props.nodes.map((node) => {
+        const data = {
+          ...convertToCytoscapeData(node.cytoScapeAttributes),
+          id: node.id,
+          label: node.label?.value || node.id,
+          x: node.x,
+          y: node.y
+        };
+        console.log("Cytoscape Node Data:", data);
+        return { data };
+      });
+      const edges = $$props.edges.map((edge) => {
+        const data = {
+          ...convertToCytoscapeData(edge.cytoScapeAttributes),
+          id: edge.id,
+          source: edge.source,
+          target: edge.target,
+          label: edge.label?.value || edge.source + " → " + edge.target
+        };
+        console.log("Cytoscape Edge Data:", data);
+        return { data };
+      });
+      return { nodes, edges };
     }
     const styles = [
       {
         selector: "node",
         style: {
-          "background-color": "data(backgroundColor)",
+          "background-color": "data(background_color)",
           "label": "data(label)",
           "color": "data(color)",
-          "text-valign": "data(textValign)",
-          "text-halign": "data(textHalign)",
+          "text-valign": "data(text_valign)",
+          "text-halign": "data(text_halign)",
           "width": "data(width)",
           "height": "data(height)",
-          "font-size": "data(fontSize)",
-          "border-width": "data(borderWidth)",
-          "border-color": "data(borderColor)",
-          "text-wrap": "data(textWrap)",
-          "text-max-width": "data(textMaxWidth)",
-          "text-outline-color": "data(textOutlineColor)",
-          "text-outline-width": "data(textOutlineWidth)",
-          "text-outline-opacity": "data(textOutlineOpacity)",
-          "font-family": "data(fontFamily)",
-          "font-weight": "data(fontWeight)",
+          "font-size": "data(font_size)",
+          "border-width": "data(border_width)",
+          "border-color": "data(border_color)",
+          "font-family": "data(font_family)",
+          "font-weight": "data(font_weight)",
           "shape": "data(shape)",
-          "size": "data(size)",
           "opacity": "data(opacity)",
           "visibility": "data(visibility)",
-          "corner-radius": "data(cornerRadius)",
           "padding": "data(padding)"
         }
       },
@@ -31904,29 +31905,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         selector: "edge",
         style: {
           "width": "data(width)",
-          "line-color": "data(lineColor)",
-          "target-arrow-color": "data(targetArrowColor)",
-          "target-arrow-shape": "data(targetArrowShape)",
-          "curve-style": "data(curveStyle)",
+          "line-color": "data(line_color)",
+          "target-arrow-color": "data(target_arrow_color)",
+          "target-arrow-shape": "data(target_arrow_shape)",
+          "curve-style": "data(curve_style)",
           "label": "data(label)",
-          "font-size": "data(fontSize)",
-          "text-rotation": "data(textRotation)",
-          "text-margin-y": "data(textMarginY)",
-          "text-background-color": "data(textBackgroundColor)",
-          "text-background-opacity": "data(textBackgroundOpacity)",
-          "text-background-padding": "data(textBackgroundPadding)",
-          "text-outline-color": "data(textOutlineColor)",
-          "text-outline-width": "data(textOutlineWidth)",
-          "text-outline-opacity": "data(textOutlineOpacity)",
-          "font-family": "data(fontFamily)",
-          "font-weight": "data(fontWeight)",
-          "line-opacity": "data(lineOpacity)",
-          "line-style": "data(lineStyle)",
-          "line-cap": "data(lineCap)",
-          "source-arrow-shape": "data(sourceArrowShape)",
-          "source-arrow-color": "data(sourceArrowColor)",
-          "source-arrow-width": "data(sourceArrowWidth)",
-          "source-arrow-fill": "data(sourceArrowFill)"
+          "text-margin-y": "data(text_margin_y)",
+          "line-opacity": "data(line_opacity)",
+          "line-style": "data(line_style)"
         }
       },
       {
@@ -31939,7 +31925,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       },
       {
         selector: "edge:selected",
-        style: { "width": 5, "line-color": "data(lineColor)" }
+        style: { "width": 5, "line-color": "data(line_color)" }
       }
     ];
     function initCytoscape() {
@@ -32099,6 +32085,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     getEdgeById(id) {
       return this.edges.find((e) => e.id === id);
     }
+    /**
+     * Fügt einen neuen Node hinzu oder aktualisiert einen bestehenden und speichert die Änderung.
+     */
     async addNode(node) {
       const existingNodeIndex = this.nodes.findIndex((n) => n.id === node.id);
       if (existingNodeIndex >= 0) {
@@ -32106,8 +32095,15 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       } else {
         this.nodes.push(node);
       }
-      await this.saveData();
+      const updateObj = {
+        "system.nodes": this.nodes,
+        "system.edges": this.edges
+      };
+      await this.saveData(updateObj);
     }
+    /**
+     * Fügt eine neue Kante hinzu oder aktualisiert eine bestehende und speichert die Änderung.
+     */
     async addEdge(edge) {
       const defaultPermissions = { defaultLevel: 0, users: [] };
       const newEdge = {
@@ -32123,41 +32119,91 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       } else {
         this.edges.push(newEdge);
       }
-      await this.saveData();
+      const updateObj = {
+        "system.nodes": this.nodes,
+        "system.edges": this.edges
+      };
+      await this.saveData(updateObj);
     }
+    /**
+     * Aktualisiert einen bestehenden Node anhand der ID und speichert die Änderung.
+     */
     async updateNode(nodeId, updates) {
       const nodeIndex = this.nodes.findIndex((n) => n.id === nodeId);
       if (nodeIndex >= 0) {
         this.nodes[nodeIndex] = { ...this.nodes[nodeIndex], ...updates };
-        await this.saveData();
+        const updateObj = {
+          "system.nodes": this.nodes,
+          "system.edges": this.edges
+        };
+        await this.saveData(updateObj);
       }
     }
+    /**
+     * Entfernt einen Node und alle zugehörigen Kanten und speichert die Änderung.
+     */
     async removeNode(nodeId) {
       this.nodes = this.nodes.filter((n) => n.id !== nodeId);
       this.edges = this.edges.filter((e) => e.source !== nodeId && e.target !== nodeId);
-      await this.saveData();
+      const updateObj = {
+        "system.nodes": this.nodes,
+        "system.edges": this.edges
+      };
+      await this.saveData(updateObj);
     }
+    /**
+     * Aktualisiert eine bestehende Kante anhand der ID und speichert die Änderung.
+     */
     async updateEdge(edgeId, updates) {
       const edgeIndex = this.edges.findIndex((e) => e.id === edgeId);
       if (edgeIndex >= 0) {
         this.edges[edgeIndex] = { ...this.edges[edgeIndex], ...updates };
-        await this.saveData();
+        const updateObj = {
+          "system.nodes": this.nodes,
+          "system.edges": this.edges
+        };
+        await this.saveData(updateObj);
       }
     }
+    /**
+     * Entfernt eine Kante anhand der ID und speichert die Änderung.
+     */
     async removeEdge(edgeId) {
       this.edges = this.edges.filter((e) => e.id !== edgeId);
-      await this.saveData();
-    }
-    loadData() {
-      const system = this.document.system;
-      this.nodes = system.nodes || [];
-      this.edges = system.edges || [];
-    }
-    async saveData() {
-      await this.document.update({
+      const updateObj = {
         "system.nodes": this.nodes,
         "system.edges": this.edges
-      });
+      };
+      await this.saveData(updateObj);
+    }
+    loadData() {
+      const documentId = this.document.id || this.document._id;
+      const freshDocument = globalThis.game?.journal?.get?.(documentId);
+      if (freshDocument) {
+        const system = freshDocument.system;
+        this.nodes = system.nodes || [];
+        this.edges = system.edges || [];
+      } else {
+        const system = this.document.system;
+        this.nodes = system.nodes || [];
+        this.edges = system.edges || [];
+      }
+    }
+    /**
+     * Speichert die übergebenen Änderungen im Dokument.
+     */
+    async saveData(updateObj) {
+      const documentUuid = this.document.uuid;
+      const freshDocument = await foundry.utils.fromUuid(documentUuid);
+      if (freshDocument) {
+        const updates = {
+          ...freshDocument.system,
+          ...updateObj
+        };
+        await freshDocument.update(updates);
+      } else {
+        this.document.update(updateObj);
+      }
     }
   }
   class ServiceFactory {
@@ -32274,9 +32320,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         this.svelteApp = null;
       }
       const service = this.getGraphService();
-      if (service.getNodes().length === 0) {
-        this.createDemoData();
-      }
+      if (service.getNodes().length === 0) ;
       this.svelteApp = mount(this.isView ? RelationshipGraphView : RelationshipGraphEdit, {
         target,
         props: {
@@ -32297,13 +32341,268 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     createDemoData() {
       const service = this.getGraphService();
       const defaultPermissions = { defaultLevel: 0, users: [] };
+      const createNodeAttributes = () => {
+        return {
+          // Erforderliche Felder
+          color: "#000",
+          shape: "ellipse",
+          size: 30,
+          "border-color": "#000",
+          "border-width": 0,
+          // Optionale Felder mit Defaults
+          "background-color": "#999",
+          // Grau als Standard
+          "background-opacity": 1,
+          opacity: 1,
+          visibility: "visible",
+          events: "yes",
+          "text-events": "no",
+          label: "",
+          "font-size": 16,
+          "font-family": "Helvetica Neue, Helvetica, sans-serif",
+          "font-weight": "normal",
+          "font-style": "normal",
+          "text-valign": "top",
+          "text-halign": "center",
+          "text-justification": "auto",
+          "text-wrap": "none",
+          "text-overflow-wrap": "whitespace",
+          "text-max-width": 9999,
+          "text-rotation": "none",
+          "text-margin-x": 0,
+          "text-margin-y": 0,
+          "line-height": 1,
+          display: "element",
+          "text-outline-color": "#000",
+          "text-outline-width": 0,
+          "text-outline-opacity": 1,
+          "text-opacity": 1,
+          "text-decoration": "none",
+          "text-transform": "none",
+          "text-background-color": "#000",
+          "text-background-opacity": 0,
+          "text-background-shape": "rectangle",
+          "text-background-padding": 0,
+          "text-border-color": "#000",
+          "text-border-width": 0,
+          "text-border-style": "solid",
+          "text-border-opacity": 0,
+          "min-zoomed-font-size": 0,
+          "overlay-color": "#000",
+          "overlay-opacity": 0,
+          "overlay-padding": 10,
+          "overlay-shape": "roundrectangle",
+          "overlay-corner-radius": "auto",
+          "underlay-color": "#000",
+          "underlay-opacity": 0,
+          "underlay-padding": 10,
+          "underlay-shape": "roundrectangle",
+          "underlay-corner-radius": "auto",
+          "transition-property": "none",
+          "transition-duration": 0,
+          "transition-delay": 0,
+          "transition-timing-function": "linear",
+          "z-index": 0,
+          "z-compound-depth": "auto",
+          "z-index-compare": "auto",
+          "box-select-labels": "no",
+          // Node-spezifische Felder
+          width: 30,
+          height: 30,
+          "background-image": "none",
+          "background-image-crossorigin": "anonymous",
+          "background-image-opacity": 1,
+          "background-image-containment": "inside",
+          "background-image-smoothing": "yes",
+          "background-position-x": "50%",
+          "background-position-y": "50%",
+          "background-offset-x": 0,
+          "background-offset-y": 0,
+          "background-width-relative-to": "include-padding",
+          "background-height-relative-to": "include-padding",
+          "background-repeat": "no-repeat",
+          "background-fit": "none",
+          "background-clip": "node",
+          "background-width": "auto",
+          "background-height": "auto",
+          "corner-radius": "auto",
+          padding: 0,
+          "border-style": "solid",
+          "border-opacity": 1,
+          "border-dash-pattern": [4, 2],
+          "border-dash-offset": 0,
+          "border-cap": "butt",
+          "border-join": "miter",
+          "border-position": "center",
+          "outline-color": "#999",
+          "outline-width": 0,
+          "outline-opacity": 1,
+          "outline-offset": 0,
+          "outline-style": "solid",
+          "background-gradient-direction": "to-bottom",
+          "background-gradient-stop-colors": "#999",
+          "background-gradient-stop-positions": "0%",
+          "background-blacken": 0,
+          "background-fill": "solid",
+          "shape-polygon-points": "-1, -1,   1, -1,   1, 1,   -1, 1",
+          "bounds-expansion": 0,
+          "pie-size": "100%",
+          "pie-hole": 0,
+          "pie-start-angle": "0deg",
+          "padding-relative-to": "width",
+          position: "origin",
+          "compound-sizing-wrt-labels": "include",
+          "min-width": 0,
+          "min-height": 0,
+          ghost: "no",
+          "ghost-offset-x": 0,
+          "ghost-offset-y": 0,
+          "ghost-opacity": 0
+        };
+      };
+      const createEdgeAttributes = () => {
+        return {
+          // Erforderliche Felder
+          color: "#000",
+          // Optionale Felder mit Defaults
+          opacity: 1,
+          visibility: "visible",
+          events: "yes",
+          "text-events": "no",
+          label: "",
+          "font-size": 16,
+          "font-family": "Helvetica Neue, Helvetica, sans-serif",
+          "font-weight": "normal",
+          "font-style": "normal",
+          "text-valign": "top",
+          "text-halign": "center",
+          "text-justification": "auto",
+          "text-wrap": "none",
+          "text-overflow-wrap": "whitespace",
+          "text-max-width": 9999,
+          "text-rotation": "none",
+          "text-margin-x": 0,
+          "text-margin-y": 0,
+          "line-height": 1,
+          display: "element",
+          "text-outline-color": "#000",
+          "text-outline-width": 0,
+          "text-outline-opacity": 1,
+          "text-opacity": 1,
+          "text-decoration": "none",
+          "text-transform": "none",
+          "text-background-color": "#000",
+          "text-background-opacity": 0,
+          "text-background-shape": "rectangle",
+          "text-background-padding": 0,
+          "text-border-color": "#000",
+          "text-border-width": 0,
+          "text-border-style": "solid",
+          "text-border-opacity": 0,
+          "min-zoomed-font-size": 0,
+          "overlay-color": "#000",
+          "overlay-opacity": 0,
+          "overlay-padding": 10,
+          "overlay-shape": "roundrectangle",
+          "overlay-corner-radius": "auto",
+          "underlay-color": "#000",
+          "underlay-opacity": 0,
+          "underlay-padding": 10,
+          "underlay-shape": "roundrectangle",
+          "underlay-corner-radius": "auto",
+          "transition-property": "none",
+          "transition-duration": 0,
+          "transition-delay": 0,
+          "transition-timing-function": "linear",
+          "z-index": 0,
+          "z-compound-depth": "auto",
+          "z-index-compare": "auto",
+          "box-select-labels": "no",
+          // Edge-spezifische Felder
+          width: 3,
+          "line-color": "#999",
+          "line-opacity": 1,
+          "line-style": "solid",
+          "curve-style": "haystack",
+          "target-arrow-shape": "none",
+          "target-arrow-color": "#999",
+          "target-arrow-width": 1,
+          "target-arrow-fill": "filled",
+          "source-arrow-shape": "none",
+          "source-arrow-color": "#999",
+          "source-arrow-width": 1,
+          "source-arrow-fill": "filled",
+          "mid-source-arrow-shape": "none",
+          "mid-source-arrow-color": "#999",
+          "mid-source-arrow-width": 1,
+          "mid-source-arrow-fill": "filled",
+          "mid-target-arrow-shape": "none",
+          "mid-target-arrow-color": "#999",
+          "mid-target-arrow-width": 1,
+          "mid-target-arrow-fill": "filled",
+          "line-cap": "butt",
+          "line-fill": "solid",
+          "line-outline-width": 0,
+          "line-outline-color": "#000",
+          "line-gradient-stop-colors": "#999",
+          "line-gradient-stop-positions": "0%",
+          "line-dash-pattern": [6, 3],
+          "line-dash-offset": 0,
+          "control-point-step-size": 40,
+          "control-point-weights": 0.5,
+          "segment-weights": 0.5,
+          "segment-distances": 20,
+          "segment-radii": 15,
+          "radius-type": "arc-radius",
+          "taxi-turn": "50%",
+          "taxi-radius": 15,
+          "taxi-turn-min-distance": 10,
+          "taxi-direction": "auto",
+          "edge-distances": "intersection",
+          "haystack-radius": 0,
+          "arrow-scale": 1,
+          "loop-direction": "-45deg",
+          "loop-sweep": "-90deg",
+          "source-distance-from-node": 0,
+          "target-distance-from-node": 0,
+          "source-endpoint": "outside-to-node",
+          "target-endpoint": "outside-to-node",
+          "source-label": "",
+          "source-text-offset": 0,
+          "source-text-margin-x": 0,
+          "source-text-margin-y": 0,
+          "source-text-rotation": "none",
+          "target-label": "",
+          "target-text-offset": 0,
+          "target-text-margin-x": 0,
+          "target-text-margin-y": 0,
+          "target-text-rotation": "none"
+        };
+      };
       service.addNode({
         id: foundry.utils.randomID(),
         x: 150,
         y: 200,
         label: { value: "Bauer", permissions: defaultPermissions },
         type: { value: "person", permissions: defaultPermissions },
-        globalPermissions: defaultPermissions
+        globalPermissions: defaultPermissions,
+        cytoScapeAttributes: {
+          ...createNodeAttributes(),
+          color: "#000000",
+          "background-color": "#006400",
+          // Grün für Bauer
+          shape: "ellipse",
+          width: 80,
+          height: 80,
+          "border-color": "#000",
+          "border-width": 0,
+          "text-valign": "center",
+          "text-halign": "center",
+          "font-size": 14,
+          // Kleinere Schrift für bessere Passung
+          "font-weight": "bold",
+          "font-family": "Arial, sans-serif"
+        }
       });
       service.addNode({
         id: foundry.utils.randomID(),
@@ -32311,7 +32610,27 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         y: 200,
         label: { value: "Müller", permissions: defaultPermissions },
         type: { value: "person", permissions: defaultPermissions },
-        globalPermissions: defaultPermissions
+        globalPermissions: defaultPermissions,
+        cytoScapeAttributes: {
+          ...createNodeAttributes(),
+          color: "#000000",
+          "background-color": "#F5DEB3",
+          // Weizengelb für Müller
+          shape: "ellipse",
+          width: 80,
+          height: 80,
+          "border-color": "#000",
+          "border-width": 0,
+          "text-valign": "center",
+          "text-halign": "center",
+          "font-size": 14,
+          // Kleinere Schrift für bessere Passung
+          "font-weight": "bold",
+          "font-family": "Arial, sans-serif",
+          "background-opacity": 1,
+          "outline-color": "#F5DEB3",
+          "background-gradient-stop-colors": "#F5DEB3"
+        }
       });
       service.addEdge({
         id: foundry.utils.randomID(),
@@ -32319,7 +32638,22 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         target: service.getNodeByLabel("Müller")?.id ?? "",
         label: { value: "Weizen", permissions: defaultPermissions },
         type: "trade",
-        globalPermissions: defaultPermissions
+        globalPermissions: defaultPermissions,
+        cytoScapeAttributes: {
+          ...createEdgeAttributes(),
+          color: "#000",
+          "line-color": "#000",
+          "line-opacity": 1,
+          "line-style": "solid",
+          "target-arrow-shape": "triangle",
+          // Pfeil am Ende
+          "target-arrow-color": "#000",
+          "target-arrow-width": 2,
+          "curve-style": "bezier",
+          // Schönere Kurve
+          "text-margin-y": -10
+          // Text über dem Pfeil
+        }
       });
     }
   };
@@ -32357,7 +32691,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   };
   let JournalEntryPageRelationshipGraphSheet = _JournalEntryPageRelationshipGraphSheet;
   const fields$6 = foundry.data.fields;
-  class PermissionsModel extends foundry.abstract.TypeDataModel {
+  class PermissionsModel extends foundry.abstract.DataModel {
     static defineSchema() {
       return {
         defaultLevel: new fields$6.NumberField({ required: true, blank: false, initial: 0 }),
@@ -32372,7 +32706,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
   }
   const fields$5 = foundry.data.fields;
-  class DescriptionModel extends foundry.abstract.TypeDataModel {
+  class DescriptionModel extends foundry.abstract.DataModel {
     static defineSchema() {
       return {
         text: new fields$5.HTMLField({ required: true, blank: false, initial: "" }),
@@ -32382,7 +32716,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
   }
   const fields$4 = foundry.data.fields;
-  class RelationshipEffectModel extends foundry.abstract.TypeDataModel {
+  class RelationshipEffectModel extends foundry.abstract.DataModel {
     static defineSchema() {
       return {
         type: new fields$4.StringField({ required: true, blank: false, initial: "effect" }),
@@ -32392,13 +32726,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
   }
   const fields$3 = foundry.data.fields;
-  class CytoScapeCommonAttributesModel extends foundry.abstract.TypeDataModel {
+  class CytoScapeCommonAttributesModel extends foundry.abstract.DataModel {
     static defineSchema() {
       return {
         // ERFORDERLICHE FELDER (required: true)
         // Textfarbe (erforderlich)
-        color: new fields$3.ColorField({ required: true, blank: false }),
-        // OPTIONALE FELDER (required: false)
+        color: new fields$3.ColorField({ required: true, blank: false, initial: "#000" }),
+        // OPTIONALE FELDER (required: false) - Alle in Snake_case
         // Sichtbarkeit und Interaktion
         // Transparenz des Elements (0-1)
         opacity: new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
@@ -32407,111 +32741,143 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         // Event-Handling aktivieren (yes, no)
         events: new fields$3.StringField({ required: false, blank: true, initial: "yes" }),
         // Text-Event-Handling (yes, no)
-        textEvents: new fields$3.StringField({ required: false, blank: true, initial: "no" }),
+        "text-events": new fields$3.StringField({ required: false, blank: true, initial: "no" }),
         // Text/Label-Eigenschaften
         // Hauptlabel/Text des Elements
         label: new fields$3.StringField({ required: false, blank: true, initial: "" }),
         // Schriftgröße in Pixeln
-        fontSize: new fields$3.NumberField({ required: false, blank: true, initial: 16 }),
+        "font-size": new fields$3.NumberField({ required: false, blank: true, initial: 16 }),
         // Schriftart
-        fontFamily: new fields$3.StringField({ required: false, blank: true, initial: "Helvetica Neue, Helvetica, sans-serif" }),
+        "font-family": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "Helvetica Neue, Helvetica, sans-serif"
+        }),
         // Schriftstärke (normal, bold, etc.)
-        fontWeight: new fields$3.StringField({ required: false, blank: true, initial: "normal" }),
+        "font-weight": new fields$3.StringField({ required: false, blank: true, initial: "normal" }),
         // Schriftstil (normal, italic)
-        fontStyle: new fields$3.StringField({ required: false, blank: true, initial: "normal" }),
+        "font-style": new fields$3.StringField({ required: false, blank: true, initial: "normal" }),
         // Vertikale Textausrichtung (top, center, bottom)
-        textValign: new fields$3.StringField({ required: false, blank: true, initial: "top" }),
+        "text-valign": new fields$3.StringField({ required: false, blank: true, initial: "top" }),
         // Horizontale Textausrichtung (left, center, right)
-        textHalign: new fields$3.StringField({ required: false, blank: true, initial: "center" }),
+        "text-halign": new fields$3.StringField({ required: false, blank: true, initial: "center" }),
         // Textausrichtung (auto, left, center, right)
-        textJustification: new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
+        "text-justification": new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
         // Textumbruch (none, wrap)
-        textWrap: new fields$3.StringField({ required: false, blank: true, initial: "none" }),
+        "text-wrap": new fields$3.StringField({ required: false, blank: true, initial: "none" }),
         // Textüberlauf (whitespace, anywhere)
-        textOverflowWrap: new fields$3.StringField({ required: false, blank: true, initial: "whitespace" }),
+        "text-overflow-wrap": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "whitespace"
+        }),
         // Maximale Textbreite in Pixeln
-        textMaxWidth: new fields$3.NumberField({ required: false, blank: true, initial: 9999 }),
+        "text-max-width": new fields$3.NumberField({ required: false, blank: true, initial: 9999 }),
         // Text-Rotation (none, autorotate, 45deg, etc.)
-        textRotation: new fields$3.StringField({ required: false, blank: true, initial: "none" }),
+        "text-rotation": new fields$3.StringField({ required: false, blank: true, initial: "none" }),
         // Horizontaler Text-Abstand
-        textMarginX: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-margin-x": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Vertikaler Text-Abstand
-        textMarginY: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-margin-y": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Zeilenhöhe (Multiplikator)
-        lineHeight: new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
+        "line-height": new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
         // Anzeige (element, none)
         display: new fields$3.StringField({ required: false, blank: true, initial: "element" }),
         // Textumrissfarbe
-        textOutlineColor: new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
+        "text-outline-color": new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
         // Textumrissbreite
-        textOutlineWidth: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-outline-width": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Textumriss-Transparenz
-        textOutlineOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
+        "text-outline-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
         // Text-Transparenz
-        textOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
+        "text-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
         // Text-Dekoration (none, underline, etc.)
-        textDecoration: new fields$3.StringField({ required: false, blank: true, initial: "none" }),
+        "text-decoration": new fields$3.StringField({ required: false, blank: true, initial: "none" }),
         // Text-Transformation (none, uppercase, lowercase)
-        textTransform: new fields$3.StringField({ required: false, blank: true, initial: "none" }),
+        "text-transform": new fields$3.StringField({ required: false, blank: true, initial: "none" }),
         // Text-Hintergrundfarbe
-        textBackgroundColor: new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
+        "text-background-color": new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
         // Text-Hintergrund-Transparenz
-        textBackgroundOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-background-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Text-Hintergrund-Form (rectangle, roundrectangle)
-        textBackgroundShape: new fields$3.StringField({ required: false, blank: true, initial: "rectangle" }),
+        "text-background-shape": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "rectangle"
+        }),
         // Text-Hintergrund-Abstand
-        textBackgroundPadding: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-background-padding": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Text-Rahmenfarbe
-        textBorderColor: new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
+        "text-border-color": new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
         // Text-Rahmenbreite
-        textBorderWidth: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-border-width": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Text-Rahmenstil (solid, dashed, etc.)
-        textBorderStyle: new fields$3.StringField({ required: false, blank: true, initial: "solid" }),
+        "text-border-style": new fields$3.StringField({ required: false, blank: true, initial: "solid" }),
         // Text-Rahmen-Transparenz
-        textBorderOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-border-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Minimale Schriftgröße beim Zoomen
-        minZoomedFontSize: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "min-zoomed-font-size": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Überlagereffekte
         // Überlagerungsfarbe
-        overlayColor: new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
+        "overlay-color": new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
         // Überlagerungs-Transparenz
-        overlayOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "overlay-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Überlagerungs-Abstand
-        overlayPadding: new fields$3.NumberField({ required: false, blank: true, initial: 10 }),
+        "overlay-padding": new fields$3.NumberField({ required: false, blank: true, initial: 10 }),
         // Überlagerungs-Form (roundrectangle, rectangle, etc.)
-        overlayShape: new fields$3.StringField({ required: false, blank: true, initial: "roundrectangle" }),
+        "overlay-shape": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "roundrectangle"
+        }),
         // Überlagerungs-Eckenrundung
-        overlayCornerRadius: new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
+        "overlay-corner-radius": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "auto"
+        }),
         // Unterlagereffekte
         // Unterlagerungsfarbe
-        underlayColor: new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
+        "underlay-color": new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
         // Unterlagerungs-Transparenz
-        underlayOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "underlay-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Unterlagerungs-Abstand
-        underlayPadding: new fields$3.NumberField({ required: false, blank: true, initial: 10 }),
+        "underlay-padding": new fields$3.NumberField({ required: false, blank: true, initial: 10 }),
         // Unterlagerungs-Form
-        underlayShape: new fields$3.StringField({ required: false, blank: true, initial: "roundrectangle" }),
+        "underlay-shape": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "roundrectangle"
+        }),
         // Unterlagerungs-Eckenrundung
-        underlayCornerRadius: new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
+        "underlay-corner-radius": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "auto"
+        }),
         // Animation und Übergänge
         // Übergangseigenschaft (all, none, specific properties)
-        transitionProperty: new fields$3.StringField({ required: false, blank: true, initial: "none" }),
+        "transition-property": new fields$3.StringField({ required: false, blank: true, initial: "none" }),
         // Übergangsdauer in Sekunden
-        transitionDuration: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "transition-duration": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Übergangsverzögerung in Sekunden
-        transitionDelay: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "transition-delay": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Übergangs-Timing-Funktion (linear, ease, etc.)
-        transitionTimingFunction: new fields$3.StringField({ required: false, blank: true, initial: "linear" }),
+        "transition-timing-function": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "linear"
+        }),
         // Z-Index und Stapelreihenfolge
         // Z-Index für Stapelreihenfolge
-        zIndex: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "z-index": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Z-Verbund-Tiefe (auto, top, bottom)
-        zCompoundDepth: new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
+        "z-compound-depth": new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
         // Z-Index-Vergleich (auto, manual)
-        zIndexCompare: new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
+        "z-index-compare": new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
         // Selektion und Interaktion
         // Label-Selektion bei Box-Select (yes, no)
-        boxSelectLabels: new fields$3.StringField({ required: false, blank: true, initial: "no" })
+        "box-select-labels": new fields$3.StringField({ required: false, blank: true, initial: "no" })
       };
     }
   }
@@ -32527,122 +32893,122 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         // Größe des Nodes (für runde Formen)
         size: new fields$2.NumberField({ required: true, blank: false, initial: 30 }),
         // Rahmenfarbe (erforderlich)
-        borderColor: new fields$2.ColorField({ required: true, blank: false, initial: "#000" }),
+        "border-color": new fields$2.ColorField({ required: true, blank: false, initial: "#000" }),
         // Rahmenbreite (erforderlich)
-        borderWidth: new fields$2.NumberField({ required: true, blank: false, initial: 0 }),
-        // OPTIONALE FELDER (required: false)
+        "border-width": new fields$2.NumberField({ required: true, blank: false, initial: 0 }),
+        // OPTIONALE FELDER (required: false) - Alle in Snake_case
         // Grundlegende Node-Eigenschaften
         // Breite des Nodes in Pixeln
-        width: new fields$2.NumberField({ required: false, blank: true, initial: 30 }),
+        width: new fields$2.NumberField({ required: false, blank: true, initial: 80 }),
         // Höhe des Nodes in Pixeln
-        height: new fields$2.NumberField({ required: false, blank: true, initial: 30 }),
+        height: new fields$2.NumberField({ required: false, blank: true, initial: 80 }),
         // Hintergrundfarbe des Nodes
-        backgroundColor: new fields$2.ColorField({ required: false, blank: true, initial: "#999" }),
+        "background-color": new fields$2.ColorField({ required: false, blank: true, initial: "#999" }),
         // Hintergrund-Transparenz
-        backgroundOpacity: new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
+        "background-opacity": new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
         // URL/Pfad zum Hintergrundbild
-        backgroundImage: new fields$2.StringField({ required: false, blank: true, initial: "none" }),
+        "background-image": new fields$2.StringField({ required: false, blank: true, initial: "none" }),
         // CORS-Einstellung für externe Bilder
-        backgroundImageCrossorigin: new fields$2.StringField({ required: false, blank: true, initial: "anonymous" }),
+        "background-image-crossorigin": new fields$2.StringField({ required: false, blank: true, initial: "anonymous" }),
         // Transparenz des Hintergrundbildes
-        backgroundImageOpacity: new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
+        "background-image-opacity": new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
         // Begrenzung des Bildes (inside, outside)
-        backgroundImageContainment: new fields$2.StringField({ required: false, blank: true, initial: "inside" }),
+        "background-image-containment": new fields$2.StringField({ required: false, blank: true, initial: "inside" }),
         // Bildglättung (yes, no)
-        backgroundImageSmoothing: new fields$2.StringField({ required: false, blank: true, initial: "yes" }),
+        "background-image-smoothing": new fields$2.StringField({ required: false, blank: true, initial: "yes" }),
         // Horizontale Bildposition (50%, left, center, right)
-        backgroundPositionX: new fields$2.StringField({ required: false, blank: true, initial: "50%" }),
+        "background-position-x": new fields$2.StringField({ required: false, blank: true, initial: "50%" }),
         // Vertikale Bildposition (50%, top, center, bottom)
-        backgroundPositionY: new fields$2.StringField({ required: false, blank: true, initial: "50%" }),
+        "background-position-y": new fields$2.StringField({ required: false, blank: true, initial: "50%" }),
         // Horizontaler Bild-Offset in Pixeln
-        backgroundOffsetX: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "background-offset-x": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Vertikaler Bild-Offset in Pixeln
-        backgroundOffsetY: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "background-offset-y": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Relative Bildbreite (include-padding, exclude-padding)
-        backgroundWidthRelativeTo: new fields$2.StringField({ required: false, blank: true, initial: "include-padding" }),
+        "background-width-relative-to": new fields$2.StringField({ required: false, blank: true, initial: "include-padding" }),
         // Relative Bildhöhe (include-padding, exclude-padding)
-        backgroundHeightRelativeTo: new fields$2.StringField({ required: false, blank: true, initial: "include-padding" }),
+        "background-height-relative-to": new fields$2.StringField({ required: false, blank: true, initial: "include-padding" }),
         // Bild-Wiederholung (no-repeat, repeat, repeat-x, repeat-y)
-        backgroundRepeat: new fields$2.StringField({ required: false, blank: true, initial: "no-repeat" }),
+        "background-repeat": new fields$2.StringField({ required: false, blank: true, initial: "no-repeat" }),
         // Bildanpassung (none, contain, cover, fill, scale-down)
-        backgroundFit: new fields$2.StringField({ required: false, blank: true, initial: "none" }),
+        "background-fit": new fields$2.StringField({ required: false, blank: true, initial: "none" }),
         // Bildbeschnitt (node, none)
-        backgroundClip: new fields$2.StringField({ required: false, blank: true, initial: "node" }),
+        "background-clip": new fields$2.StringField({ required: false, blank: true, initial: "node" }),
         // Bildbreite (auto, 100%, 50px)
-        backgroundWidth: new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
+        "background-width": new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
         // Bildhöhe (auto, 100%, 50px)
-        backgroundHeight: new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
+        "background-height": new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
         // Eckenrundung (auto, 10px, 50%)
-        cornerRadius: new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
+        "corner-radius": new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
         // Innenabstand des Nodes
         padding: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Border/Outline-Eigenschaften
         // Rahmenstil (solid, dashed, dotted)
-        borderStyle: new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
+        "border-style": new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
         // Rahmen-Transparenz
-        borderOpacity: new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
+        "border-opacity": new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
         // Strichmuster für gestrichelte Rahmen
-        borderDashPattern: new fields$2.ArrayField(new fields$2.NumberField(), { required: false, blank: true, initial: [4, 2] }),
+        "border-dash-pattern": new fields$2.ArrayField(new fields$2.NumberField(), { required: false, blank: true, initial: [4, 2] }),
         // Strichmuster-Offset
-        borderDashOffset: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "border-dash-offset": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Rahmen-Ende (butt, round, square)
-        borderCap: new fields$2.StringField({ required: false, blank: true, initial: "butt" }),
+        "border-cap": new fields$2.StringField({ required: false, blank: true, initial: "butt" }),
         // Rahmen-Verbindung (miter, round, bevel)
-        borderJoin: new fields$2.StringField({ required: false, blank: true, initial: "miter" }),
+        "border-join": new fields$2.StringField({ required: false, blank: true, initial: "miter" }),
         // Rahmen-Position (center, inside, outside)
-        borderPosition: new fields$2.StringField({ required: false, blank: true, initial: "center" }),
+        "border-position": new fields$2.StringField({ required: false, blank: true, initial: "center" }),
         // Umrissfarbe
-        outlineColor: new fields$2.ColorField({ required: false, blank: true, initial: "#999" }),
+        "outline-color": new fields$2.ColorField({ required: false, blank: true, initial: "#999" }),
         // Umrissbreite
-        outlineWidth: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "outline-width": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Umriss-Transparenz
-        outlineOpacity: new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
+        "outline-opacity": new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
         // Umriss-Offset
-        outlineOffset: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "outline-offset": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Umriss-Stil (solid, dashed, etc.)
-        outlineStyle: new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
+        "outline-style": new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
         // Erweiterte Node-Eigenschaften
         // Gradient-Richtung (to-bottom, to-top, to-right, to-left, 45deg)
-        backgroundGradientDirection: new fields$2.StringField({ required: false, blank: true, initial: "to-bottom" }),
+        "background-gradient-direction": new fields$2.StringField({ required: false, blank: true, initial: "to-bottom" }),
         // Gradient-Farben (#ff0000, #00ff00, #0000ff)
-        backgroundGradientStopColors: new fields$2.StringField({ required: false, blank: true, initial: "#999" }),
+        "background-gradient-stop-colors": new fields$2.StringField({ required: false, blank: true, initial: "#999" }),
         // Gradient-Positionen (0%, 50%, 100%)
-        backgroundGradientStopPositions: new fields$2.StringField({ required: false, blank: true, initial: "0%" }),
+        "background-gradient-stop-positions": new fields$2.StringField({ required: false, blank: true, initial: "0%" }),
         // Hintergrund-Abdunklung (-1 bis 1)
-        backgroundBlacken: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "background-blacken": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Hintergrund-Füllung (solid, linear-gradient, radial-gradient)
-        backgroundFill: new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
+        "background-fill": new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
         // Polygon-Punkte für polygon-Form
-        shapePolygonPoints: new fields$2.StringField({ required: false, blank: true, initial: "-1, -1,   1, -1,   1, 1,   -1, 1" }),
+        "shape-polygon-points": new fields$2.StringField({ required: false, blank: true, initial: "-1, -1,   1, -1,   1, 1,   -1, 1" }),
         // Grenzen-Erweiterung in Pixeln
-        boundsExpansion: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "bounds-expansion": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Pie-Chart-Eigenschaften
         // Pie-Chart-Größe (100%, 50px)
-        pieSize: new fields$2.StringField({ required: false, blank: true, initial: "100%" }),
+        "pie-size": new fields$2.StringField({ required: false, blank: true, initial: "100%" }),
         // Loch in der Mitte (0-1)
-        pieHole: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "pie-hole": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Startwinkel (0deg, 90deg, 180deg)
-        pieStartAngle: new fields$2.StringField({ required: false, blank: true, initial: "0deg" }),
+        "pie-start-angle": new fields$2.StringField({ required: false, blank: true, initial: "0deg" }),
         // Compound-Node-Eigenschaften
         // Padding relativ zu (width, height, average, min, max)
-        paddingRelativeTo: new fields$2.StringField({ required: false, blank: true, initial: "width" }),
+        "padding-relative-to": new fields$2.StringField({ required: false, blank: true, initial: "width" }),
         // Position (origin, center)
         position: new fields$2.StringField({ required: false, blank: true, initial: "origin" }),
         // Größe bezüglich Labels (include, exclude)
-        compoundSizingWrtLabels: new fields$2.StringField({ required: false, blank: true, initial: "include" }),
+        "compound-sizing-wrt-labels": new fields$2.StringField({ required: false, blank: true, initial: "include" }),
         // Minimale Breite
-        minWidth: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "min-width": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Minimale Höhe
-        minHeight: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "min-height": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Ghost-Eigenschaften
         // Ghost-Effekt aktivieren (yes, no)
         ghost: new fields$2.StringField({ required: false, blank: true, initial: "no" }),
         // Ghost horizontaler Offset
-        ghostOffsetX: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "ghost-offset-x": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Ghost vertikaler Offset
-        ghostOffsetY: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "ghost-offset-y": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Ghost-Transparenz
-        ghostOpacity: new fields$2.NumberField({ required: false, blank: true, initial: 0 })
+        "ghost-opacity": new fields$2.NumberField({ required: false, blank: true, initial: 0 })
       };
     }
   }
@@ -32654,131 +33020,131 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         ...commonSchema,
         // ERFORDERLICHE FELDER (required: true)
         // Keine erforderlichen Felder im Edge-Schema
-        // OPTIONALE FELDER (required: false)
+        // OPTIONALE FELDER (required: false) - Alle in Snake_case
         // Grundlegende Edge-Eigenschaften
         // Linienbreite in Pixeln
         width: new fields$1.NumberField({ required: false, blank: true, initial: 3 }),
         // Linienfarbe
-        lineColor: new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
+        "line-color": new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
         // Linien-Transparenz
-        lineOpacity: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "line-opacity": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Linienart (solid, dashed, dotted)
-        lineStyle: new fields$1.StringField({ required: false, blank: true, initial: "solid" }),
+        "line-style": new fields$1.StringField({ required: false, blank: true, initial: "solid" }),
         // Kurvenstil (haystack, bezier, straight, taxi, unbundled-bezier)
-        curveStyle: new fields$1.StringField({ required: false, blank: true, initial: "haystack" }),
+        "curve-style": new fields$1.StringField({ required: false, blank: true, initial: "haystack" }),
         // Pfeil-Eigenschaften
         // Pfeilform am Ende (none, triangle, vee, tee, diamond, square)
-        targetArrowShape: new fields$1.StringField({ required: false, blank: true, initial: "none" }),
+        "target-arrow-shape": new fields$1.StringField({ required: false, blank: true, initial: "none" }),
         // Pfeilfarbe am Ende
-        targetArrowColor: new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
+        "target-arrow-color": new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
         // Pfeilbreite am Ende
-        targetArrowWidth: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "target-arrow-width": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Pfeilfüllung am Ende (filled, hollow)
-        targetArrowFill: new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
+        "target-arrow-fill": new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
         // Pfeilform am Anfang (none, triangle, vee, tee, diamond, square)
-        sourceArrowShape: new fields$1.StringField({ required: false, blank: true, initial: "none" }),
+        "source-arrow-shape": new fields$1.StringField({ required: false, blank: true, initial: "none" }),
         // Pfeilfarbe am Anfang
-        sourceArrowColor: new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
+        "source-arrow-color": new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
         // Pfeilbreite am Anfang
-        sourceArrowWidth: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "source-arrow-width": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Pfeilfüllung am Anfang (filled, hollow)
-        sourceArrowFill: new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
+        "source-arrow-fill": new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
         // Mittlerer Pfeil am Anfang (none, triangle, vee, tee, diamond, square)
-        midSourceArrowShape: new fields$1.StringField({ required: false, blank: true, initial: "none" }),
+        "mid-source-arrow-shape": new fields$1.StringField({ required: false, blank: true, initial: "none" }),
         // Mittlerer Pfeilfarbe am Anfang
-        midSourceArrowColor: new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
+        "mid-source-arrow-color": new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
         // Mittlerer Pfeilbreite am Anfang
-        midSourceArrowWidth: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "mid-source-arrow-width": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Mittlerer Pfeilfüllung am Anfang (filled, hollow)
-        midSourceArrowFill: new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
+        "mid-source-arrow-fill": new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
         // Mittlerer Pfeil am Ende (none, triangle, vee, tee, diamond, square)
-        midTargetArrowShape: new fields$1.StringField({ required: false, blank: true, initial: "none" }),
+        "mid-target-arrow-shape": new fields$1.StringField({ required: false, blank: true, initial: "none" }),
         // Mittlerer Pfeilfarbe am Ende
-        midTargetArrowColor: new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
+        "mid-target-arrow-color": new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
         // Mittlerer Pfeilbreite am Ende
-        midTargetArrowWidth: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "mid-target-arrow-width": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Mittlerer Pfeilfüllung am Ende (filled, hollow)
-        midTargetArrowFill: new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
+        "mid-target-arrow-fill": new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
         // Edge-spezifische Eigenschaften
         // Linienende (butt, round, square)
-        lineCap: new fields$1.StringField({ required: false, blank: true, initial: "butt" }),
+        "line-cap": new fields$1.StringField({ required: false, blank: true, initial: "butt" }),
         // Linienfüllung (solid, linear-gradient)
-        lineFill: new fields$1.StringField({ required: false, blank: true, initial: "solid" }),
+        "line-fill": new fields$1.StringField({ required: false, blank: true, initial: "solid" }),
         // Linienumrissbreite
-        lineOutlineWidth: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "line-outline-width": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Linienumrissfarbe
-        lineOutlineColor: new fields$1.ColorField({ required: false, blank: true, initial: "#000" }),
+        "line-outline-color": new fields$1.ColorField({ required: false, blank: true, initial: "#000" }),
         // Linien-Gradient-Farben
-        lineGradientStopColors: new fields$1.StringField({ required: false, blank: true, initial: "#999" }),
+        "line-gradient-stop-colors": new fields$1.StringField({ required: false, blank: true, initial: "#999" }),
         // Linien-Gradient-Positionen
-        lineGradientStopPositions: new fields$1.StringField({ required: false, blank: true, initial: "0%" }),
+        "line-gradient-stop-positions": new fields$1.StringField({ required: false, blank: true, initial: "0%" }),
         // Strichmuster für gestrichelte Linien
-        lineDashPattern: new fields$1.ArrayField(new fields$1.NumberField(), { required: false, blank: true, initial: [6, 3] }),
+        "line-dash-pattern": new fields$1.ArrayField(new fields$1.NumberField(), { required: false, blank: true, initial: [6, 3] }),
         // Strichmuster-Offset
-        lineDashOffset: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "line-dash-offset": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Kontrollpunkt-Eigenschaften
         // Kontrollpunkt-Abstand in Pixeln
-        controlPointStepSize: new fields$1.NumberField({ required: false, blank: true, initial: 40 }),
+        "control-point-step-size": new fields$1.NumberField({ required: false, blank: true, initial: 40 }),
         // Kontrollpunkt-Gewichtung (0-1)
-        controlPointWeights: new fields$1.NumberField({ required: false, blank: true, initial: 0.5 }),
+        "control-point-weights": new fields$1.NumberField({ required: false, blank: true, initial: 0.5 }),
         // Segment-Gewichtung (0-1)
-        segmentWeights: new fields$1.NumberField({ required: false, blank: true, initial: 0.5 }),
+        "segment-weights": new fields$1.NumberField({ required: false, blank: true, initial: 0.5 }),
         // Segment-Abstände in Pixeln
-        segmentDistances: new fields$1.NumberField({ required: false, blank: true, initial: 20 }),
+        "segment-distances": new fields$1.NumberField({ required: false, blank: true, initial: 20 }),
         // Segment-Radien in Pixeln
-        segmentRadii: new fields$1.NumberField({ required: false, blank: true, initial: 15 }),
+        "segment-radii": new fields$1.NumberField({ required: false, blank: true, initial: 15 }),
         // Kurven- und Routing-Eigenschaften
         // Radius-Typ (arc-radius, arc-radius-2, arc-radius-3)
-        radiusType: new fields$1.StringField({ required: false, blank: true, initial: "arc-radius" }),
+        "radius-type": new fields$1.StringField({ required: false, blank: true, initial: "arc-radius" }),
         // Taxi-Kurve (50%, 25%, 75%)
-        taxiTurn: new fields$1.StringField({ required: false, blank: true, initial: "50%" }),
+        "taxi-turn": new fields$1.StringField({ required: false, blank: true, initial: "50%" }),
         // Taxi-Radius in Pixeln
-        taxiRadius: new fields$1.NumberField({ required: false, blank: true, initial: 15 }),
+        "taxi-radius": new fields$1.NumberField({ required: false, blank: true, initial: 15 }),
         // Minimale Taxi-Kurven-Distanz
-        taxiTurnMinDistance: new fields$1.NumberField({ required: false, blank: true, initial: 10 }),
+        "taxi-turn-min-distance": new fields$1.NumberField({ required: false, blank: true, initial: 10 }),
         // Taxi-Richtung (auto, upward, downward, leftward, rightward)
-        taxiDirection: new fields$1.StringField({ required: false, blank: true, initial: "auto" }),
+        "taxi-direction": new fields$1.StringField({ required: false, blank: true, initial: "auto" }),
         // Edge-Distanzen (intersection, node-position, 0-1)
-        edgeDistances: new fields$1.StringField({ required: false, blank: true, initial: "intersection" }),
+        "edge-distances": new fields$1.StringField({ required: false, blank: true, initial: "intersection" }),
         // Haystack-Radius in Pixeln
-        haystackRadius: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "haystack-radius": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Pfeil-Skalierung (Multiplikator)
-        arrowScale: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "arrow-scale": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Loop-Eigenschaften
         // Loop-Richtung (-45deg, 45deg, 90deg, etc.)
-        loopDirection: new fields$1.StringField({ required: false, blank: true, initial: "-45deg" }),
+        "loop-direction": new fields$1.StringField({ required: false, blank: true, initial: "-45deg" }),
         // Loop-Ausrichtung (-90deg, 90deg, 180deg, etc.)
-        loopSweep: new fields$1.StringField({ required: false, blank: true, initial: "-90deg" }),
+        "loop-sweep": new fields$1.StringField({ required: false, blank: true, initial: "-90deg" }),
         // Endpunkt-Eigenschaften
         // Quell-Distanz vom Node in Pixeln
-        sourceDistanceFromNode: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "source-distance-from-node": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Ziel-Distanz vom Node in Pixeln
-        targetDistanceFromNode: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "target-distance-from-node": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Quell-Endpunkt (outside-to-node, outside-to-line, inside-to-node)
-        sourceEndpoint: new fields$1.StringField({ required: false, blank: true, initial: "outside-to-node" }),
+        "source-endpoint": new fields$1.StringField({ required: false, blank: true, initial: "outside-to-node" }),
         // Ziel-Endpunkt (outside-to-node, outside-to-line, inside-to-node)
-        targetEndpoint: new fields$1.StringField({ required: false, blank: true, initial: "outside-to-node" }),
+        "target-endpoint": new fields$1.StringField({ required: false, blank: true, initial: "outside-to-node" }),
         // Edge-spezifische Text-Eigenschaften
         // Quell-Label (Text am Anfang der Edge)
-        sourceLabel: new fields$1.StringField({ required: false, blank: true, initial: "" }),
+        "source-label": new fields$1.StringField({ required: false, blank: true, initial: "" }),
         // Quell-Text-Offset in Pixeln
-        sourceTextOffset: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "source-text-offset": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Quell-Text horizontaler Abstand
-        sourceTextMarginX: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "source-text-margin-x": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Quell-Text vertikaler Abstand
-        sourceTextMarginY: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "source-text-margin-y": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Quell-Text-Rotation (none, autorotate, 45deg, etc.)
-        sourceTextRotation: new fields$1.StringField({ required: false, blank: true, initial: "none" }),
+        "source-text-rotation": new fields$1.StringField({ required: false, blank: true, initial: "none" }),
         // Ziel-Label (Text am Ende der Edge)
-        targetLabel: new fields$1.StringField({ required: false, blank: true, initial: "" }),
+        "target-label": new fields$1.StringField({ required: false, blank: true, initial: "" }),
         // Ziel-Text-Offset in Pixeln
-        targetTextOffset: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "target-text-offset": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Ziel-Text horizontaler Abstand
-        targetTextMarginX: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "target-text-margin-x": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Ziel-Text vertikaler Abstand
-        targetTextMarginY: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "target-text-margin-y": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Ziel-Text-Rotation (none, autorotate, 45deg, etc.)
-        targetTextRotation: new fields$1.StringField({ required: false, blank: true, initial: "none" })
+        "target-text-rotation": new fields$1.StringField({ required: false, blank: true, initial: "none" })
       };
     }
   }

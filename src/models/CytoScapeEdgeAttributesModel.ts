@@ -2,7 +2,7 @@ import { CytoScapeCommonAttributesModel } from './CytoScapeCommonAttributesModel
 
 const fields = foundry.data.fields;
 
-// Edge-spezifisches Schema
+// Edge-spezifisches Schema mit Snake_case für 1:1 Cytoscape-Kompatibilität
 export class CytoScapeEdgeAttributesModel extends CytoScapeCommonAttributesModel {
   static defineSchema() {
     const commonSchema = super.defineSchema();
@@ -11,138 +11,138 @@ export class CytoScapeEdgeAttributesModel extends CytoScapeCommonAttributesModel
       // ERFORDERLICHE FELDER (required: true)
       // Keine erforderlichen Felder im Edge-Schema
       
-      // OPTIONALE FELDER (required: false)
+      // OPTIONALE FELDER (required: false) - Alle in Snake_case
       // Grundlegende Edge-Eigenschaften
       // Linienbreite in Pixeln
       width: new fields.NumberField({ required: false, blank: true, initial: 3 }),
       // Linienfarbe
-      lineColor: new fields.ColorField({ required: false, blank: true, initial: "#999" }),
+      'line-color': new fields.ColorField({ required: false, blank: true, initial: "#999" }),
       // Linien-Transparenz
-      lineOpacity: new fields.NumberField({ required: false, blank: true, initial: 1 }),
+      'line-opacity': new fields.NumberField({ required: false, blank: true, initial: 1 }),
       // Linienart (solid, dashed, dotted)
-      lineStyle: new fields.StringField({ required: false, blank: true, initial: "solid" }),
+      'line-style': new fields.StringField({ required: false, blank: true, initial: "solid" }),
       // Kurvenstil (haystack, bezier, straight, taxi, unbundled-bezier)
-      curveStyle: new fields.StringField({ required: false, blank: true, initial: "haystack" }),
+      'curve-style': new fields.StringField({ required: false, blank: true, initial: "haystack" }),
       
       // Pfeil-Eigenschaften
       // Pfeilform am Ende (none, triangle, vee, tee, diamond, square)
-      targetArrowShape: new fields.StringField({ required: false, blank: true, initial: "none" }),
+      'target-arrow-shape': new fields.StringField({ required: false, blank: true, initial: "none" }),
       // Pfeilfarbe am Ende
-      targetArrowColor: new fields.ColorField({ required: false, blank: true, initial: "#999" }),
+      'target-arrow-color': new fields.ColorField({ required: false, blank: true, initial: "#999" }),
       // Pfeilbreite am Ende
-      targetArrowWidth: new fields.NumberField({ required: false, blank: true, initial: 1 }),
+      'target-arrow-width': new fields.NumberField({ required: false, blank: true, initial: 1 }),
       // Pfeilfüllung am Ende (filled, hollow)
-      targetArrowFill: new fields.StringField({ required: false, blank: true, initial: "filled" }),
+      'target-arrow-fill': new fields.StringField({ required: false, blank: true, initial: "filled" }),
       // Pfeilform am Anfang (none, triangle, vee, tee, diamond, square)
-      sourceArrowShape: new fields.StringField({ required: false, blank: true, initial: "none" }),
+      'source-arrow-shape': new fields.StringField({ required: false, blank: true, initial: "none" }),
       // Pfeilfarbe am Anfang
-      sourceArrowColor: new fields.ColorField({ required: false, blank: true, initial: "#999" }),
+      'source-arrow-color': new fields.ColorField({ required: false, blank: true, initial: "#999" }),
       // Pfeilbreite am Anfang
-      sourceArrowWidth: new fields.NumberField({ required: false, blank: true, initial: 1 }),
+      'source-arrow-width': new fields.NumberField({ required: false, blank: true, initial: 1 }),
       // Pfeilfüllung am Anfang (filled, hollow)
-      sourceArrowFill: new fields.StringField({ required: false, blank: true, initial: "filled" }),
+      'source-arrow-fill': new fields.StringField({ required: false, blank: true, initial: "filled" }),
       // Mittlerer Pfeil am Anfang (none, triangle, vee, tee, diamond, square)
-      midSourceArrowShape: new fields.StringField({ required: false, blank: true, initial: "none" }),
+      'mid-source-arrow-shape': new fields.StringField({ required: false, blank: true, initial: "none" }),
       // Mittlerer Pfeilfarbe am Anfang
-      midSourceArrowColor: new fields.ColorField({ required: false, blank: true, initial: "#999" }),
+      'mid-source-arrow-color': new fields.ColorField({ required: false, blank: true, initial: "#999" }),
       // Mittlerer Pfeilbreite am Anfang
-      midSourceArrowWidth: new fields.NumberField({ required: false, blank: true, initial: 1 }),
+      'mid-source-arrow-width': new fields.NumberField({ required: false, blank: true, initial: 1 }),
       // Mittlerer Pfeilfüllung am Anfang (filled, hollow)
-      midSourceArrowFill: new fields.StringField({ required: false, blank: true, initial: "filled" }),
+      'mid-source-arrow-fill': new fields.StringField({ required: false, blank: true, initial: "filled" }),
       // Mittlerer Pfeil am Ende (none, triangle, vee, tee, diamond, square)
-      midTargetArrowShape: new fields.StringField({ required: false, blank: true, initial: "none" }),
+      'mid-target-arrow-shape': new fields.StringField({ required: false, blank: true, initial: "none" }),
       // Mittlerer Pfeilfarbe am Ende
-      midTargetArrowColor: new fields.ColorField({ required: false, blank: true, initial: "#999" }),
+      'mid-target-arrow-color': new fields.ColorField({ required: false, blank: true, initial: "#999" }),
       // Mittlerer Pfeilbreite am Ende
-      midTargetArrowWidth: new fields.NumberField({ required: false, blank: true, initial: 1 }),
+      'mid-target-arrow-width': new fields.NumberField({ required: false, blank: true, initial: 1 }),
       // Mittlerer Pfeilfüllung am Ende (filled, hollow)
-      midTargetArrowFill: new fields.StringField({ required: false, blank: true, initial: "filled" }),
+      'mid-target-arrow-fill': new fields.StringField({ required: false, blank: true, initial: "filled" }),
       
       // Edge-spezifische Eigenschaften
       // Linienende (butt, round, square)
-      lineCap: new fields.StringField({ required: false, blank: true, initial: "butt" }),
+      'line-cap': new fields.StringField({ required: false, blank: true, initial: "butt" }),
       // Linienfüllung (solid, linear-gradient)
-      lineFill: new fields.StringField({ required: false, blank: true, initial: "solid" }),
+      'line-fill': new fields.StringField({ required: false, blank: true, initial: "solid" }),
       // Linienumrissbreite
-      lineOutlineWidth: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'line-outline-width': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Linienumrissfarbe
-      lineOutlineColor: new fields.ColorField({ required: false, blank: true, initial: "#000" }),
+      'line-outline-color': new fields.ColorField({ required: false, blank: true, initial: "#000" }),
       // Linien-Gradient-Farben
-      lineGradientStopColors: new fields.StringField({ required: false, blank: true, initial: "#999" }),
+      'line-gradient-stop-colors': new fields.StringField({ required: false, blank: true, initial: "#999" }),
       // Linien-Gradient-Positionen
-      lineGradientStopPositions: new fields.StringField({ required: false, blank: true, initial: "0%" }),
+      'line-gradient-stop-positions': new fields.StringField({ required: false, blank: true, initial: "0%" }),
       // Strichmuster für gestrichelte Linien
-      lineDashPattern: new fields.ArrayField(new fields.NumberField(), { required: false, blank: true, initial: [6, 3] }),
+      'line-dash-pattern': new fields.ArrayField(new fields.NumberField(), { required: false, blank: true, initial: [6, 3] }),
       // Strichmuster-Offset
-      lineDashOffset: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'line-dash-offset': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       
       // Kontrollpunkt-Eigenschaften
       // Kontrollpunkt-Abstand in Pixeln
-      controlPointStepSize: new fields.NumberField({ required: false, blank: true, initial: 40 }),
+      'control-point-step-size': new fields.NumberField({ required: false, blank: true, initial: 40 }),
       // Kontrollpunkt-Gewichtung (0-1)
-      controlPointWeights: new fields.NumberField({ required: false, blank: true, initial: 0.5 }),
+      'control-point-weights': new fields.NumberField({ required: false, blank: true, initial: 0.5 }),
       // Segment-Gewichtung (0-1)
-      segmentWeights: new fields.NumberField({ required: false, blank: true, initial: 0.5 }),
+      'segment-weights': new fields.NumberField({ required: false, blank: true, initial: 0.5 }),
       // Segment-Abstände in Pixeln
-      segmentDistances: new fields.NumberField({ required: false, blank: true, initial: 20 }),
+      'segment-distances': new fields.NumberField({ required: false, blank: true, initial: 20 }),
       // Segment-Radien in Pixeln
-      segmentRadii: new fields.NumberField({ required: false, blank: true, initial: 15 }),
+      'segment-radii': new fields.NumberField({ required: false, blank: true, initial: 15 }),
       
       // Kurven- und Routing-Eigenschaften
       // Radius-Typ (arc-radius, arc-radius-2, arc-radius-3)
-      radiusType: new fields.StringField({ required: false, blank: true, initial: "arc-radius" }),
+      'radius-type': new fields.StringField({ required: false, blank: true, initial: "arc-radius" }),
       // Taxi-Kurve (50%, 25%, 75%)
-      taxiTurn: new fields.StringField({ required: false, blank: true, initial: "50%" }),
+      'taxi-turn': new fields.StringField({ required: false, blank: true, initial: "50%" }),
       // Taxi-Radius in Pixeln
-      taxiRadius: new fields.NumberField({ required: false, blank: true, initial: 15 }),
+      'taxi-radius': new fields.NumberField({ required: false, blank: true, initial: 15 }),
       // Minimale Taxi-Kurven-Distanz
-      taxiTurnMinDistance: new fields.NumberField({ required: false, blank: true, initial: 10 }),
+      'taxi-turn-min-distance': new fields.NumberField({ required: false, blank: true, initial: 10 }),
       // Taxi-Richtung (auto, upward, downward, leftward, rightward)
-      taxiDirection: new fields.StringField({ required: false, blank: true, initial: "auto" }),
+      'taxi-direction': new fields.StringField({ required: false, blank: true, initial: "auto" }),
       // Edge-Distanzen (intersection, node-position, 0-1)
-      edgeDistances: new fields.StringField({ required: false, blank: true, initial: "intersection" }),
+      'edge-distances': new fields.StringField({ required: false, blank: true, initial: "intersection" }),
       // Haystack-Radius in Pixeln
-      haystackRadius: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'haystack-radius': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Pfeil-Skalierung (Multiplikator)
-      arrowScale: new fields.NumberField({ required: false, blank: true, initial: 1 }),
+      'arrow-scale': new fields.NumberField({ required: false, blank: true, initial: 1 }),
       
       // Loop-Eigenschaften
       // Loop-Richtung (-45deg, 45deg, 90deg, etc.)
-      loopDirection: new fields.StringField({ required: false, blank: true, initial: "-45deg" }),
+      'loop-direction': new fields.StringField({ required: false, blank: true, initial: "-45deg" }),
       // Loop-Ausrichtung (-90deg, 90deg, 180deg, etc.)
-      loopSweep: new fields.StringField({ required: false, blank: true, initial: "-90deg" }),
+      'loop-sweep': new fields.StringField({ required: false, blank: true, initial: "-90deg" }),
       
       // Endpunkt-Eigenschaften
       // Quell-Distanz vom Node in Pixeln
-      sourceDistanceFromNode: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'source-distance-from-node': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Ziel-Distanz vom Node in Pixeln
-      targetDistanceFromNode: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'target-distance-from-node': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Quell-Endpunkt (outside-to-node, outside-to-line, inside-to-node)
-      sourceEndpoint: new fields.StringField({ required: false, blank: true, initial: "outside-to-node" }),
+      'source-endpoint': new fields.StringField({ required: false, blank: true, initial: "outside-to-node" }),
       // Ziel-Endpunkt (outside-to-node, outside-to-line, inside-to-node)
-      targetEndpoint: new fields.StringField({ required: false, blank: true, initial: "outside-to-node" }),
+      'target-endpoint': new fields.StringField({ required: false, blank: true, initial: "outside-to-node" }),
       
       // Edge-spezifische Text-Eigenschaften
       // Quell-Label (Text am Anfang der Edge)
-      sourceLabel: new fields.StringField({ required: false, blank: true, initial: "" }),
+      'source-label': new fields.StringField({ required: false, blank: true, initial: "" }),
       // Quell-Text-Offset in Pixeln
-      sourceTextOffset: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'source-text-offset': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Quell-Text horizontaler Abstand
-      sourceTextMarginX: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'source-text-margin-x': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Quell-Text vertikaler Abstand
-      sourceTextMarginY: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'source-text-margin-y': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Quell-Text-Rotation (none, autorotate, 45deg, etc.)
-      sourceTextRotation: new fields.StringField({ required: false, blank: true, initial: "none" }),
+      'source-text-rotation': new fields.StringField({ required: false, blank: true, initial: "none" }),
       // Ziel-Label (Text am Ende der Edge)
-      targetLabel: new fields.StringField({ required: false, blank: true, initial: "" }),
+      'target-label': new fields.StringField({ required: false, blank: true, initial: "" }),
       // Ziel-Text-Offset in Pixeln
-      targetTextOffset: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'target-text-offset': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Ziel-Text horizontaler Abstand
-      targetTextMarginX: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'target-text-margin-x': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Ziel-Text vertikaler Abstand
-      targetTextMarginY: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'target-text-margin-y': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Ziel-Text-Rotation (none, autorotate, 45deg, etc.)
-      targetTextRotation: new fields.StringField({ required: false, blank: true, initial: "none" })
+      'target-text-rotation': new fields.StringField({ required: false, blank: true, initial: "none" })
     };
   }
 } 

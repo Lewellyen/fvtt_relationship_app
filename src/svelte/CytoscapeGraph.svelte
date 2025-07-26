@@ -22,61 +22,68 @@
   const height = props.height || '400px';
   const interactive = props.interactive ?? true;
 
-  // Convert props to Cytoscape format
-  function createCytoscapeData() {
-    return {
-      nodes: props.nodes.map((node: NodeData) => ({
-        data: {
-          id: node.id,
-          label: node.label?.value || node.id,
-          x: node.x,
-          y: node.y,
-          type: node.type.value,
-          // Cytoscape-Attribute verwenden
-          ...node.cytoScapeAttributes
-        }
-      })),
-      edges: props.edges.map((edge: EdgeData) => ({
-        data: {
-          id: edge.id,
-          source: edge.source,
-          target: edge.target,
-          label: edge.label?.value || '',
-          type: edge.type,
-          // Cytoscape-Attribute verwenden
-          ...edge.cytoScapeAttributes
-        }
-      }))
-    };
+  // Hilfsfunktion: Konvertiert Snake_case mit Bindestrichen zu Snake_case mit Unterstrichen
+  function convertToCytoscapeData(obj: any): any {
+    if (!obj) return obj;
+    const result: any = {};
+    for (const [key, value] of Object.entries(obj)) {
+      // Konvertiere Bindestriche zu Unterstrichen für Cytoscape data() Syntax
+      const cytoscapeKey = key.replace(/-/g, '_');
+      result[cytoscapeKey] = value;
+    }
+    return result;
   }
 
-  // Cytoscape styles (ohne :hover)
+  // Convert props to Cytoscape format
+  function createCytoscapeData() {
+    // Debug: Ursprüngliche Node-Daten
+    const nodes = props.nodes.map((node: NodeData) => {
+      // Konvertiere Snake_case mit Bindestrichen zu Snake_case mit Unterstrichen
+      const data = {
+        ...convertToCytoscapeData(node.cytoScapeAttributes),
+        id: node.id,
+        label: node.label?.value || node.id,
+        x: node.x,
+        y: node.y,
+      };
+      console.log('Cytoscape Node Data:', data);
+      return { data };
+    });
+    const edges = props.edges.map((edge: EdgeData) => {
+      // Konvertiere Snake_case mit Bindestrichen zu Snake_case mit Unterstrichen
+      const data = {
+        ...convertToCytoscapeData(edge.cytoScapeAttributes),
+        id: edge.id,
+        source: edge.source,
+        target: edge.target,
+        label: edge.label?.value || edge.source + " → " + edge.target,
+      };
+      console.log('Cytoscape Edge Data:', data);
+      return { data };
+    });
+    return { nodes, edges };
+  }
+
+  // Cytoscape styles - korrekte Syntax mit Unterstrichen in data()
   const styles = [
     {
       selector: 'node',
       style: {
-        'background-color': 'data(backgroundColor)',
+        'background-color': 'data(background_color)',
         'label': 'data(label)',
         'color': 'data(color)',
-        'text-valign': 'data(textValign)',
-        'text-halign': 'data(textHalign)',
+        'text-valign': 'data(text_valign)',
+        'text-halign': 'data(text_halign)',
         'width': 'data(width)',
         'height': 'data(height)',
-        'font-size': 'data(fontSize)',
-        'border-width': 'data(borderWidth)',
-        'border-color': 'data(borderColor)',
-        'text-wrap': 'data(textWrap)',
-        'text-max-width': 'data(textMaxWidth)',
-        'text-outline-color': 'data(textOutlineColor)',
-        'text-outline-width': 'data(textOutlineWidth)',
-        'text-outline-opacity': 'data(textOutlineOpacity)',
-        'font-family': 'data(fontFamily)',
-        'font-weight': 'data(fontWeight)',
+        'font-size': 'data(font_size)',
+        'border-width': 'data(border_width)',
+        'border-color': 'data(border_color)',
+        'font-family': 'data(font_family)',
+        'font-weight': 'data(font_weight)',
         'shape': 'data(shape)',
-        'size': 'data(size)',
         'opacity': 'data(opacity)',
         'visibility': 'data(visibility)',
-        'corner-radius': 'data(cornerRadius)',
         'padding': 'data(padding)'
       }
     },
@@ -84,29 +91,14 @@
       selector: 'edge',
       style: {
         'width': 'data(width)',
-        'line-color': 'data(lineColor)',
-        'target-arrow-color': 'data(targetArrowColor)',
-        'target-arrow-shape': 'data(targetArrowShape)',
-        'curve-style': 'data(curveStyle)',
+        'line-color': 'data(line_color)',
+        'target-arrow-color': 'data(target_arrow_color)',
+        'target-arrow-shape': 'data(target_arrow_shape)',
+        'curve-style': 'data(curve_style)',
         'label': 'data(label)',
-        'font-size': 'data(fontSize)',
-        'text-rotation': 'data(textRotation)',
-        'text-margin-y': 'data(textMarginY)',
-        'text-background-color': 'data(textBackgroundColor)',
-        'text-background-opacity': 'data(textBackgroundOpacity)',
-        'text-background-padding': 'data(textBackgroundPadding)',
-        'text-outline-color': 'data(textOutlineColor)',
-        'text-outline-width': 'data(textOutlineWidth)',
-        'text-outline-opacity': 'data(textOutlineOpacity)',
-        'font-family': 'data(fontFamily)',
-        'font-weight': 'data(fontWeight)',
-        'line-opacity': 'data(lineOpacity)',
-        'line-style': 'data(lineStyle)',
-        'line-cap': 'data(lineCap)',
-        'source-arrow-shape': 'data(sourceArrowShape)',
-        'source-arrow-color': 'data(sourceArrowColor)',
-        'source-arrow-width': 'data(sourceArrowWidth)',
-        'source-arrow-fill': 'data(sourceArrowFill)'
+        'text-margin-y': 'data(text_margin_y)',
+        'line-opacity': 'data(line_opacity)',
+        'line-style': 'data(line_style)'
       }
     },
     {
@@ -121,7 +113,7 @@
       selector: 'edge:selected',
       style: {
         'width': 5,
-        'line-color': 'data(lineColor)'
+        'line-color': 'data(line_color)'
       }
     }
   ];
@@ -131,6 +123,8 @@
     if (!cyContainer) return;
 
     const elements = createCytoscapeData();
+    
+
     
     cy = cytoscape({
       container: cyContainer,
