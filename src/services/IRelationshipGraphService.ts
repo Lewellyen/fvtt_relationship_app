@@ -1,8 +1,9 @@
-import type { NodeData, EdgeData } from "../global";
+import type { NodeData, EdgeData, RelationshipGraphData } from "../global";
 
 export interface IRelationshipGraphService {
   getNodes(): NodeData[];
   getEdges(): EdgeData[];
+  getGraph(): RelationshipGraphData;
   getNode(nodeId: string): NodeData | undefined;
   getEdge(edgeId: string): EdgeData | undefined;
   getNodeByLabel(label: string): NodeData | undefined;

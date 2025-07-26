@@ -1,4 +1,4 @@
-import type { NodeData, EdgeData, IDocument } from "../global";
+import type { NodeData, EdgeData, RelationshipGraphData, IDocument } from "../global";
 import type { IRelationshipGraphService } from "./IRelationshipGraphService";
 
 export class RelationshipGraphService implements IRelationshipGraphService {
@@ -17,27 +17,43 @@ export class RelationshipGraphService implements IRelationshipGraphService {
     return [...this.edges];
   }
 
+  getGraph(): RelationshipGraphData {
+    return {
+      name: "Relationship Graph",
+      permissions: { defaultLevel: 0, users: [] },
+      nodes: this.nodes,
+      edges: this.edges
+    };
+  }
+
   getNode(nodeId: string): NodeData | undefined {
     return this.nodes.find((n) => n.id === nodeId);
   }
+  
   getEdge(edgeId: string): EdgeData | undefined {
     return this.edges.find((e) => e.id === edgeId);
   }
+  
   getNodeByLabel(label: string): NodeData | undefined {
-    return this.nodes.find((n) => n.label === label);
+    return this.nodes.find((n) => n.label?.value === label);
   }
+  
   getEdgeByLabel(label: string): EdgeData | undefined {
-    return this.edges.find((e) => e.label === label);
+    return this.edges.find((e) => e.label?.value === label);
   }
+  
   getNodeByType(type: string): NodeData | undefined {
-    return this.nodes.find((n) => n.type === type);
+    return this.nodes.find((n) => n.type.value === type);
   }
+  
   getEdgeByType(type: string): EdgeData | undefined {
     return this.edges.find((e) => e.type === type);
   }
+  
   getNodeById(id: string): NodeData | undefined {
     return this.nodes.find((n) => n.id === id);
   }
+  
   getEdgeById(id: string): EdgeData | undefined {
     return this.edges.find((e) => e.id === id);
   }
@@ -53,12 +69,13 @@ export class RelationshipGraphService implements IRelationshipGraphService {
   }
 
   async addEdge(edge: EdgeData): Promise<void> {
+    const defaultPermissions = { defaultLevel: 0, users: [] };
     const newEdge: EdgeData = {
       ...edge,
       id: edge.id || foundry.utils.randomID(),
-      label: edge.label || `${edge.source} → ${edge.target}`,
+      label: edge.label || { value: `${edge.source} → ${edge.target}`, permissions: defaultPermissions },
       type: edge.type || "relation",
-      color: edge.color || "#000000",
+      globalPermissions: edge.globalPermissions || defaultPermissions,
     }
 
     const existingEdgeIndex = this.edges.findIndex((e) => e.id === newEdge.id);

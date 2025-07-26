@@ -9,7 +9,7 @@
     <h3>Nodes ({nodes.length}):</h3>
     {#each nodes as node}
       <div class="node-item">
-        <strong>{node.label}</strong> ({node.x}, {node.y})
+        <strong>{node.label?.value || node.id}</strong> ({node.x}, {node.y})
       </div>
     {/each}
   </div>
@@ -18,10 +18,10 @@
     <h3>Edges ({edges.length}):</h3>
     {#each edges as edge}
       <div class="edge-item">
-        <strong>{nodes.find(n => n.id === edge.source)?.label || edge.source}</strong>
+        <strong>{nodes.find(n => n.id === edge.source)?.label?.value || edge.source}</strong>
         →
-        <strong>{nodes.find(n => n.id === edge.target)?.label || edge.target}</strong>
-        ({edge.label})
+        <strong>{nodes.find(n => n.id === edge.target)?.label?.value || edge.target}</strong>
+        ({edge.label?.value || 'No Label'})
       </div>
     {/each}
   </div>

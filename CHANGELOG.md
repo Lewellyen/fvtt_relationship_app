@@ -10,6 +10,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 ### Fehlerbehebungen
 
+## [0.7.0] - 2025-07-26
+### Hinzugefügt
+- Keine Einträge
+
+### Geändert
+- DataModels erweitert
+
+### Fehlerbehebungen
+- Keine Einträge
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.6.0] - 2025-07-25
 ### Hinzugefügt
 - To-Do hinzugefügt.

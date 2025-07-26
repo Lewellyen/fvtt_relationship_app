@@ -4,7 +4,7 @@ import { mount, unmount } from "svelte";
 import { ServiceManager } from "../services/ServiceManager";
 import { SERVICE_IDENTIFIERS } from "../services/IServiceFactory";
 import type { IRelationshipGraphService } from "../services/IRelationshipGraphService";
-import type { IDocument } from "../global";
+import type { IDocument, RelationshipGraphData } from "../global";
 
 /**
  * V2 JournalEntryPageSheet subclass drawing a simple relationship graph.
@@ -109,22 +109,14 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
 
     // Demo-Daten falls leer
     if (service.getNodes().length === 0) {
-      await service.addNode({ id: foundry.utils.randomID(), x: 150, y: 200, label: "Bauer", type: "person", color: "#ff0000" });
-      await service.addNode({ id: foundry.utils.randomID(), x: 450, y: 200, label: "Müller", type: "person", color: "#00ff00" });
-      await service.addEdge({
-        id: foundry.utils.randomID(),
-        source: service.getNodeByLabel("Bauer")?.id ?? "",
-        target: service.getNodeByLabel("Müller")?.id ?? "",
-        label: "Weizen",
-        type: "trade",
-        color: "#0000ff",
-      });
+      this.createDemoData();
     }
 
     // ✅ Direkt vom Service holen
     this.svelteApp = mount((this as any).isView ? RelationshipGraphView : RelationshipGraphEdit, {
       target,
       props: {
+        graph: service.getGraph() as RelationshipGraphData,
         nodes: service.getNodes(),
         edges: service.getEdges(),
       },
@@ -138,5 +130,37 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
       this.svelteApp = null;
     }
     return super._onClose(options);
+  }
+
+  createDemoData() {
+    const service = this.getGraphService();
+    const defaultPermissions = { defaultLevel: 0, users: [] };
+    
+    service.addNode({ 
+      id: foundry.utils.randomID(), 
+      x: 150, 
+      y: 200, 
+      label: { value: "Bauer", permissions: defaultPermissions }, 
+      type: { value: "person", permissions: defaultPermissions }, 
+      globalPermissions: defaultPermissions
+    });
+    
+    service.addNode({ 
+      id: foundry.utils.randomID(), 
+      x: 450, 
+      y: 200, 
+      label: { value: "Müller", permissions: defaultPermissions }, 
+      type: { value: "person", permissions: defaultPermissions }, 
+      globalPermissions: defaultPermissions
+    });
+    
+    service.addEdge({
+      id: foundry.utils.randomID(),
+      source: service.getNodeByLabel("Bauer")?.id ?? "",
+      target: service.getNodeByLabel("Müller")?.id ?? "",
+      label: { value: "Weizen", permissions: defaultPermissions },
+      type: "trade",
+      globalPermissions: defaultPermissions
+    });
   }
 }

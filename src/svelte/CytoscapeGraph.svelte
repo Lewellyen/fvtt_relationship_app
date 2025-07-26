@@ -26,10 +26,26 @@
   function createCytoscapeData() {
     return {
       nodes: props.nodes.map((node: NodeData) => ({
-        data: node
+        data: {
+          id: node.id,
+          label: node.label?.value || node.id,
+          x: node.x,
+          y: node.y,
+          type: node.type.value,
+          // Cytoscape-Attribute verwenden
+          ...node.cytoScapeAttributes
+        }
       })),
       edges: props.edges.map((edge: EdgeData) => ({
-        data: edge
+        data: {
+          id: edge.id,
+          source: edge.source,
+          target: edge.target,
+          label: edge.label?.value || '',
+          type: edge.type,
+          // Cytoscape-Attribute verwenden
+          ...edge.cytoScapeAttributes
+        }
       }))
     };
   }
@@ -39,47 +55,58 @@
     {
       selector: 'node',
       style: {
-        'background-color': '#4a90e2',
+        'background-color': 'data(backgroundColor)',
         'label': 'data(label)',
         'color': 'data(color)',
-        'text-valign': 'center',
-        'text-halign': 'center',
-        'width': 60,
-        'height': 60,
-        'font-size': '12px',
-        'border-width': 2,
-        'border-color': '#2c3e50',
-        'text-wrap': 'wrap',
-        'text-max-width': 50,
-        // Fix für matschige Labels bei Zoom
-        'text-outline-color': '#2c3e50',
-        'text-outline-width': 1,
-        'text-outline-opacity': 0.8,
-        'font-family': 'Arial, sans-serif',
-        'font-weight': 'bold'
+        'text-valign': 'data(textValign)',
+        'text-halign': 'data(textHalign)',
+        'width': 'data(width)',
+        'height': 'data(height)',
+        'font-size': 'data(fontSize)',
+        'border-width': 'data(borderWidth)',
+        'border-color': 'data(borderColor)',
+        'text-wrap': 'data(textWrap)',
+        'text-max-width': 'data(textMaxWidth)',
+        'text-outline-color': 'data(textOutlineColor)',
+        'text-outline-width': 'data(textOutlineWidth)',
+        'text-outline-opacity': 'data(textOutlineOpacity)',
+        'font-family': 'data(fontFamily)',
+        'font-weight': 'data(fontWeight)',
+        'shape': 'data(shape)',
+        'size': 'data(size)',
+        'opacity': 'data(opacity)',
+        'visibility': 'data(visibility)',
+        'corner-radius': 'data(cornerRadius)',
+        'padding': 'data(padding)'
       }
     },
     {
       selector: 'edge',
       style: {
-        'width': 3,
-        'line-color': 'data(color)',
-        'target-arrow-color': 'data(color)',
-        'target-arrow-shape': 'triangle',
-        'curve-style': 'bezier',
+        'width': 'data(width)',
+        'line-color': 'data(lineColor)',
+        'target-arrow-color': 'data(targetArrowColor)',
+        'target-arrow-shape': 'data(targetArrowShape)',
+        'curve-style': 'data(curveStyle)',
         'label': 'data(label)',
-        'font-size': '10px',
-        'text-rotation': 'autorotate',
-        'text-margin-y': '-10px',
-        'text-background-color': '#fff',
-        'text-background-opacity': 0.8,
-        'text-background-padding': '2px',
-        // Fix für matschige Edge-Labels bei Zoom
-        'text-outline-color': '#34495e',
-        'text-outline-width': 0.5,
-        'text-outline-opacity': 0.6,
-        'font-family': 'Arial, sans-serif',
-        'font-weight': 'bold'
+        'font-size': 'data(fontSize)',
+        'text-rotation': 'data(textRotation)',
+        'text-margin-y': 'data(textMarginY)',
+        'text-background-color': 'data(textBackgroundColor)',
+        'text-background-opacity': 'data(textBackgroundOpacity)',
+        'text-background-padding': 'data(textBackgroundPadding)',
+        'text-outline-color': 'data(textOutlineColor)',
+        'text-outline-width': 'data(textOutlineWidth)',
+        'text-outline-opacity': 'data(textOutlineOpacity)',
+        'font-family': 'data(fontFamily)',
+        'font-weight': 'data(fontWeight)',
+        'line-opacity': 'data(lineOpacity)',
+        'line-style': 'data(lineStyle)',
+        'line-cap': 'data(lineCap)',
+        'source-arrow-shape': 'data(sourceArrowShape)',
+        'source-arrow-color': 'data(sourceArrowColor)',
+        'source-arrow-width': 'data(sourceArrowWidth)',
+        'source-arrow-fill': 'data(sourceArrowFill)'
       }
     },
     {
@@ -94,7 +121,7 @@
       selector: 'edge:selected',
       style: {
         'width': 5,
-        'line-color': 'data(color)'
+        'line-color': 'data(lineColor)'
       }
     }
   ];
