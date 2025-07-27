@@ -1,6 +1,6 @@
 const fields = foundry.data.fields;
 
-export class PermissionsModel extends foundry.abstract.TypeDataModel<any, any, any, any> {
+export class PermissionsModel extends foundry.abstract.DataModel<any, any, any> {
   static defineSchema() {
     return {
       defaultLevel: new fields.NumberField({ required: true, blank: false, initial: 0 }),

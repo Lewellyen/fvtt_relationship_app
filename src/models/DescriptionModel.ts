@@ -1,7 +1,7 @@
 const fields = foundry.data.fields;
 import { PermissionsModel } from "./PermissionsModel";
 
-export class DescriptionModel extends foundry.abstract.TypeDataModel<any, any, any, any> {
+export class DescriptionModel extends foundry.abstract.DataModel<any, any, any> {
   static defineSchema() {
     return {
       text: new fields.HTMLField({ required: true, blank: false, initial: "" }),

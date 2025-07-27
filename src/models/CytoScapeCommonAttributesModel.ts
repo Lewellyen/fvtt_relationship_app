@@ -1,14 +1,14 @@
 const fields = foundry.data.fields;
 
-// Gemeinsames Schema für Nodes und Edges
-export class CytoScapeCommonAttributesModel extends foundry.abstract.TypeDataModel<any, any, any, any> {
+// Gemeinsames Schema für Nodes und Edges mit Snake_case für 1:1 Cytoscape-Kompatibilität
+export class CytoScapeCommonAttributesModel extends foundry.abstract.DataModel<any, any, any> {
   static defineSchema() {
     return {
       // ERFORDERLICHE FELDER (required: true)
       // Textfarbe (erforderlich)
-      color: new fields.ColorField({ required: true, blank: false }),
-      
-      // OPTIONALE FELDER (required: false)
+      color: new fields.ColorField({ required: true, blank: false, initial: "#000" }),
+
+      // OPTIONALE FELDER (required: false) - Alle in Snake_case
       // Sichtbarkeit und Interaktion
       // Transparenz des Elements (0-1)
       opacity: new fields.NumberField({ required: false, blank: true, initial: 1 }),
@@ -17,117 +17,149 @@ export class CytoScapeCommonAttributesModel extends foundry.abstract.TypeDataMod
       // Event-Handling aktivieren (yes, no)
       events: new fields.StringField({ required: false, blank: true, initial: "yes" }),
       // Text-Event-Handling (yes, no)
-      textEvents: new fields.StringField({ required: false, blank: true, initial: "no" }),
-      
+      'text-events': new fields.StringField({ required: false, blank: true, initial: "no" }),
+
       // Text/Label-Eigenschaften
       // Hauptlabel/Text des Elements
       label: new fields.StringField({ required: false, blank: true, initial: "" }),
       // Schriftgröße in Pixeln
-      fontSize: new fields.NumberField({ required: false, blank: true, initial: 16 }),
+      'font-size': new fields.NumberField({ required: false, blank: true, initial: 16 }),
       // Schriftart
-      fontFamily: new fields.StringField({ required: false, blank: true, initial: "Helvetica Neue, Helvetica, sans-serif" }),
+      'font-family': new fields.StringField({
+        required: false,
+        blank: true,
+        initial: "Helvetica Neue, Helvetica, sans-serif",
+      }),
       // Schriftstärke (normal, bold, etc.)
-      fontWeight: new fields.StringField({ required: false, blank: true, initial: "normal" }),
+      'font-weight': new fields.StringField({ required: false, blank: true, initial: "normal" }),
       // Schriftstil (normal, italic)
-      fontStyle: new fields.StringField({ required: false, blank: true, initial: "normal" }),
+      'font-style': new fields.StringField({ required: false, blank: true, initial: "normal" }),
       // Vertikale Textausrichtung (top, center, bottom)
-      textValign: new fields.StringField({ required: false, blank: true, initial: "top" }),
+      'text-valign': new fields.StringField({ required: false, blank: true, initial: "top" }),
       // Horizontale Textausrichtung (left, center, right)
-      textHalign: new fields.StringField({ required: false, blank: true, initial: "center" }),
+      'text-halign': new fields.StringField({ required: false, blank: true, initial: "center" }),
       // Textausrichtung (auto, left, center, right)
-      textJustification: new fields.StringField({ required: false, blank: true, initial: "auto" }),
+      'text-justification': new fields.StringField({ required: false, blank: true, initial: "auto" }),
       // Textumbruch (none, wrap)
-      textWrap: new fields.StringField({ required: false, blank: true, initial: "none" }),
+      'text-wrap': new fields.StringField({ required: false, blank: true, initial: "none" }),
       // Textüberlauf (whitespace, anywhere)
-      textOverflowWrap: new fields.StringField({ required: false, blank: true, initial: "whitespace" }),
+      'text-overflow-wrap': new fields.StringField({
+        required: false,
+        blank: true,
+        initial: "whitespace",
+      }),
       // Maximale Textbreite in Pixeln
-      textMaxWidth: new fields.NumberField({ required: false, blank: true, initial: 9999 }),
+      'text-max-width': new fields.NumberField({ required: false, blank: true, initial: 9999 }),
       // Text-Rotation (none, autorotate, 45deg, etc.)
-      textRotation: new fields.StringField({ required: false, blank: true, initial: "none" }),
+      'text-rotation': new fields.StringField({ required: false, blank: true, initial: "none" }),
       // Horizontaler Text-Abstand
-      textMarginX: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'text-margin-x': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Vertikaler Text-Abstand
-      textMarginY: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'text-margin-y': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Zeilenhöhe (Multiplikator)
-      lineHeight: new fields.NumberField({ required: false, blank: true, initial: 1 }),
+      'line-height': new fields.NumberField({ required: false, blank: true, initial: 1 }),
       // Anzeige (element, none)
       display: new fields.StringField({ required: false, blank: true, initial: "element" }),
       // Textumrissfarbe
-      textOutlineColor: new fields.ColorField({ required: false, blank: true, initial: "#000" }),
+      'text-outline-color': new fields.ColorField({ required: false, blank: true, initial: "#000" }),
       // Textumrissbreite
-      textOutlineWidth: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'text-outline-width': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Textumriss-Transparenz
-      textOutlineOpacity: new fields.NumberField({ required: false, blank: true, initial: 1 }),
+      'text-outline-opacity': new fields.NumberField({ required: false, blank: true, initial: 1 }),
       // Text-Transparenz
-      textOpacity: new fields.NumberField({ required: false, blank: true, initial: 1 }),
+      'text-opacity': new fields.NumberField({ required: false, blank: true, initial: 1 }),
       // Text-Dekoration (none, underline, etc.)
-      textDecoration: new fields.StringField({ required: false, blank: true, initial: "none" }),
+      'text-decoration': new fields.StringField({ required: false, blank: true, initial: "none" }),
       // Text-Transformation (none, uppercase, lowercase)
-      textTransform: new fields.StringField({ required: false, blank: true, initial: "none" }),
+      'text-transform': new fields.StringField({ required: false, blank: true, initial: "none" }),
       // Text-Hintergrundfarbe
-      textBackgroundColor: new fields.ColorField({ required: false, blank: true, initial: "#000" }),
+      'text-background-color': new fields.ColorField({ required: false, blank: true, initial: "#000" }),
       // Text-Hintergrund-Transparenz
-      textBackgroundOpacity: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'text-background-opacity': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Text-Hintergrund-Form (rectangle, roundrectangle)
-      textBackgroundShape: new fields.StringField({ required: false, blank: true, initial: "rectangle" }),
+      'text-background-shape': new fields.StringField({
+        required: false,
+        blank: true,
+        initial: "rectangle",
+      }),
       // Text-Hintergrund-Abstand
-      textBackgroundPadding: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'text-background-padding': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Text-Rahmenfarbe
-      textBorderColor: new fields.ColorField({ required: false, blank: true, initial: "#000" }),
+      'text-border-color': new fields.ColorField({ required: false, blank: true, initial: "#000" }),
       // Text-Rahmenbreite
-      textBorderWidth: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'text-border-width': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Text-Rahmenstil (solid, dashed, etc.)
-      textBorderStyle: new fields.StringField({ required: false, blank: true, initial: "solid" }),
+      'text-border-style': new fields.StringField({ required: false, blank: true, initial: "solid" }),
       // Text-Rahmen-Transparenz
-      textBorderOpacity: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'text-border-opacity': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Minimale Schriftgröße beim Zoomen
-      minZoomedFontSize: new fields.NumberField({ required: false, blank: true, initial: 0 }),
-      
+      'min-zoomed-font-size': new fields.NumberField({ required: false, blank: true, initial: 0 }),
+
       // Überlagereffekte
       // Überlagerungsfarbe
-      overlayColor: new fields.ColorField({ required: false, blank: true, initial: "#000" }),
+      'overlay-color': new fields.ColorField({ required: false, blank: true, initial: "#000" }),
       // Überlagerungs-Transparenz
-      overlayOpacity: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'overlay-opacity': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Überlagerungs-Abstand
-      overlayPadding: new fields.NumberField({ required: false, blank: true, initial: 10 }),
+      'overlay-padding': new fields.NumberField({ required: false, blank: true, initial: 10 }),
       // Überlagerungs-Form (roundrectangle, rectangle, etc.)
-      overlayShape: new fields.StringField({ required: false, blank: true, initial: "roundrectangle" }),
+      'overlay-shape': new fields.StringField({
+        required: false,
+        blank: true,
+        initial: "roundrectangle",
+      }),
       // Überlagerungs-Eckenrundung
-      overlayCornerRadius: new fields.StringField({ required: false, blank: true, initial: "auto" }),
-      
+      'overlay-corner-radius': new fields.StringField({
+        required: false,
+        blank: true,
+        initial: "auto",
+      }),
+
       // Unterlagereffekte
       // Unterlagerungsfarbe
-      underlayColor: new fields.ColorField({ required: false, blank: true, initial: "#000" }),
+      'underlay-color': new fields.ColorField({ required: false, blank: true, initial: "#000" }),
       // Unterlagerungs-Transparenz
-      underlayOpacity: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'underlay-opacity': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Unterlagerungs-Abstand
-      underlayPadding: new fields.NumberField({ required: false, blank: true, initial: 10 }),
+      'underlay-padding': new fields.NumberField({ required: false, blank: true, initial: 10 }),
       // Unterlagerungs-Form
-      underlayShape: new fields.StringField({ required: false, blank: true, initial: "roundrectangle" }),
+      'underlay-shape': new fields.StringField({
+        required: false,
+        blank: true,
+        initial: "roundrectangle",
+      }),
       // Unterlagerungs-Eckenrundung
-      underlayCornerRadius: new fields.StringField({ required: false, blank: true, initial: "auto" }),
-      
+      'underlay-corner-radius': new fields.StringField({
+        required: false,
+        blank: true,
+        initial: "auto",
+      }),
+
       // Animation und Übergänge
       // Übergangseigenschaft (all, none, specific properties)
-      transitionProperty: new fields.StringField({ required: false, blank: true, initial: "none" }),
+      'transition-property': new fields.StringField({ required: false, blank: true, initial: "none" }),
       // Übergangsdauer in Sekunden
-      transitionDuration: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'transition-duration': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Übergangsverzögerung in Sekunden
-      transitionDelay: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'transition-delay': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Übergangs-Timing-Funktion (linear, ease, etc.)
-      transitionTimingFunction: new fields.StringField({ required: false, blank: true, initial: "linear" }),
-      
+      'transition-timing-function': new fields.StringField({
+        required: false,
+        blank: true,
+        initial: "linear",
+      }),
+
       // Z-Index und Stapelreihenfolge
       // Z-Index für Stapelreihenfolge
-      zIndex: new fields.NumberField({ required: false, blank: true, initial: 0 }),
+      'z-index': new fields.NumberField({ required: false, blank: true, initial: 0 }),
       // Z-Verbund-Tiefe (auto, top, bottom)
-      zCompoundDepth: new fields.StringField({ required: false, blank: true, initial: "auto" }),
+      'z-compound-depth': new fields.StringField({ required: false, blank: true, initial: "auto" }),
       // Z-Index-Vergleich (auto, manual)
-      zIndexCompare: new fields.StringField({ required: false, blank: true, initial: "auto" }),
-      
+      'z-index-compare': new fields.StringField({ required: false, blank: true, initial: "auto" }),
+
       // Selektion und Interaktion
       // Label-Selektion bei Box-Select (yes, no)
-      boxSelectLabels: new fields.StringField({ required: false, blank: true, initial: "no" })
+      'box-select-labels': new fields.StringField({ required: false, blank: true, initial: "no" }),
     };
   }
-} 
+}

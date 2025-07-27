@@ -5,7 +5,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   "use strict";
   var _a;
   var __vite_style__ = document.createElement("style");
-  __vite_style__.textContent = "\r\n  .info-panel.svelte-2t3t4k {\r\n    display: flex;\r\n    gap: 2rem;\r\n    margin-top: 1rem;\r\n  }\r\n  .nodes-info.svelte-2t3t4k, .edges-info.svelte-2t3t4k {\r\n    flex: 1;\r\n  }\r\n  .node-item.svelte-2t3t4k, .edge-item.svelte-2t3t4k {\r\n    margin-bottom: 0.25rem;\r\n  }\r\n\r\n  .relationship-graph-container.svelte-o6tj79 {\r\n    padding: 1rem;\r\n    border-radius: 8px;\r\n    margin: 1rem;\r\n  }\r\n\r\n  .info-panel-wrapper.svelte-o6tj79 {\r\n    flex: 1;\r\n    margin-bottom: 1rem;\r\n  }\r\n\r\n  .cytoscape-graph-container.svelte-yi65y3 {\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 8px;\r\n    overflow: hidden;\r\n    background: #f8f9fa;\r\n  }\r\n\r\n  .cytoscape-container.svelte-yi65y3 {\r\n    width: 100%;\r\n    height: 100%;\r\n  }\r\n\r\n  .relationship-graph-view.svelte-1e6kfk1 {\r\n    padding: 1rem;\r\n    height: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n  }\r\n\r\n  .cytoscape-wrapper.svelte-1e6kfk1 {\r\n    flex: 1;\r\n    margin-bottom: 1rem;\r\n  }\r\n\r\n  .info-panel-wrapper.svelte-1e6kfk1 {\r\n    flex: 1;\r\n    margin-bottom: 1rem;\r\n  }\r\n/*$vite$:1*/";
+  __vite_style__.textContent = '\r\n  .info-panel.svelte-2t3t4k {\r\n    display: flex;\r\n    gap: 2rem;\r\n    margin-top: 1rem;\r\n  }\r\n  .nodes-info.svelte-2t3t4k, .edges-info.svelte-2t3t4k {\r\n    flex: 1;\r\n  }\r\n  .node-item.svelte-2t3t4k, .edge-item.svelte-2t3t4k {\r\n    margin-bottom: 0.25rem;\r\n  }\r\n\r\n  .cytoscape-graph-container.svelte-yi65y3 {\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 8px;\r\n    overflow: hidden;\r\n    background: #f8f9fa;\r\n  }\r\n\r\n  .cytoscape-container.svelte-yi65y3 {\r\n    width: 100%;\r\n    height: 100%;\r\n  }\r\n\r\n  .graph-canvas.svelte-b2vful {\r\n    position: relative;\r\n    background: #f8f9fa;\r\n    border-radius: 4px;\r\n    overflow: hidden;\r\n    cursor: default;\r\n  }\r\n\r\n  /* Canvas Overlay */\r\n  .canvas-overlay.svelte-b2vful {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    pointer-events: none;\r\n    z-index: 10;\r\n  }\r\n\r\n  /* Zoom Controls */\r\n  .zoom-controls.svelte-b2vful {\r\n    position: absolute;\r\n    top: 1rem;\r\n    right: 1rem;\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 0.25rem;\r\n    pointer-events: auto;\r\n  }\r\n\r\n  .zoom-btn.svelte-b2vful {\r\n    width: 32px;\r\n    height: 32px;\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 4px;\r\n    background: white;\r\n    color: #495057;\r\n    cursor: pointer;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    transition: all 0.2s;\r\n    box-shadow: 0 2px 4px rgba(0,0,0,0.1);\r\n  }\r\n\r\n  .zoom-btn.svelte-b2vful:hover {\r\n    background: #f8f9fa;\r\n    border-color: #adb5bd;\r\n  }\r\n\r\n  .zoom-btn.svelte-b2vful:active {\r\n    background: #e9ecef;\r\n  }\r\n\r\n  /* Selection Info */\r\n  .selection-info.svelte-b2vful {\r\n    position: absolute;\r\n    bottom: 1rem;\r\n    left: 1rem;\r\n    background: rgba(0, 0, 0, 0.7);\r\n    color: white;\r\n    padding: 0.5rem 0.75rem;\r\n    border-radius: 4px;\r\n    font-size: 0.875rem;\r\n    pointer-events: auto;\r\n  }\r\n\r\n  .selection-info.hidden.svelte-b2vful {\r\n    display: none;\r\n  }\r\n\r\n  .selection-text.svelte-b2vful {\r\n    font-weight: 500;\r\n  }\r\n\r\n  .selected-item.svelte-b2vful {\r\n    color: #3498db;\r\n    font-weight: 600;\r\n  }\r\n\r\n  /* Loading Indicator */\r\n  .loading-indicator.svelte-b2vful {\r\n    position: absolute;\r\n    top: 50%;\r\n    left: 50%;\r\n    transform: translate(-50%, -50%);\r\n    background: rgba(0, 0, 0, 0.8);\r\n    color: white;\r\n    padding: 1rem 1.5rem;\r\n    border-radius: 8px;\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.75rem;\r\n    pointer-events: auto;\r\n  }\r\n\r\n  .loading-indicator.hidden.svelte-b2vful {\r\n    display: none;\r\n  }\r\n\r\n  .spinner.svelte-b2vful {\r\n    width: 16px;\r\n    height: 16px;\r\n    border: 2px solid transparent;\r\n    border-top: 2px solid white;\r\n    border-radius: 50%;\r\n    animation: svelte-b2vful-spin 1s linear infinite;\r\n  }\r\n\r\n  @keyframes svelte-b2vful-spin {\r\n    0% { transform: rotate(0deg); }\r\n    100% { transform: rotate(360deg); }\r\n  }\r\n\r\n  /* Add Edge Mode Indicator */\r\n  .add-edge-mode-indicator.svelte-b2vful {\r\n    position: absolute;\r\n    top: 1rem;\r\n    left: 1rem;\r\n    background: rgba(0, 123, 255, 0.9);\r\n    color: white;\r\n    padding: 0.75rem 1rem;\r\n    border-radius: 8px;\r\n    font-size: 0.875rem;\r\n    pointer-events: auto;\r\n    box-shadow: 0 4px 8px rgba(0,0,0,0.2);\r\n    z-index: 20;\r\n  }\r\n\r\n  .mode-badge.svelte-b2vful {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    font-weight: 600;\r\n    margin-bottom: 0.5rem;\r\n  }\r\n\r\n  .mode-badge.svelte-b2vful i:where(.svelte-b2vful) {\r\n    font-size: 1rem;\r\n  }\r\n\r\n  .source-node-info.svelte-b2vful {\r\n    font-size: 0.8rem;\r\n    opacity: 0.9;\r\n  }\r\n\r\n  /* Responsive */\r\n  @media (max-width: 768px) {\r\n    .zoom-controls.svelte-b2vful {\r\n      top: 0.5rem;\r\n      right: 0.5rem;\r\n    }\r\n\r\n    .zoom-btn.svelte-b2vful {\r\n      width: 28px;\r\n      height: 28px;\r\n    }\r\n\r\n    .selection-info.svelte-b2vful {\r\n      bottom: 0.5rem;\r\n      left: 0.5rem;\r\n      font-size: 0.75rem;\r\n    }\r\n  }\r\n\r\n  .graph-toolbar.svelte-16e34wr {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    padding: 0.75rem 1rem;\r\n    background: white;\r\n    border-bottom: 1px solid #dee2e6;\r\n    box-shadow: 0 2px 4px rgba(0,0,0,0.1);\r\n    gap: 1rem;\r\n  }\r\n\r\n  .toolbar-section.svelte-16e34wr {\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    align-items: center;\r\n  }\r\n\r\n  /* Buttons */\r\n  .btn.svelte-16e34wr {\r\n    display: inline-flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    padding: 0.5rem 1rem;\r\n    border: 1px solid transparent;\r\n    border-radius: 4px;\r\n    font-size: 0.875rem;\r\n    font-weight: 500;\r\n    cursor: pointer;\r\n    transition: all 0.2s;\r\n    text-decoration: none;\r\n    white-space: nowrap;\r\n  }\r\n\r\n  .btn.svelte-16e34wr:disabled {\r\n    opacity: 0.5;\r\n    cursor: not-allowed;\r\n  }\r\n\r\n  .btn-primary.svelte-16e34wr {\r\n    background-color: #007bff;\r\n    color: white;\r\n    border-color: #007bff;\r\n  }\r\n\r\n  .btn-primary.svelte-16e34wr:hover:not(:disabled) {\r\n    background-color: #0056b3;\r\n    border-color: #0056b3;\r\n  }\r\n\r\n  .btn-secondary.svelte-16e34wr {\r\n    background-color: #6c757d;\r\n    color: white;\r\n    border-color: #6c757d;\r\n  }\r\n\r\n  .btn-secondary.svelte-16e34wr:hover:not(:disabled) {\r\n    background-color: #545b62;\r\n    border-color: #545b62;\r\n  }\r\n\r\n  .btn-success.svelte-16e34wr {\r\n    background-color: #28a745;\r\n    color: white;\r\n    border-color: #28a745;\r\n  }\r\n\r\n  .btn-success.svelte-16e34wr:hover:not(:disabled) {\r\n    background-color: #1e7e34;\r\n    border-color: #1e7e34;\r\n  }\r\n\r\n  .btn-danger.svelte-16e34wr {\r\n    background-color: #dc3545;\r\n    color: white;\r\n    border-color: #dc3545;\r\n  }\r\n\r\n  .btn-danger.svelte-16e34wr:hover:not(:disabled) {\r\n    background-color: #c82333;\r\n    border-color: #c82333;\r\n  }\r\n\r\n  .btn-info.svelte-16e34wr {\r\n    background-color: #17a2b8;\r\n    color: white;\r\n    border-color: #17a2b8;\r\n  }\r\n\r\n  .btn-info.svelte-16e34wr:hover:not(:disabled) {\r\n    background-color: #138496;\r\n    border-color: #138496;\r\n  }\r\n\r\n  .btn-outline.svelte-16e34wr {\r\n    background-color: transparent;\r\n    color: #007bff;\r\n    border-color: #007bff;\r\n  }\r\n\r\n  .btn-outline.svelte-16e34wr:hover:not(:disabled) {\r\n    background-color: #007bff;\r\n    color: white;\r\n  }\r\n\r\n  /* Dropdown */\r\n  .dropdown.svelte-16e34wr {\r\n    position: relative;\r\n    display: inline-block;\r\n  }\r\n\r\n  .dropdown-toggle.svelte-16e34wr {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n  }\r\n\r\n  .dropdown-menu.svelte-16e34wr {\r\n    position: absolute;\r\n    top: 100%;\r\n    right: 0;\r\n    z-index: 1000;\r\n    display: none;\r\n    min-width: 160px;\r\n    padding: 0.5rem 0;\r\n    margin: 0.125rem 0 0;\r\n    background-color: white;\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 4px;\r\n    box-shadow: 0 2px 8px rgba(0,0,0,0.15);\r\n  }\r\n\r\n  .dropdown.svelte-16e34wr:hover .dropdown-menu:where(.svelte-16e34wr) {\r\n    display: block;\r\n  }\r\n\r\n  .dropdown-item.svelte-16e34wr {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    width: 100%;\r\n    padding: 0.5rem 1rem;\r\n    border: none;\r\n    background: none;\r\n    color: #495057;\r\n    font-size: 0.875rem;\r\n    cursor: pointer;\r\n    transition: background-color 0.2s;\r\n  }\r\n\r\n  .dropdown-item.svelte-16e34wr:hover {\r\n    background-color: #f8f9fa;\r\n  }\r\n\r\n  /* Responsive */\r\n  @media (max-width: 768px) {\r\n    .btn-text.svelte-16e34wr {\r\n      display: none;\r\n    }\r\n    \r\n    .btn.svelte-16e34wr {\r\n      padding: 0.5rem;\r\n    }\r\n    \r\n    .toolbar-section.svelte-16e34wr {\r\n      gap: 0.25rem;\r\n    }\r\n  }\r\n\r\n  .sidebar-panel.svelte-pfq4up {\r\n    display: flex;\r\n    flex-direction: column;\r\n    height: 100%;\r\n    background: white;\r\n    border-right: 1px solid #dee2e6;\r\n  }\r\n\r\n  /* Search Bar */\r\n  .search-bar.svelte-pfq4up {\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    padding: 1rem;\r\n    border-bottom: 1px solid #dee2e6;\r\n  }\r\n\r\n  .search-input-wrapper.svelte-pfq4up {\r\n    position: relative;\r\n    flex: 1;\r\n  }\r\n\r\n  .search-icon.svelte-pfq4up {\r\n    position: absolute;\r\n    left: 0.75rem;\r\n    top: 50%;\r\n    transform: translateY(-50%);\r\n    color: #6c757d;\r\n    font-size: 0.875rem;\r\n  }\r\n\r\n  .search-input.svelte-pfq4up {\r\n    width: 100%;\r\n    padding: 0.5rem 0.75rem 0.5rem 2rem;\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 4px;\r\n    font-size: 0.875rem;\r\n    outline: none;\r\n    transition: border-color 0.2s;\r\n  }\r\n\r\n  .search-input.svelte-pfq4up:focus {\r\n    border-color: #007bff;\r\n  }\r\n\r\n  .clear-search.svelte-pfq4up {\r\n    position: absolute;\r\n    right: 0.5rem;\r\n    top: 50%;\r\n    transform: translateY(-50%);\r\n    background: none;\r\n    border: none;\r\n    color: #6c757d;\r\n    cursor: pointer;\r\n    padding: 0.25rem;\r\n    border-radius: 50%;\r\n    transition: background-color 0.2s;\r\n  }\r\n\r\n  .clear-search.svelte-pfq4up:hover {\r\n    background-color: #f8f9fa;\r\n  }\r\n\r\n  .filter-btn.svelte-pfq4up {\r\n    padding: 0.5rem;\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 4px;\r\n    background: white;\r\n    color: #6c757d;\r\n    cursor: pointer;\r\n    transition: all 0.2s;\r\n  }\r\n\r\n  .filter-btn.svelte-pfq4up:hover {\r\n    background-color: #f8f9fa;\r\n  }\r\n\r\n  .filter-btn.active.svelte-pfq4up {\r\n    background-color: #007bff;\r\n    color: white;\r\n    border-color: #007bff;\r\n  }\r\n\r\n  /* Tab Navigation */\r\n  .tab-navigation.svelte-pfq4up {\r\n    display: flex;\r\n    border-bottom: 1px solid #dee2e6;\r\n  }\r\n\r\n  .tab-btn.svelte-pfq4up {\r\n    flex: 1;\r\n    padding: 0.75rem;\r\n    border: none;\r\n    background: none;\r\n    color: #6c757d;\r\n    cursor: pointer;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    gap: 0.5rem;\r\n    font-size: 0.875rem;\r\n    font-weight: 500;\r\n    transition: all 0.2s;\r\n  }\r\n\r\n  .tab-btn.svelte-pfq4up:hover {\r\n    background-color: #f8f9fa;\r\n  }\r\n\r\n  .tab-btn.active.svelte-pfq4up {\r\n    color: #007bff;\r\n    border-bottom: 2px solid #007bff;\r\n    background-color: #f8f9fa;\r\n  }\r\n\r\n  /* Content Area */\r\n  .content-area.svelte-pfq4up {\r\n    flex: 1;\r\n    overflow-y: auto;\r\n  }\r\n\r\n  .section-header.svelte-pfq4up {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    padding: 1rem;\r\n    border-bottom: 1px solid #dee2e6;\r\n  }\r\n\r\n  .section-header.svelte-pfq4up h3:where(.svelte-pfq4up) {\r\n    margin: 0;\r\n    font-size: 1rem;\r\n    font-weight: 600;\r\n    color: #495057;\r\n  }\r\n\r\n  .add-btn.svelte-pfq4up {\r\n    width: 28px;\r\n    height: 28px;\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 4px;\r\n    background: white;\r\n    color: #007bff;\r\n    cursor: pointer;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    transition: all 0.2s;\r\n  }\r\n\r\n  .add-btn.svelte-pfq4up:hover {\r\n    background-color: #007bff;\r\n    color: white;\r\n  }\r\n\r\n  /* Items List */\r\n  .items-list.svelte-pfq4up {\r\n    padding: 0.5rem;\r\n  }\r\n\r\n  .item.svelte-pfq4up {\r\n    display: flex;\r\n    align-items: center;\r\n    padding: 0.75rem;\r\n    margin-bottom: 0.25rem;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n    transition: all 0.2s;\r\n    border: 1px solid transparent;\r\n  }\r\n\r\n  .item.svelte-pfq4up:hover {\r\n    background-color: #f8f9fa;\r\n  }\r\n\r\n  .item.selected.svelte-pfq4up {\r\n    background-color: #e3f2fd;\r\n    border-color: #2196f3;\r\n  }\r\n\r\n  .item-color.svelte-pfq4up {\r\n    width: 12px;\r\n    height: 12px;\r\n    border-radius: 50%;\r\n    margin-right: 0.75rem;\r\n    border: 1px solid #dee2e6;\r\n  }\r\n\r\n  .item-info.svelte-pfq4up {\r\n    flex: 1;\r\n    min-width: 0;\r\n  }\r\n\r\n  .item-label.svelte-pfq4up {\r\n    font-weight: 500;\r\n    font-size: 0.875rem;\r\n    color: #495057;\r\n    white-space: nowrap;\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\r\n  }\r\n\r\n  .item-meta.svelte-pfq4up {\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    margin-top: 0.25rem;\r\n  }\r\n\r\n  .item-position.svelte-pfq4up, .item-connections.svelte-pfq4up, .item-type.svelte-pfq4up {\r\n    font-size: 0.75rem;\r\n    color: #6c757d;\r\n  }\r\n\r\n  .item-actions.svelte-pfq4up {\r\n    opacity: 0;\r\n    transition: opacity 0.2s;\r\n  }\r\n\r\n  .item.svelte-pfq4up:hover .item-actions:where(.svelte-pfq4up) {\r\n    opacity: 1;\r\n  }\r\n\r\n  .action-btn.svelte-pfq4up {\r\n    width: 24px;\r\n    height: 24px;\r\n    border: none;\r\n    background: none;\r\n    color: #6c757d;\r\n    cursor: pointer;\r\n    border-radius: 4px;\r\n    transition: all 0.2s;\r\n  }\r\n\r\n  .action-btn.svelte-pfq4up:hover {\r\n    background-color: #e9ecef;\r\n    color: #495057;\r\n  }\r\n\r\n  .delete-btn.svelte-pfq4up {\r\n    color: #dc3545; /* Red color for delete button */\r\n  }\r\n\r\n  .delete-btn.svelte-pfq4up:hover {\r\n    background-color: #f8d7da; /* Light red background on hover */\r\n    color: #721c24; /* Darker red text on hover */\r\n  }\r\n\r\n  /* Empty State */\r\n  .empty-state.svelte-pfq4up {\r\n    text-align: center;\r\n    padding: 2rem 1rem;\r\n    color: #6c757d;\r\n  }\r\n\r\n  .empty-icon.svelte-pfq4up {\r\n    font-size: 2rem;\r\n    margin-bottom: 1rem;\r\n    opacity: 0.5;\r\n  }\r\n\r\n  .empty-state.svelte-pfq4up p:where(.svelte-pfq4up) {\r\n    margin: 0 0 1rem 0;\r\n    font-size: 0.875rem;\r\n  }\r\n\r\n  .clear-filters-btn.svelte-pfq4up {\r\n    padding: 0.5rem 1rem;\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 4px;\r\n    background: white;\r\n    color: #007bff;\r\n    cursor: pointer;\r\n    font-size: 0.875rem;\r\n    transition: all 0.2s;\r\n  }\r\n\r\n  .clear-filters-btn.svelte-pfq4up:hover {\r\n    background-color: #f8f9fa;\r\n  }\r\n\r\n  /* Responsive */\r\n  @media (max-width: 768px) {\r\n    .search-bar.svelte-pfq4up {\r\n      padding: 0.75rem;\r\n    }\r\n    \r\n    .section-header.svelte-pfq4up {\r\n      padding: 0.75rem;\r\n    }\r\n    \r\n    .items-list.svelte-pfq4up {\r\n      padding: 0.25rem;\r\n    }\r\n    \r\n    .item.svelte-pfq4up {\r\n      padding: 0.5rem;\r\n    }\r\n  }\r\n\r\n  .node-editor.svelte-2lis6z {\r\n    height: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n    background: #f8f9fa;\r\n    border-left: 1px solid #dee2e6;\r\n  }\r\n\r\n  .editor-header.svelte-2lis6z {\r\n    padding: 1rem;\r\n    background: #e9ecef;\r\n    border-bottom: 1px solid #dee2e6;\r\n  }\r\n\r\n  .editor-header.svelte-2lis6z h3:where(.svelte-2lis6z) {\r\n    margin: 0 0 0.5rem 0;\r\n    font-size: 1.1rem;\r\n    font-weight: 600;\r\n    color: #495057;\r\n  }\r\n\r\n  .node-id.svelte-2lis6z {\r\n    font-size: 0.85rem;\r\n    color: #6c757d;\r\n    font-family: monospace;\r\n  }\r\n\r\n  .editor-content.svelte-2lis6z {\r\n    flex: 1;\r\n    overflow-y: auto;\r\n    padding: 1rem;\r\n  }\r\n\r\n  .form-group.svelte-2lis6z {\r\n    margin-bottom: 1.5rem;\r\n  }\r\n\r\n  .form-group.svelte-2lis6z h4:where(.svelte-2lis6z) {\r\n    margin: 0 0 0.75rem 0;\r\n    font-size: 0.95rem;\r\n    font-weight: 600;\r\n    color: #495057;\r\n    border-bottom: 1px solid #dee2e6;\r\n    padding-bottom: 0.25rem;\r\n  }\r\n\r\n  .input-row.svelte-2lis6z {\r\n    display: flex;\r\n    align-items: center;\r\n    margin-bottom: 0.75rem;\r\n    gap: 0.5rem;\r\n  }\r\n\r\n  .input-row.svelte-2lis6z label:where(.svelte-2lis6z) {\r\n    min-width: 120px;\r\n    font-size: 0.85rem;\r\n    color: #495057;\r\n    font-weight: 500;\r\n  }\r\n\r\n  .input-row.svelte-2lis6z input:where(.svelte-2lis6z),\r\n  .input-row.svelte-2lis6z select:where(.svelte-2lis6z) {\r\n    flex: 1;\r\n    padding: 0.375rem 0.5rem;\r\n    border: 1px solid #ced4da;\r\n    border-radius: 0.25rem;\r\n    font-size: 0.85rem;\r\n    background: white;\r\n  }\r\n\r\n  .input-row.svelte-2lis6z input:where(.svelte-2lis6z):focus,\r\n  .input-row.svelte-2lis6z select:where(.svelte-2lis6z):focus {\r\n    outline: none;\r\n    border-color: #007bff;\r\n    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);\r\n  }\r\n\r\n  .input-row.svelte-2lis6z input[type="color"]:where(.svelte-2lis6z) {\r\n    width: 50px;\r\n    height: 32px;\r\n    padding: 0;\r\n    border: none;\r\n    border-radius: 0.25rem;\r\n    cursor: pointer;\r\n  }\r\n\r\n  .input-row.svelte-2lis6z input[type="range"]:where(.svelte-2lis6z) {\r\n    flex: 1;\r\n    height: 6px;\r\n    background: #dee2e6;\r\n    border-radius: 3px;\r\n    outline: none;\r\n  }\r\n\r\n  .input-row.svelte-2lis6z input[type="range"]:where(.svelte-2lis6z)::-webkit-slider-thumb {\r\n    -webkit-appearance: none;\r\n            appearance: none;\r\n    width: 16px;\r\n    height: 16px;\r\n    background: #007bff;\r\n    border-radius: 50%;\r\n    cursor: pointer;\r\n  }\r\n\r\n  .input-row.svelte-2lis6z input[type="range"]:where(.svelte-2lis6z)::-moz-range-thumb {\r\n    width: 16px;\r\n    height: 16px;\r\n    background: #007bff;\r\n    border-radius: 50%;\r\n    cursor: pointer;\r\n    border: none;\r\n  }\r\n\r\n  .value-display.svelte-2lis6z {\r\n    min-width: 40px;\r\n    text-align: center;\r\n    font-size: 0.8rem;\r\n    color: #6c757d;\r\n    font-family: monospace;\r\n  }\r\n\r\n  .no-selection.svelte-2lis6z {\r\n    flex: 1;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    justify-content: center;\r\n    color: #6c757d;\r\n    text-align: center;\r\n    padding: 2rem;\r\n  }\r\n\r\n  .no-selection.svelte-2lis6z p:where(.svelte-2lis6z) {\r\n    margin: 0.5rem 0;\r\n  }\r\n\r\n  .hint.svelte-2lis6z {\r\n    font-size: 0.85rem;\r\n    color: #adb5bd;\r\n  }\r\n\r\n  .edge-editor.svelte-2gco8o {\r\n    padding: 1rem;\r\n  }\r\n\r\n  .form-section.svelte-2gco8o {\r\n    margin-bottom: 1.5rem;\r\n  }\r\n\r\n  .form-section.svelte-2gco8o h4:where(.svelte-2gco8o) {\r\n    margin: 0 0 1rem 0;\r\n    font-size: 0.875rem;\r\n    font-weight: 600;\r\n    color: #495057;\r\n    text-transform: uppercase;\r\n    letter-spacing: 0.5px;\r\n  }\r\n\r\n  .form-group.svelte-2gco8o {\r\n    margin-bottom: 1rem;\r\n  }\r\n\r\n  .form-row.svelte-2gco8o {\r\n    display: grid;\r\n    grid-template-columns: 1fr 1fr;\r\n    gap: 1rem;\r\n  }\r\n\r\n  .form-group.svelte-2gco8o label:where(.svelte-2gco8o) {\r\n    display: block;\r\n    margin-bottom: 0.5rem;\r\n    font-size: 0.875rem;\r\n    font-weight: 500;\r\n    color: #495057;\r\n  }\r\n\r\n  .form-control.svelte-2gco8o {\r\n    width: 100%;\r\n    padding: 0.5rem 0.75rem;\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 4px;\r\n    font-size: 0.875rem;\r\n    outline: none;\r\n    transition: border-color 0.2s;\r\n  }\r\n\r\n  .form-control.svelte-2gco8o:focus {\r\n    border-color: #007bff;\r\n  }\r\n\r\n  .color-input-group.svelte-2gco8o {\r\n    display: flex;\r\n    gap: 0.5rem;\r\n  }\r\n\r\n  .color-picker.svelte-2gco8o {\r\n    width: 50px;\r\n    height: 38px;\r\n    border: 1px solid #dee2e6;\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n  }\r\n\r\n  .color-text.svelte-2gco8o {\r\n    flex: 1;\r\n  }\r\n\r\n  .range-value.svelte-2gco8o {\r\n    text-align: center;\r\n    font-size: 0.75rem;\r\n    color: #6c757d;\r\n    margin-top: 0.25rem;\r\n  }\r\n\r\n  /* Responsive */\r\n  @media (max-width: 768px) {\r\n    .form-row.svelte-2gco8o {\r\n      grid-template-columns: 1fr;\r\n    }\r\n  }\r\n\r\n  .property-panel.svelte-1irccp7 {\r\n    display: flex;\r\n    flex-direction: column;\r\n    height: 100%;\r\n    background: white;\r\n    border-left: 1px solid #dee2e6;\r\n  }\r\n\r\n  /* Header */\r\n  .property-header.svelte-1irccp7 {\r\n    padding: 1rem;\r\n    border-bottom: 1px solid #dee2e6;\r\n  }\r\n\r\n  .selection-info.svelte-1irccp7 {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 0.25rem;\r\n  }\r\n\r\n  .selection-type.svelte-1irccp7 {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    font-size: 0.875rem;\r\n    color: #6c757d;\r\n    font-weight: 500;\r\n  }\r\n\r\n  .selection-name.svelte-1irccp7 {\r\n    font-size: 1rem;\r\n    font-weight: 600;\r\n    color: #495057;\r\n    word-break: break-word;\r\n  }\r\n\r\n  /* Tab Navigation */\r\n  .tab-navigation.svelte-1irccp7 {\r\n    display: flex;\r\n    border-bottom: 1px solid #dee2e6;\r\n    overflow-x: auto;\r\n  }\r\n\r\n  .tab-btn.svelte-1irccp7 {\r\n    flex: 1;\r\n    min-width: 80px;\r\n    padding: 0.75rem 0.5rem;\r\n    border: none;\r\n    background: none;\r\n    color: #6c757d;\r\n    cursor: pointer;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    gap: 0.25rem;\r\n    font-size: 0.75rem;\r\n    transition: all 0.2s;\r\n  }\r\n\r\n  .tab-btn.svelte-1irccp7:hover {\r\n    background-color: #f8f9fa;\r\n  }\r\n\r\n  .tab-btn.active.svelte-1irccp7 {\r\n    color: #007bff;\r\n    border-bottom: 2px solid #007bff;\r\n    background-color: #f8f9fa;\r\n  }\r\n\r\n  .tab-btn.svelte-1irccp7 i:where(.svelte-1irccp7) {\r\n    font-size: 1rem;\r\n  }\r\n\r\n  .tab-label.svelte-1irccp7 {\r\n    font-weight: 500;\r\n  }\r\n\r\n  /* Tab Content */\r\n  .tab-content.svelte-1irccp7 {\r\n    flex: 1;\r\n    overflow-y: auto;\r\n  }\r\n\r\n  /* No Selection State */\r\n  .no-selection.svelte-1irccp7 {\r\n    flex: 1;\r\n    display: flex;\r\n    flex-direction: column;\r\n    align-items: center;\r\n    justify-content: center;\r\n    padding: 2rem;\r\n    text-align: center;\r\n    color: #6c757d;\r\n  }\r\n\r\n  .no-selection-icon.svelte-1irccp7 {\r\n    font-size: 3rem;\r\n    margin-bottom: 1rem;\r\n    opacity: 0.5;\r\n  }\r\n\r\n  .no-selection.svelte-1irccp7 h3:where(.svelte-1irccp7) {\r\n    margin: 0 0 0.5rem 0;\r\n    font-size: 1.25rem;\r\n    font-weight: 600;\r\n  }\r\n\r\n  .no-selection.svelte-1irccp7 p:where(.svelte-1irccp7) {\r\n    margin: 0;\r\n    font-size: 0.875rem;\r\n  }\r\n\r\n  /* Responsive */\r\n  @media (max-width: 768px) {\r\n    .tab-navigation.svelte-1irccp7 {\r\n      flex-wrap: wrap;\r\n    }\r\n\r\n    .tab-btn.svelte-1irccp7 {\r\n      min-width: 60px;\r\n      padding: 0.5rem 0.25rem;\r\n      font-size: 0.7rem;\r\n    }\r\n\r\n    .tab-btn.svelte-1irccp7 i:where(.svelte-1irccp7) {\r\n      font-size: 0.875rem;\r\n    }\r\n  }\r\n\r\n  .relationship-graph-editor.svelte-zhs1tt {\r\n    display: flex;\r\n    flex-direction: column;\r\n    height: 100vh;\r\n    background: #f8f9fa;\r\n  }\r\n\r\n  /* Main Content */\r\n  .main-content.svelte-zhs1tt {\r\n    display: flex;\r\n    flex: 1;\r\n    overflow: hidden;\r\n  }\r\n\r\n  /* Canvas */\r\n  .canvas-container.svelte-zhs1tt {\r\n    flex: 1;\r\n    position: relative;\r\n    background: #f8f9fa;\r\n  }\r\n\r\n\r\n  .relationship-graph-view.svelte-1e6kfk1 {\r\n    padding: 1rem;\r\n    height: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n  }\r\n\r\n  .cytoscape-wrapper.svelte-1e6kfk1 {\r\n    flex: 1;\r\n    margin-bottom: 1rem;\r\n  }\r\n\r\n  .info-panel-wrapper.svelte-1e6kfk1 {\r\n    flex: 1;\r\n    margin-bottom: 1rem;\r\n  }\r\n/*$vite$:1*/';
   document.head.appendChild(__vite_style__);
   Object.assign = function(target, ...sources) {
     for (const source2 of sources) {
@@ -28,15 +28,23 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const EACH_ITEM_REACTIVE = 1;
   const EACH_INDEX_REACTIVE = 1 << 1;
+  const EACH_IS_CONTROLLED = 1 << 2;
+  const EACH_IS_ANIMATED = 1 << 3;
   const EACH_ITEM_IMMUTABLE = 1 << 4;
+  const TEMPLATE_FRAGMENT = 1;
   const TEMPLATE_USE_IMPORT_NODE = 1 << 1;
   const UNINITIALIZED = Symbol();
+  const NAMESPACE_HTML = "http://www.w3.org/1999/xhtml";
   const DEV = false;
   var is_array = Array.isArray;
   var index_of = Array.prototype.indexOf;
   var array_from = Array.from;
   var define_property = Object.defineProperty;
   var get_descriptor = Object.getOwnPropertyDescriptor;
+  var get_descriptors = Object.getOwnPropertyDescriptors;
+  var object_prototype = Object.prototype;
+  var array_prototype = Array.prototype;
+  var get_prototype_of = Object.getPrototypeOf;
   var is_extensible = Object.isExtensible;
   function run_all(arr) {
     for (var i = 0; i < arr.length; i++) {
@@ -59,6 +67,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   const DESTROYED = 1 << 14;
   const EFFECT_RAN = 1 << 15;
   const EFFECT_TRANSPARENT = 1 << 16;
+  const INSPECT_EFFECT = 1 << 17;
   const HEAD_EFFECT = 1 << 18;
   const EFFECT_PRESERVED = 1 << 19;
   const EFFECT_IS_UPDATING = 1 << 20;
@@ -98,6 +107,21 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function effect_update_depth_exceeded() {
     {
       throw new Error(`https://svelte.dev/e/effect_update_depth_exceeded`);
+    }
+  }
+  function state_descriptors_fixed() {
+    {
+      throw new Error(`https://svelte.dev/e/state_descriptors_fixed`);
+    }
+  }
+  function state_prototype_fixed() {
+    {
+      throw new Error(`https://svelte.dev/e/state_prototype_fixed`);
+    }
+  }
+  function state_unsafe_mutation() {
+    {
+      throw new Error(`https://svelte.dev/e/state_unsafe_mutation`);
     }
   }
   let tracing_mode_flag = false;
@@ -141,6 +165,218 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function is_runes() {
     return true;
   }
+  function proxy(value) {
+    if (typeof value !== "object" || value === null || STATE_SYMBOL in value) {
+      return value;
+    }
+    const prototype = get_prototype_of(value);
+    if (prototype !== object_prototype && prototype !== array_prototype) {
+      return value;
+    }
+    var sources = /* @__PURE__ */ new Map();
+    var is_proxied_array = is_array(value);
+    var version = /* @__PURE__ */ state(0);
+    var parent_version = update_version;
+    var with_parent = (fn) => {
+      if (update_version === parent_version) {
+        return fn();
+      }
+      var reaction = active_reaction;
+      var version2 = update_version;
+      set_active_reaction(null);
+      set_update_version(parent_version);
+      var result = fn();
+      set_active_reaction(reaction);
+      set_update_version(version2);
+      return result;
+    };
+    if (is_proxied_array) {
+      sources.set("length", /* @__PURE__ */ state(
+        /** @type {any[]} */
+        value.length
+      ));
+    }
+    return new Proxy(
+      /** @type {any} */
+      value,
+      {
+        defineProperty(_, prop2, descriptor) {
+          if (!("value" in descriptor) || descriptor.configurable === false || descriptor.enumerable === false || descriptor.writable === false) {
+            state_descriptors_fixed();
+          }
+          var s = sources.get(prop2);
+          if (s === void 0) {
+            s = with_parent(() => {
+              var s2 = /* @__PURE__ */ state(descriptor.value);
+              sources.set(prop2, s2);
+              return s2;
+            });
+          } else {
+            set(s, descriptor.value, true);
+          }
+          return true;
+        },
+        deleteProperty(target, prop2) {
+          var s = sources.get(prop2);
+          if (s === void 0) {
+            if (prop2 in target) {
+              const s2 = with_parent(() => /* @__PURE__ */ state(UNINITIALIZED));
+              sources.set(prop2, s2);
+              increment(version);
+            }
+          } else {
+            if (is_proxied_array && typeof prop2 === "string") {
+              var ls = (
+                /** @type {Source<number>} */
+                sources.get("length")
+              );
+              var n = Number(prop2);
+              if (Number.isInteger(n) && n < ls.v) {
+                set(ls, n);
+              }
+            }
+            set(s, UNINITIALIZED);
+            increment(version);
+          }
+          return true;
+        },
+        get(target, prop2, receiver) {
+          if (prop2 === STATE_SYMBOL) {
+            return value;
+          }
+          var s = sources.get(prop2);
+          var exists = prop2 in target;
+          if (s === void 0 && (!exists || get_descriptor(target, prop2)?.writable)) {
+            s = with_parent(() => {
+              var p = proxy(exists ? target[prop2] : UNINITIALIZED);
+              var s2 = /* @__PURE__ */ state(p);
+              return s2;
+            });
+            sources.set(prop2, s);
+          }
+          if (s !== void 0) {
+            var v = get(s);
+            return v === UNINITIALIZED ? void 0 : v;
+          }
+          return Reflect.get(target, prop2, receiver);
+        },
+        getOwnPropertyDescriptor(target, prop2) {
+          var descriptor = Reflect.getOwnPropertyDescriptor(target, prop2);
+          if (descriptor && "value" in descriptor) {
+            var s = sources.get(prop2);
+            if (s) descriptor.value = get(s);
+          } else if (descriptor === void 0) {
+            var source2 = sources.get(prop2);
+            var value2 = source2?.v;
+            if (source2 !== void 0 && value2 !== UNINITIALIZED) {
+              return {
+                enumerable: true,
+                configurable: true,
+                value: value2,
+                writable: true
+              };
+            }
+          }
+          return descriptor;
+        },
+        has(target, prop2) {
+          if (prop2 === STATE_SYMBOL) {
+            return true;
+          }
+          var s = sources.get(prop2);
+          var has = s !== void 0 && s.v !== UNINITIALIZED || Reflect.has(target, prop2);
+          if (s !== void 0 || active_effect !== null && (!has || get_descriptor(target, prop2)?.writable)) {
+            if (s === void 0) {
+              s = with_parent(() => {
+                var p = has ? proxy(target[prop2]) : UNINITIALIZED;
+                var s2 = /* @__PURE__ */ state(p);
+                return s2;
+              });
+              sources.set(prop2, s);
+            }
+            var value2 = get(s);
+            if (value2 === UNINITIALIZED) {
+              return false;
+            }
+          }
+          return has;
+        },
+        set(target, prop2, value2, receiver) {
+          var s = sources.get(prop2);
+          var has = prop2 in target;
+          if (is_proxied_array && prop2 === "length") {
+            for (var i = value2; i < /** @type {Source<number>} */
+            s.v; i += 1) {
+              var other_s = sources.get(i + "");
+              if (other_s !== void 0) {
+                set(other_s, UNINITIALIZED);
+              } else if (i in target) {
+                other_s = with_parent(() => /* @__PURE__ */ state(UNINITIALIZED));
+                sources.set(i + "", other_s);
+              }
+            }
+          }
+          if (s === void 0) {
+            if (!has || get_descriptor(target, prop2)?.writable) {
+              s = with_parent(() => /* @__PURE__ */ state(void 0));
+              set(s, proxy(value2));
+              sources.set(prop2, s);
+            }
+          } else {
+            has = s.v !== UNINITIALIZED;
+            var p = with_parent(() => proxy(value2));
+            set(s, p);
+          }
+          var descriptor = Reflect.getOwnPropertyDescriptor(target, prop2);
+          if (descriptor?.set) {
+            descriptor.set.call(receiver, value2);
+          }
+          if (!has) {
+            if (is_proxied_array && typeof prop2 === "string") {
+              var ls = (
+                /** @type {Source<number>} */
+                sources.get("length")
+              );
+              var n = Number(prop2);
+              if (Number.isInteger(n) && n >= ls.v) {
+                set(ls, n + 1);
+              }
+            }
+            increment(version);
+          }
+          return true;
+        },
+        ownKeys(target) {
+          get(version);
+          var own_keys = Reflect.ownKeys(target).filter((key2) => {
+            var source3 = sources.get(key2);
+            return source3 === void 0 || source3.v !== UNINITIALIZED;
+          });
+          for (var [key, source2] of sources) {
+            if (source2.v !== UNINITIALIZED && !(key in target)) {
+              own_keys.push(key);
+            }
+          }
+          return own_keys;
+        },
+        setPrototypeOf() {
+          state_prototype_fixed();
+        }
+      }
+    );
+  }
+  function get_proxied_value(value) {
+    try {
+      if (value !== null && typeof value === "object" && STATE_SYMBOL in value) {
+        return value[STATE_SYMBOL];
+      }
+    } catch {
+    }
+    return value;
+  }
+  function is(a, b) {
+    return Object.is(get_proxied_value(a), get_proxied_value(b));
+  }
   // @__NO_SIDE_EFFECTS__
   function derived(fn) {
     var flags = DERIVED | DIRTY;
@@ -171,6 +407,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       ac: null
     };
     return signal;
+  }
+  // @__NO_SIDE_EFFECTS__
+  function user_derived(fn) {
+    const d = /* @__PURE__ */ derived(fn);
+    push_reaction_value(d);
+    return d;
   }
   // @__NO_SIDE_EFFECTS__
   function derived_safe_equal(fn) {
@@ -241,12 +483,27 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     return signal;
   }
   // @__NO_SIDE_EFFECTS__
+  function state(v, stack) {
+    const s = source(v);
+    push_reaction_value(s);
+    return s;
+  }
+  // @__NO_SIDE_EFFECTS__
   function mutable_source(initial_value, immutable = false, trackable = true) {
     const s = source(initial_value);
     if (!immutable) {
       s.equals = safe_equals;
     }
     return s;
+  }
+  function set(source2, value, should_proxy = false) {
+    if (active_reaction !== null && // since we are untracking the function inside `$inspect.with` we need to add this check
+    // to ensure we error if state is set inside an inspect effect
+    (!untracking || (active_reaction.f & INSPECT_EFFECT) !== 0) && is_runes() && (active_reaction.f & (DERIVED | BLOCK_EFFECT | INSPECT_EFFECT)) !== 0 && !current_sources?.includes(source2)) {
+      state_unsafe_mutation();
+    }
+    let new_value = should_proxy ? proxy(value) : value;
+    return internal_set(source2, new_value);
   }
   function internal_set(source2, value) {
     if (!source2.equals(value)) {
@@ -278,6 +535,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return value;
   }
+  function increment(source2) {
+    set(source2, source2.v + 1);
+  }
   function mark_reactions(signal, status) {
     var reactions = signal.reactions;
     if (reactions === null) return;
@@ -301,6 +561,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           );
         }
       }
+    }
+  }
+  function select_multiple_invalid_value() {
+    {
+      console.warn(`https://svelte.dev/e/select_multiple_invalid_value`);
     }
   }
   let hydrating = false;
@@ -344,6 +609,19 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function child(node, is_text) {
     {
       return /* @__PURE__ */ get_first_child(node);
+    }
+  }
+  function first_child(fragment, is_text) {
+    {
+      var first = (
+        /** @type {DocumentFragment} */
+        /* @__PURE__ */ get_first_child(
+          /** @type {Node} */
+          fragment
+        )
+      );
+      if (first instanceof Comment && first.data === "") return /* @__PURE__ */ get_next_sibling(first);
+      return first;
     }
   }
   function sibling(node, count = 1, is_text = false) {
@@ -426,6 +704,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return effect2;
   }
+  function teardown(fn) {
+    const effect2 = create_effect(RENDER_EFFECT, null, false);
+    set_signal_status(effect2, CLEAN);
+    effect2.teardown = fn;
+    return effect2;
+  }
   function user_effect(fn) {
     validate_effect();
     if (!active_reaction && active_effect && (active_effect.f & BRANCH_EFFECT) !== 0) {
@@ -475,14 +759,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     return create_effect(RENDER_EFFECT | BRANCH_EFFECT, fn, true, push2);
   }
   function execute_effect_teardown(effect2) {
-    var teardown = effect2.teardown;
-    if (teardown !== null) {
+    var teardown2 = effect2.teardown;
+    if (teardown2 !== null) {
       const previously_destroying_effect = is_destroying_effect;
       const previous_reaction = active_reaction;
       set_is_destroying_effect(true);
       set_active_reaction(null);
       try {
-        teardown.call(null);
+        teardown2.call(null);
       } finally {
         set_is_destroying_effect(previously_destroying_effect);
         set_active_reaction(previous_reaction);
@@ -676,6 +960,15 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     active_effect = effect2;
   }
   let current_sources = null;
+  function push_reaction_value(value) {
+    if (active_reaction !== null && active_reaction.f & EFFECT_IS_UPDATING) {
+      if (current_sources === null) {
+        current_sources = [value];
+      } else {
+        current_sources.push(value);
+      }
+    }
+  }
   let new_deps = null;
   let skipped_deps = 0;
   let untracked_writes = null;
@@ -684,6 +977,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   let write_version = 1;
   let read_version = 0;
+  let update_version = read_version;
+  function set_update_version(value) {
+    update_version = value;
+  }
   let skip_reaction = false;
   function increment_write_version() {
     return ++write_version;
@@ -781,6 +1078,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     var previous_sources = current_sources;
     var previous_component_context = component_context;
     var previous_untracking = untracking;
+    var previous_update_version = update_version;
     var flags = reaction.f;
     new_deps = /** @type {null | Value[]} */
     null;
@@ -791,7 +1089,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     current_sources = null;
     set_component_context(reaction.ctx);
     untracking = false;
-    ++read_version;
+    update_version = ++read_version;
     reaction.f |= EFFECT_IS_UPDATING;
     if (reaction.ac !== null) {
       reaction.ac.abort(STALE_REACTION);
@@ -858,6 +1156,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       current_sources = previous_sources;
       set_component_context(previous_component_context);
       untracking = previous_untracking;
+      update_version = previous_update_version;
       reaction.f ^= EFFECT_IS_UPDATING;
     }
   }
@@ -918,8 +1217,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         destroy_effect_children(effect2);
       }
       execute_effect_teardown(effect2);
-      var teardown = update_reaction(effect2);
-      effect2.teardown = typeof teardown === "function" ? teardown : null;
+      var teardown2 = update_reaction(effect2);
+      effect2.teardown = typeof teardown2 === "function" ? teardown2 : null;
       effect2.wv = write_version;
       var dep;
       if (DEV && tracing_mode_flag && (effect2.f & DIRTY) !== 0 && effect2.deps !== null) ;
@@ -1122,27 +1421,116 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function set_signal_status(signal, status) {
     signal.f = signal.f & STATUS_MASK | status;
   }
+  let listening_to_form_reset = false;
+  function add_form_reset_listener() {
+    if (!listening_to_form_reset) {
+      listening_to_form_reset = true;
+      document.addEventListener(
+        "reset",
+        (evt) => {
+          Promise.resolve().then(() => {
+            if (!evt.defaultPrevented) {
+              for (
+                const e of
+                /**@type {HTMLFormElement} */
+                evt.target.elements
+              ) {
+                e.__on_r?.();
+              }
+            }
+          });
+        },
+        // In the capture phase to guarantee we get noticed of it (no possiblity of stopPropagation)
+        { capture: true }
+      );
+    }
+  }
+  function without_reactive_context(fn) {
+    var previous_reaction = active_reaction;
+    var previous_effect = active_effect;
+    set_active_reaction(null);
+    set_active_effect(null);
+    try {
+      return fn();
+    } finally {
+      set_active_reaction(previous_reaction);
+      set_active_effect(previous_effect);
+    }
+  }
+  function listen_to_event_and_reset_event(element, event2, handler, on_reset = handler) {
+    element.addEventListener(event2, () => without_reactive_context(handler));
+    const prev = element.__on_r;
+    if (prev) {
+      element.__on_r = () => {
+        prev();
+        on_reset(true);
+      };
+    } else {
+      element.__on_r = () => on_reset(true);
+    }
+    add_form_reset_listener();
+  }
   const all_registered_events = /* @__PURE__ */ new Set();
   const root_event_handles = /* @__PURE__ */ new Set();
-  function handle_event_propagation(event) {
+  function create_event(event_name, dom, handler, options = {}) {
+    function target_handler(event2) {
+      if (!options.capture) {
+        handle_event_propagation.call(dom, event2);
+      }
+      if (!event2.cancelBubble) {
+        return without_reactive_context(() => {
+          return handler?.call(this, event2);
+        });
+      }
+    }
+    if (event_name.startsWith("pointer") || event_name.startsWith("touch") || event_name === "wheel") {
+      queue_micro_task(() => {
+        dom.addEventListener(event_name, target_handler, options);
+      });
+    } else {
+      dom.addEventListener(event_name, target_handler, options);
+    }
+    return target_handler;
+  }
+  function event(event_name, dom, handler, capture, passive) {
+    var options = { capture, passive };
+    var target_handler = create_event(event_name, dom, handler, options);
+    if (dom === document.body || // @ts-ignore
+    dom === window || // @ts-ignore
+    dom === document || // Firefox has quirky behavior, it can happen that we still get "canplay" events when the element is already removed
+    dom instanceof HTMLMediaElement) {
+      teardown(() => {
+        dom.removeEventListener(event_name, target_handler, options);
+      });
+    }
+  }
+  function delegate(events) {
+    for (var i = 0; i < events.length; i++) {
+      all_registered_events.add(events[i]);
+    }
+    for (var fn of root_event_handles) {
+      fn(events);
+    }
+  }
+  function handle_event_propagation(event2) {
     var handler_element = this;
     var owner_document = (
       /** @type {Node} */
       handler_element.ownerDocument
     );
-    var event_name = event.type;
-    var path = event.composedPath?.() || [];
+    var event_name = event2.type;
+    var path = event2.composedPath?.() || [];
     var current_target = (
       /** @type {null | Element} */
-      path[0] || event.target
+      path[0] || event2.target
     );
     var path_idx = 0;
-    var handled_at = event.__root;
+    var handled_at = event2.__root;
     if (handled_at) {
       var at_idx = path.indexOf(handled_at);
       if (at_idx !== -1 && (handler_element === document || handler_element === /** @type {any} */
       window)) {
-        event.__root = handler_element;
+        event2.__root = handler_element;
         return;
       }
       var handler_idx = path.indexOf(handler_element);
@@ -1154,9 +1542,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
     }
     current_target = /** @type {Element} */
-    path[path_idx] || event.target;
+    path[path_idx] || event2.target;
     if (current_target === handler_element) return;
-    define_property(event, "currentTarget", {
+    define_property(event2, "currentTarget", {
       configurable: true,
       get() {
         return current_target || owner_document;
@@ -1177,12 +1565,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           if (delegated != null && (!/** @type {any} */
           current_target.disabled || // DOM could've been updated already by the time this is reached, so we check this as well
           // -> the target could not have been disabled because it emits the event in the first place
-          event.target === current_target)) {
+          event2.target === current_target)) {
             if (is_array(delegated)) {
               var [fn, ...data] = delegated;
-              fn.apply(current_target, [event, ...data]);
+              fn.apply(current_target, [event2, ...data]);
             } else {
-              delegated.call(current_target, event);
+              delegated.call(current_target, event2);
             }
           }
         } catch (error) {
@@ -1192,7 +1580,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             throw_error = error;
           }
         }
-        if (event.cancelBubble || parent_element === handler_element || parent_element === null) {
+        if (event2.cancelBubble || parent_element === handler_element || parent_element === null) {
           break;
         }
         current_target = parent_element;
@@ -1206,8 +1594,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         throw throw_error;
       }
     } finally {
-      event.__root = handler_element;
-      delete event.currentTarget;
+      event2.__root = handler_element;
+      delete event2.currentTarget;
       set_active_reaction(previous_reaction);
       set_active_effect(previous_effect);
     }
@@ -1229,24 +1617,50 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   // @__NO_SIDE_EFFECTS__
   function from_html(content, flags) {
+    var is_fragment = (flags & TEMPLATE_FRAGMENT) !== 0;
     var use_import_node = (flags & TEMPLATE_USE_IMPORT_NODE) !== 0;
     var node;
     var has_start = !content.startsWith("<!>");
     return () => {
       if (node === void 0) {
         node = create_fragment_from_html(has_start ? content : "<!>" + content);
-        node = /** @type {Node} */
+        if (!is_fragment) node = /** @type {Node} */
         /* @__PURE__ */ get_first_child(node);
       }
       var clone = (
         /** @type {TemplateNode} */
         use_import_node || is_firefox ? document.importNode(node, true) : node.cloneNode(true)
       );
-      {
+      if (is_fragment) {
+        var start = (
+          /** @type {TemplateNode} */
+          /* @__PURE__ */ get_first_child(clone)
+        );
+        var end = (
+          /** @type {TemplateNode} */
+          clone.lastChild
+        );
+        assign_nodes(start, end);
+      } else {
         assign_nodes(clone, clone);
       }
       return clone;
     };
+  }
+  function text(value = "") {
+    {
+      var t = create_text(value + "");
+      assign_nodes(t, t);
+      return t;
+    }
+  }
+  function comment() {
+    var frag = document.createDocumentFragment();
+    var start = document.createComment("");
+    var anchor = create_text();
+    frag.append(start, anchor);
+    assign_nodes(start, anchor);
+    return frag;
   }
   function append(anchor, dom) {
     if (anchor === null) {
@@ -1261,11 +1675,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function is_passive_event(name) {
     return PASSIVE_EVENTS.includes(name);
   }
-  function set_text(text, value) {
+  function set_text(text2, value) {
     var str = value == null ? "" : typeof value === "object" ? value + "" : value;
-    if (str !== (text.__t ?? (text.__t = text.nodeValue))) {
-      text.__t = str;
-      text.nodeValue = str + "";
+    if (str !== (text2.__t ?? (text2.__t = text2.nodeValue))) {
+      text2.__t = str;
+      text2.nodeValue = str + "";
     }
   }
   function mount(component, options) {
@@ -1365,10 +1779,55 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     onMount(() => () => untrack(fn));
   }
+  function if_block(node, fn, [root_index, hydrate_index] = [0, 0]) {
+    var anchor = node;
+    var consequent_effect = null;
+    var alternate_effect = null;
+    var condition = UNINITIALIZED;
+    var flags = root_index > 0 ? EFFECT_TRANSPARENT : 0;
+    var has_branch = false;
+    const set_branch = (fn2, flag = true) => {
+      has_branch = true;
+      update_branch(flag, fn2);
+    };
+    const update_branch = (new_condition, fn2) => {
+      if (condition === (condition = new_condition)) return;
+      if (condition) {
+        if (consequent_effect) {
+          resume_effect(consequent_effect);
+        } else if (fn2) {
+          consequent_effect = branch(() => fn2(anchor));
+        }
+        if (alternate_effect) {
+          pause_effect(alternate_effect, () => {
+            alternate_effect = null;
+          });
+        }
+      } else {
+        if (alternate_effect) {
+          resume_effect(alternate_effect);
+        } else if (fn2) {
+          alternate_effect = branch(() => fn2(anchor, [root_index + 1, hydrate_index]));
+        }
+        if (consequent_effect) {
+          pause_effect(consequent_effect, () => {
+            consequent_effect = null;
+          });
+        }
+      }
+    };
+    block(() => {
+      has_branch = false;
+      fn(set_branch);
+      if (!has_branch) {
+        update_branch(null, null);
+      }
+    }, flags);
+  }
   function index(_, i) {
     return i;
   }
-  function pause_effects(state, items, controlled_anchor, items_map) {
+  function pause_effects(state2, items, controlled_anchor, items_map) {
     var transitions = [];
     var length = items.length;
     for (var i = 0; i < length; i++) {
@@ -1387,14 +1846,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         controlled_anchor
       );
       items_map.clear();
-      link(state, items[0].prev, items[length - 1].next);
+      link(state2, items[0].prev, items[length - 1].next);
     }
     run_out_transitions(transitions, () => {
       for (var i2 = 0; i2 < length; i2++) {
         var item = items[i2];
         if (!is_controlled) {
           items_map.delete(item.k);
-          link(state, item.prev, item.next);
+          link(state2, item.prev, item.next);
         }
         destroy_effect(item.e, !is_controlled);
       }
@@ -1402,7 +1861,15 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   function each(node, flags, get_collection, get_key, render_fn, fallback_fn = null) {
     var anchor = node;
-    var state = { flags, items: /* @__PURE__ */ new Map(), first: null };
+    var state2 = { flags, items: /* @__PURE__ */ new Map(), first: null };
+    var is_controlled = (flags & EACH_IS_CONTROLLED) !== 0;
+    if (is_controlled) {
+      var parent_node = (
+        /** @type {Element} */
+        node
+      );
+      anchor = parent_node.appendChild(create_text());
+    }
     var fallback = null;
     var was_empty = false;
     var each_array = /* @__PURE__ */ derived_safe_equal(() => {
@@ -1417,7 +1884,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
       was_empty = length === 0;
       {
-        reconcile(array, state, anchor, render_fn, flags, get_key, get_collection);
+        reconcile(array, state2, anchor, render_fn, flags, get_key, get_collection);
       }
       if (fallback_fn !== null) {
         if (length === 0) {
@@ -1435,19 +1902,33 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       get(each_array);
     });
   }
-  function reconcile(array, state, anchor, render_fn, flags, get_key, get_collection) {
+  function reconcile(array, state2, anchor, render_fn, flags, get_key, get_collection) {
+    var is_animated = (flags & EACH_IS_ANIMATED) !== 0;
+    var should_update = (flags & (EACH_ITEM_REACTIVE | EACH_INDEX_REACTIVE)) !== 0;
     var length = array.length;
-    var items = state.items;
-    var first = state.first;
+    var items = state2.items;
+    var first = state2.first;
     var current = first;
     var seen;
     var prev = null;
+    var to_animate;
     var matched = [];
     var stashed = [];
     var value;
     var key;
     var item;
     var i;
+    if (is_animated) {
+      for (i = 0; i < length; i += 1) {
+        value = array[i];
+        key = get_key(value, i);
+        item = items.get(key);
+        if (item !== void 0) {
+          item.a?.measure();
+          (to_animate ?? (to_animate = /* @__PURE__ */ new Set())).add(item);
+        }
+      }
+    }
     for (i = 0; i < length; i += 1) {
       value = array[i];
       key = get_key(value, i);
@@ -1459,9 +1940,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         ) : anchor;
         prev = create_item(
           child_anchor,
-          state,
+          state2,
           prev,
-          prev === null ? state.first : prev.next,
+          prev === null ? state2.first : prev.next,
           value,
           key,
           i,
@@ -1475,11 +1956,15 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         current = prev.next;
         continue;
       }
-      {
-        update_item(item, value, i);
+      if (should_update) {
+        update_item(item, value, i, flags);
       }
       if ((item.e.f & INERT) !== 0) {
         resume_effect(item.e);
+        if (is_animated) {
+          item.a?.unfix();
+          (to_animate ?? (to_animate = /* @__PURE__ */ new Set())).delete(item);
+        }
       }
       if (item !== current) {
         if (seen !== void 0 && seen.has(item)) {
@@ -1495,9 +1980,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             for (j = 0; j < stashed.length; j += 1) {
               seen.delete(stashed[j]);
             }
-            link(state, a.prev, b.next);
-            link(state, prev, a);
-            link(state, b, start);
+            link(state2, a.prev, b.next);
+            link(state2, prev, a);
+            link(state2, b, start);
             current = start;
             prev = b;
             i -= 1;
@@ -1506,9 +1991,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           } else {
             seen.delete(item);
             move(item, current, anchor);
-            link(state, item.prev, item.next);
-            link(state, item, prev === null ? state.first : prev.next);
-            link(state, prev, item);
+            link(state2, item.prev, item.next);
+            link(state2, item, prev === null ? state2.first : prev.next);
+            link(state2, prev, item);
             prev = item;
           }
           continue;
@@ -1541,22 +2026,44 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
       var destroy_length = to_destroy.length;
       if (destroy_length > 0) {
-        var controlled_anchor = null;
-        pause_effects(state, to_destroy, controlled_anchor, items);
+        var controlled_anchor = (flags & EACH_IS_CONTROLLED) !== 0 && length === 0 ? anchor : null;
+        if (is_animated) {
+          for (i = 0; i < destroy_length; i += 1) {
+            to_destroy[i].a?.measure();
+          }
+          for (i = 0; i < destroy_length; i += 1) {
+            to_destroy[i].a?.fix();
+          }
+        }
+        pause_effects(state2, to_destroy, controlled_anchor, items);
       }
     }
-    active_effect.first = state.first && state.first.e;
+    if (is_animated) {
+      queue_micro_task(() => {
+        if (to_animate === void 0) return;
+        for (item of to_animate) {
+          item.a?.apply();
+        }
+      });
+    }
+    active_effect.first = state2.first && state2.first.e;
     active_effect.last = prev && prev.e;
   }
   function update_item(item, value, index2, type) {
-    {
+    if ((type & EACH_ITEM_REACTIVE) !== 0) {
       internal_set(item.v, value);
     }
-    {
+    if ((type & EACH_INDEX_REACTIVE) !== 0) {
+      internal_set(
+        /** @type {Value<number>} */
+        item.i,
+        index2
+      );
+    } else {
       item.i = index2;
     }
   }
-  function create_item(anchor, state, prev, next, value, key, index2, render_fn, flags, get_collection) {
+  function create_item(anchor, state2, prev, next, value, key, index2, render_fn, flags, get_collection) {
     var reactive = (flags & EACH_ITEM_REACTIVE) !== 0;
     var mutable = (flags & EACH_ITEM_IMMUTABLE) === 0;
     var v = reactive ? mutable ? /* @__PURE__ */ mutable_source(value, false, false) : source(value) : value;
@@ -1576,7 +2083,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       item.e.prev = prev && prev.e;
       item.e.next = next && next.e;
       if (prev === null) {
-        state.first = item;
+        state2.first = item;
       } else {
         prev.next = item;
         prev.e.next = item.e;
@@ -1611,9 +2118,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       node = next_node;
     }
   }
-  function link(state, prev, next) {
+  function link(state2, prev, next) {
     if (prev === null) {
-      state.first = next;
+      state2.first = next;
     } else {
       prev.next = next;
       prev.e.next = next && next.e;
@@ -1623,8 +2130,56 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       next.e.prev = prev && prev.e;
     }
   }
+  const whitespace = [..." 	\n\r\f \v\uFEFF"];
+  function to_class(value, hash, directives) {
+    var classname = value == null ? "" : "" + value;
+    if (hash) {
+      classname = classname ? classname + " " + hash : hash;
+    }
+    if (directives) {
+      for (var key in directives) {
+        if (directives[key]) {
+          classname = classname ? classname + " " + key : key;
+        } else if (classname.length) {
+          var len = key.length;
+          var a = 0;
+          while ((a = classname.indexOf(key, a)) >= 0) {
+            var b = a + len;
+            if ((a === 0 || whitespace.includes(classname[a - 1])) && (b === classname.length || whitespace.includes(classname[b]))) {
+              classname = (a === 0 ? "" : classname.substring(0, a)) + classname.substring(b + 1);
+            } else {
+              a = b;
+            }
+          }
+        }
+      }
+    }
+    return classname === "" ? null : classname;
+  }
   function to_style(value, styles) {
     return value == null ? null : String(value);
+  }
+  function set_class(dom, is_html, value, hash, prev_classes, next_classes) {
+    var prev = dom.__className;
+    if (prev !== value || prev === void 0) {
+      var next_class_name = to_class(value, hash, next_classes);
+      {
+        if (next_class_name == null) {
+          dom.removeAttribute("class");
+        } else {
+          dom.className = next_class_name;
+        }
+      }
+      dom.__className = value;
+    } else if (next_classes && prev_classes !== next_classes) {
+      for (var key in next_classes) {
+        var is_present = !!next_classes[key];
+        if (prev_classes == null || is_present !== !!prev_classes[key]) {
+          dom.classList.toggle(key, is_present);
+        }
+      }
+    }
+    return next_classes;
   }
   function set_style(dom, value, prev_styles, next_styles) {
     var prev = dom.__style;
@@ -1640,6 +2195,181 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       dom.__style = value;
     }
     return next_styles;
+  }
+  function select_option(select, value, mounting = false) {
+    if (select.multiple) {
+      if (value == void 0) {
+        return;
+      }
+      if (!is_array(value)) {
+        return select_multiple_invalid_value();
+      }
+      for (var option of select.options) {
+        option.selected = value.includes(get_option_value(option));
+      }
+      return;
+    }
+    for (option of select.options) {
+      var option_value = get_option_value(option);
+      if (is(option_value, value)) {
+        option.selected = true;
+        return;
+      }
+    }
+    if (!mounting || value !== void 0) {
+      select.selectedIndex = -1;
+    }
+  }
+  function init_select(select) {
+    var observer = new MutationObserver(() => {
+      select_option(select, select.__value);
+    });
+    observer.observe(select, {
+      // Listen to option element changes
+      childList: true,
+      subtree: true,
+      // because of <optgroup>
+      // Listen to option element value attribute changes
+      // (doesn't get notified of select value changes,
+      // because that property is not reflected as an attribute)
+      attributes: true,
+      attributeFilter: ["value"]
+    });
+    teardown(() => {
+      observer.disconnect();
+    });
+  }
+  function bind_select_value(select, get2, set2 = get2) {
+    var mounting = true;
+    listen_to_event_and_reset_event(select, "change", (is_reset) => {
+      var query = is_reset ? "[selected]" : ":checked";
+      var value;
+      if (select.multiple) {
+        value = [].map.call(select.querySelectorAll(query), get_option_value);
+      } else {
+        var selected_option = select.querySelector(query) ?? // will fall back to first non-disabled option if no option is selected
+        select.querySelector("option:not([disabled])");
+        value = selected_option && get_option_value(selected_option);
+      }
+      set2(value);
+    });
+    effect(() => {
+      var value = get2();
+      select_option(select, value, mounting);
+      if (mounting && value === void 0) {
+        var selected_option = select.querySelector(":checked");
+        if (selected_option !== null) {
+          value = get_option_value(selected_option);
+          set2(value);
+        }
+      }
+      select.__value = value;
+      mounting = false;
+    });
+    init_select(select);
+  }
+  function get_option_value(option) {
+    if ("__value" in option) {
+      return option.__value;
+    } else {
+      return option.value;
+    }
+  }
+  const IS_CUSTOM_ELEMENT = Symbol("is custom element");
+  const IS_HTML = Symbol("is html");
+  function set_value(element, value) {
+    var attributes = get_attributes(element);
+    if (attributes.value === (attributes.value = // treat null and undefined the same for the initial value
+    value ?? void 0) || // @ts-expect-error
+    // `progress` elements always need their value set when it's `0`
+    element.value === value && (value !== 0 || element.nodeName !== "PROGRESS")) {
+      return;
+    }
+    element.value = value ?? "";
+  }
+  function set_attribute(element, attribute, value, skip_warning) {
+    var attributes = get_attributes(element);
+    if (attributes[attribute] === (attributes[attribute] = value)) return;
+    if (value == null) {
+      element.removeAttribute(attribute);
+    } else if (typeof value !== "string" && get_setters(element).includes(attribute)) {
+      element[attribute] = value;
+    } else {
+      element.setAttribute(attribute, value);
+    }
+  }
+  function get_attributes(element) {
+    return (
+      /** @type {Record<string | symbol, unknown>} **/
+      // @ts-expect-error
+      element.__attributes ?? (element.__attributes = {
+        [IS_CUSTOM_ELEMENT]: element.nodeName.includes("-"),
+        [IS_HTML]: element.namespaceURI === NAMESPACE_HTML
+      })
+    );
+  }
+  var setters_cache = /* @__PURE__ */ new Map();
+  function get_setters(element) {
+    var setters = setters_cache.get(element.nodeName);
+    if (setters) return setters;
+    setters_cache.set(element.nodeName, setters = []);
+    var descriptors;
+    var proto = element;
+    var element_proto = Element.prototype;
+    while (element_proto !== proto) {
+      descriptors = get_descriptors(proto);
+      for (var key in descriptors) {
+        if (descriptors[key].set) {
+          setters.push(key);
+        }
+      }
+      proto = get_prototype_of(proto);
+    }
+    return setters;
+  }
+  function bind_value(input, get2, set2 = get2) {
+    listen_to_event_and_reset_event(input, "input", (is_reset) => {
+      var value = is_reset ? input.defaultValue : input.value;
+      value = is_numberlike_input(input) ? to_number(value) : value;
+      set2(value);
+      if (value !== (value = get2())) {
+        var start = input.selectionStart;
+        var end = input.selectionEnd;
+        input.value = value ?? "";
+        if (end !== null) {
+          input.selectionStart = start;
+          input.selectionEnd = Math.min(end, input.value.length);
+        }
+      }
+    });
+    if (
+      // If we are hydrating and the value has since changed,
+      // then use the updated value from the input instead.
+      // If defaultValue is set, then value == defaultValue
+      // TODO Svelte 6: remove input.value check and set to empty string?
+      untrack(get2) == null && input.value
+    ) {
+      set2(is_numberlike_input(input) ? to_number(input.value) : input.value);
+    }
+    render_effect(() => {
+      var value = get2();
+      if (is_numberlike_input(input) && value === to_number(input.value)) {
+        return;
+      }
+      if (input.type === "date" && !value && !input.value) {
+        return;
+      }
+      if (value !== input.value) {
+        input.value = value ?? "";
+      }
+    });
+  }
+  function is_numberlike_input(input) {
+    var type = input.type;
+    return type === "number" || type === "range";
+  }
+  function to_number(value) {
+    return value === "" ? null : +value;
   }
   function is_bound_this(bound_value, element_or_component) {
     return bound_value === element_or_component || bound_value?.[STATE_SYMBOL] === element_or_component;
@@ -1670,18 +2400,105 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     });
     return element_or_component;
   }
-  var root_1 = /* @__PURE__ */ from_html(`<div class="node-item svelte-2t3t4k"><strong> </strong> </div>`);
-  var root_2 = /* @__PURE__ */ from_html(`<div class="edge-item svelte-2t3t4k"><strong> </strong> → <strong> </strong> </div>`);
-  var root$3 = /* @__PURE__ */ from_html(`<div class="info-panel svelte-2t3t4k"><div class="nodes-info svelte-2t3t4k"><h3> </h3> <!></div> <div class="edges-info svelte-2t3t4k"><h3> </h3> <!></div></div>`);
+  const rest_props_handler = {
+    get(target, key) {
+      if (target.exclude.includes(key)) return;
+      return target.props[key];
+    },
+    set(target, key) {
+      return false;
+    },
+    getOwnPropertyDescriptor(target, key) {
+      if (target.exclude.includes(key)) return;
+      if (key in target.props) {
+        return {
+          enumerable: true,
+          configurable: true,
+          value: target.props[key]
+        };
+      }
+    },
+    has(target, key) {
+      if (target.exclude.includes(key)) return false;
+      return key in target.props;
+    },
+    ownKeys(target) {
+      return Reflect.ownKeys(target.props).filter((key) => !target.exclude.includes(key));
+    }
+  };
+  // @__NO_SIDE_EFFECTS__
+  function rest_props(props, exclude, name) {
+    return new Proxy(
+      { props, exclude },
+      rest_props_handler
+    );
+  }
+  function prop(props, key, flags, fallback) {
+    var fallback_value = (
+      /** @type {V} */
+      fallback
+    );
+    var fallback_dirty = true;
+    var get_fallback = () => {
+      if (fallback_dirty) {
+        fallback_dirty = false;
+        fallback_value = /** @type {V} */
+        fallback;
+      }
+      return fallback_value;
+    };
+    {
+      props[key];
+    }
+    var getter;
+    {
+      getter = () => {
+        var value = (
+          /** @type {V} */
+          props[key]
+        );
+        if (value === void 0) return get_fallback();
+        fallback_dirty = true;
+        return value;
+      };
+    }
+    var overridden = false;
+    var d = /* @__PURE__ */ derived(() => {
+      overridden = false;
+      return getter();
+    });
+    var parent_effect = (
+      /** @type {Effect} */
+      active_effect
+    );
+    return function(value, mutation) {
+      if (arguments.length > 0) {
+        const new_value = mutation ? get(d) : value;
+        set(d, new_value);
+        overridden = true;
+        if (fallback_value !== void 0) {
+          fallback_value = new_value;
+        }
+        return value;
+      }
+      if (is_destroying_effect && overridden || (parent_effect.f & DESTROYED) !== 0) {
+        return d.v;
+      }
+      return get(d);
+    };
+  }
+  var root_1$4 = /* @__PURE__ */ from_html(`<div class="node-item svelte-2t3t4k"><strong> </strong> </div>`);
+  var root_2$3 = /* @__PURE__ */ from_html(`<div class="edge-item svelte-2t3t4k"><strong> </strong> → <strong> </strong> </div>`);
+  var root$9 = /* @__PURE__ */ from_html(`<div class="info-panel svelte-2t3t4k"><div class="nodes-info svelte-2t3t4k"><h3> </h3> <!></div> <div class="edges-info svelte-2t3t4k"><h3> </h3> <!></div></div>`);
   function GraphInfoPanel($$anchor, $$props) {
     push($$props, true);
-    var div = root$3();
+    var div = root$9();
     var div_1 = child(div);
     var h3 = child(div_1);
-    var text = child(h3);
+    var text2 = child(h3);
     var node_1 = sibling(h3, 2);
     each(node_1, 17, () => $$props.nodes, index, ($$anchor2, node) => {
-      var div_2 = root_1();
+      var div_2 = root_1$4();
       var strong = child(div_2);
       var text_1 = child(strong);
       var text_2 = sibling(strong);
@@ -1696,7 +2513,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     var text_3 = child(h3_1);
     var node_2 = sibling(h3_1, 2);
     each(node_2, 17, () => $$props.edges, index, ($$anchor2, edge) => {
-      var div_4 = root_2();
+      var div_4 = root_2$3();
       var strong_1 = child(div_4);
       var text_4 = child(strong_1);
       var strong_2 = sibling(strong_1, 2);
@@ -1716,27 +2533,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       append($$anchor2, div_4);
     });
     template_effect(() => {
-      set_text(text, `Nodes (${$$props.nodes.length ?? ""}):`);
+      set_text(text2, `Nodes (${$$props.nodes.length ?? ""}):`);
       set_text(text_3, `Edges (${$$props.edges.length ?? ""}):`);
     });
     append($$anchor, div);
     pop();
-  }
-  var root$2 = /* @__PURE__ */ from_html(`<div class="relationship-graph-container svelte-o6tj79"><div class="info-panel-wrapper svelte-o6tj79"><!></div></div>`);
-  function RelationshipGraphEdit($$anchor, $$props) {
-    console.log("[RelationshipGraph] Props received:", { nodes: $$props.nodes, edges: $$props.edges });
-    var div = root$2();
-    var div_1 = child(div);
-    var node = child(div_1);
-    GraphInfoPanel(node, {
-      get nodes() {
-        return $$props.nodes;
-      },
-      get edges() {
-        return $$props.edges;
-      }
-    });
-    append($$anchor, div);
   }
   var commonjsGlobal = typeof globalThis !== "undefined" ? globalThis : typeof window !== "undefined" ? window : typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : {};
   function getDefaultExportFromCjs(x) {
@@ -1950,7 +2751,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         var stylesheet = function stylesheet2(obj) {
           return instanceStr(obj) === "stylesheet";
         };
-        var event = function event2(obj) {
+        var event2 = function event3(obj) {
           return instanceStr(obj) === "event";
         };
         var emptyString = function emptyString2(obj) {
@@ -2906,7 +3707,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
           return _createClass(ObjectMap2, [{
             key: "set",
-            value: function set2(key, val) {
+            value: function set3(key, val) {
               this._obj[key] = val;
               return this;
             }
@@ -5226,13 +6027,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return points;
         };
         var generateUnitNgonPoints = function generateUnitNgonPoints2(sides, rotationRadians) {
-          var increment = 1 / sides * 2 * Math.PI;
-          var startAngle = sides % 2 === 0 ? Math.PI / 2 + increment / 2 : Math.PI / 2;
+          var increment2 = 1 / sides * 2 * Math.PI;
+          var startAngle = sides % 2 === 0 ? Math.PI / 2 + increment2 / 2 : Math.PI / 2;
           startAngle += rotationRadians;
           var points = new Array(sides * 2);
           var currentAngle;
           for (var i2 = 0; i2 < sides; i2++) {
-            currentAngle = i2 * increment + startAngle;
+            currentAngle = i2 * increment2 + startAngle;
             points[2 * i2] = Math.cos(currentAngle);
             points[2 * i2 + 1] = Math.sin(-currentAngle);
           }
@@ -5633,7 +6434,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             var _C = {};
             var max2 = 0;
             var C = {
-              set: function set2(key, val) {
+              set: function set3(key, val) {
                 _C[key] = val;
                 if (val > max2) {
                   max2 = val;
@@ -7126,9 +7927,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             return next.proxy;
           }
         };
-        var deliver = function deliver2(curr, state, name, value) {
+        var deliver = function deliver2(curr, state2, name, value) {
           if (curr.state === STATE_PENDING) {
-            curr.state = state;
+            curr.state = state2;
             curr[name] = value;
             execute(curr);
           }
@@ -7401,10 +8202,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             swap("position", "startPosition");
             if (_p.style) {
               for (var i2 = 0; i2 < _p.style.length; i2++) {
-                var prop = _p.style[i2];
-                var name = prop.name;
+                var prop2 = _p.style[i2];
+                var name = prop2.name;
                 var startStyleProp = _p.startStyle[name];
-                _p.startStyle[name] = prop;
+                _p.startStyle[name] = prop2;
                 _p.style[i2] = startStyleProp;
               }
             }
@@ -8432,14 +9233,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           if (hasRequiredSet) return set_1;
           hasRequiredSet = 1;
           var baseSet = require_baseSet();
-          function set2(object2, path, value) {
+          function set3(object2, path, value) {
             return object2 == null ? object2 : baseSet(object2, path, value);
           }
-          set_1 = set2;
+          set_1 = set3;
           return set_1;
         }
         var setExports = requireSet();
-        var set = /* @__PURE__ */ getDefaultExportFromCjs2(setExports);
+        var set2 = /* @__PURE__ */ getDefaultExportFromCjs2(setExports);
         var _copyArray;
         var hasRequired_copyArray;
         function require_copyArray() {
@@ -8528,7 +9329,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                       var ele = all[i2];
                       if (p2.canSet(ele)) {
                         if (path && single._private[p2.field][name] === void 0) {
-                          set(ele._private[p2.field], path, value);
+                          set2(ele._private[p2.field], path, value);
                         } else {
                           ele._private[p2.field][name] = value;
                         }
@@ -9056,10 +9857,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           query: true,
           regex: stateSelectorRegex,
           populate: function populate(selector, query, _ref3) {
-            var _ref4 = _slicedToArray(_ref3, 1), state = _ref4[0];
+            var _ref4 = _slicedToArray(_ref3, 1), state2 = _ref4[0];
             query.checks.push({
               type: Type.STATE,
-              value: state
+              value: state2
             });
           }
         }, {
@@ -9808,7 +10609,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               return selObj.matches(ele);
             });
           },
-          is: function is(selector) {
+          is: function is2(selector) {
             var selObj = new Selector(selector);
             return this.some(function(ele) {
               return selObj.matches(ele);
@@ -11589,7 +12390,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return new Event(obj.type, obj);
         };
         var forEachEventObj = function forEachEventObj2(self2, handler, events) {
-          if (event(events)) {
+          if (event2(events)) {
             handler(self2, events);
             return;
           } else if (plainObject(events)) {
@@ -11616,10 +12417,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
         };
         p.on = p.addListener = function(events, qualifier, callback, conf, confOverrides) {
-          forEachEvent(this, function(self2, event2, type, namespace, qualifier2, callback2, conf2) {
+          forEachEvent(this, function(self2, event3, type, namespace, qualifier2, callback2, conf2) {
             if (fn$6(callback2)) {
               self2.listeners.push({
-                event: event2,
+                event: event3,
                 // full event string
                 callback: callback2,
                 // callback to run
@@ -11649,7 +12450,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           var listeners = this.listeners;
           var _loop = function _loop2(i3) {
             var listener = listeners[i3];
-            forEachEvent(_this, function(self2, event2, type, namespace, qualifier2, callback2) {
+            forEachEvent(_this, function(self2, event3, type, namespace, qualifier2, callback2) {
               if ((listener.type === type || events === "*") && (!namespace && listener.namespace !== ".*" || listener.namespace === namespace) && (!qualifier2 || self2.qualifierCompare(listener.qualifier, qualifier2)) && (!callback2 || listener.callback === callback2)) {
                 listeners.splice(i3, 1);
                 return false;
@@ -11816,12 +12617,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             }
             return this;
           },
-          emitAndNotify: function emitAndNotify(event2, extraParams) {
+          emitAndNotify: function emitAndNotify(event3, extraParams) {
             if (this.length === 0) {
               return;
             }
-            this.cy().notify(event2, this);
-            this.emit(event2, extraParams);
+            this.cy().notify(event3, this);
+            this.emit(event3, extraParams);
             return this;
           }
         };
@@ -14045,29 +14846,29 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         }
         /*! Runge-Kutta spring physics function generator. Adapted from Framer.js, copyright Koen Bok. MIT License: http://en.wikipedia.org/wiki/MIT_License */
         var generateSpringRK4 = /* @__PURE__ */ function() {
-          function springAccelerationForState(state) {
-            return -state.tension * state.x - state.friction * state.v;
+          function springAccelerationForState(state2) {
+            return -state2.tension * state2.x - state2.friction * state2.v;
           }
           function springEvaluateStateWithDerivative(initialState, dt, derivative) {
-            var state = {
+            var state2 = {
               x: initialState.x + derivative.dx * dt,
               v: initialState.v + derivative.dv * dt,
               tension: initialState.tension,
               friction: initialState.friction
             };
             return {
-              dx: state.v,
-              dv: springAccelerationForState(state)
+              dx: state2.v,
+              dv: springAccelerationForState(state2)
             };
           }
-          function springIntegrateState(state, dt) {
+          function springIntegrateState(state2, dt) {
             var a = {
-              dx: state.v,
-              dv: springAccelerationForState(state)
-            }, b = springEvaluateStateWithDerivative(state, dt * 0.5, a), c = springEvaluateStateWithDerivative(state, dt * 0.5, b), d = springEvaluateStateWithDerivative(state, dt, c), dxdt = 1 / 6 * (a.dx + 2 * (b.dx + c.dx) + d.dx), dvdt = 1 / 6 * (a.dv + 2 * (b.dv + c.dv) + d.dv);
-            state.x = state.x + dxdt * dt;
-            state.v = state.v + dvdt * dt;
-            return state;
+              dx: state2.v,
+              dv: springAccelerationForState(state2)
+            }, b = springEvaluateStateWithDerivative(state2, dt * 0.5, a), c = springEvaluateStateWithDerivative(state2, dt * 0.5, b), d = springEvaluateStateWithDerivative(state2, dt, c), dxdt = 1 / 6 * (a.dx + 2 * (b.dx + c.dx) + d.dx), dvdt = 1 / 6 * (a.dv + 2 * (b.dv + c.dv) + d.dv);
+            state2.x = state2.x + dxdt * dt;
+            state2.v = state2.v + dvdt * dt;
+            return state2;
           }
           return function springRK4Factory(tension, friction, duration) {
             var initState = {
@@ -14178,15 +14979,15 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
           return val;
         }
-        function getValue(prop, spec) {
-          if (prop.pfValue != null || prop.value != null) {
-            if (prop.pfValue != null && (spec == null || spec.type.units !== "%")) {
-              return prop.pfValue;
+        function getValue(prop2, spec) {
+          if (prop2.pfValue != null || prop2.value != null) {
+            if (prop2.pfValue != null && (spec == null || spec.type.units !== "%")) {
+              return prop2.pfValue;
             } else {
-              return prop.value;
+              return prop2.value;
             }
           } else {
-            return prop;
+            return prop2;
           }
         }
         function ease(startProp, endProp, percent, easingFn, propSpec) {
@@ -14311,9 +15112,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             var props = ani_p.style;
             if (props && props.length > 0 && isEles) {
               for (var i2 = 0; i2 < props.length; i2++) {
-                var prop = props[i2];
-                var _name = prop.name;
-                var end = prop;
+                var prop2 = props[i2];
+                var _name = prop2.name;
+                var end = prop2;
                 var start = ani_p.startStyle[_name];
                 var propSpec = style.properties[start.name];
                 var easedVal = ease(start, end, percent, easing, propSpec);
@@ -14530,9 +15331,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             this.emitter().emit(events, extraParams);
             return this;
           },
-          emitAndNotify: function emitAndNotify(event2, eles) {
-            this.emit(event2);
-            this.notify(event2, eles);
+          emitAndNotify: function emitAndNotify(event3, eles) {
+            this.emit(event3);
+            this.notify(event3, eles);
             return this;
           }
         };
@@ -14858,8 +15659,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                 props = cxt.mappedProperties;
               }
               for (var j = 0; j < props.length; j++) {
-                var prop = props[j];
-                var name = prop.name;
+                var prop2 = props[j];
+                var name = prop2.name;
                 var laterCxtOverrides = false;
                 for (var k = i2 + 1; k < self2.length; k++) {
                   var laterCxt = self2[k];
@@ -14867,7 +15668,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                   if (!hasLaterCxt) {
                     continue;
                   }
-                  laterCxtOverrides = laterCxt.properties[prop.name] != null;
+                  laterCxtOverrides = laterCxt.properties[prop2.name] != null;
                   if (laterCxtOverrides) {
                     break;
                   }
@@ -14923,8 +15724,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               continue;
             }
             for (var j = 0; j < cxt.properties.length; j++) {
-              var prop = cxt.properties[j];
-              style[prop.name] = prop;
+              var prop2 = cxt.properties[j];
+              style[prop2.name] = prop2;
             }
           }
           cxtStyles[cxtKey] = style;
@@ -15096,13 +15897,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         };
         styfn$8.applyParsedProperty = function(ele, parsedProp) {
           var self2 = this;
-          var prop = parsedProp;
+          var prop2 = parsedProp;
           var style = ele._private.style;
           var flatProp;
           var types = self2.types;
-          var type = self2.properties[prop.name].type;
-          var propIsBypass = prop.bypass;
-          var origProp = style[prop.name];
+          var type = self2.properties[prop2.name].type;
+          var propIsBypass = prop2.bypass;
+          var origProp = style[prop2.name];
           var origPropIsBypass = origProp && origProp.bypass;
           var _p = ele._private;
           var flatPropMapping = "mapping";
@@ -15117,20 +15918,20 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           };
           var checkTriggers = function checkTriggers2() {
             var fromVal = getVal(origProp);
-            var toVal = getVal(prop);
-            self2.checkTriggers(ele, prop.name, fromVal, toVal);
+            var toVal = getVal(prop2);
+            self2.checkTriggers(ele, prop2.name, fromVal, toVal);
           };
           if (parsedProp.name === "curve-style" && ele.isEdge() && // loops must be bundled beziers
           (parsedProp.value !== "bezier" && ele.isLoop() || // edges connected to compound nodes can not be haystacks
           parsedProp.value === "haystack" && (ele.source().isParent() || ele.target().isParent()))) {
-            prop = parsedProp = this.parse(parsedProp.name, "bezier", propIsBypass);
+            prop2 = parsedProp = this.parse(parsedProp.name, "bezier", propIsBypass);
           }
-          if (prop["delete"]) {
-            style[prop.name] = void 0;
+          if (prop2["delete"]) {
+            style[prop2.name] = void 0;
             checkTriggers();
             return true;
           }
-          if (prop.deleteBypassed) {
+          if (prop2.deleteBypassed) {
             if (!origProp) {
               checkTriggers();
               return true;
@@ -15142,12 +15943,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               return false;
             }
           }
-          if (prop.deleteBypass) {
+          if (prop2.deleteBypass) {
             if (!origProp) {
               checkTriggers();
               return true;
             } else if (origProp.bypass) {
-              style[prop.name] = origProp.bypassed;
+              style[prop2.name] = origProp.bypassed;
               checkTriggers();
               return true;
             } else {
@@ -15155,12 +15956,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             }
           }
           var printMappingErr = function printMappingErr2() {
-            warn("Do not assign mappings to elements without corresponding data (i.e. ele `" + ele.id() + "` has no mapping for property `" + prop.name + "` with data field `" + prop.field + "`); try a `[" + prop.field + "]` selector to limit scope to elements with `" + prop.field + "` defined");
+            warn("Do not assign mappings to elements without corresponding data (i.e. ele `" + ele.id() + "` has no mapping for property `" + prop2.name + "` with data field `" + prop2.field + "`); try a `[" + prop2.field + "]` selector to limit scope to elements with `" + prop2.field + "` defined");
           };
-          switch (prop.mapped) {
+          switch (prop2.mapped) {
             // flatten the property if mapped
             case types.mapData: {
-              var fields2 = prop.field.split(".");
+              var fields2 = prop2.field.split(".");
               var fieldVal = _p.data;
               for (var i2 = 0; i2 < fields2.length && fieldVal; i2++) {
                 var field = fields2[i2];
@@ -15172,14 +15973,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               }
               var percent;
               if (!number$1(fieldVal)) {
-                warn("Do not use continuous mappers without specifying numeric data (i.e. `" + prop.field + ": " + fieldVal + "` for `" + ele.id() + "` is non-numeric)");
+                warn("Do not use continuous mappers without specifying numeric data (i.e. `" + prop2.field + ": " + fieldVal + "` for `" + ele.id() + "` is non-numeric)");
                 return false;
               } else {
-                var fieldWidth = prop.fieldMax - prop.fieldMin;
+                var fieldWidth = prop2.fieldMax - prop2.fieldMin;
                 if (fieldWidth === 0) {
                   percent = 0;
                 } else {
-                  percent = (fieldVal - prop.fieldMin) / fieldWidth;
+                  percent = (fieldVal - prop2.fieldMin) / fieldWidth;
                 }
               }
               if (percent < 0) {
@@ -15188,26 +15989,26 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                 percent = 1;
               }
               if (type.color) {
-                var r1 = prop.valueMin[0];
-                var r2 = prop.valueMax[0];
-                var g1 = prop.valueMin[1];
-                var g2 = prop.valueMax[1];
-                var b1 = prop.valueMin[2];
-                var b2 = prop.valueMax[2];
-                var a1 = prop.valueMin[3] == null ? 1 : prop.valueMin[3];
-                var a2 = prop.valueMax[3] == null ? 1 : prop.valueMax[3];
+                var r1 = prop2.valueMin[0];
+                var r2 = prop2.valueMax[0];
+                var g1 = prop2.valueMin[1];
+                var g2 = prop2.valueMax[1];
+                var b1 = prop2.valueMin[2];
+                var b2 = prop2.valueMax[2];
+                var a1 = prop2.valueMin[3] == null ? 1 : prop2.valueMin[3];
+                var a2 = prop2.valueMax[3] == null ? 1 : prop2.valueMax[3];
                 var clr = [Math.round(r1 + (r2 - r1) * percent), Math.round(g1 + (g2 - g1) * percent), Math.round(b1 + (b2 - b1) * percent), Math.round(a1 + (a2 - a1) * percent)];
                 flatProp = {
                   // colours are simple, so just create the flat property instead of expensive string parsing
-                  bypass: prop.bypass,
+                  bypass: prop2.bypass,
                   // we're a bypass if the mapping property is a bypass
-                  name: prop.name,
+                  name: prop2.name,
                   value: clr,
                   strValue: "rgb(" + clr[0] + ", " + clr[1] + ", " + clr[2] + ")"
                 };
               } else if (type.number) {
-                var calcValue = prop.valueMin + (prop.valueMax - prop.valueMin) * percent;
-                flatProp = this.parse(prop.name, calcValue, prop.bypass, flatPropMapping);
+                var calcValue = prop2.valueMin + (prop2.valueMax - prop2.valueMin) * percent;
+                flatProp = this.parse(prop2.name, calcValue, prop2.bypass, flatPropMapping);
               } else {
                 return false;
               }
@@ -15215,44 +16016,44 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                 printMappingErr();
                 return false;
               }
-              flatProp.mapping = prop;
-              prop = flatProp;
+              flatProp.mapping = prop2;
+              prop2 = flatProp;
               break;
             }
             // direct mapping
             case types.data: {
-              var _fields = prop.field.split(".");
+              var _fields = prop2.field.split(".");
               var _fieldVal = _p.data;
               for (var _i3 = 0; _i3 < _fields.length && _fieldVal; _i3++) {
                 var _field = _fields[_i3];
                 _fieldVal = _fieldVal[_field];
               }
               if (_fieldVal != null) {
-                flatProp = this.parse(prop.name, _fieldVal, prop.bypass, flatPropMapping);
+                flatProp = this.parse(prop2.name, _fieldVal, prop2.bypass, flatPropMapping);
               }
               if (!flatProp) {
                 printMappingErr();
                 return false;
               }
-              flatProp.mapping = prop;
-              prop = flatProp;
+              flatProp.mapping = prop2;
+              prop2 = flatProp;
               break;
             }
             case types.fn: {
-              var fn2 = prop.value;
-              var fnRetVal = prop.fnValue != null ? prop.fnValue : fn2(ele);
-              prop.prevFnValue = fnRetVal;
+              var fn2 = prop2.value;
+              var fnRetVal = prop2.fnValue != null ? prop2.fnValue : fn2(ele);
+              prop2.prevFnValue = fnRetVal;
               if (fnRetVal == null) {
-                warn("Custom function mappers may not return null (i.e. `" + prop.name + "` for ele `" + ele.id() + "` is null)");
+                warn("Custom function mappers may not return null (i.e. `" + prop2.name + "` for ele `" + ele.id() + "` is null)");
                 return false;
               }
-              flatProp = this.parse(prop.name, fnRetVal, prop.bypass, flatPropMapping);
+              flatProp = this.parse(prop2.name, fnRetVal, prop2.bypass, flatPropMapping);
               if (!flatProp) {
-                warn("Custom function mappers may not return invalid values for the property type (i.e. `" + prop.name + "` for ele `" + ele.id() + "` is invalid)");
+                warn("Custom function mappers may not return invalid values for the property type (i.e. `" + prop2.name + "` for ele `" + ele.id() + "` is invalid)");
                 return false;
               }
-              flatProp.mapping = copy(prop);
-              prop = flatProp;
+              flatProp.mapping = copy(prop2);
+              prop2 = flatProp;
               break;
             }
             case void 0:
@@ -15263,16 +16064,16 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
           if (propIsBypass) {
             if (origPropIsBypass) {
-              prop.bypassed = origProp.bypassed;
+              prop2.bypassed = origProp.bypassed;
             } else {
-              prop.bypassed = origProp;
+              prop2.bypassed = origProp;
             }
-            style[prop.name] = prop;
+            style[prop2.name] = prop2;
           } else {
             if (origPropIsBypass) {
-              origProp.bypassed = prop;
+              origProp.bypassed = prop2;
             } else {
-              style[prop.name] = prop;
+              style[prop2.name] = prop2;
             }
           }
           checkTriggers();
@@ -15318,9 +16119,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             var style = {};
             var anyPrev = false;
             for (var i2 = 0; i2 < props.length; i2++) {
-              var prop = props[i2];
-              var styProp = ele.pstyle(prop);
-              var diffProp = diffProps[prop];
+              var prop2 = props[i2];
+              var styProp = ele.pstyle(prop2);
+              var diffProp = diffProps[prop2];
               if (!diffProp) {
                 continue;
               }
@@ -15344,8 +16145,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                 initVal = fromProp.strValue;
               }
               if (diff) {
-                style[prop] = toProp.strValue;
-                this.applyBypass(ele, prop, initVal);
+                style[prop2] = toProp.strValue;
+                this.applyBypass(ele, prop2, initVal);
                 anyPrev = true;
               }
             }
@@ -15378,44 +16179,44 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
         };
         styfn$8.checkTrigger = function(ele, name, fromValue, toValue, getTrigger, onTrigger) {
-          var prop = this.properties[name];
-          var triggerCheck = getTrigger(prop);
+          var prop2 = this.properties[name];
+          var triggerCheck = getTrigger(prop2);
           if (ele.removed()) {
             return;
           }
           if (triggerCheck != null && triggerCheck(fromValue, toValue, ele)) {
-            onTrigger(prop);
+            onTrigger(prop2);
           }
         };
         styfn$8.checkZOrderTrigger = function(ele, name, fromValue, toValue) {
           var _this = this;
-          this.checkTrigger(ele, name, fromValue, toValue, function(prop) {
-            return prop.triggersZOrder;
+          this.checkTrigger(ele, name, fromValue, toValue, function(prop2) {
+            return prop2.triggersZOrder;
           }, function() {
             _this._private.cy.notify("zorder", ele);
           });
         };
         styfn$8.checkBoundsTrigger = function(ele, name, fromValue, toValue) {
-          this.checkTrigger(ele, name, fromValue, toValue, function(prop) {
-            return prop.triggersBounds;
-          }, function(prop) {
+          this.checkTrigger(ele, name, fromValue, toValue, function(prop2) {
+            return prop2.triggersBounds;
+          }, function(prop2) {
             ele.dirtyCompoundBoundsCache();
             ele.dirtyBoundingBoxCache();
           });
         };
         styfn$8.checkConnectedEdgesBoundsTrigger = function(ele, name, fromValue, toValue) {
-          this.checkTrigger(ele, name, fromValue, toValue, function(prop) {
-            return prop.triggersBoundsOfConnectedEdges;
-          }, function(prop) {
+          this.checkTrigger(ele, name, fromValue, toValue, function(prop2) {
+            return prop2.triggersBoundsOfConnectedEdges;
+          }, function(prop2) {
             ele.connectedEdges().forEach(function(edge) {
               edge.dirtyBoundingBoxCache();
             });
           });
         };
         styfn$8.checkParallelEdgesBoundsTrigger = function(ele, name, fromValue, toValue) {
-          this.checkTrigger(ele, name, fromValue, toValue, function(prop) {
-            return prop.triggersBoundsOfParallelEdges;
-          }, function(prop) {
+          this.checkTrigger(ele, name, fromValue, toValue, function(prop2) {
+            return prop2.triggersBoundsOfParallelEdges;
+          }, function(prop2) {
             ele.parallelEdges().forEach(function(pllEdge) {
               pllEdge.dirtyBoundingBoxCache();
             });
@@ -15436,8 +16237,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           if (name === "*" || name === "**") {
             if (value !== void 0) {
               for (var i2 = 0; i2 < self2.properties.length; i2++) {
-                var prop = self2.properties[i2];
-                var _name = prop.name;
+                var prop2 = self2.properties[i2];
+                var _name = prop2.name;
                 var parsedProp = this.parse(_name, value, true);
                 if (parsedProp) {
                   props.push(parsedProp);
@@ -15503,24 +16304,24 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           name = camel2dash(name);
           for (var i2 = 0; i2 < eles.length; i2++) {
             var ele = eles[i2];
-            var prop = ele._private.style[name];
+            var prop2 = ele._private.style[name];
             var type = this.properties[name].type;
             var isColor = type.color;
             var isMulti = type.mutiple;
-            var oldValue = !prop ? null : prop.pfValue != null ? prop.pfValue : prop.value;
-            if (!prop || !prop.bypass) {
+            var oldValue = !prop2 ? null : prop2.pfValue != null ? prop2.pfValue : prop2.value;
+            if (!prop2 || !prop2.bypass) {
               this.applyBypass(ele, name, value);
             } else {
-              prop.value = value;
-              if (prop.pfValue != null) {
-                prop.pfValue = value;
+              prop2.value = value;
+              if (prop2.pfValue != null) {
+                prop2.pfValue = value;
               }
               if (isColor) {
-                prop.strValue = "rgb(" + value.join(",") + ")";
+                prop2.strValue = "rgb(" + value.join(",") + ")";
               } else if (isMulti) {
-                prop.strValue = value.join(" ");
+                prop2.strValue = value.join(" ");
               } else {
-                prop.strValue = "" + value;
+                prop2.strValue = "" + value;
               }
               this.updateStyleHints(ele);
             }
@@ -15537,18 +16338,18 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             var diffProps = {};
             for (var i2 = 0; i2 < props.length; i2++) {
               var name = props[i2];
-              var prop = this.properties[name];
-              var prevProp = ele.pstyle(prop.name);
+              var prop2 = this.properties[name];
+              var prevProp = ele.pstyle(prop2.name);
               if (!prevProp || !prevProp.bypass) {
                 continue;
               }
               var value = "";
               var parsedProp = this.parse(name, value, true);
-              var diffProp = diffProps[prop.name] = {
+              var diffProp = diffProps[prop2.name] = {
                 prev: prevProp
               };
               this.applyParsedProperty(ele, parsedProp);
-              diffProp.next = ele.pstyle(prop.name);
+              diffProp.next = ele.pstyle(prop2.name);
             }
             this.updateStyleHints(ele);
             if (updateTransitions) {
@@ -15574,9 +16375,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
         };
         var styfn$5 = {};
-        styfn$5.getRenderedStyle = function(ele, prop) {
-          if (prop) {
-            return this.getStylePropertyValue(ele, prop, true);
+        styfn$5.getRenderedStyle = function(ele, prop2) {
+          if (prop2) {
+            return this.getStylePropertyValue(ele, prop2, true);
           } else {
             return this.getRawStyle(ele, true);
           }
@@ -15587,11 +16388,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           if (ele) {
             var rstyle = {};
             for (var i2 = 0; i2 < self2.properties.length; i2++) {
-              var prop = self2.properties[i2];
-              var val = self2.getStylePropertyValue(ele, prop.name, isRenderedVal);
+              var prop2 = self2.properties[i2];
+              var val = self2.getStylePropertyValue(ele, prop2.name, isRenderedVal);
               if (val != null) {
-                rstyle[prop.name] = val;
-                rstyle[dash2camel(prop.name)] = val;
+                rstyle[prop2.name] = val;
+                rstyle[dash2camel(prop2.name)] = val;
               }
             }
             return rstyle;
@@ -15605,12 +16406,12 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           var self2 = this;
           ele = ele[0];
           if (ele) {
-            var prop = self2.properties[propName];
-            if (prop.alias) {
-              prop = prop.pointsTo;
+            var prop2 = self2.properties[propName];
+            if (prop2.alias) {
+              prop2 = prop2.pointsTo;
             }
-            var type = prop.type;
-            var styleProp = ele.pstyle(prop.name);
+            var type = prop2.type;
+            var styleProp = ele.pstyle(prop2.name);
             if (styleProp) {
               var value = styleProp.value, units = styleProp.units, strValue = styleProp.strValue;
               if (isRenderedVal && type.number && value != null && number$1(value)) {
@@ -15678,8 +16479,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             for (var i2 = 0; i2 < names.length; i2++) {
               var name = names[i2];
               var val = style[name];
-              var prop = props[name] || props[camel2dash(name)];
-              var styleProp = this.parse(prop.name, val);
+              var prop2 = props[name] || props[camel2dash(name)];
+              var styleProp = this.parse(prop2.name, val);
               if (styleProp) {
                 rstyle.push(styleProp);
               }
@@ -15742,8 +16543,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             var props = cxt.properties;
             var css = {};
             for (var j = 0; j < props.length; j++) {
-              var prop = props[j];
-              css[prop.name] = prop.strValue;
+              var prop2 = props[j];
+              css[prop2.name] = prop2.strValue;
             }
             json.push({
               selector: !selector ? "core" : selector.toString(),
@@ -15813,8 +16614,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               propAndValStr = propAndVal[0];
               var propStr = propAndVal[1];
               var valStr = propAndVal[2];
-              var prop = self2.properties[propStr];
-              if (!prop) {
+              var prop2 = self2.properties[propStr];
+              if (!prop2) {
                 warn("Skipping property: Invalid property name in: " + propAndValStr);
                 removePropAndValFromRem();
                 continue;
@@ -16940,10 +17741,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }, {
             name: "arrow-width",
             type: t.arrowWidth
-          }].forEach(function(prop2) {
+          }].forEach(function(prop3) {
             arrowPrefixes.forEach(function(prefix) {
-              var name = prefix + "-" + prop2.name;
-              var type = prop2.type, triggersBounds = prop2.triggersBounds;
+              var name = prefix + "-" + prop3.name;
+              var type = prop3.type, triggersBounds = prop3.triggersBounds;
               edgeArrow.push({
                 name,
                 type,
@@ -16982,11 +17783,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           var propGroupNames = styfn$2.propertyGroupNames = {};
           var propGroupKeys = styfn$2.propertyGroupKeys = Object.keys(propGroups);
           propGroupKeys.forEach(function(key) {
-            propGroupNames[key] = propGroups[key].map(function(prop2) {
-              return prop2.name;
+            propGroupNames[key] = propGroups[key].map(function(prop3) {
+              return prop3.name;
             });
-            propGroups[key].forEach(function(prop2) {
-              return prop2.groupKey = key;
+            propGroups[key].forEach(function(prop3) {
+              return prop3.groupKey = key;
             });
           });
           var aliases = styfn$2.aliases = [{
@@ -17027,8 +17828,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             return p2.name;
           });
           for (var _i2 = 0; _i2 < props.length; _i2++) {
-            var prop = props[_i2];
-            props[prop.name] = prop;
+            var prop2 = props[_i2];
+            props[prop2.name] = prop2;
           }
           for (var _i3 = 0; _i3 < aliases.length; _i3++) {
             var alias = aliases[_i3];
@@ -17201,10 +18002,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }, {
             name: "pie-{{i}}-background-opacity",
             value: 1
-          }].reduce(function(css, prop2) {
+          }].reduce(function(css, prop3) {
             for (var i3 = 1; i3 <= styfn$2.pieBackgroundN; i3++) {
-              var name2 = prop2.name.replace("{{i}}", i3);
-              var val2 = prop2.value;
+              var name2 = prop3.name.replace("{{i}}", i3);
+              var val2 = prop3.value;
               css[name2] = val2;
             }
             return css;
@@ -17221,10 +18022,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }, {
             name: "stripe-{{i}}-background-opacity",
             value: 1
-          }].reduce(function(css, prop2) {
+          }].reduce(function(css, prop3) {
             for (var i3 = 1; i3 <= styfn$2.stripeBackgroundN; i3++) {
-              var name2 = prop2.name.replace("{{i}}", i3);
-              var val2 = prop2.value;
+              var name2 = prop3.name.replace("{{i}}", i3);
+              var val2 = prop3.value;
               css[name2] = val2;
             }
             return css;
@@ -17273,21 +18074,21 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }, {
             name: "arrow-width",
             value: 1
-          }].reduce(function(css, prop2) {
+          }].reduce(function(css, prop3) {
             styfn$2.arrowPrefixes.forEach(function(prefix) {
-              var name2 = prefix + "-" + prop2.name;
-              var val2 = prop2.value;
+              var name2 = prefix + "-" + prop3.name;
+              var val2 = prop3.value;
               css[name2] = val2;
             });
             return css;
           }, {}));
           var parsedProps = {};
           for (var i2 = 0; i2 < this.properties.length; i2++) {
-            var prop = this.properties[i2];
-            if (prop.pointsTo) {
+            var prop2 = this.properties[i2];
+            if (prop2.pointsTo) {
               continue;
             }
-            var name = prop.name;
+            var name = prop2.name;
             var val = rawProps[name];
             var parsedProp = this.parse(name, val);
             parsedProps[name] = parsedProp;
@@ -17351,14 +18152,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           return ret;
         };
         styfn$1.parseImplWarn = function(name, value, propIsBypass, propIsFlat) {
-          var prop = this.parseImpl(name, value, propIsBypass, propIsFlat);
-          if (!prop && value != null) {
+          var prop2 = this.parseImpl(name, value, propIsBypass, propIsFlat);
+          if (!prop2 && value != null) {
             warn("The style property `".concat(name, ": ").concat(value, "` is invalid"));
           }
-          if (prop && (prop.name === "width" || prop.name === "height") && value === "label") {
-            warn("The style value of `label` is deprecated for `" + prop.name + "`");
+          if (prop2 && (prop2.name === "width" || prop2.name === "height") && value === "label") {
+            warn("The style value of `label` is deprecated for `" + prop2.name + "`");
           }
-          return prop;
+          return prop2;
         };
         styfn$1.parseImpl = function(name, value, propIsBypass, propIsFlat) {
           var self2 = this;
@@ -17717,13 +18518,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           if (args.length === 1) {
             var map = args[0];
             for (var i2 = 0; i2 < self2.properties.length; i2++) {
-              var prop = self2.properties[i2];
-              var mapVal = map[prop.name];
+              var prop2 = self2.properties[i2];
+              var mapVal = map[prop2.name];
               if (mapVal === void 0) {
-                mapVal = map[dash2camel(prop.name)];
+                mapVal = map[dash2camel(prop2.name)];
               }
               if (mapVal !== void 0) {
-                this.cssRule(prop.name, mapVal);
+                this.cssRule(prop2.name, mapVal);
               }
             }
           } else if (args.length === 2) {
@@ -20921,9 +21722,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             }
             ele2.boundingBox();
             var bb = _p.labelBounds[prefix || "main"];
-            var text = ele2.pstyle(prefixDash + "label").value;
+            var text2 = ele2.pstyle(prefixDash + "label").value;
             var eventsEnabled = ele2.pstyle("text-events").strValue === "yes";
-            if (!eventsEnabled || !text) {
+            if (!eventsEnabled || !text2) {
               return;
             }
             var lx = preprop(_p.rscratch, "labelX", prefix);
@@ -22115,25 +22916,25 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           };
         };
         var BRp$b = {};
-        BRp$b.manualEndptToPx = function(node, prop) {
+        BRp$b.manualEndptToPx = function(node, prop2) {
           var r = this;
           var npos = node.position();
           var w = node.outerWidth();
           var h = node.outerHeight();
           var rs = node._private.rscratch;
-          if (prop.value.length === 2) {
-            var p2 = [prop.pfValue[0], prop.pfValue[1]];
-            if (prop.units[0] === "%") {
+          if (prop2.value.length === 2) {
+            var p2 = [prop2.pfValue[0], prop2.pfValue[1]];
+            if (prop2.units[0] === "%") {
               p2[0] = p2[0] * w;
             }
-            if (prop.units[1] === "%") {
+            if (prop2.units[1] === "%") {
               p2[1] = p2[1] * h;
             }
             p2[0] += npos.x;
             p2[1] += npos.y;
             return p2;
           } else {
-            var angle2 = prop.pfValue[0];
+            var angle2 = prop2.pfValue[0];
             angle2 = -Math.PI / 2 + angle2;
             var l = 2 * Math.max(w, h);
             var _p = [npos.x + Math.cos(angle2) * l, npos.y + Math.sin(angle2) * l];
@@ -22650,13 +23451,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         };
         BRp$9.applyPrefixedLabelDimensions = function(ele, prefix) {
           var _p = ele._private;
-          var text = this.getLabelText(ele, prefix);
-          var cacheKey = hashString(text, ele._private.labelDimsKey);
+          var text2 = this.getLabelText(ele, prefix);
+          var cacheKey = hashString(text2, ele._private.labelDimsKey);
           if (getPrefixedProperty(_p.rscratch, "prefixedLabelDimsKey", prefix) === cacheKey) {
             return;
           }
           setPrefixedProperty(_p.rscratch, "prefixedLabelDimsKey", prefix, cacheKey);
-          var labelDims = this.calculateLabelDimensions(ele, text);
+          var labelDims = this.calculateLabelDimensions(ele, text2);
           var lineHeight = ele.pstyle("line-height").pfValue;
           var textWrap = ele.pstyle("text-wrap").strValue;
           var lines = getPrefixedProperty(_p.rscratch, "labelWrapCachedLines", prefix) || [];
@@ -22674,7 +23475,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         BRp$9.getLabelText = function(ele, prefix) {
           var _p = ele._private;
           var pfd = prefix ? prefix + "-" : "";
-          var text = ele.pstyle(pfd + "label").strValue;
+          var text2 = ele.pstyle(pfd + "label").strValue;
           var textTransform = ele.pstyle("text-transform").value;
           var rscratch = function rscratch2(propName, value) {
             if (value) {
@@ -22684,14 +23485,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               return getPrefixedProperty(_p.rscratch, propName, prefix);
             }
           };
-          if (!text) {
+          if (!text2) {
             return "";
           }
           if (textTransform == "none") ;
           else if (textTransform == "uppercase") {
-            text = text.toUpperCase();
+            text2 = text2.toUpperCase();
           } else if (textTransform == "lowercase") {
-            text = text.toLowerCase();
+            text2 = text2.toLowerCase();
           }
           var wrapStyle = ele.pstyle("text-wrap").value;
           if (wrapStyle === "wrap") {
@@ -22700,7 +23501,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               return rscratch("labelWrapCachedText");
             }
             var zwsp = "​";
-            var lines = text.split("\n");
+            var lines = text2.split("\n");
             var maxW = ele.pstyle("text-max-width").pfValue;
             var overflow = ele.pstyle("text-overflow-wrap").value;
             var overflowAny = overflow === "anywhere";
@@ -22750,23 +23551,23 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               }
             }
             rscratch("labelWrapCachedLines", wrappedLines);
-            text = rscratch("labelWrapCachedText", wrappedLines.join("\n"));
+            text2 = rscratch("labelWrapCachedText", wrappedLines.join("\n"));
             rscratch("labelWrapKey", labelKey);
           } else if (wrapStyle === "ellipsis") {
             var _maxW = ele.pstyle("text-max-width").pfValue;
             var ellipsized = "";
             var ellipsis = "…";
             var incLastCh = false;
-            if (this.calculateLabelDimensions(ele, text).width < _maxW) {
-              return text;
+            if (this.calculateLabelDimensions(ele, text2).width < _maxW) {
+              return text2;
             }
-            for (var i2 = 0; i2 < text.length; i2++) {
-              var widthWithNextCh = this.calculateLabelDimensions(ele, ellipsized + text[i2] + ellipsis).width;
+            for (var i2 = 0; i2 < text2.length; i2++) {
+              var widthWithNextCh = this.calculateLabelDimensions(ele, ellipsized + text2[i2] + ellipsis).width;
               if (widthWithNextCh > _maxW) {
                 break;
               }
-              ellipsized += text[i2];
-              if (i2 === text.length - 1) {
+              ellipsized += text2[i2];
+              if (i2 === text2.length - 1) {
                 incLastCh = true;
               }
             }
@@ -22775,7 +23576,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             }
             return ellipsized;
           }
-          return text;
+          return text2;
         };
         BRp$9.getLabelJustification = function(ele) {
           var justification = ele.pstyle("text-justification").strValue;
@@ -22797,7 +23598,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             return justification;
           }
         };
-        BRp$9.calculateLabelDimensions = function(ele, text) {
+        BRp$9.calculateLabelDimensions = function(ele, text2) {
           var r = this;
           var containerWindow = r.cy.window();
           var document2 = containerWindow.document;
@@ -22822,7 +23623,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           c2d.font = "".concat(fStyle, " ").concat(weight, " ").concat(size, "px ").concat(family);
           var width = 0;
           var height = 0;
-          var lines = text.split("\n");
+          var lines = text2.split("\n");
           for (var i2 = 0; i2 < lines.length; i2++) {
             var line = lines[i2];
             var metrics = c2d.measureText(line);
@@ -23092,7 +23893,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
         };
         var BRp$3 = {};
-        BRp$3.registerBinding = function(target, event2, handler, useCapture) {
+        BRp$3.registerBinding = function(target, event3, handler, useCapture) {
           var args = Array.prototype.slice.apply(arguments, [1]);
           if (Array.isArray(target)) {
             var res = [];
@@ -23126,7 +23927,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             }
             r.supportsPassiveEvents = supportsPassive;
           }
-          var on = function on2(event2, handler, useCapture) {
+          var on = function on2(event3, handler, useCapture) {
             var args = Array.prototype.slice.call(arguments);
             if (tgtIsDom && r.supportsPassiveEvents) {
               args[2] = {
@@ -25635,7 +26436,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             }
           }, {
             key: "set",
-            value: function set2(ele, lvl, cache2) {
+            value: function set3(ele, lvl, cache2) {
               var key = this.getKey(ele);
               this.setCache(key, lvl, cache2);
               this.updateKeyMappingFor(ele);
@@ -27373,8 +28174,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           var textX = getPrefixedProperty(rscratch, "labelX", prefix);
           var textY = getPrefixedProperty(rscratch, "labelY", prefix);
           var orgTextX, orgTextY;
-          var text = this.getLabelText(ele, prefix);
-          if (text != null && text !== "" && !isNaN(textX) && !isNaN(textY)) {
+          var text2 = this.getLabelText(ele, prefix);
+          if (text2 != null && text2 !== "" && !isNaN(textX) && !isNaN(textY)) {
             this.setupTextStyle(context, ele, useEleOpacity);
             var pdash = prefix ? prefix + "-" : "";
             var textW = getPrefixedProperty(rscratch, "labelWidth", prefix);
@@ -27536,9 +28337,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               }
             } else {
               if (lineWidth > 0) {
-                context.strokeText(text, textX, textY);
+                context.strokeText(text2, textX, textY);
               }
-              context.fillText(text, textX, textY);
+              context.fillText(text2, textX, textY);
             }
             if (theta !== 0) {
               context.rotate(-theta);
@@ -28639,16 +29440,16 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             if (r.showFps && timeToRender) {
               timeToRender = Math.round(timeToRender);
               var fps = Math.round(1e3 / timeToRender);
-              var text = "1 frame = " + timeToRender + " ms = " + fps + " fps";
+              var text2 = "1 frame = " + timeToRender + " ms = " + fps + " fps";
               context.setTransform(1, 0, 0, 1, 0, 0);
               context.fillStyle = "rgba(255, 0, 0, 0.75)";
               context.strokeStyle = "rgba(255, 0, 0, 0.75)";
               context.font = "30px Arial";
               if (!fpsHeight) {
-                var dims = context.measureText(text);
+                var dims = context.measureText(text2);
                 fpsHeight = dims.actualBoundingBoxAscent;
               }
-              context.fillText(text, 0, fpsHeight);
+              context.fillText(text2, 0, fpsHeight);
               var maxFps = 60;
               context.strokeRect(0, fpsHeight + 10, 250, 20);
               context.fillRect(0, fpsHeight + 10, 250 * Math.min(fps / maxFps, 1), 20);
@@ -29387,10 +30188,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             }
           }]);
         }();
-        function intersection(set1, set2) {
-          if (set1.intersection) return set1.intersection(set2);
+        function intersection(set1, set22) {
+          if (set1.intersection) return set1.intersection(set22);
           else return new Set(_toConsumableArray(set1).filter(function(x2) {
-            return set2.has(x2);
+            return set22.has(x2);
           }));
         }
         var AtlasManager = /* @__PURE__ */ function() {
@@ -30449,14 +31250,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           r.pickingFrameBuffer = createPickingFrameBuffer(gl);
           r.pickingFrameBuffer.needsDraw = true;
           r.drawing = new ElementDrawingWebGL(r, gl, opts);
-          var getLabelRotation2 = function getLabelRotation3(prop) {
+          var getLabelRotation2 = function getLabelRotation3(prop2) {
             return function(ele) {
-              return r.getTextAngle(ele, prop);
+              return r.getTextAngle(ele, prop2);
             };
           };
-          var isLabelVisible = function isLabelVisible2(prop) {
+          var isLabelVisible = function isLabelVisible2(prop2) {
             return function(ele) {
-              var label = ele.pstyle(prop);
+              var label = ele.pstyle(prop2);
               return label && label.value;
             };
           };
@@ -31776,11 +32577,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               if (mapVal == null) {
                 continue;
               }
-              var prop = _Style.properties[key] || _Style.properties[dash2camel(key)];
-              if (prop == null) {
+              var prop2 = _Style.properties[key] || _Style.properties[dash2camel(key)];
+              if (prop2 == null) {
                 continue;
               }
-              var _name = prop.name;
+              var _name = prop2.name;
               var _value = mapVal;
               this[i2].properties.push({
                 name: _name,
@@ -31802,8 +32603,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             var props = context.properties;
             style.selector(selector);
             for (var j = 0; j < props.length; j++) {
-              var prop = props[j];
-              style.css(prop.name, prop.value);
+              var prop2 = props[j];
+              style.css(prop2.name, prop2.value);
             }
           }
           return style;
@@ -31837,7 +32638,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   var cytoscape_umdExports = requireCytoscape_umd();
   const cytoscape = /* @__PURE__ */ getDefaultExportFromCjs(cytoscape_umdExports);
-  var root$1 = /* @__PURE__ */ from_html(`<div class="cytoscape-graph-container svelte-yi65y3"><div class="cytoscape-container svelte-yi65y3"></div></div>`);
+  var root$8 = /* @__PURE__ */ from_html(`<div class="cytoscape-graph-container svelte-yi65y3"><div class="cytoscape-container svelte-yi65y3"></div></div>`);
   function CytoscapeGraph($$anchor, $$props) {
     push($$props, true);
     let cyContainer;
@@ -31845,58 +32646,59 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     const width = $$props.width || "100%";
     const height = $$props.height || "400px";
     const interactive = $$props.interactive ?? true;
+    function convertToCytoscapeData(obj) {
+      if (!obj) return obj;
+      const result = {};
+      for (const [key, value] of Object.entries(obj)) {
+        const cytoscapeKey = key.replace(/-/g, "_");
+        result[cytoscapeKey] = value;
+      }
+      return result;
+    }
     function createCytoscapeData() {
-      return {
-        nodes: $$props.nodes.map((node) => ({
-          data: {
-            id: node.id,
-            label: node.label?.value || node.id,
-            x: node.x,
-            y: node.y,
-            type: node.type.value,
-            // Cytoscape-Attribute verwenden
-            ...node.cytoScapeAttributes
-          }
-        })),
-        edges: $$props.edges.map((edge) => ({
-          data: {
-            id: edge.id,
-            source: edge.source,
-            target: edge.target,
-            label: edge.label?.value || "",
-            type: edge.type,
-            // Cytoscape-Attribute verwenden
-            ...edge.cytoScapeAttributes
-          }
-        }))
-      };
+      const nodes = $$props.nodes.map((node) => {
+        const data = {
+          ...convertToCytoscapeData(node.cytoScapeAttributes),
+          id: node.id,
+          label: node.label?.value || node.id,
+          x: node.x,
+          y: node.y
+        };
+        console.log("Cytoscape Node Data:", data);
+        return { data };
+      });
+      const edges = $$props.edges.map((edge) => {
+        const data = {
+          ...convertToCytoscapeData(edge.cytoScapeAttributes),
+          id: edge.id,
+          source: edge.source,
+          target: edge.target,
+          label: edge.label?.value || edge.source + " → " + edge.target
+        };
+        console.log("Cytoscape Edge Data:", data);
+        return { data };
+      });
+      return { nodes, edges };
     }
     const styles = [
       {
         selector: "node",
         style: {
-          "background-color": "data(backgroundColor)",
+          "background-color": "data(background_color)",
           "label": "data(label)",
           "color": "data(color)",
-          "text-valign": "data(textValign)",
-          "text-halign": "data(textHalign)",
+          "text-valign": "data(text_valign)",
+          "text-halign": "data(text_halign)",
           "width": "data(width)",
           "height": "data(height)",
-          "font-size": "data(fontSize)",
-          "border-width": "data(borderWidth)",
-          "border-color": "data(borderColor)",
-          "text-wrap": "data(textWrap)",
-          "text-max-width": "data(textMaxWidth)",
-          "text-outline-color": "data(textOutlineColor)",
-          "text-outline-width": "data(textOutlineWidth)",
-          "text-outline-opacity": "data(textOutlineOpacity)",
-          "font-family": "data(fontFamily)",
-          "font-weight": "data(fontWeight)",
+          "font-size": "data(font_size)",
+          "border-width": "data(border_width)",
+          "border-color": "data(border_color)",
+          "font-family": "data(font_family)",
+          "font-weight": "data(font_weight)",
           "shape": "data(shape)",
-          "size": "data(size)",
           "opacity": "data(opacity)",
           "visibility": "data(visibility)",
-          "corner-radius": "data(cornerRadius)",
           "padding": "data(padding)"
         }
       },
@@ -31904,29 +32706,14 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         selector: "edge",
         style: {
           "width": "data(width)",
-          "line-color": "data(lineColor)",
-          "target-arrow-color": "data(targetArrowColor)",
-          "target-arrow-shape": "data(targetArrowShape)",
-          "curve-style": "data(curveStyle)",
+          "line-color": "data(line_color)",
+          "target-arrow-color": "data(target_arrow_color)",
+          "target-arrow-shape": "data(target_arrow_shape)",
+          "curve-style": "data(curve_style)",
           "label": "data(label)",
-          "font-size": "data(fontSize)",
-          "text-rotation": "data(textRotation)",
-          "text-margin-y": "data(textMarginY)",
-          "text-background-color": "data(textBackgroundColor)",
-          "text-background-opacity": "data(textBackgroundOpacity)",
-          "text-background-padding": "data(textBackgroundPadding)",
-          "text-outline-color": "data(textOutlineColor)",
-          "text-outline-width": "data(textOutlineWidth)",
-          "text-outline-opacity": "data(textOutlineOpacity)",
-          "font-family": "data(fontFamily)",
-          "font-weight": "data(fontWeight)",
-          "line-opacity": "data(lineOpacity)",
-          "line-style": "data(lineStyle)",
-          "line-cap": "data(lineCap)",
-          "source-arrow-shape": "data(sourceArrowShape)",
-          "source-arrow-color": "data(sourceArrowColor)",
-          "source-arrow-width": "data(sourceArrowWidth)",
-          "source-arrow-fill": "data(sourceArrowFill)"
+          "text-margin-y": "data(text_margin_y)",
+          "line-opacity": "data(line_opacity)",
+          "line-style": "data(line_style)"
         }
       },
       {
@@ -31939,7 +32726,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       },
       {
         selector: "edge:selected",
-        style: { "width": 5, "line-color": "data(lineColor)" }
+        style: { "width": 5, "line-color": "data(line_color)" }
       }
     ];
     function initCytoscape() {
@@ -31976,6 +32763,20 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           }
           console.log("Edge clicked:", edge.id());
         });
+        cy.on("cxttap", "node", function(evt) {
+          const node = evt.target;
+          if ($$props.onNodeDoubleClick) {
+            $$props.onNodeDoubleClick(node.id());
+          }
+          console.log("Node double-clicked:", node.id());
+        });
+        cy.on("cxttap", "edge", function(evt) {
+          const edge = evt.target;
+          if ($$props.onEdgeDoubleClick) {
+            $$props.onEdgeDoubleClick(edge.id());
+          }
+          console.log("Edge double-clicked:", edge.id());
+        });
         cy.on("tap", function(evt) {
           if (evt.target === cy) {
             console.log("Background clicked");
@@ -31990,12 +32791,33 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         cy = null;
       }
     }
+    function updateSelection() {
+      if (!cy) return;
+      cy.elements().unselect();
+      if ($$props.selectedNodeId) {
+        const node = cy.getElementById($$props.selectedNodeId);
+        if (node.length > 0) {
+          node.select();
+        }
+      }
+      if ($$props.selectedEdgeId) {
+        const edge = cy.getElementById($$props.selectedEdgeId);
+        if (edge.length > 0) {
+          edge.select();
+        }
+      }
+    }
     function updateCytoscape() {
       if (cy) {
         destroyCytoscape();
         initCytoscape();
       }
     }
+    user_effect(() => {
+      if (cy && ($$props.selectedNodeId !== void 0 || $$props.selectedEdgeId !== void 0)) {
+        updateSelection();
+      }
+    });
     onMount(() => {
       initCytoscape();
     });
@@ -32007,10 +32829,1461 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         updateCytoscape();
       }
     });
-    var div = root$1();
+    var div = root$8();
     var div_1 = child(div);
     bind_this(div_1, ($$value) => cyContainer = $$value, () => cyContainer);
-    template_effect(() => set_style(div, `width: ${width}; height: ${height};`));
+    template_effect(() => set_style(div, `width: ${width ?? ""}; height: ${height ?? ""};`));
+    append($$anchor, div);
+    pop();
+  }
+  function handleMouseMove(event2, isDragging, dragStartPos) {
+    if (get(isDragging)) {
+      console.log("Canvas dragging:", event2.clientX - get(dragStartPos).x, event2.clientY - get(dragStartPos).y);
+    }
+  }
+  var on_keydown$1 = (
+    // Keyboard shortcuts
+    // Delete selected elements
+    // Clear selection
+    // TODO: Add new node
+    // TODO: Add new edge
+    // TODO: Save graph
+    // Lifecycle
+    (e, handleCanvasClick) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        handleCanvasClick(e);
+      }
+    }
+  );
+  var root_3$3 = /* @__PURE__ */ from_html(`<br class="svelte-b2vful"/><span class="selected-item svelte-b2vful"> </span>`, 1);
+  var root_5$2 = /* @__PURE__ */ from_html(`<br class="svelte-b2vful"/><span class="selected-item svelte-b2vful"> </span>`, 1);
+  var root_7$1 = /* @__PURE__ */ from_html(`<div class="source-node-info svelte-b2vful"><span class="svelte-b2vful">Source selected. Click target node to create edge.</span></div>`);
+  var root_8$2 = /* @__PURE__ */ from_html(`<div class="source-node-info svelte-b2vful"><span class="svelte-b2vful">Click a node to select source.</span></div>`);
+  var root_6$3 = /* @__PURE__ */ from_html(`<div class="add-edge-mode-indicator svelte-b2vful"><div class="mode-badge svelte-b2vful"><i class="fas fa-link svelte-b2vful"></i> <span class="svelte-b2vful">Add Edge Mode</span></div> <!></div>`);
+  var root$7 = /* @__PURE__ */ from_html(`<div class="graph-canvas svelte-b2vful" role="button" tabindex="0" aria-label="Graph canvas"><!> <div class="canvas-overlay svelte-b2vful"><div class="zoom-controls svelte-b2vful"><button class="zoom-btn svelte-b2vful" title="Zoom In (Ctrl++)" aria-label="Zoom In"><i class="fas fa-plus svelte-b2vful"></i></button> <button class="zoom-btn svelte-b2vful" title="Zoom Out (Ctrl+-)" aria-label="Zoom Out"><i class="fas fa-minus svelte-b2vful"></i></button> <button class="zoom-btn svelte-b2vful" title="Reset Zoom (Ctrl+0)" aria-label="Reset Zoom"><i class="fas fa-search svelte-b2vful"></i></button></div> <div><span class="selection-text svelte-b2vful"><!> <!></span></div> <div><div class="spinner svelte-b2vful"></div> <span class="svelte-b2vful">Loading...</span></div> <!></div></div>`);
+  function GraphCanvas($$anchor, $$props) {
+    push($$props, true);
+    const width = $$props.width ?? "100%";
+    const height = $$props.height ?? "100%";
+    const interactive = $$props.interactive ?? true;
+    let isDragging = /* @__PURE__ */ state(false);
+    let dragStartPos = /* @__PURE__ */ state(proxy({ x: 0, y: 0 }));
+    let canvasRef;
+    function handleCanvasClick(event2) {
+      if (event2.target === canvasRef) {
+        $$props.onCanvasClick?.();
+      }
+    }
+    function handleNodeClick(nodeId) {
+      $$props.onNodeClick?.(nodeId);
+    }
+    function handleEdgeClick(edgeId) {
+      $$props.onEdgeClick?.(edgeId);
+    }
+    function handleNodeDoubleClick(nodeId) {
+      $$props.onNodeDoubleClick?.(nodeId);
+    }
+    function handleEdgeDoubleClick(edgeId) {
+      $$props.onEdgeDoubleClick?.(edgeId);
+    }
+    function handleMouseDown(event2) {
+      if (event2.target === canvasRef) {
+        set(isDragging, true);
+        set(dragStartPos, { x: event2.clientX, y: event2.clientY }, true);
+      }
+    }
+    function handleMouseUp() {
+      set(isDragging, false);
+    }
+    function handleKeyDown(event2) {
+      if (!interactive) return;
+      switch (event2.key) {
+        case "Delete":
+        case "Backspace":
+          if ($$props.onDelete) {
+            event2.preventDefault();
+            $$props.onDelete();
+          }
+          break;
+        case "Escape":
+          if ($$props.onCanvasClick) {
+            event2.preventDefault();
+            $$props.onCanvasClick();
+          }
+          break;
+        case "n":
+        case "N":
+          if (event2.ctrlKey || event2.metaKey) {
+            event2.preventDefault();
+            console.log("Ctrl+N pressed - Add new node");
+          }
+          break;
+        case "e":
+        case "E":
+          if (event2.ctrlKey || event2.metaKey) {
+            event2.preventDefault();
+            console.log("Ctrl+E pressed - Add new edge");
+          }
+          break;
+        case "s":
+        case "S":
+          if (event2.ctrlKey || event2.metaKey) {
+            event2.preventDefault();
+            console.log("Ctrl+S pressed - Save graph");
+          }
+          break;
+      }
+    }
+    user_effect(() => {
+      if (interactive) {
+        document.addEventListener("keydown", handleKeyDown);
+        return () => {
+          document.removeEventListener("keydown", handleKeyDown);
+        };
+      }
+    });
+    var div = root$7();
+    div.__click = handleCanvasClick;
+    div.__keydown = [on_keydown$1, handleCanvasClick];
+    div.__mousedown = handleMouseDown;
+    div.__mousemove = [handleMouseMove, isDragging, dragStartPos];
+    div.__mouseup = handleMouseUp;
+    var node = child(div);
+    CytoscapeGraph(node, {
+      get nodes() {
+        return $$props.nodes;
+      },
+      get edges() {
+        return $$props.edges;
+      },
+      get selectedNodeId() {
+        return $$props.selectedNodeId;
+      },
+      get selectedEdgeId() {
+        return $$props.selectedEdgeId;
+      },
+      onNodeClick: handleNodeClick,
+      onEdgeClick: handleEdgeClick,
+      onNodeDoubleClick: handleNodeDoubleClick,
+      onEdgeDoubleClick: handleEdgeDoubleClick,
+      width: "100%",
+      height: "100%",
+      get interactive() {
+        return interactive;
+      }
+    });
+    var div_1 = sibling(node, 2);
+    var div_2 = sibling(child(div_1), 2);
+    let classes;
+    var span = child(div_2);
+    var node_1 = child(span);
+    {
+      var consequent = ($$anchor2) => {
+        var text$1 = text();
+        template_effect(() => set_text(text$1, `${$$props.nodes.length ?? ""} nodes, ${$$props.edges.length ?? ""} edges`));
+        append($$anchor2, text$1);
+      };
+      var alternate = ($$anchor2) => {
+        var text_1 = text("No elements");
+        append($$anchor2, text_1);
+      };
+      if_block(node_1, ($$render) => {
+        if ($$props.nodes.length > 0) $$render(consequent);
+        else $$render(alternate, false);
+      });
+    }
+    var node_2 = sibling(node_1, 2);
+    {
+      var consequent_1 = ($$anchor2) => {
+        var fragment_1 = root_3$3();
+        var span_1 = sibling(first_child(fragment_1));
+        var text_2 = child(span_1);
+        template_effect(($0) => set_text(text_2, `Selected: Node "${$0 ?? ""}"`), [
+          () => $$props.nodes.find((n) => n.id === $$props.selectedNodeId)?.label?.value || $$props.selectedNodeId
+        ]);
+        append($$anchor2, fragment_1);
+      };
+      var alternate_1 = ($$anchor2, $$elseif) => {
+        {
+          var consequent_2 = ($$anchor3) => {
+            var fragment_2 = root_5$2();
+            var span_2 = sibling(first_child(fragment_2));
+            var text_3 = child(span_2);
+            template_effect(($0) => set_text(text_3, `Selected: Edge "${$0 ?? ""}"`), [
+              () => $$props.edges.find((e) => e.id === $$props.selectedEdgeId)?.label?.value || $$props.selectedEdgeId
+            ]);
+            append($$anchor3, fragment_2);
+          };
+          if_block(
+            $$anchor2,
+            ($$render) => {
+              if ($$props.selectedEdgeId) $$render(consequent_2);
+            },
+            $$elseif
+          );
+        }
+      };
+      if_block(node_2, ($$render) => {
+        if ($$props.selectedNodeId) $$render(consequent_1);
+        else $$render(alternate_1, false);
+      });
+    }
+    var div_3 = sibling(div_2, 2);
+    set_class(div_3, 1, "loading-indicator svelte-b2vful", null, {}, { hidden: true });
+    var node_3 = sibling(div_3, 2);
+    {
+      var consequent_4 = ($$anchor2) => {
+        var div_4 = root_6$3();
+        var node_4 = sibling(child(div_4), 2);
+        {
+          var consequent_3 = ($$anchor3) => {
+            var div_5 = root_7$1();
+            append($$anchor3, div_5);
+          };
+          var alternate_2 = ($$anchor3) => {
+            var div_6 = root_8$2();
+            append($$anchor3, div_6);
+          };
+          if_block(node_4, ($$render) => {
+            if ($$props.edgeSourceNodeId) $$render(consequent_3);
+            else $$render(alternate_2, false);
+          });
+        }
+        append($$anchor2, div_4);
+      };
+      if_block(node_3, ($$render) => {
+        if ($$props.isAddEdgeMode) $$render(consequent_4);
+      });
+    }
+    bind_this(div, ($$value) => canvasRef = $$value, () => canvasRef);
+    template_effect(
+      ($0) => {
+        set_style(div, `width: ${width ?? ""}; height: ${height ?? ""};`);
+        classes = set_class(div_2, 1, "selection-info svelte-b2vful", null, classes, $0);
+      },
+      [() => ({ hidden: !interactive })]
+    );
+    event("mouseleave", div, handleMouseUp);
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["click", "keydown", "mousedown", "mousemove", "mouseup"]);
+  var on_click$2 = (_, props, $$props) => $$props.onAddNode?.();
+  var on_click_1$2 = (__1, props, $$props) => $$props.onAddEdge?.();
+  var on_click_2$2 = (__2, props, $$props) => $$props.onDelete?.();
+  var on_click_3$2 = (__3, props, $$props) => $$props.onUndo?.();
+  var on_click_4$2 = (__4, props, $$props) => $$props.onRedo?.();
+  var on_click_5$1 = (__5, props, $$props) => $$props.onSave?.();
+  var on_click_6$1 = (__6, props, $$props) => $$props.onExport?.();
+  var root$6 = /* @__PURE__ */ from_html(`<div class="graph-toolbar svelte-16e34wr"><div class="toolbar-section svelte-16e34wr"><button class="btn btn-primary svelte-16e34wr" title="Add new node (N)"><i class="fas fa-plus"></i> <span class="btn-text svelte-16e34wr">Add Node</span></button> <button title="Add new edge (E)"><i class="fas fa-link"></i> <span class="btn-text svelte-16e34wr"> </span></button> <button class="btn btn-danger svelte-16e34wr" title="Delete selected elements (Delete)"><i class="fas fa-trash"></i> <span class="btn-text svelte-16e34wr">Delete</span></button></div> <div class="toolbar-section svelte-16e34wr"><button class="btn btn-outline svelte-16e34wr" title="Undo last action (Ctrl+Z)"><i class="fas fa-undo"></i> <span class="btn-text svelte-16e34wr">Undo</span></button> <button class="btn btn-outline svelte-16e34wr" title="Redo last action (Ctrl+Y)"><i class="fas fa-redo"></i> <span class="btn-text svelte-16e34wr">Redo</span></button></div> <div class="toolbar-section svelte-16e34wr"><button class="btn btn-success svelte-16e34wr" title="Save graph (Ctrl+S)"><i class="fas fa-save"></i> <span class="btn-text svelte-16e34wr">Save</span></button> <div class="dropdown svelte-16e34wr"><button class="btn btn-info dropdown-toggle svelte-16e34wr" title="Export graph"><i class="fas fa-download"></i> <span class="btn-text svelte-16e34wr">Export</span> <i class="fas fa-chevron-down"></i></button> <div class="dropdown-menu svelte-16e34wr"><button class="dropdown-item svelte-16e34wr"><i class="fas fa-file-code"></i> Export as JSON</button> <button class="dropdown-item svelte-16e34wr"><i class="fas fa-file-image"></i> Export as PNG</button> <button class="dropdown-item svelte-16e34wr"><i class="fas fa-file-image"></i> Export as SVG</button></div></div></div></div>`);
+  function GraphToolbar($$anchor, $$props) {
+    push($$props, true);
+    const props = /* @__PURE__ */ rest_props($$props, ["$$slots", "$$events", "$$legacy"]);
+    const hasSelection = $$props.hasSelection ?? false;
+    const canUndo = $$props.canUndo ?? false;
+    const canRedo = $$props.canRedo ?? false;
+    var div = root$6();
+    var div_1 = child(div);
+    var button = child(div_1);
+    button.__click = [on_click$2, props, $$props];
+    var button_1 = sibling(button, 2);
+    button_1.__click = [on_click_1$2, props, $$props];
+    var span = sibling(child(button_1), 2);
+    var text2 = child(span);
+    var button_2 = sibling(button_1, 2);
+    button_2.__click = [on_click_2$2, props, $$props];
+    var div_2 = sibling(div_1, 2);
+    var button_3 = child(div_2);
+    button_3.__click = [on_click_3$2, props, $$props];
+    var button_4 = sibling(button_3, 2);
+    button_4.__click = [on_click_4$2, props, $$props];
+    var div_3 = sibling(div_2, 2);
+    var button_5 = child(div_3);
+    button_5.__click = [on_click_5$1, props, $$props];
+    var div_4 = sibling(button_5, 2);
+    var div_5 = sibling(child(div_4), 2);
+    var button_6 = child(div_5);
+    button_6.__click = [on_click_6$1, props, $$props];
+    template_effect(() => {
+      set_class(button_1, 1, `btn ${$$props.isAddEdgeMode ? "btn-primary" : "btn-secondary"}`, "svelte-16e34wr");
+      set_text(text2, $$props.isAddEdgeMode ? "Cancel Edge" : "Add Edge");
+      button_2.disabled = !hasSelection;
+      button_3.disabled = !canUndo;
+      button_4.disabled = !canRedo;
+    });
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["click"]);
+  function handleSearchInput(event2, searchTerm) {
+    const target = event2.target;
+    set(searchTerm, target.value, true);
+  }
+  function handleToggleSelection(_, showOnlySelected) {
+    set(showOnlySelected, !get(showOnlySelected));
+  }
+  function clearSearch(__1, searchTerm) {
+    set(searchTerm, "");
+  }
+  var root_1$3 = /* @__PURE__ */ from_html(`<button class="clear-search svelte-pfq4up" title="Clear search" aria-label="Clear search"><i class="fas fa-times"></i></button>`);
+  var on_click$1 = (__2, handleTabClick) => handleTabClick("nodes");
+  var on_click_1$1 = (__3, handleTabClick) => handleTabClick("edges");
+  var on_click_2$1 = (__4, props, $$props) => $$props.onAddNode?.();
+  var on_click_3$1 = (__5, searchTerm, showOnlySelected) => {
+    set(searchTerm, "");
+    set(showOnlySelected, false);
+  };
+  var root_4$3 = /* @__PURE__ */ from_html(`<button class="clear-filters-btn svelte-pfq4up">Clear filters</button>`);
+  var root_3$2 = /* @__PURE__ */ from_html(`<div class="empty-state svelte-pfq4up"><i class="fas fa-circle empty-icon svelte-pfq4up"></i> <p class="svelte-pfq4up">No nodes found</p> <!></div>`);
+  var on_click_4$1 = (__6, props, $$props, node) => $$props.onNodeClick?.(get(node).id);
+  var on_keydown = (e, props, $$props, node) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      $$props.onNodeClick?.(get(node).id);
+    }
+  };
+  var on_click_5 = (e, props, $$props) => {
+    e.stopPropagation();
+    $$props.onDelete?.();
+  };
+  var root_6$2 = /* @__PURE__ */ from_html(`<div role="button" tabindex="0"><div class="item-color svelte-pfq4up"></div> <div class="item-info svelte-pfq4up"><div class="item-label svelte-pfq4up"> </div> <div class="item-meta svelte-pfq4up"><span class="item-position svelte-pfq4up"> </span> <span class="item-connections svelte-pfq4up"> </span></div></div> <div class="item-actions svelte-pfq4up"><button class="action-btn svelte-pfq4up" title="Edit node" aria-label="Edit node"><i class="fas fa-edit"></i></button> <button class="action-btn delete-btn svelte-pfq4up" title="Delete node" aria-label="Delete node"><i class="fas fa-trash"></i></button></div></div>`);
+  var root_2$2 = /* @__PURE__ */ from_html(`<div class="nodes-section"><div class="section-header svelte-pfq4up"><h3 class="svelte-pfq4up">Nodes</h3> <button class="add-btn svelte-pfq4up" aria-label="Add node"><i class="fas fa-plus"></i></button></div> <div class="items-list svelte-pfq4up"><!></div></div>`);
+  var on_click_6 = (__7, props, $$props) => $$props.onAddEdge?.();
+  var on_click_7 = (__8, searchTerm, showOnlySelected) => {
+    set(searchTerm, "");
+    set(showOnlySelected, false);
+  };
+  var root_9 = /* @__PURE__ */ from_html(`<button class="clear-filters-btn svelte-pfq4up">Clear filters</button>`);
+  var root_8$1 = /* @__PURE__ */ from_html(`<div class="empty-state svelte-pfq4up"><i class="fas fa-link empty-icon svelte-pfq4up"></i> <p class="svelte-pfq4up">No edges found</p> <!></div>`);
+  var on_click_8 = (__9, props, $$props, edge) => $$props.onEdgeClick?.(get(edge).id);
+  var on_keydown_1 = (e, props, $$props, edge) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      $$props.onEdgeClick?.(get(edge).id);
+    }
+  };
+  var on_click_9 = (e, props, $$props) => {
+    e.stopPropagation();
+    $$props.onDelete?.();
+  };
+  var root_11 = /* @__PURE__ */ from_html(`<div role="button" tabindex="0"><div class="item-color svelte-pfq4up"></div> <div class="item-info svelte-pfq4up"><div class="item-label svelte-pfq4up"> <i class="fas fa-arrow-right"></i> </div> <div class="item-meta svelte-pfq4up"><span class="item-type svelte-pfq4up"> </span></div></div> <div class="item-actions svelte-pfq4up"><button class="action-btn svelte-pfq4up" title="Edit edge" aria-label="Edit edge"><i class="fas fa-edit"></i></button> <button class="action-btn delete-btn svelte-pfq4up" title="Delete edge" aria-label="Delete edge"><i class="fas fa-trash"></i></button></div></div>`);
+  var root_7 = /* @__PURE__ */ from_html(`<div class="edges-section"><div class="section-header svelte-pfq4up"><h3 class="svelte-pfq4up">Edges</h3> <button class="add-btn svelte-pfq4up" aria-label="Add edge"><i class="fas fa-plus"></i></button></div> <div class="items-list svelte-pfq4up"><!></div></div>`);
+  var root$5 = /* @__PURE__ */ from_html(`<div class="sidebar-panel svelte-pfq4up"><div class="search-bar svelte-pfq4up"><div class="search-input-wrapper svelte-pfq4up"><i class="fas fa-search search-icon svelte-pfq4up"></i> <input type="text" placeholder="Search nodes and edges..." class="search-input svelte-pfq4up"/> <!></div> <button title="Show only selected elements" aria-label="Show only selected elements"><i class="fas fa-filter"></i></button></div> <div class="tab-navigation svelte-pfq4up"><button><i class="fas fa-circle"></i> </button> <button><i class="fas fa-link"></i> </button></div> <div class="content-area svelte-pfq4up"><!></div></div>`);
+  function SidebarPanel($$anchor, $$props) {
+    push($$props, true);
+    const props = /* @__PURE__ */ rest_props($$props, ["$$slots", "$$events", "$$legacy"]);
+    let searchTerm = /* @__PURE__ */ state("");
+    let activeTab = /* @__PURE__ */ state("nodes");
+    let showOnlySelected = /* @__PURE__ */ state(false);
+    const filteredNodes = /* @__PURE__ */ user_derived(() => () => {
+      if (!get(searchTerm) && !get(showOnlySelected)) return $$props.nodes;
+      return $$props.nodes.filter((node) => {
+        const matchesSearch = !get(searchTerm) || node.label?.value?.toLowerCase().includes(get(searchTerm).toLowerCase()) || node.id.toLowerCase().includes(get(searchTerm).toLowerCase());
+        const matchesSelection = !get(showOnlySelected) || $$props.selectedNodeId === node.id || $$props.edges.some((edge) => (edge.source === node.id || edge.target === node.id) && $$props.selectedEdgeId === edge.id);
+        return matchesSearch && matchesSelection;
+      });
+    });
+    const filteredEdges = /* @__PURE__ */ user_derived(() => () => {
+      if (!get(searchTerm) && !get(showOnlySelected)) return $$props.edges;
+      return $$props.edges.filter((edge) => {
+        const sourceNode = $$props.nodes.find((n) => n.id === edge.source);
+        const targetNode = $$props.nodes.find((n) => n.id === edge.target);
+        const matchesSearch = !get(searchTerm) || edge.label?.value?.toLowerCase().includes(get(searchTerm).toLowerCase()) || edge.id.toLowerCase().includes(get(searchTerm).toLowerCase()) || sourceNode?.label?.value?.toLowerCase().includes(get(searchTerm).toLowerCase()) || targetNode?.label?.value?.toLowerCase().includes(get(searchTerm).toLowerCase());
+        const matchesSelection = !get(showOnlySelected) || $$props.selectedEdgeId === edge.id;
+        return matchesSearch && matchesSelection;
+      });
+    });
+    function handleTabClick(tab) {
+      set(activeTab, tab, true);
+    }
+    var div = root$5();
+    var div_1 = child(div);
+    var div_2 = child(div_1);
+    var input = sibling(child(div_2), 2);
+    input.__input = [handleSearchInput, searchTerm];
+    var node_1 = sibling(input, 2);
+    {
+      var consequent = ($$anchor2) => {
+        var button = root_1$3();
+        button.__click = [clearSearch, searchTerm];
+        append($$anchor2, button);
+      };
+      if_block(node_1, ($$render) => {
+        if (get(searchTerm)) $$render(consequent);
+      });
+    }
+    var button_1 = sibling(div_2, 2);
+    button_1.__click = [handleToggleSelection, showOnlySelected];
+    var div_3 = sibling(div_1, 2);
+    var button_2 = child(div_3);
+    button_2.__click = [on_click$1, handleTabClick];
+    var text2 = sibling(child(button_2));
+    var button_3 = sibling(button_2, 2);
+    button_3.__click = [on_click_1$1, handleTabClick];
+    var text_1 = sibling(child(button_3));
+    var div_4 = sibling(div_3, 2);
+    var node_2 = child(div_4);
+    {
+      var consequent_3 = ($$anchor2) => {
+        var div_5 = root_2$2();
+        var div_6 = child(div_5);
+        var button_4 = sibling(child(div_6), 2);
+        button_4.__click = [on_click_2$1, props, $$props];
+        var div_7 = sibling(div_6, 2);
+        var node_3 = child(div_7);
+        {
+          var consequent_2 = ($$anchor3) => {
+            var div_8 = root_3$2();
+            var node_4 = sibling(child(div_8), 4);
+            {
+              var consequent_1 = ($$anchor4) => {
+                var button_5 = root_4$3();
+                button_5.__click = [on_click_3$1, searchTerm, showOnlySelected];
+                append($$anchor4, button_5);
+              };
+              if_block(node_4, ($$render) => {
+                if (get(searchTerm) || get(showOnlySelected)) $$render(consequent_1);
+              });
+            }
+            append($$anchor3, div_8);
+          };
+          var alternate = ($$anchor3) => {
+            var fragment = comment();
+            var node_5 = first_child(fragment);
+            each(node_5, 17, () => get(filteredNodes), (node) => node.id, ($$anchor4, node, $$index, $$array) => {
+              var div_9 = root_6$2();
+              div_9.__click = [on_click_4$1, props, $$props, node];
+              div_9.__keydown = [on_keydown, props, $$props, node];
+              var div_10 = child(div_9);
+              var div_11 = sibling(div_10, 2);
+              var div_12 = child(div_11);
+              var text_2 = child(div_12);
+              var div_13 = sibling(div_12, 2);
+              var span = child(div_13);
+              var text_3 = child(span);
+              var span_1 = sibling(span, 2);
+              var text_4 = child(span_1);
+              var div_14 = sibling(div_11, 2);
+              var button_6 = sibling(child(div_14), 2);
+              button_6.__click = [on_click_5, props, $$props];
+              template_effect(
+                ($0) => {
+                  set_class(div_9, 1, `item ${$$props.selectedNodeId === get(node).id ? "selected" : ""}`, "svelte-pfq4up");
+                  set_attribute(div_9, "aria-label", `Node ${(get(node).label?.value || get(node).id) ?? ""}`);
+                  set_style(div_10, `background-color: ${get(node).cytoScapeAttributes?.["background-color"] || "#999"}`);
+                  set_text(text_2, get(node).label?.value || get(node).id);
+                  set_text(text_3, `(${get(node).x ?? ""}, ${get(node).y ?? ""})`);
+                  set_text(text_4, `${$0 ?? ""} connections`);
+                },
+                [
+                  () => $$props.edges.filter((e) => e.source === get(node).id || e.target === get(node).id).length
+                ]
+              );
+              append($$anchor4, div_9);
+            });
+            append($$anchor3, fragment);
+          };
+          if_block(node_3, ($$render) => {
+            if (get(filteredNodes).length === 0) $$render(consequent_2);
+            else $$render(alternate, false);
+          });
+        }
+        append($$anchor2, div_5);
+      };
+      var alternate_1 = ($$anchor2) => {
+        var div_15 = root_7();
+        var div_16 = child(div_15);
+        var button_7 = sibling(child(div_16), 2);
+        button_7.__click = [on_click_6, props, $$props];
+        var div_17 = sibling(div_16, 2);
+        var node_6 = child(div_17);
+        {
+          var consequent_5 = ($$anchor3) => {
+            var div_18 = root_8$1();
+            var node_7 = sibling(child(div_18), 4);
+            {
+              var consequent_4 = ($$anchor4) => {
+                var button_8 = root_9();
+                button_8.__click = [on_click_7, searchTerm, showOnlySelected];
+                append($$anchor4, button_8);
+              };
+              if_block(node_7, ($$render) => {
+                if (get(searchTerm) || get(showOnlySelected)) $$render(consequent_4);
+              });
+            }
+            append($$anchor3, div_18);
+          };
+          var alternate_2 = ($$anchor3) => {
+            var fragment_1 = comment();
+            var node_8 = first_child(fragment_1);
+            each(node_8, 17, () => get(filteredEdges), (edge) => edge.id, ($$anchor4, edge, $$index_1, $$array_1) => {
+              var div_19 = root_11();
+              div_19.__click = [on_click_8, props, $$props, edge];
+              div_19.__keydown = [on_keydown_1, props, $$props, edge];
+              var div_20 = child(div_19);
+              var div_21 = sibling(div_20, 2);
+              var div_22 = child(div_21);
+              var text_5 = child(div_22);
+              var text_6 = sibling(text_5, 2);
+              var div_23 = sibling(div_22, 2);
+              var span_2 = child(div_23);
+              var text_7 = child(span_2);
+              var div_24 = sibling(div_21, 2);
+              var button_9 = sibling(child(div_24), 2);
+              button_9.__click = [on_click_9, props, $$props];
+              template_effect(
+                ($0, $1, $2, $3) => {
+                  set_class(div_19, 1, `item ${$$props.selectedEdgeId === get(edge).id ? "selected" : ""}`, "svelte-pfq4up");
+                  set_attribute(div_19, "aria-label", `Edge from ${$0 ?? ""} to ${$1 ?? ""}`);
+                  set_style(div_20, `background-color: ${get(edge).cytoScapeAttributes?.["line-color"] || "#999"}`);
+                  set_text(text_5, `${$2 ?? ""} `);
+                  set_text(text_6, ` ${$3 ?? ""}`);
+                  set_text(text_7, get(edge).label?.value || "No label");
+                },
+                [
+                  () => $$props.nodes.find((n) => n.id === get(edge).source)?.label?.value || get(edge).source,
+                  () => $$props.nodes.find((n) => n.id === get(edge).target)?.label?.value || get(edge).target,
+                  () => $$props.nodes.find((n) => n.id === get(edge).source)?.label?.value || get(edge).source,
+                  () => $$props.nodes.find((n) => n.id === get(edge).target)?.label?.value || get(edge).target
+                ]
+              );
+              append($$anchor4, div_19);
+            });
+            append($$anchor3, fragment_1);
+          };
+          if_block(node_6, ($$render) => {
+            if (get(filteredEdges).length === 0) $$render(consequent_5);
+            else $$render(alternate_2, false);
+          });
+        }
+        append($$anchor2, div_15);
+      };
+      if_block(node_2, ($$render) => {
+        if (get(activeTab) === "nodes") $$render(consequent_3);
+        else $$render(alternate_1, false);
+      });
+    }
+    template_effect(() => {
+      set_value(input, get(searchTerm));
+      set_class(button_1, 1, `filter-btn ${get(showOnlySelected) ? "active" : ""}`, "svelte-pfq4up");
+      set_class(button_2, 1, `tab-btn ${get(activeTab) === "nodes" ? "active" : ""}`, "svelte-pfq4up");
+      set_text(text2, ` Nodes (${get(filteredNodes).length ?? ""})`);
+      set_class(button_3, 1, `tab-btn ${get(activeTab) === "edges" ? "active" : ""}`, "svelte-pfq4up");
+      set_text(text_1, ` Edges (${get(filteredEdges).length ?? ""})`);
+    });
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["input", "click", "keydown"]);
+  var root_1$2 = /* @__PURE__ */ from_html(`<span class="node-id svelte-2lis6z"> </span>`);
+  var on_input = (_, handleInputChange, label) => handleInputChange("label", get(label));
+  var on_input_1 = (__1, handleInputChange, x) => handleInputChange("x", get(x));
+  var on_input_2 = (__2, handleInputChange, y) => handleInputChange("y", get(y));
+  var on_change$1 = (__3, handleInputChange, shape) => handleInputChange("shape", get(shape));
+  var root_3$1 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var on_input_3 = (__4, handleInputChange, width) => handleInputChange("width", get(width));
+  var on_input_4 = (__5, handleInputChange, height) => handleInputChange("height", get(height));
+  var on_input_5 = (__6, handleInputChange, opacity) => handleInputChange("opacity", get(opacity));
+  var on_input_6 = (__7, handleInputChange, zIndex) => handleInputChange("z-index", get(zIndex));
+  var on_input_7 = (__8, handleInputChange, color) => handleInputChange("color", get(color));
+  var on_input_8 = (__9, handleInputChange, color) => handleInputChange("color", get(color));
+  var on_input_9 = (__10, handleInputChange, backgroundColor) => handleInputChange("background-color", get(backgroundColor));
+  var on_input_10 = (__11, handleInputChange, backgroundColor) => handleInputChange("background-color", get(backgroundColor));
+  var on_input_11 = (__12, handleInputChange, borderColor) => handleInputChange("border-color", get(borderColor));
+  var on_input_12 = (__13, handleInputChange, borderColor) => handleInputChange("border-color", get(borderColor));
+  var on_input_13 = (__14, handleInputChange, borderWidth) => handleInputChange("border-width", get(borderWidth));
+  var on_change_1 = (__15, handleInputChange, borderStyle) => handleInputChange("border-style", get(borderStyle));
+  var root_4$2 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var on_input_14 = (__16, handleInputChange, fontSize) => handleInputChange("font-size", get(fontSize));
+  var on_change_2 = (__17, handleInputChange, fontWeight) => handleInputChange("font-weight", get(fontWeight));
+  var root_5$1 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var root_2$1 = /* @__PURE__ */ from_html(`<div class="editor-content svelte-2lis6z"><div class="form-group svelte-2lis6z"><h4 class="svelte-2lis6z">Grundlegend</h4> <div class="input-row svelte-2lis6z"><label for="label" class="svelte-2lis6z">Label:</label> <input id="label" type="text" placeholder="Node Beschriftung" class="svelte-2lis6z"/></div> <div class="input-row svelte-2lis6z"><label for="x" class="svelte-2lis6z">X-Position:</label> <input id="x" type="number" step="1" class="svelte-2lis6z"/></div> <div class="input-row svelte-2lis6z"><label for="y" class="svelte-2lis6z">Y-Position:</label> <input id="y" type="number" step="1" class="svelte-2lis6z"/></div></div> <div class="form-group svelte-2lis6z"><h4 class="svelte-2lis6z">Darstellung</h4> <div class="input-row svelte-2lis6z"><label for="shape" class="svelte-2lis6z">Form:</label> <select id="shape" class="svelte-2lis6z"></select></div> <div class="input-row svelte-2lis6z"><label for="width" class="svelte-2lis6z">Breite:</label> <input id="width" type="number" min="1" max="500" step="1" class="svelte-2lis6z"/></div> <div class="input-row svelte-2lis6z"><label for="height" class="svelte-2lis6z">Höhe:</label> <input id="height" type="number" min="1" max="500" step="1" class="svelte-2lis6z"/></div> <div class="input-row svelte-2lis6z"><label for="opacity" class="svelte-2lis6z">Transparenz:</label> <input id="opacity" type="range" min="0" max="1" step="0.1" class="svelte-2lis6z"/> <span class="value-display svelte-2lis6z"> </span></div> <div class="input-row svelte-2lis6z"><label for="zIndex" class="svelte-2lis6z">Z-Index:</label> <input id="zIndex" type="number" step="1" class="svelte-2lis6z"/></div></div> <div class="form-group svelte-2lis6z"><h4 class="svelte-2lis6z">Farben</h4> <div class="input-row svelte-2lis6z"><label for="color" class="svelte-2lis6z">Textfarbe:</label> <input id="color" type="color" class="svelte-2lis6z"/> <input type="text" placeholder="#000000" class="svelte-2lis6z"/></div> <div class="input-row svelte-2lis6z"><label for="backgroundColor" class="svelte-2lis6z">Hintergrundfarbe:</label> <input id="backgroundColor" type="color" class="svelte-2lis6z"/> <input type="text" placeholder="#ffffff" class="svelte-2lis6z"/></div> <div class="input-row svelte-2lis6z"><label for="borderColor" class="svelte-2lis6z">Rahmenfarbe:</label> <input id="borderColor" type="color" class="svelte-2lis6z"/> <input type="text" placeholder="#000000" class="svelte-2lis6z"/></div></div> <div class="form-group svelte-2lis6z"><h4 class="svelte-2lis6z">Rahmen</h4> <div class="input-row svelte-2lis6z"><label for="borderWidth" class="svelte-2lis6z">Rahmenbreite:</label> <input id="borderWidth" type="number" min="0" max="20" step="1" class="svelte-2lis6z"/></div> <div class="input-row svelte-2lis6z"><label for="borderStyle" class="svelte-2lis6z">Rahmenstil:</label> <select id="borderStyle" class="svelte-2lis6z"></select></div></div> <div class="form-group svelte-2lis6z"><h4 class="svelte-2lis6z">Text</h4> <div class="input-row svelte-2lis6z"><label for="fontSize" class="svelte-2lis6z">Schriftgröße:</label> <input id="fontSize" type="number" min="8" max="72" step="1" class="svelte-2lis6z"/></div> <div class="input-row svelte-2lis6z"><label for="fontWeight" class="svelte-2lis6z">Schriftgewicht:</label> <select id="fontWeight" class="svelte-2lis6z"></select></div></div></div>`);
+  var root_6$1 = /* @__PURE__ */ from_html(`<div class="no-selection svelte-2lis6z"><p class="svelte-2lis6z">Kein Node ausgewählt</p> <p class="hint svelte-2lis6z">Klicke auf einen Node in der Liste oder im Graphen</p></div>`);
+  var root$4 = /* @__PURE__ */ from_html(`<div class="node-editor svelte-2lis6z"><div class="editor-header svelte-2lis6z"><h3 class="svelte-2lis6z">Node Bearbeiten</h3> <!></div> <!></div>`);
+  function NodeEditor($$anchor, $$props) {
+    push($$props, true);
+    let label = /* @__PURE__ */ state("");
+    let x = /* @__PURE__ */ state(0);
+    let y = /* @__PURE__ */ state(0);
+    let color = /* @__PURE__ */ state("#000000");
+    let backgroundColor = /* @__PURE__ */ state("#ffffff");
+    let borderColor = /* @__PURE__ */ state("#000000");
+    let borderWidth = /* @__PURE__ */ state(0);
+    let borderStyle = /* @__PURE__ */ state("solid");
+    let shape = /* @__PURE__ */ state("ellipse");
+    let width = /* @__PURE__ */ state(80);
+    let height = /* @__PURE__ */ state(80);
+    let fontSize = /* @__PURE__ */ state(14);
+    let fontWeight = /* @__PURE__ */ state("normal");
+    let opacity = /* @__PURE__ */ state(1);
+    let zIndex = /* @__PURE__ */ state(0);
+    user_effect(() => {
+      if ($$props.node) {
+        const attrs = $$props.node.cytoScapeAttributes;
+        set(label, attrs.label || "", true);
+        set(x, attrs.x || 0, true);
+        set(y, attrs.y || 0, true);
+        set(color, attrs.color || "#000000", true);
+        set(backgroundColor, attrs["background-color"] || "#ffffff", true);
+        set(borderColor, attrs["border-color"] || "#000000", true);
+        set(borderWidth, attrs["border-width"] || 0, true);
+        set(borderStyle, attrs["border-style"] || "solid", true);
+        set(shape, attrs.shape || "ellipse", true);
+        set(width, attrs.width || 80, true);
+        set(height, attrs.height || 80, true);
+        set(fontSize, attrs["font-size"] || 14, true);
+        set(fontWeight, attrs["font-weight"] || "normal", true);
+        set(opacity, attrs.opacity || 1, true);
+        set(zIndex, attrs["z-index"] || 0, true);
+      }
+    });
+    function handleInputChange(field, value) {
+      if (!$$props.node || !$$props.onUpdate) return;
+      const updates = {};
+      updates[field] = value;
+      $$props.onUpdate($$props.node.id, updates);
+    }
+    const shapeOptions = [
+      { value: "ellipse", label: "Ellipse" },
+      { value: "triangle", label: "Dreieck" },
+      { value: "rectangle", label: "Rechteck" },
+      { value: "diamond", label: "Diamant" },
+      { value: "hexagon", label: "Sechseck" },
+      { value: "octagon", label: "Achteck" },
+      { value: "vee", label: "V-Form" },
+      { value: "rhomboid", label: "Rhomboid" },
+      { value: "polygon", label: "Polygon" },
+      { value: "star", label: "Stern" },
+      { value: "tag", label: "Tag" },
+      { value: "roundrectangle", label: "Abgerundetes Rechteck" },
+      { value: "cutrectangle", label: "Abgeschnittenes Rechteck" },
+      { value: "barrel", label: "Fass" },
+      { value: "bottomroundrectangle", label: "Unten abgerundet" },
+      { value: "concavehexagon", label: "Konkaves Sechseck" }
+    ];
+    const borderStyleOptions = [
+      { value: "solid", label: "Durchgezogen" },
+      { value: "dotted", label: "Gepunktet" },
+      { value: "dashed", label: "Gestrichelt" },
+      { value: "double", label: "Doppelt" },
+      { value: "groove", label: "Gefurcht" },
+      { value: "ridge", label: "Erhaben" },
+      { value: "inset", label: "Eingesetzt" },
+      { value: "outset", label: "Hervorgehoben" }
+    ];
+    const fontWeightOptions = [
+      { value: "normal", label: "Normal" },
+      { value: "bold", label: "Fett" },
+      { value: "bolder", label: "Fetter" },
+      { value: "lighter", label: "Dünner" },
+      { value: "100", label: "100" },
+      { value: "200", label: "200" },
+      { value: "300", label: "300" },
+      { value: "400", label: "400" },
+      { value: "500", label: "500" },
+      { value: "600", label: "600" },
+      { value: "700", label: "700" },
+      { value: "800", label: "800" },
+      { value: "900", label: "900" }
+    ];
+    var div = root$4();
+    var div_1 = child(div);
+    var node = sibling(child(div_1), 2);
+    {
+      var consequent = ($$anchor2) => {
+        var span = root_1$2();
+        var text2 = child(span);
+        template_effect(() => set_text(text2, `ID: ${$$props.node.id ?? ""}`));
+        append($$anchor2, span);
+      };
+      if_block(node, ($$render) => {
+        if ($$props.node) $$render(consequent);
+      });
+    }
+    var node_1 = sibling(div_1, 2);
+    {
+      var consequent_1 = ($$anchor2) => {
+        var div_2 = root_2$1();
+        var div_3 = child(div_2);
+        var div_4 = sibling(child(div_3), 2);
+        var input = sibling(child(div_4), 2);
+        input.__input = [on_input, handleInputChange, label];
+        var div_5 = sibling(div_4, 2);
+        var input_1 = sibling(child(div_5), 2);
+        input_1.__input = [on_input_1, handleInputChange, x];
+        var div_6 = sibling(div_5, 2);
+        var input_2 = sibling(child(div_6), 2);
+        input_2.__input = [on_input_2, handleInputChange, y];
+        var div_7 = sibling(div_3, 2);
+        var div_8 = sibling(child(div_7), 2);
+        var select = sibling(child(div_8), 2);
+        select.__change = [on_change$1, handleInputChange, shape];
+        each(select, 21, () => shapeOptions, index, ($$anchor3, option) => {
+          var option_1 = root_3$1();
+          var text_1 = child(option_1);
+          var option_1_value = {};
+          template_effect(() => {
+            set_text(text_1, get(option).label);
+            if (option_1_value !== (option_1_value = get(option).value)) {
+              option_1.value = (option_1.__value = get(option).value) ?? "";
+            }
+          });
+          append($$anchor3, option_1);
+        });
+        var div_9 = sibling(div_8, 2);
+        var input_3 = sibling(child(div_9), 2);
+        input_3.__input = [on_input_3, handleInputChange, width];
+        var div_10 = sibling(div_9, 2);
+        var input_4 = sibling(child(div_10), 2);
+        input_4.__input = [on_input_4, handleInputChange, height];
+        var div_11 = sibling(div_10, 2);
+        var input_5 = sibling(child(div_11), 2);
+        input_5.__input = [on_input_5, handleInputChange, opacity];
+        var span_1 = sibling(input_5, 2);
+        var text_2 = child(span_1);
+        var div_12 = sibling(div_11, 2);
+        var input_6 = sibling(child(div_12), 2);
+        input_6.__input = [on_input_6, handleInputChange, zIndex];
+        var div_13 = sibling(div_7, 2);
+        var div_14 = sibling(child(div_13), 2);
+        var input_7 = sibling(child(div_14), 2);
+        input_7.__input = [on_input_7, handleInputChange, color];
+        var input_8 = sibling(input_7, 2);
+        input_8.__input = [on_input_8, handleInputChange, color];
+        var div_15 = sibling(div_14, 2);
+        var input_9 = sibling(child(div_15), 2);
+        input_9.__input = [on_input_9, handleInputChange, backgroundColor];
+        var input_10 = sibling(input_9, 2);
+        input_10.__input = [on_input_10, handleInputChange, backgroundColor];
+        var div_16 = sibling(div_15, 2);
+        var input_11 = sibling(child(div_16), 2);
+        input_11.__input = [on_input_11, handleInputChange, borderColor];
+        var input_12 = sibling(input_11, 2);
+        input_12.__input = [on_input_12, handleInputChange, borderColor];
+        var div_17 = sibling(div_13, 2);
+        var div_18 = sibling(child(div_17), 2);
+        var input_13 = sibling(child(div_18), 2);
+        input_13.__input = [on_input_13, handleInputChange, borderWidth];
+        var div_19 = sibling(div_18, 2);
+        var select_1 = sibling(child(div_19), 2);
+        select_1.__change = [on_change_1, handleInputChange, borderStyle];
+        each(select_1, 21, () => borderStyleOptions, index, ($$anchor3, option) => {
+          var option_2 = root_4$2();
+          var text_3 = child(option_2);
+          var option_2_value = {};
+          template_effect(() => {
+            set_text(text_3, get(option).label);
+            if (option_2_value !== (option_2_value = get(option).value)) {
+              option_2.value = (option_2.__value = get(option).value) ?? "";
+            }
+          });
+          append($$anchor3, option_2);
+        });
+        var div_20 = sibling(div_17, 2);
+        var div_21 = sibling(child(div_20), 2);
+        var input_14 = sibling(child(div_21), 2);
+        input_14.__input = [on_input_14, handleInputChange, fontSize];
+        var div_22 = sibling(div_21, 2);
+        var select_2 = sibling(child(div_22), 2);
+        select_2.__change = [on_change_2, handleInputChange, fontWeight];
+        each(select_2, 21, () => fontWeightOptions, index, ($$anchor3, option) => {
+          var option_3 = root_5$1();
+          var text_4 = child(option_3);
+          var option_3_value = {};
+          template_effect(() => {
+            set_text(text_4, get(option).label);
+            if (option_3_value !== (option_3_value = get(option).value)) {
+              option_3.value = (option_3.__value = get(option).value) ?? "";
+            }
+          });
+          append($$anchor3, option_3);
+        });
+        template_effect(() => set_text(text_2, get(opacity)));
+        bind_value(input, () => get(label), ($$value) => set(label, $$value));
+        bind_value(input_1, () => get(x), ($$value) => set(x, $$value));
+        bind_value(input_2, () => get(y), ($$value) => set(y, $$value));
+        bind_select_value(select, () => get(shape), ($$value) => set(shape, $$value));
+        bind_value(input_3, () => get(width), ($$value) => set(width, $$value));
+        bind_value(input_4, () => get(height), ($$value) => set(height, $$value));
+        bind_value(input_5, () => get(opacity), ($$value) => set(opacity, $$value));
+        bind_value(input_6, () => get(zIndex), ($$value) => set(zIndex, $$value));
+        bind_value(input_7, () => get(color), ($$value) => set(color, $$value));
+        bind_value(input_8, () => get(color), ($$value) => set(color, $$value));
+        bind_value(input_9, () => get(backgroundColor), ($$value) => set(backgroundColor, $$value));
+        bind_value(input_10, () => get(backgroundColor), ($$value) => set(backgroundColor, $$value));
+        bind_value(input_11, () => get(borderColor), ($$value) => set(borderColor, $$value));
+        bind_value(input_12, () => get(borderColor), ($$value) => set(borderColor, $$value));
+        bind_value(input_13, () => get(borderWidth), ($$value) => set(borderWidth, $$value));
+        bind_select_value(select_1, () => get(borderStyle), ($$value) => set(borderStyle, $$value));
+        bind_value(input_14, () => get(fontSize), ($$value) => set(fontSize, $$value));
+        bind_select_value(select_2, () => get(fontWeight), ($$value) => set(fontWeight, $$value));
+        append($$anchor2, div_2);
+      };
+      var alternate = ($$anchor2) => {
+        var div_23 = root_6$1();
+        append($$anchor2, div_23);
+      };
+      if_block(node_1, ($$render) => {
+        if ($$props.node) $$render(consequent_1);
+        else $$render(alternate, false);
+      });
+    }
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["input", "change"]);
+  var root_1$1 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var on_change = (e, target, handleInputChange) => {
+    const targetElement = e.target;
+    set(target, targetElement.value, true);
+    handleInputChange("target", targetElement.value);
+  };
+  var root_2 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var root_3 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var root_4$1 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var root_5 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var root_6 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var root$3 = /* @__PURE__ */ from_html(`<div class="edge-editor svelte-2gco8o"><div class="form-section svelte-2gco8o"><h4 class="svelte-2gco8o">Basic Properties</h4> <div class="form-group svelte-2gco8o"><label for="edge-label" class="svelte-2gco8o">Label</label> <input type="text" id="edge-label" placeholder="Enter edge label..." class="form-control svelte-2gco8o"/></div> <div class="form-row svelte-2gco8o"><div class="form-group svelte-2gco8o"><label for="edge-source" class="svelte-2gco8o">Source Node</label> <select id="edge-source" class="form-control svelte-2gco8o"><option>Select source node...</option><!></select></div> <div class="form-group svelte-2gco8o"><label for="edge-target" class="svelte-2gco8o">Target Node</label> <select id="edge-target" class="form-control svelte-2gco8o"><option>Select target node...</option><!></select></div></div></div> <div class="form-section svelte-2gco8o"><h4 class="svelte-2gco8o">Visual Properties</h4> <div class="form-group svelte-2gco8o"><label for="edge-line-color" class="svelte-2gco8o">Line Color</label> <div class="color-input-group svelte-2gco8o"><input type="color" id="edge-line-color" class="color-picker svelte-2gco8o"/> <input type="text" placeholder="#000000" class="color-text svelte-2gco8o"/></div></div> <div class="form-row svelte-2gco8o"><div class="form-group svelte-2gco8o"><label for="edge-width" class="svelte-2gco8o">Width</label> <input type="number" id="edge-width" min="1" max="20" class="form-control svelte-2gco8o"/></div> <div class="form-group svelte-2gco8o"><label for="edge-line-style" class="svelte-2gco8o">Line Style</label> <select id="edge-line-style" class="form-control svelte-2gco8o"></select></div></div> <div class="form-row svelte-2gco8o"><div class="form-group svelte-2gco8o"><label for="edge-curve-style" class="svelte-2gco8o">Curve Style</label> <select id="edge-curve-style" class="form-control svelte-2gco8o"></select></div> <div class="form-group svelte-2gco8o"><label for="edge-arrow-shape" class="svelte-2gco8o">Arrow Shape</label> <select id="edge-arrow-shape" class="form-control svelte-2gco8o"></select></div></div></div> <div class="form-section svelte-2gco8o"><h4 class="svelte-2gco8o">Text Properties</h4> <div class="form-row svelte-2gco8o"><div class="form-group svelte-2gco8o"><label for="edge-font-size" class="svelte-2gco8o">Font Size</label> <input type="number" id="edge-font-size" min="8" max="32" class="form-control svelte-2gco8o"/></div> <div class="form-group svelte-2gco8o"><label for="edge-font-weight" class="svelte-2gco8o">Font Weight</label> <select id="edge-font-weight" class="form-control svelte-2gco8o"></select></div></div></div> <div class="form-section svelte-2gco8o"><h4 class="svelte-2gco8o">Advanced Properties</h4> <div class="form-row svelte-2gco8o"><div class="form-group svelte-2gco8o"><label for="edge-opacity" class="svelte-2gco8o">Opacity</label> <input type="range" id="edge-opacity" min="0" max="1" step="0.1" class="form-control svelte-2gco8o"/> <div class="range-value svelte-2gco8o"> </div></div> <div class="form-group svelte-2gco8o"><label for="edge-z-index" class="svelte-2gco8o">Z-Index</label> <input type="number" id="edge-z-index" min="0" max="100" class="form-control svelte-2gco8o"/></div></div></div></div>`);
+  function EdgeEditor($$anchor, $$props) {
+    push($$props, true);
+    let label = /* @__PURE__ */ state("");
+    let source2 = /* @__PURE__ */ state("");
+    let target = /* @__PURE__ */ state("");
+    let lineColor = /* @__PURE__ */ state("#000000");
+    let width = /* @__PURE__ */ state(1);
+    let lineStyle = /* @__PURE__ */ state("solid");
+    let fontSize = /* @__PURE__ */ state(12);
+    let fontWeight = /* @__PURE__ */ state("normal");
+    let opacity = /* @__PURE__ */ state(1);
+    let zIndex = /* @__PURE__ */ state(0);
+    let curveStyle = /* @__PURE__ */ state("bezier");
+    let arrowShape = /* @__PURE__ */ state("none");
+    user_effect(() => {
+      if ($$props.edge) {
+        const attrs = $$props.edge.cytoScapeAttributes;
+        set(label, attrs.label || "", true);
+        set(source2, $$props.edge.source || "", true);
+        set(target, $$props.edge.target || "", true);
+        set(lineColor, attrs["line-color"] || "#000000", true);
+        set(width, attrs.width || 1, true);
+        set(lineStyle, attrs["line-style"] || "solid", true);
+        set(fontSize, attrs["font-size"] || 12, true);
+        set(fontWeight, attrs["font-weight"] || "normal", true);
+        set(opacity, attrs.opacity || 1, true);
+        set(zIndex, attrs["z-index"] || 0, true);
+        set(curveStyle, attrs["curve-style"] || "bezier", true);
+        set(arrowShape, attrs["target-arrow-shape"] || "none", true);
+      }
+    });
+    function handleInputChange(field, value) {
+      if (!$$props.edge || !$$props.onUpdate) return;
+      const updates = {};
+      updates[field] = value;
+      $$props.onUpdate($$props.edge.id, updates);
+    }
+    const lineStyleOptions = [
+      { value: "solid", label: "Solid" },
+      { value: "dashed", label: "Dashed" },
+      { value: "dotted", label: "Dotted" },
+      { value: "double", label: "Double" }
+    ];
+    const fontWeightOptions = [
+      { value: "normal", label: "Normal" },
+      { value: "bold", label: "Bold" },
+      { value: "lighter", label: "Lighter" },
+      { value: "bolder", label: "Bolder" }
+    ];
+    const curveStyleOptions = [
+      { value: "bezier", label: "Bezier" },
+      { value: "unbundled-bezier", label: "Unbundled Bezier" },
+      { value: "haystack", label: "Haystack" },
+      { value: "segments", label: "Segments" },
+      { value: "straight", label: "Straight" },
+      { value: "taxi", label: "Taxi" }
+    ];
+    const arrowShapeOptions = [
+      { value: "none", label: "None" },
+      { value: "triangle", label: "Triangle" },
+      { value: "triangle-tee", label: "Triangle Tee" },
+      { value: "triangle-cross", label: "Triangle Cross" },
+      { value: "triangle-backcurve", label: "Triangle Backcurve" },
+      { value: "vee", label: "Vee" },
+      { value: "tee", label: "Tee" },
+      { value: "square", label: "Square" },
+      { value: "circle", label: "Circle" },
+      { value: "diamond", label: "Diamond" },
+      { value: "chevron", label: "Chevron" }
+    ];
+    var div = root$3();
+    var div_1 = child(div);
+    var div_2 = sibling(child(div_1), 2);
+    var input = sibling(child(div_2), 2);
+    input.__input = (e) => {
+      const target2 = e.target;
+      set(label, target2.value, true);
+      handleInputChange("label", target2.value);
+    };
+    var div_3 = sibling(div_2, 2);
+    var div_4 = child(div_3);
+    var select = sibling(child(div_4), 2);
+    select.__change = (e) => {
+      const target2 = e.target;
+      set(source2, target2.value, true);
+      handleInputChange("source", target2.value);
+    };
+    var option_1 = child(select);
+    option_1.value = option_1.__value = "";
+    var node_1 = sibling(option_1);
+    each(node_1, 17, () => $$props.nodes || [], index, ($$anchor2, node) => {
+      var option_2 = root_1$1();
+      var text2 = child(option_2);
+      var option_2_value = {};
+      template_effect(() => {
+        set_text(text2, get(node).label?.value || get(node).id);
+        if (option_2_value !== (option_2_value = get(node).id)) {
+          option_2.value = (option_2.__value = get(node).id) ?? "";
+        }
+      });
+      append($$anchor2, option_2);
+    });
+    var select_value;
+    init_select(select);
+    var div_5 = sibling(div_4, 2);
+    var select_1 = sibling(child(div_5), 2);
+    select_1.__change = [on_change, target, handleInputChange];
+    var option_3 = child(select_1);
+    option_3.value = option_3.__value = "";
+    var node_2 = sibling(option_3);
+    each(node_2, 17, () => $$props.nodes || [], index, ($$anchor2, node) => {
+      var option_4 = root_2();
+      var text_1 = child(option_4);
+      var option_4_value = {};
+      template_effect(() => {
+        set_text(text_1, get(node).label?.value || get(node).id);
+        if (option_4_value !== (option_4_value = get(node).id)) {
+          option_4.value = (option_4.__value = get(node).id) ?? "";
+        }
+      });
+      append($$anchor2, option_4);
+    });
+    var select_1_value;
+    init_select(select_1);
+    var div_6 = sibling(div_1, 2);
+    var div_7 = sibling(child(div_6), 2);
+    var div_8 = sibling(child(div_7), 2);
+    var input_1 = child(div_8);
+    input_1.__change = (e) => {
+      const target2 = e.target;
+      set(lineColor, target2.value, true);
+      handleInputChange("line-color", target2.value);
+    };
+    var input_2 = sibling(input_1, 2);
+    input_2.__input = (e) => {
+      const target2 = e.target;
+      set(lineColor, target2.value, true);
+      handleInputChange("line-color", target2.value);
+    };
+    var div_9 = sibling(div_7, 2);
+    var div_10 = child(div_9);
+    var input_3 = sibling(child(div_10), 2);
+    input_3.__input = (e) => {
+      const target2 = e.target;
+      set(width, parseInt(target2.value), true);
+      handleInputChange("width", parseInt(target2.value));
+    };
+    var div_11 = sibling(div_10, 2);
+    var select_2 = sibling(child(div_11), 2);
+    select_2.__change = (e) => {
+      const target2 = e.target;
+      set(lineStyle, target2.value, true);
+      handleInputChange("line-style", target2.value);
+    };
+    each(select_2, 21, () => lineStyleOptions, index, ($$anchor2, option) => {
+      var option_5 = root_3();
+      var text_2 = child(option_5);
+      var option_5_value = {};
+      template_effect(() => {
+        set_text(text_2, get(option).label);
+        if (option_5_value !== (option_5_value = get(option).value)) {
+          option_5.value = (option_5.__value = get(option).value) ?? "";
+        }
+      });
+      append($$anchor2, option_5);
+    });
+    var select_2_value;
+    init_select(select_2);
+    var div_12 = sibling(div_9, 2);
+    var div_13 = child(div_12);
+    var select_3 = sibling(child(div_13), 2);
+    select_3.__change = (e) => {
+      const target2 = e.target;
+      set(curveStyle, target2.value, true);
+      handleInputChange("curve-style", target2.value);
+    };
+    each(select_3, 21, () => curveStyleOptions, index, ($$anchor2, option) => {
+      var option_6 = root_4$1();
+      var text_3 = child(option_6);
+      var option_6_value = {};
+      template_effect(() => {
+        set_text(text_3, get(option).label);
+        if (option_6_value !== (option_6_value = get(option).value)) {
+          option_6.value = (option_6.__value = get(option).value) ?? "";
+        }
+      });
+      append($$anchor2, option_6);
+    });
+    var select_3_value;
+    init_select(select_3);
+    var div_14 = sibling(div_13, 2);
+    var select_4 = sibling(child(div_14), 2);
+    select_4.__change = (e) => {
+      const target2 = e.target;
+      set(arrowShape, target2.value, true);
+      handleInputChange("target-arrow-shape", target2.value);
+    };
+    each(select_4, 21, () => arrowShapeOptions, index, ($$anchor2, option) => {
+      var option_7 = root_5();
+      var text_4 = child(option_7);
+      var option_7_value = {};
+      template_effect(() => {
+        set_text(text_4, get(option).label);
+        if (option_7_value !== (option_7_value = get(option).value)) {
+          option_7.value = (option_7.__value = get(option).value) ?? "";
+        }
+      });
+      append($$anchor2, option_7);
+    });
+    var select_4_value;
+    init_select(select_4);
+    var div_15 = sibling(div_6, 2);
+    var div_16 = sibling(child(div_15), 2);
+    var div_17 = child(div_16);
+    var input_4 = sibling(child(div_17), 2);
+    input_4.__input = (e) => {
+      const target2 = e.target;
+      set(fontSize, parseInt(target2.value), true);
+      handleInputChange("font-size", parseInt(target2.value));
+    };
+    var div_18 = sibling(div_17, 2);
+    var select_5 = sibling(child(div_18), 2);
+    select_5.__change = (e) => {
+      const target2 = e.target;
+      set(fontWeight, target2.value, true);
+      handleInputChange("font-weight", target2.value);
+    };
+    each(select_5, 21, () => fontWeightOptions, index, ($$anchor2, option) => {
+      var option_8 = root_6();
+      var text_5 = child(option_8);
+      var option_8_value = {};
+      template_effect(() => {
+        set_text(text_5, get(option).label);
+        if (option_8_value !== (option_8_value = get(option).value)) {
+          option_8.value = (option_8.__value = get(option).value) ?? "";
+        }
+      });
+      append($$anchor2, option_8);
+    });
+    var select_5_value;
+    init_select(select_5);
+    var div_19 = sibling(div_15, 2);
+    var div_20 = sibling(child(div_19), 2);
+    var div_21 = child(div_20);
+    var input_5 = sibling(child(div_21), 2);
+    input_5.__input = (e) => {
+      const target2 = e.target;
+      set(opacity, parseFloat(target2.value), true);
+      handleInputChange("opacity", parseFloat(target2.value));
+    };
+    var div_22 = sibling(input_5, 2);
+    var text_6 = child(div_22);
+    var div_23 = sibling(div_21, 2);
+    var input_6 = sibling(child(div_23), 2);
+    input_6.__input = (e) => {
+      const target2 = e.target;
+      set(zIndex, parseInt(target2.value), true);
+      handleInputChange("z-index", parseInt(target2.value));
+    };
+    template_effect(() => {
+      set_value(input, get(label));
+      if (select_value !== (select_value = get(source2))) {
+        select.value = (select.__value = get(source2)) ?? "", select_option(select, get(source2));
+      }
+      if (select_1_value !== (select_1_value = get(target))) {
+        select_1.value = (select_1.__value = get(target)) ?? "", select_option(select_1, get(target));
+      }
+      set_value(input_1, get(lineColor));
+      set_value(input_2, get(lineColor));
+      set_value(input_3, get(width));
+      if (select_2_value !== (select_2_value = get(lineStyle))) {
+        select_2.value = (select_2.__value = get(lineStyle)) ?? "", select_option(select_2, get(lineStyle));
+      }
+      if (select_3_value !== (select_3_value = get(curveStyle))) {
+        select_3.value = (select_3.__value = get(curveStyle)) ?? "", select_option(select_3, get(curveStyle));
+      }
+      if (select_4_value !== (select_4_value = get(arrowShape))) {
+        select_4.value = (select_4.__value = get(arrowShape)) ?? "", select_option(select_4, get(arrowShape));
+      }
+      set_value(input_4, get(fontSize));
+      if (select_5_value !== (select_5_value = get(fontWeight))) {
+        select_5.value = (select_5.__value = get(fontWeight)) ?? "", select_option(select_5, get(fontWeight));
+      }
+      set_value(input_5, get(opacity));
+      set_text(text_6, get(opacity));
+      set_value(input_6, get(zIndex));
+    });
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["input", "change"]);
+  var on_click = (_, handleTabClick) => handleTabClick("basic");
+  var on_click_1 = (__1, handleTabClick) => handleTabClick("visual");
+  var on_click_2 = (__2, handleTabClick) => handleTabClick("permissions");
+  var on_click_3 = (__3, handleTabClick) => handleTabClick("descriptions");
+  var on_click_4 = (__4, handleTabClick) => handleTabClick("effects");
+  var root_4 = /* @__PURE__ */ from_html(`<button title="Relationship effects"><i class="fas fa-magic svelte-1irccp7"></i> <span class="tab-label svelte-1irccp7">Effects</span></button>`);
+  var root_1 = /* @__PURE__ */ from_html(`<div class="property-header svelte-1irccp7"><div class="selection-info svelte-1irccp7"><div class="selection-type svelte-1irccp7"><i></i> </div> <div class="selection-name svelte-1irccp7"><!></div></div></div> <div class="tab-navigation svelte-1irccp7"><button title="Basic properties"><i class="fas fa-info-circle svelte-1irccp7"></i> <span class="tab-label svelte-1irccp7">Basic</span></button> <button title="Visual settings"><i class="fas fa-palette svelte-1irccp7"></i> <span class="tab-label svelte-1irccp7">Visual</span></button> <button title="Permissions"><i class="fas fa-shield-alt svelte-1irccp7"></i> <span class="tab-label svelte-1irccp7">Permissions</span></button> <button title="Descriptions"><i class="fas fa-file-alt svelte-1irccp7"></i> <span class="tab-label svelte-1irccp7">Descriptions</span></button> <!></div> <div class="tab-content svelte-1irccp7"><!></div>`, 1);
+  var root_8 = /* @__PURE__ */ from_html(`<div class="no-selection svelte-1irccp7"><div class="no-selection-icon svelte-1irccp7"><i class="fas fa-mouse-pointer"></i></div> <h3 class="svelte-1irccp7">No Selection</h3> <p class="svelte-1irccp7">Select a node or edge to edit its properties</p></div>`);
+  var root$2 = /* @__PURE__ */ from_html(`<div class="property-panel svelte-1irccp7"><!></div>`);
+  function PropertyPanel($$anchor, $$props) {
+    push($$props, true);
+    let activeTab = /* @__PURE__ */ state("basic");
+    const hasSelection = /* @__PURE__ */ user_derived(() => !!($$props.selectedNode || $$props.selectedEdge));
+    const isNode = /* @__PURE__ */ user_derived(() => !!$$props.selectedNode);
+    const isEdge = /* @__PURE__ */ user_derived(() => !!$$props.selectedEdge);
+    function handleTabClick(tab) {
+      set(activeTab, tab, true);
+    }
+    function handleNodeUpdate(nodeId, updates) {
+      if ($$props.onUpdate) {
+        $$props.onUpdate({ type: "node", nodeId, updates });
+      }
+    }
+    function handleEdgeUpdate(edgeId, updates) {
+      if ($$props.onUpdate) {
+        $$props.onUpdate({ type: "edge", edgeId, updates });
+      }
+    }
+    var div = root$2();
+    var node = child(div);
+    {
+      var consequent_4 = ($$anchor2) => {
+        var fragment = root_1();
+        var div_1 = first_child(fragment);
+        var div_2 = child(div_1);
+        var div_3 = child(div_2);
+        var i = child(div_3);
+        var text$1 = sibling(i);
+        var div_4 = sibling(div_3, 2);
+        var node_1 = child(div_4);
+        {
+          var consequent = ($$anchor3) => {
+            var text_1 = text();
+            template_effect(() => set_text(text_1, $$props.selectedNode?.label?.value || $$props.selectedNode?.id || "Unnamed Node"));
+            append($$anchor3, text_1);
+          };
+          var alternate = ($$anchor3) => {
+            var text_2 = text();
+            template_effect(() => set_text(text_2, $$props.selectedEdge?.label?.value || `${$$props.selectedEdge?.source} → ${$$props.selectedEdge?.target}` || "Unnamed Edge"));
+            append($$anchor3, text_2);
+          };
+          if_block(node_1, ($$render) => {
+            if (get(isNode)) $$render(consequent);
+            else $$render(alternate, false);
+          });
+        }
+        var div_5 = sibling(div_1, 2);
+        var button = child(div_5);
+        button.__click = [on_click, handleTabClick];
+        var button_1 = sibling(button, 2);
+        button_1.__click = [on_click_1, handleTabClick];
+        var button_2 = sibling(button_1, 2);
+        button_2.__click = [on_click_2, handleTabClick];
+        var button_3 = sibling(button_2, 2);
+        button_3.__click = [on_click_3, handleTabClick];
+        var node_2 = sibling(button_3, 2);
+        {
+          var consequent_1 = ($$anchor3) => {
+            var button_4 = root_4();
+            button_4.__click = [on_click_4, handleTabClick];
+            template_effect(() => set_class(button_4, 1, `tab-btn ${get(activeTab) === "effects" ? "active" : ""}`, "svelte-1irccp7"));
+            append($$anchor3, button_4);
+          };
+          if_block(node_2, ($$render) => {
+            if (get(isEdge)) $$render(consequent_1);
+          });
+        }
+        var div_6 = sibling(div_5, 2);
+        var node_3 = child(div_6);
+        {
+          var consequent_2 = ($$anchor3) => {
+            NodeEditor($$anchor3, {
+              get node() {
+                return $$props.selectedNode;
+              },
+              onUpdate: handleNodeUpdate
+            });
+          };
+          var alternate_1 = ($$anchor3, $$elseif) => {
+            {
+              var consequent_3 = ($$anchor4) => {
+                EdgeEditor($$anchor4, {
+                  get edge() {
+                    return $$props.selectedEdge;
+                  },
+                  get nodes() {
+                    return $$props.nodes;
+                  },
+                  onUpdate: handleEdgeUpdate
+                });
+              };
+              if_block(
+                $$anchor3,
+                ($$render) => {
+                  if (get(isEdge)) $$render(consequent_3);
+                },
+                $$elseif
+              );
+            }
+          };
+          if_block(node_3, ($$render) => {
+            if (get(isNode)) $$render(consequent_2);
+            else $$render(alternate_1, false);
+          });
+        }
+        template_effect(() => {
+          set_class(i, 1, `fas ${get(isNode) ? "fa-circle" : "fa-link"}`);
+          set_text(text$1, ` ${get(isNode) ? "Node" : "Edge"} Properties`);
+          set_class(button, 1, `tab-btn ${get(activeTab) === "basic" ? "active" : ""}`, "svelte-1irccp7");
+          set_class(button_1, 1, `tab-btn ${get(activeTab) === "visual" ? "active" : ""}`, "svelte-1irccp7");
+          set_class(button_2, 1, `tab-btn ${get(activeTab) === "permissions" ? "active" : ""}`, "svelte-1irccp7");
+          set_class(button_3, 1, `tab-btn ${get(activeTab) === "descriptions" ? "active" : ""}`, "svelte-1irccp7");
+        });
+        append($$anchor2, fragment);
+      };
+      var alternate_2 = ($$anchor2) => {
+        var div_7 = root_8();
+        append($$anchor2, div_7);
+      };
+      if_block(node, ($$render) => {
+        if (get(hasSelection)) $$render(consequent_4);
+        else $$render(alternate_2, false);
+      });
+    }
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["click"]);
+  var root$1 = /* @__PURE__ */ from_html(`<div class="relationship-graph-editor svelte-zhs1tt"><!> <div class="main-content svelte-zhs1tt"><!> <div class="canvas-container svelte-zhs1tt"><!></div> <!></div></div>`);
+  function RelationshipGraphEdit($$anchor, $$props) {
+    push($$props, true);
+    let nodes = prop($$props, "nodes"), edges = prop($$props, "edges");
+    let selectedNodeId = /* @__PURE__ */ state(null);
+    let selectedEdgeId = /* @__PURE__ */ state(null);
+    let isAddEdgeMode = /* @__PURE__ */ state(false);
+    let edgeSourceNodeId = /* @__PURE__ */ state(null);
+    const selectedNode = /* @__PURE__ */ user_derived(() => nodes().find((n) => n.id === get(selectedNodeId)) || null);
+    const selectedEdge = /* @__PURE__ */ user_derived(() => edges().find((e) => e.id === get(selectedEdgeId)) || null);
+    function handleNodeClick(nodeId) {
+      if (get(isAddEdgeMode)) {
+        if (!get(edgeSourceNodeId)) {
+          set(edgeSourceNodeId, nodeId, true);
+          set(selectedNodeId, nodeId, true);
+          console.log("Source node selected for edge:", nodeId);
+        } else if (get(edgeSourceNodeId) !== nodeId) {
+          const targetNodeId = nodeId;
+          createEdge(get(edgeSourceNodeId), targetNodeId);
+          set(isAddEdgeMode, false);
+          set(edgeSourceNodeId, null);
+          set(selectedNodeId, targetNodeId, true);
+          set(selectedEdgeId, null);
+          console.log("Edge created from", get(edgeSourceNodeId), "to", targetNodeId);
+        }
+      } else {
+        set(selectedNodeId, nodeId, true);
+        set(selectedEdgeId, null);
+        console.log("Node selected:", nodeId);
+      }
+    }
+    function handleEdgeClick(edgeId) {
+      set(selectedEdgeId, edgeId, true);
+      set(selectedNodeId, null);
+      console.log("Edge selected:", edgeId);
+    }
+    function handleCanvasClick() {
+      set(selectedNodeId, null);
+      set(selectedEdgeId, null);
+      console.log("Canvas clicked - cleared selection");
+    }
+    function handleAddNode() {
+      console.log("Add Node clicked");
+    }
+    function handleAddEdge() {
+      console.log("Add Edge clicked");
+      set(isAddEdgeMode, !get(isAddEdgeMode));
+      if (!get(isAddEdgeMode)) {
+        set(edgeSourceNodeId, null);
+        set(selectedNodeId, null);
+        set(selectedEdgeId, null);
+      }
+    }
+    function handleDelete() {
+      console.log("Delete clicked");
+      if (!get(selectedNodeId) && !get(selectedEdgeId)) {
+        console.log("Nothing selected to delete");
+        return;
+      }
+      let itemToDelete;
+      let itemType;
+      if (get(selectedEdgeId)) {
+        const edge = edges().find((e) => e.id === get(selectedEdgeId));
+        itemToDelete = edge?.label?.value || `Edge ${get(selectedEdgeId)}`;
+        itemType = "edge";
+      } else if (get(selectedNodeId)) {
+        const node = nodes().find((n) => n.id === get(selectedNodeId));
+        itemToDelete = node?.label?.value || `Node ${get(selectedNodeId)}`;
+        itemType = "node";
+      } else {
+        return;
+      }
+      const confirmed = confirm(`Are you sure you want to delete this ${itemType}: "${itemToDelete}"?`);
+      if (confirmed) {
+        if (get(selectedEdgeId)) {
+          edges(edges().filter((e) => e.id !== get(selectedEdgeId)));
+          set(selectedEdgeId, null);
+          console.log("Edge deleted:", get(selectedEdgeId));
+        } else if (get(selectedNodeId)) {
+          edges(edges().filter((e) => e.source !== get(selectedNodeId) && e.target !== get(selectedNodeId)));
+          nodes(nodes().filter((n) => n.id !== get(selectedNodeId)));
+          set(selectedNodeId, null);
+          console.log("Node and connected edges deleted:", get(selectedNodeId));
+        }
+      }
+    }
+    function handleSave() {
+      console.log("Save clicked");
+    }
+    function handleExport() {
+      console.log("Export clicked");
+    }
+    function handleUndo() {
+      console.log("Undo clicked");
+    }
+    function handleRedo() {
+      console.log("Redo clicked");
+    }
+    function createEdge(sourceId, targetId) {
+      const defaultPermissions = { defaultLevel: 0, users: [] };
+      const newEdge = {
+        id: foundry.utils.randomID(),
+        source: sourceId,
+        target: targetId,
+        label: { value: "", permissions: defaultPermissions },
+        type: "edge",
+        globalPermissions: defaultPermissions,
+        cytoScapeAttributes: {
+          color: "#000000",
+          "line-color": "#000000",
+          width: 1,
+          "line-style": "solid",
+          "curve-style": "bezier",
+          "target-arrow-shape": "none",
+          "font-size": 12,
+          "font-weight": "normal",
+          opacity: 1,
+          "z-index": 0
+        }
+      };
+      edges([...edges(), newEdge]);
+      console.log("New edge created:", newEdge);
+    }
+    function handlePropertyUpdate(data) {
+      console.log("Property update:", data);
+    }
+    console.log("[RelationshipGraph] Props received:", { nodes: nodes(), edges: edges() });
+    var div = root$1();
+    var node_1 = child(div);
+    const expression = /* @__PURE__ */ user_derived(() => !!(get(selectedNodeId) || get(selectedEdgeId)));
+    GraphToolbar(node_1, {
+      get hasSelection() {
+        return get(expression);
+      },
+      get isAddEdgeMode() {
+        return get(isAddEdgeMode);
+      },
+      onAddNode: handleAddNode,
+      onAddEdge: handleAddEdge,
+      onDelete: handleDelete,
+      onSave: handleSave,
+      onExport: handleExport,
+      onUndo: handleUndo,
+      onRedo: handleRedo,
+      canUndo: false,
+      canRedo: false
+    });
+    var div_1 = sibling(node_1, 2);
+    var node_2 = child(div_1);
+    SidebarPanel(node_2, {
+      get nodes() {
+        return nodes();
+      },
+      get edges() {
+        return edges();
+      },
+      get selectedNodeId() {
+        return get(selectedNodeId);
+      },
+      get selectedEdgeId() {
+        return get(selectedEdgeId);
+      },
+      onNodeClick: handleNodeClick,
+      onEdgeClick: handleEdgeClick,
+      onAddNode: handleAddNode,
+      onAddEdge: handleAddEdge,
+      onDelete: handleDelete
+    });
+    var div_2 = sibling(node_2, 2);
+    var node_3 = child(div_2);
+    GraphCanvas(node_3, {
+      get nodes() {
+        return nodes();
+      },
+      get edges() {
+        return edges();
+      },
+      get selectedNodeId() {
+        return get(selectedNodeId);
+      },
+      get selectedEdgeId() {
+        return get(selectedEdgeId);
+      },
+      get isAddEdgeMode() {
+        return get(isAddEdgeMode);
+      },
+      get edgeSourceNodeId() {
+        return get(edgeSourceNodeId);
+      },
+      onNodeClick: handleNodeClick,
+      onEdgeClick: handleEdgeClick,
+      onCanvasClick: handleCanvasClick,
+      onDelete: handleDelete,
+      width: "100%",
+      height: "100%",
+      interactive: true
+    });
+    var node_4 = sibling(div_2, 2);
+    PropertyPanel(node_4, {
+      get selectedNode() {
+        return get(selectedNode);
+      },
+      get selectedEdge() {
+        return get(selectedEdge);
+      },
+      get nodes() {
+        return nodes();
+      },
+      onUpdate: handlePropertyUpdate
+    });
     append($$anchor, div);
     pop();
   }
@@ -32099,6 +34372,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     getEdgeById(id) {
       return this.edges.find((e) => e.id === id);
     }
+    /**
+     * Fügt einen neuen Node hinzu oder aktualisiert einen bestehenden und speichert die Änderung.
+     */
     async addNode(node) {
       const existingNodeIndex = this.nodes.findIndex((n) => n.id === node.id);
       if (existingNodeIndex >= 0) {
@@ -32106,8 +34382,15 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       } else {
         this.nodes.push(node);
       }
-      await this.saveData();
+      const updateObj = {
+        "system.nodes": this.nodes,
+        "system.edges": this.edges
+      };
+      await this.saveData(updateObj);
     }
+    /**
+     * Fügt eine neue Kante hinzu oder aktualisiert eine bestehende und speichert die Änderung.
+     */
     async addEdge(edge) {
       const defaultPermissions = { defaultLevel: 0, users: [] };
       const newEdge = {
@@ -32123,41 +34406,91 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       } else {
         this.edges.push(newEdge);
       }
-      await this.saveData();
+      const updateObj = {
+        "system.nodes": this.nodes,
+        "system.edges": this.edges
+      };
+      await this.saveData(updateObj);
     }
+    /**
+     * Aktualisiert einen bestehenden Node anhand der ID und speichert die Änderung.
+     */
     async updateNode(nodeId, updates) {
       const nodeIndex = this.nodes.findIndex((n) => n.id === nodeId);
       if (nodeIndex >= 0) {
         this.nodes[nodeIndex] = { ...this.nodes[nodeIndex], ...updates };
-        await this.saveData();
+        const updateObj = {
+          "system.nodes": this.nodes,
+          "system.edges": this.edges
+        };
+        await this.saveData(updateObj);
       }
     }
+    /**
+     * Entfernt einen Node und alle zugehörigen Kanten und speichert die Änderung.
+     */
     async removeNode(nodeId) {
       this.nodes = this.nodes.filter((n) => n.id !== nodeId);
       this.edges = this.edges.filter((e) => e.source !== nodeId && e.target !== nodeId);
-      await this.saveData();
+      const updateObj = {
+        "system.nodes": this.nodes,
+        "system.edges": this.edges
+      };
+      await this.saveData(updateObj);
     }
+    /**
+     * Aktualisiert eine bestehende Kante anhand der ID und speichert die Änderung.
+     */
     async updateEdge(edgeId, updates) {
       const edgeIndex = this.edges.findIndex((e) => e.id === edgeId);
       if (edgeIndex >= 0) {
         this.edges[edgeIndex] = { ...this.edges[edgeIndex], ...updates };
-        await this.saveData();
+        const updateObj = {
+          "system.nodes": this.nodes,
+          "system.edges": this.edges
+        };
+        await this.saveData(updateObj);
       }
     }
+    /**
+     * Entfernt eine Kante anhand der ID und speichert die Änderung.
+     */
     async removeEdge(edgeId) {
       this.edges = this.edges.filter((e) => e.id !== edgeId);
-      await this.saveData();
-    }
-    loadData() {
-      const system = this.document.system;
-      this.nodes = system.nodes || [];
-      this.edges = system.edges || [];
-    }
-    async saveData() {
-      await this.document.update({
+      const updateObj = {
         "system.nodes": this.nodes,
         "system.edges": this.edges
-      });
+      };
+      await this.saveData(updateObj);
+    }
+    loadData() {
+      const documentId = this.document.id || this.document._id;
+      const freshDocument = globalThis.game?.journal?.get?.(documentId);
+      if (freshDocument) {
+        const system = freshDocument.system;
+        this.nodes = system.nodes || [];
+        this.edges = system.edges || [];
+      } else {
+        const system = this.document.system;
+        this.nodes = system.nodes || [];
+        this.edges = system.edges || [];
+      }
+    }
+    /**
+     * Speichert die übergebenen Änderungen im Dokument.
+     */
+    async saveData(updateObj) {
+      const documentUuid = this.document.uuid;
+      const freshDocument = await foundry.utils.fromUuid(documentUuid);
+      if (freshDocument) {
+        const updates = {
+          ...freshDocument.system,
+          ...updateObj
+        };
+        await freshDocument.update(updates);
+      } else {
+        this.document.update(updateObj);
+      }
     }
   }
   class ServiceFactory {
@@ -32274,9 +34607,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         this.svelteApp = null;
       }
       const service = this.getGraphService();
-      if (service.getNodes().length === 0) {
-        this.createDemoData();
-      }
+      if (service.getNodes().length === 0) ;
       this.svelteApp = mount(this.isView ? RelationshipGraphView : RelationshipGraphEdit, {
         target,
         props: {
@@ -32297,13 +34628,268 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     createDemoData() {
       const service = this.getGraphService();
       const defaultPermissions = { defaultLevel: 0, users: [] };
+      const createNodeAttributes = () => {
+        return {
+          // Erforderliche Felder
+          color: "#000",
+          shape: "ellipse",
+          size: 30,
+          "border-color": "#000",
+          "border-width": 0,
+          // Optionale Felder mit Defaults
+          "background-color": "#999",
+          // Grau als Standard
+          "background-opacity": 1,
+          opacity: 1,
+          visibility: "visible",
+          events: "yes",
+          "text-events": "no",
+          label: "",
+          "font-size": 16,
+          "font-family": "Helvetica Neue, Helvetica, sans-serif",
+          "font-weight": "normal",
+          "font-style": "normal",
+          "text-valign": "top",
+          "text-halign": "center",
+          "text-justification": "auto",
+          "text-wrap": "none",
+          "text-overflow-wrap": "whitespace",
+          "text-max-width": 9999,
+          "text-rotation": "none",
+          "text-margin-x": 0,
+          "text-margin-y": 0,
+          "line-height": 1,
+          display: "element",
+          "text-outline-color": "#000",
+          "text-outline-width": 0,
+          "text-outline-opacity": 1,
+          "text-opacity": 1,
+          "text-decoration": "none",
+          "text-transform": "none",
+          "text-background-color": "#000",
+          "text-background-opacity": 0,
+          "text-background-shape": "rectangle",
+          "text-background-padding": 0,
+          "text-border-color": "#000",
+          "text-border-width": 0,
+          "text-border-style": "solid",
+          "text-border-opacity": 0,
+          "min-zoomed-font-size": 0,
+          "overlay-color": "#000",
+          "overlay-opacity": 0,
+          "overlay-padding": 10,
+          "overlay-shape": "roundrectangle",
+          "overlay-corner-radius": "auto",
+          "underlay-color": "#000",
+          "underlay-opacity": 0,
+          "underlay-padding": 10,
+          "underlay-shape": "roundrectangle",
+          "underlay-corner-radius": "auto",
+          "transition-property": "none",
+          "transition-duration": 0,
+          "transition-delay": 0,
+          "transition-timing-function": "linear",
+          "z-index": 0,
+          "z-compound-depth": "auto",
+          "z-index-compare": "auto",
+          "box-select-labels": "no",
+          // Node-spezifische Felder
+          width: 30,
+          height: 30,
+          "background-image": "none",
+          "background-image-crossorigin": "anonymous",
+          "background-image-opacity": 1,
+          "background-image-containment": "inside",
+          "background-image-smoothing": "yes",
+          "background-position-x": "50%",
+          "background-position-y": "50%",
+          "background-offset-x": 0,
+          "background-offset-y": 0,
+          "background-width-relative-to": "include-padding",
+          "background-height-relative-to": "include-padding",
+          "background-repeat": "no-repeat",
+          "background-fit": "none",
+          "background-clip": "node",
+          "background-width": "auto",
+          "background-height": "auto",
+          "corner-radius": "auto",
+          padding: 0,
+          "border-style": "solid",
+          "border-opacity": 1,
+          "border-dash-pattern": [4, 2],
+          "border-dash-offset": 0,
+          "border-cap": "butt",
+          "border-join": "miter",
+          "border-position": "center",
+          "outline-color": "#999",
+          "outline-width": 0,
+          "outline-opacity": 1,
+          "outline-offset": 0,
+          "outline-style": "solid",
+          "background-gradient-direction": "to-bottom",
+          "background-gradient-stop-colors": "#999",
+          "background-gradient-stop-positions": "0%",
+          "background-blacken": 0,
+          "background-fill": "solid",
+          "shape-polygon-points": "-1, -1,   1, -1,   1, 1,   -1, 1",
+          "bounds-expansion": 0,
+          "pie-size": "100%",
+          "pie-hole": 0,
+          "pie-start-angle": "0deg",
+          "padding-relative-to": "width",
+          position: "origin",
+          "compound-sizing-wrt-labels": "include",
+          "min-width": 0,
+          "min-height": 0,
+          ghost: "no",
+          "ghost-offset-x": 0,
+          "ghost-offset-y": 0,
+          "ghost-opacity": 0
+        };
+      };
+      const createEdgeAttributes = () => {
+        return {
+          // Erforderliche Felder
+          color: "#000",
+          // Optionale Felder mit Defaults
+          opacity: 1,
+          visibility: "visible",
+          events: "yes",
+          "text-events": "no",
+          label: "",
+          "font-size": 16,
+          "font-family": "Helvetica Neue, Helvetica, sans-serif",
+          "font-weight": "normal",
+          "font-style": "normal",
+          "text-valign": "top",
+          "text-halign": "center",
+          "text-justification": "auto",
+          "text-wrap": "none",
+          "text-overflow-wrap": "whitespace",
+          "text-max-width": 9999,
+          "text-rotation": "none",
+          "text-margin-x": 0,
+          "text-margin-y": 0,
+          "line-height": 1,
+          display: "element",
+          "text-outline-color": "#000",
+          "text-outline-width": 0,
+          "text-outline-opacity": 1,
+          "text-opacity": 1,
+          "text-decoration": "none",
+          "text-transform": "none",
+          "text-background-color": "#000",
+          "text-background-opacity": 0,
+          "text-background-shape": "rectangle",
+          "text-background-padding": 0,
+          "text-border-color": "#000",
+          "text-border-width": 0,
+          "text-border-style": "solid",
+          "text-border-opacity": 0,
+          "min-zoomed-font-size": 0,
+          "overlay-color": "#000",
+          "overlay-opacity": 0,
+          "overlay-padding": 10,
+          "overlay-shape": "roundrectangle",
+          "overlay-corner-radius": "auto",
+          "underlay-color": "#000",
+          "underlay-opacity": 0,
+          "underlay-padding": 10,
+          "underlay-shape": "roundrectangle",
+          "underlay-corner-radius": "auto",
+          "transition-property": "none",
+          "transition-duration": 0,
+          "transition-delay": 0,
+          "transition-timing-function": "linear",
+          "z-index": 0,
+          "z-compound-depth": "auto",
+          "z-index-compare": "auto",
+          "box-select-labels": "no",
+          // Edge-spezifische Felder
+          width: 3,
+          "line-color": "#999",
+          "line-opacity": 1,
+          "line-style": "solid",
+          "curve-style": "haystack",
+          "target-arrow-shape": "none",
+          "target-arrow-color": "#999",
+          "target-arrow-width": 1,
+          "target-arrow-fill": "filled",
+          "source-arrow-shape": "none",
+          "source-arrow-color": "#999",
+          "source-arrow-width": 1,
+          "source-arrow-fill": "filled",
+          "mid-source-arrow-shape": "none",
+          "mid-source-arrow-color": "#999",
+          "mid-source-arrow-width": 1,
+          "mid-source-arrow-fill": "filled",
+          "mid-target-arrow-shape": "none",
+          "mid-target-arrow-color": "#999",
+          "mid-target-arrow-width": 1,
+          "mid-target-arrow-fill": "filled",
+          "line-cap": "butt",
+          "line-fill": "solid",
+          "line-outline-width": 0,
+          "line-outline-color": "#000",
+          "line-gradient-stop-colors": "#999",
+          "line-gradient-stop-positions": "0%",
+          "line-dash-pattern": [6, 3],
+          "line-dash-offset": 0,
+          "control-point-step-size": 40,
+          "control-point-weights": 0.5,
+          "segment-weights": 0.5,
+          "segment-distances": 20,
+          "segment-radii": 15,
+          "radius-type": "arc-radius",
+          "taxi-turn": "50%",
+          "taxi-radius": 15,
+          "taxi-turn-min-distance": 10,
+          "taxi-direction": "auto",
+          "edge-distances": "intersection",
+          "haystack-radius": 0,
+          "arrow-scale": 1,
+          "loop-direction": "-45deg",
+          "loop-sweep": "-90deg",
+          "source-distance-from-node": 0,
+          "target-distance-from-node": 0,
+          "source-endpoint": "outside-to-node",
+          "target-endpoint": "outside-to-node",
+          "source-label": "",
+          "source-text-offset": 0,
+          "source-text-margin-x": 0,
+          "source-text-margin-y": 0,
+          "source-text-rotation": "none",
+          "target-label": "",
+          "target-text-offset": 0,
+          "target-text-margin-x": 0,
+          "target-text-margin-y": 0,
+          "target-text-rotation": "none"
+        };
+      };
       service.addNode({
         id: foundry.utils.randomID(),
         x: 150,
         y: 200,
         label: { value: "Bauer", permissions: defaultPermissions },
         type: { value: "person", permissions: defaultPermissions },
-        globalPermissions: defaultPermissions
+        globalPermissions: defaultPermissions,
+        cytoScapeAttributes: {
+          ...createNodeAttributes(),
+          color: "#000000",
+          "background-color": "#006400",
+          // Grün für Bauer
+          shape: "ellipse",
+          width: 80,
+          height: 80,
+          "border-color": "#000",
+          "border-width": 0,
+          "text-valign": "center",
+          "text-halign": "center",
+          "font-size": 14,
+          // Kleinere Schrift für bessere Passung
+          "font-weight": "bold",
+          "font-family": "Arial, sans-serif"
+        }
       });
       service.addNode({
         id: foundry.utils.randomID(),
@@ -32311,7 +34897,27 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         y: 200,
         label: { value: "Müller", permissions: defaultPermissions },
         type: { value: "person", permissions: defaultPermissions },
-        globalPermissions: defaultPermissions
+        globalPermissions: defaultPermissions,
+        cytoScapeAttributes: {
+          ...createNodeAttributes(),
+          color: "#000000",
+          "background-color": "#F5DEB3",
+          // Weizengelb für Müller
+          shape: "ellipse",
+          width: 80,
+          height: 80,
+          "border-color": "#000",
+          "border-width": 0,
+          "text-valign": "center",
+          "text-halign": "center",
+          "font-size": 14,
+          // Kleinere Schrift für bessere Passung
+          "font-weight": "bold",
+          "font-family": "Arial, sans-serif",
+          "background-opacity": 1,
+          "outline-color": "#F5DEB3",
+          "background-gradient-stop-colors": "#F5DEB3"
+        }
       });
       service.addEdge({
         id: foundry.utils.randomID(),
@@ -32319,7 +34925,22 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         target: service.getNodeByLabel("Müller")?.id ?? "",
         label: { value: "Weizen", permissions: defaultPermissions },
         type: "trade",
-        globalPermissions: defaultPermissions
+        globalPermissions: defaultPermissions,
+        cytoScapeAttributes: {
+          ...createEdgeAttributes(),
+          color: "#000",
+          "line-color": "#000",
+          "line-opacity": 1,
+          "line-style": "solid",
+          "target-arrow-shape": "triangle",
+          // Pfeil am Ende
+          "target-arrow-color": "#000",
+          "target-arrow-width": 2,
+          "curve-style": "bezier",
+          // Schönere Kurve
+          "text-margin-y": -10
+          // Text über dem Pfeil
+        }
       });
     }
   };
@@ -32357,7 +34978,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   };
   let JournalEntryPageRelationshipGraphSheet = _JournalEntryPageRelationshipGraphSheet;
   const fields$6 = foundry.data.fields;
-  class PermissionsModel extends foundry.abstract.TypeDataModel {
+  class PermissionsModel extends foundry.abstract.DataModel {
     static defineSchema() {
       return {
         defaultLevel: new fields$6.NumberField({ required: true, blank: false, initial: 0 }),
@@ -32372,7 +34993,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
   }
   const fields$5 = foundry.data.fields;
-  class DescriptionModel extends foundry.abstract.TypeDataModel {
+  class DescriptionModel extends foundry.abstract.DataModel {
     static defineSchema() {
       return {
         text: new fields$5.HTMLField({ required: true, blank: false, initial: "" }),
@@ -32382,7 +35003,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
   }
   const fields$4 = foundry.data.fields;
-  class RelationshipEffectModel extends foundry.abstract.TypeDataModel {
+  class RelationshipEffectModel extends foundry.abstract.DataModel {
     static defineSchema() {
       return {
         type: new fields$4.StringField({ required: true, blank: false, initial: "effect" }),
@@ -32392,13 +35013,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
   }
   const fields$3 = foundry.data.fields;
-  class CytoScapeCommonAttributesModel extends foundry.abstract.TypeDataModel {
+  class CytoScapeCommonAttributesModel extends foundry.abstract.DataModel {
     static defineSchema() {
       return {
         // ERFORDERLICHE FELDER (required: true)
         // Textfarbe (erforderlich)
-        color: new fields$3.ColorField({ required: true, blank: false }),
-        // OPTIONALE FELDER (required: false)
+        color: new fields$3.ColorField({ required: true, blank: false, initial: "#000" }),
+        // OPTIONALE FELDER (required: false) - Alle in Snake_case
         // Sichtbarkeit und Interaktion
         // Transparenz des Elements (0-1)
         opacity: new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
@@ -32407,111 +35028,143 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         // Event-Handling aktivieren (yes, no)
         events: new fields$3.StringField({ required: false, blank: true, initial: "yes" }),
         // Text-Event-Handling (yes, no)
-        textEvents: new fields$3.StringField({ required: false, blank: true, initial: "no" }),
+        "text-events": new fields$3.StringField({ required: false, blank: true, initial: "no" }),
         // Text/Label-Eigenschaften
         // Hauptlabel/Text des Elements
         label: new fields$3.StringField({ required: false, blank: true, initial: "" }),
         // Schriftgröße in Pixeln
-        fontSize: new fields$3.NumberField({ required: false, blank: true, initial: 16 }),
+        "font-size": new fields$3.NumberField({ required: false, blank: true, initial: 16 }),
         // Schriftart
-        fontFamily: new fields$3.StringField({ required: false, blank: true, initial: "Helvetica Neue, Helvetica, sans-serif" }),
+        "font-family": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "Helvetica Neue, Helvetica, sans-serif"
+        }),
         // Schriftstärke (normal, bold, etc.)
-        fontWeight: new fields$3.StringField({ required: false, blank: true, initial: "normal" }),
+        "font-weight": new fields$3.StringField({ required: false, blank: true, initial: "normal" }),
         // Schriftstil (normal, italic)
-        fontStyle: new fields$3.StringField({ required: false, blank: true, initial: "normal" }),
+        "font-style": new fields$3.StringField({ required: false, blank: true, initial: "normal" }),
         // Vertikale Textausrichtung (top, center, bottom)
-        textValign: new fields$3.StringField({ required: false, blank: true, initial: "top" }),
+        "text-valign": new fields$3.StringField({ required: false, blank: true, initial: "top" }),
         // Horizontale Textausrichtung (left, center, right)
-        textHalign: new fields$3.StringField({ required: false, blank: true, initial: "center" }),
+        "text-halign": new fields$3.StringField({ required: false, blank: true, initial: "center" }),
         // Textausrichtung (auto, left, center, right)
-        textJustification: new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
+        "text-justification": new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
         // Textumbruch (none, wrap)
-        textWrap: new fields$3.StringField({ required: false, blank: true, initial: "none" }),
+        "text-wrap": new fields$3.StringField({ required: false, blank: true, initial: "none" }),
         // Textüberlauf (whitespace, anywhere)
-        textOverflowWrap: new fields$3.StringField({ required: false, blank: true, initial: "whitespace" }),
+        "text-overflow-wrap": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "whitespace"
+        }),
         // Maximale Textbreite in Pixeln
-        textMaxWidth: new fields$3.NumberField({ required: false, blank: true, initial: 9999 }),
+        "text-max-width": new fields$3.NumberField({ required: false, blank: true, initial: 9999 }),
         // Text-Rotation (none, autorotate, 45deg, etc.)
-        textRotation: new fields$3.StringField({ required: false, blank: true, initial: "none" }),
+        "text-rotation": new fields$3.StringField({ required: false, blank: true, initial: "none" }),
         // Horizontaler Text-Abstand
-        textMarginX: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-margin-x": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Vertikaler Text-Abstand
-        textMarginY: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-margin-y": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Zeilenhöhe (Multiplikator)
-        lineHeight: new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
+        "line-height": new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
         // Anzeige (element, none)
         display: new fields$3.StringField({ required: false, blank: true, initial: "element" }),
         // Textumrissfarbe
-        textOutlineColor: new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
+        "text-outline-color": new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
         // Textumrissbreite
-        textOutlineWidth: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-outline-width": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Textumriss-Transparenz
-        textOutlineOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
+        "text-outline-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
         // Text-Transparenz
-        textOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
+        "text-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 1 }),
         // Text-Dekoration (none, underline, etc.)
-        textDecoration: new fields$3.StringField({ required: false, blank: true, initial: "none" }),
+        "text-decoration": new fields$3.StringField({ required: false, blank: true, initial: "none" }),
         // Text-Transformation (none, uppercase, lowercase)
-        textTransform: new fields$3.StringField({ required: false, blank: true, initial: "none" }),
+        "text-transform": new fields$3.StringField({ required: false, blank: true, initial: "none" }),
         // Text-Hintergrundfarbe
-        textBackgroundColor: new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
+        "text-background-color": new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
         // Text-Hintergrund-Transparenz
-        textBackgroundOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-background-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Text-Hintergrund-Form (rectangle, roundrectangle)
-        textBackgroundShape: new fields$3.StringField({ required: false, blank: true, initial: "rectangle" }),
+        "text-background-shape": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "rectangle"
+        }),
         // Text-Hintergrund-Abstand
-        textBackgroundPadding: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-background-padding": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Text-Rahmenfarbe
-        textBorderColor: new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
+        "text-border-color": new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
         // Text-Rahmenbreite
-        textBorderWidth: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-border-width": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Text-Rahmenstil (solid, dashed, etc.)
-        textBorderStyle: new fields$3.StringField({ required: false, blank: true, initial: "solid" }),
+        "text-border-style": new fields$3.StringField({ required: false, blank: true, initial: "solid" }),
         // Text-Rahmen-Transparenz
-        textBorderOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "text-border-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Minimale Schriftgröße beim Zoomen
-        minZoomedFontSize: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "min-zoomed-font-size": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Überlagereffekte
         // Überlagerungsfarbe
-        overlayColor: new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
+        "overlay-color": new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
         // Überlagerungs-Transparenz
-        overlayOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "overlay-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Überlagerungs-Abstand
-        overlayPadding: new fields$3.NumberField({ required: false, blank: true, initial: 10 }),
+        "overlay-padding": new fields$3.NumberField({ required: false, blank: true, initial: 10 }),
         // Überlagerungs-Form (roundrectangle, rectangle, etc.)
-        overlayShape: new fields$3.StringField({ required: false, blank: true, initial: "roundrectangle" }),
+        "overlay-shape": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "roundrectangle"
+        }),
         // Überlagerungs-Eckenrundung
-        overlayCornerRadius: new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
+        "overlay-corner-radius": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "auto"
+        }),
         // Unterlagereffekte
         // Unterlagerungsfarbe
-        underlayColor: new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
+        "underlay-color": new fields$3.ColorField({ required: false, blank: true, initial: "#000" }),
         // Unterlagerungs-Transparenz
-        underlayOpacity: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "underlay-opacity": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Unterlagerungs-Abstand
-        underlayPadding: new fields$3.NumberField({ required: false, blank: true, initial: 10 }),
+        "underlay-padding": new fields$3.NumberField({ required: false, blank: true, initial: 10 }),
         // Unterlagerungs-Form
-        underlayShape: new fields$3.StringField({ required: false, blank: true, initial: "roundrectangle" }),
+        "underlay-shape": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "roundrectangle"
+        }),
         // Unterlagerungs-Eckenrundung
-        underlayCornerRadius: new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
+        "underlay-corner-radius": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "auto"
+        }),
         // Animation und Übergänge
         // Übergangseigenschaft (all, none, specific properties)
-        transitionProperty: new fields$3.StringField({ required: false, blank: true, initial: "none" }),
+        "transition-property": new fields$3.StringField({ required: false, blank: true, initial: "none" }),
         // Übergangsdauer in Sekunden
-        transitionDuration: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "transition-duration": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Übergangsverzögerung in Sekunden
-        transitionDelay: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "transition-delay": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Übergangs-Timing-Funktion (linear, ease, etc.)
-        transitionTimingFunction: new fields$3.StringField({ required: false, blank: true, initial: "linear" }),
+        "transition-timing-function": new fields$3.StringField({
+          required: false,
+          blank: true,
+          initial: "linear"
+        }),
         // Z-Index und Stapelreihenfolge
         // Z-Index für Stapelreihenfolge
-        zIndex: new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
+        "z-index": new fields$3.NumberField({ required: false, blank: true, initial: 0 }),
         // Z-Verbund-Tiefe (auto, top, bottom)
-        zCompoundDepth: new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
+        "z-compound-depth": new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
         // Z-Index-Vergleich (auto, manual)
-        zIndexCompare: new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
+        "z-index-compare": new fields$3.StringField({ required: false, blank: true, initial: "auto" }),
         // Selektion und Interaktion
         // Label-Selektion bei Box-Select (yes, no)
-        boxSelectLabels: new fields$3.StringField({ required: false, blank: true, initial: "no" })
+        "box-select-labels": new fields$3.StringField({ required: false, blank: true, initial: "no" })
       };
     }
   }
@@ -32527,122 +35180,122 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         // Größe des Nodes (für runde Formen)
         size: new fields$2.NumberField({ required: true, blank: false, initial: 30 }),
         // Rahmenfarbe (erforderlich)
-        borderColor: new fields$2.ColorField({ required: true, blank: false, initial: "#000" }),
+        "border-color": new fields$2.ColorField({ required: true, blank: false, initial: "#000" }),
         // Rahmenbreite (erforderlich)
-        borderWidth: new fields$2.NumberField({ required: true, blank: false, initial: 0 }),
-        // OPTIONALE FELDER (required: false)
+        "border-width": new fields$2.NumberField({ required: true, blank: false, initial: 0 }),
+        // OPTIONALE FELDER (required: false) - Alle in Snake_case
         // Grundlegende Node-Eigenschaften
         // Breite des Nodes in Pixeln
-        width: new fields$2.NumberField({ required: false, blank: true, initial: 30 }),
+        width: new fields$2.NumberField({ required: false, blank: true, initial: 80 }),
         // Höhe des Nodes in Pixeln
-        height: new fields$2.NumberField({ required: false, blank: true, initial: 30 }),
+        height: new fields$2.NumberField({ required: false, blank: true, initial: 80 }),
         // Hintergrundfarbe des Nodes
-        backgroundColor: new fields$2.ColorField({ required: false, blank: true, initial: "#999" }),
+        "background-color": new fields$2.ColorField({ required: false, blank: true, initial: "#999" }),
         // Hintergrund-Transparenz
-        backgroundOpacity: new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
+        "background-opacity": new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
         // URL/Pfad zum Hintergrundbild
-        backgroundImage: new fields$2.StringField({ required: false, blank: true, initial: "none" }),
+        "background-image": new fields$2.StringField({ required: false, blank: true, initial: "none" }),
         // CORS-Einstellung für externe Bilder
-        backgroundImageCrossorigin: new fields$2.StringField({ required: false, blank: true, initial: "anonymous" }),
+        "background-image-crossorigin": new fields$2.StringField({ required: false, blank: true, initial: "anonymous" }),
         // Transparenz des Hintergrundbildes
-        backgroundImageOpacity: new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
+        "background-image-opacity": new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
         // Begrenzung des Bildes (inside, outside)
-        backgroundImageContainment: new fields$2.StringField({ required: false, blank: true, initial: "inside" }),
+        "background-image-containment": new fields$2.StringField({ required: false, blank: true, initial: "inside" }),
         // Bildglättung (yes, no)
-        backgroundImageSmoothing: new fields$2.StringField({ required: false, blank: true, initial: "yes" }),
+        "background-image-smoothing": new fields$2.StringField({ required: false, blank: true, initial: "yes" }),
         // Horizontale Bildposition (50%, left, center, right)
-        backgroundPositionX: new fields$2.StringField({ required: false, blank: true, initial: "50%" }),
+        "background-position-x": new fields$2.StringField({ required: false, blank: true, initial: "50%" }),
         // Vertikale Bildposition (50%, top, center, bottom)
-        backgroundPositionY: new fields$2.StringField({ required: false, blank: true, initial: "50%" }),
+        "background-position-y": new fields$2.StringField({ required: false, blank: true, initial: "50%" }),
         // Horizontaler Bild-Offset in Pixeln
-        backgroundOffsetX: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "background-offset-x": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Vertikaler Bild-Offset in Pixeln
-        backgroundOffsetY: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "background-offset-y": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Relative Bildbreite (include-padding, exclude-padding)
-        backgroundWidthRelativeTo: new fields$2.StringField({ required: false, blank: true, initial: "include-padding" }),
+        "background-width-relative-to": new fields$2.StringField({ required: false, blank: true, initial: "include-padding" }),
         // Relative Bildhöhe (include-padding, exclude-padding)
-        backgroundHeightRelativeTo: new fields$2.StringField({ required: false, blank: true, initial: "include-padding" }),
+        "background-height-relative-to": new fields$2.StringField({ required: false, blank: true, initial: "include-padding" }),
         // Bild-Wiederholung (no-repeat, repeat, repeat-x, repeat-y)
-        backgroundRepeat: new fields$2.StringField({ required: false, blank: true, initial: "no-repeat" }),
+        "background-repeat": new fields$2.StringField({ required: false, blank: true, initial: "no-repeat" }),
         // Bildanpassung (none, contain, cover, fill, scale-down)
-        backgroundFit: new fields$2.StringField({ required: false, blank: true, initial: "none" }),
+        "background-fit": new fields$2.StringField({ required: false, blank: true, initial: "none" }),
         // Bildbeschnitt (node, none)
-        backgroundClip: new fields$2.StringField({ required: false, blank: true, initial: "node" }),
+        "background-clip": new fields$2.StringField({ required: false, blank: true, initial: "node" }),
         // Bildbreite (auto, 100%, 50px)
-        backgroundWidth: new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
+        "background-width": new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
         // Bildhöhe (auto, 100%, 50px)
-        backgroundHeight: new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
+        "background-height": new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
         // Eckenrundung (auto, 10px, 50%)
-        cornerRadius: new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
+        "corner-radius": new fields$2.StringField({ required: false, blank: true, initial: "auto" }),
         // Innenabstand des Nodes
         padding: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Border/Outline-Eigenschaften
         // Rahmenstil (solid, dashed, dotted)
-        borderStyle: new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
+        "border-style": new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
         // Rahmen-Transparenz
-        borderOpacity: new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
+        "border-opacity": new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
         // Strichmuster für gestrichelte Rahmen
-        borderDashPattern: new fields$2.ArrayField(new fields$2.NumberField(), { required: false, blank: true, initial: [4, 2] }),
+        "border-dash-pattern": new fields$2.ArrayField(new fields$2.NumberField(), { required: false, blank: true, initial: [4, 2] }),
         // Strichmuster-Offset
-        borderDashOffset: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "border-dash-offset": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Rahmen-Ende (butt, round, square)
-        borderCap: new fields$2.StringField({ required: false, blank: true, initial: "butt" }),
+        "border-cap": new fields$2.StringField({ required: false, blank: true, initial: "butt" }),
         // Rahmen-Verbindung (miter, round, bevel)
-        borderJoin: new fields$2.StringField({ required: false, blank: true, initial: "miter" }),
+        "border-join": new fields$2.StringField({ required: false, blank: true, initial: "miter" }),
         // Rahmen-Position (center, inside, outside)
-        borderPosition: new fields$2.StringField({ required: false, blank: true, initial: "center" }),
+        "border-position": new fields$2.StringField({ required: false, blank: true, initial: "center" }),
         // Umrissfarbe
-        outlineColor: new fields$2.ColorField({ required: false, blank: true, initial: "#999" }),
+        "outline-color": new fields$2.ColorField({ required: false, blank: true, initial: "#999" }),
         // Umrissbreite
-        outlineWidth: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "outline-width": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Umriss-Transparenz
-        outlineOpacity: new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
+        "outline-opacity": new fields$2.NumberField({ required: false, blank: true, initial: 1 }),
         // Umriss-Offset
-        outlineOffset: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "outline-offset": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Umriss-Stil (solid, dashed, etc.)
-        outlineStyle: new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
+        "outline-style": new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
         // Erweiterte Node-Eigenschaften
         // Gradient-Richtung (to-bottom, to-top, to-right, to-left, 45deg)
-        backgroundGradientDirection: new fields$2.StringField({ required: false, blank: true, initial: "to-bottom" }),
+        "background-gradient-direction": new fields$2.StringField({ required: false, blank: true, initial: "to-bottom" }),
         // Gradient-Farben (#ff0000, #00ff00, #0000ff)
-        backgroundGradientStopColors: new fields$2.StringField({ required: false, blank: true, initial: "#999" }),
+        "background-gradient-stop-colors": new fields$2.StringField({ required: false, blank: true, initial: "#999" }),
         // Gradient-Positionen (0%, 50%, 100%)
-        backgroundGradientStopPositions: new fields$2.StringField({ required: false, blank: true, initial: "0%" }),
+        "background-gradient-stop-positions": new fields$2.StringField({ required: false, blank: true, initial: "0%" }),
         // Hintergrund-Abdunklung (-1 bis 1)
-        backgroundBlacken: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "background-blacken": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Hintergrund-Füllung (solid, linear-gradient, radial-gradient)
-        backgroundFill: new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
+        "background-fill": new fields$2.StringField({ required: false, blank: true, initial: "solid" }),
         // Polygon-Punkte für polygon-Form
-        shapePolygonPoints: new fields$2.StringField({ required: false, blank: true, initial: "-1, -1,   1, -1,   1, 1,   -1, 1" }),
+        "shape-polygon-points": new fields$2.StringField({ required: false, blank: true, initial: "-1, -1,   1, -1,   1, 1,   -1, 1" }),
         // Grenzen-Erweiterung in Pixeln
-        boundsExpansion: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "bounds-expansion": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Pie-Chart-Eigenschaften
         // Pie-Chart-Größe (100%, 50px)
-        pieSize: new fields$2.StringField({ required: false, blank: true, initial: "100%" }),
+        "pie-size": new fields$2.StringField({ required: false, blank: true, initial: "100%" }),
         // Loch in der Mitte (0-1)
-        pieHole: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "pie-hole": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Startwinkel (0deg, 90deg, 180deg)
-        pieStartAngle: new fields$2.StringField({ required: false, blank: true, initial: "0deg" }),
+        "pie-start-angle": new fields$2.StringField({ required: false, blank: true, initial: "0deg" }),
         // Compound-Node-Eigenschaften
         // Padding relativ zu (width, height, average, min, max)
-        paddingRelativeTo: new fields$2.StringField({ required: false, blank: true, initial: "width" }),
+        "padding-relative-to": new fields$2.StringField({ required: false, blank: true, initial: "width" }),
         // Position (origin, center)
         position: new fields$2.StringField({ required: false, blank: true, initial: "origin" }),
         // Größe bezüglich Labels (include, exclude)
-        compoundSizingWrtLabels: new fields$2.StringField({ required: false, blank: true, initial: "include" }),
+        "compound-sizing-wrt-labels": new fields$2.StringField({ required: false, blank: true, initial: "include" }),
         // Minimale Breite
-        minWidth: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "min-width": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Minimale Höhe
-        minHeight: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "min-height": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Ghost-Eigenschaften
         // Ghost-Effekt aktivieren (yes, no)
         ghost: new fields$2.StringField({ required: false, blank: true, initial: "no" }),
         // Ghost horizontaler Offset
-        ghostOffsetX: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "ghost-offset-x": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Ghost vertikaler Offset
-        ghostOffsetY: new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
+        "ghost-offset-y": new fields$2.NumberField({ required: false, blank: true, initial: 0 }),
         // Ghost-Transparenz
-        ghostOpacity: new fields$2.NumberField({ required: false, blank: true, initial: 0 })
+        "ghost-opacity": new fields$2.NumberField({ required: false, blank: true, initial: 0 })
       };
     }
   }
@@ -32654,131 +35307,131 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         ...commonSchema,
         // ERFORDERLICHE FELDER (required: true)
         // Keine erforderlichen Felder im Edge-Schema
-        // OPTIONALE FELDER (required: false)
+        // OPTIONALE FELDER (required: false) - Alle in Snake_case
         // Grundlegende Edge-Eigenschaften
         // Linienbreite in Pixeln
         width: new fields$1.NumberField({ required: false, blank: true, initial: 3 }),
         // Linienfarbe
-        lineColor: new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
+        "line-color": new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
         // Linien-Transparenz
-        lineOpacity: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "line-opacity": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Linienart (solid, dashed, dotted)
-        lineStyle: new fields$1.StringField({ required: false, blank: true, initial: "solid" }),
+        "line-style": new fields$1.StringField({ required: false, blank: true, initial: "solid" }),
         // Kurvenstil (haystack, bezier, straight, taxi, unbundled-bezier)
-        curveStyle: new fields$1.StringField({ required: false, blank: true, initial: "haystack" }),
+        "curve-style": new fields$1.StringField({ required: false, blank: true, initial: "haystack" }),
         // Pfeil-Eigenschaften
         // Pfeilform am Ende (none, triangle, vee, tee, diamond, square)
-        targetArrowShape: new fields$1.StringField({ required: false, blank: true, initial: "none" }),
+        "target-arrow-shape": new fields$1.StringField({ required: false, blank: true, initial: "none" }),
         // Pfeilfarbe am Ende
-        targetArrowColor: new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
+        "target-arrow-color": new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
         // Pfeilbreite am Ende
-        targetArrowWidth: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "target-arrow-width": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Pfeilfüllung am Ende (filled, hollow)
-        targetArrowFill: new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
+        "target-arrow-fill": new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
         // Pfeilform am Anfang (none, triangle, vee, tee, diamond, square)
-        sourceArrowShape: new fields$1.StringField({ required: false, blank: true, initial: "none" }),
+        "source-arrow-shape": new fields$1.StringField({ required: false, blank: true, initial: "none" }),
         // Pfeilfarbe am Anfang
-        sourceArrowColor: new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
+        "source-arrow-color": new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
         // Pfeilbreite am Anfang
-        sourceArrowWidth: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "source-arrow-width": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Pfeilfüllung am Anfang (filled, hollow)
-        sourceArrowFill: new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
+        "source-arrow-fill": new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
         // Mittlerer Pfeil am Anfang (none, triangle, vee, tee, diamond, square)
-        midSourceArrowShape: new fields$1.StringField({ required: false, blank: true, initial: "none" }),
+        "mid-source-arrow-shape": new fields$1.StringField({ required: false, blank: true, initial: "none" }),
         // Mittlerer Pfeilfarbe am Anfang
-        midSourceArrowColor: new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
+        "mid-source-arrow-color": new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
         // Mittlerer Pfeilbreite am Anfang
-        midSourceArrowWidth: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "mid-source-arrow-width": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Mittlerer Pfeilfüllung am Anfang (filled, hollow)
-        midSourceArrowFill: new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
+        "mid-source-arrow-fill": new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
         // Mittlerer Pfeil am Ende (none, triangle, vee, tee, diamond, square)
-        midTargetArrowShape: new fields$1.StringField({ required: false, blank: true, initial: "none" }),
+        "mid-target-arrow-shape": new fields$1.StringField({ required: false, blank: true, initial: "none" }),
         // Mittlerer Pfeilfarbe am Ende
-        midTargetArrowColor: new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
+        "mid-target-arrow-color": new fields$1.ColorField({ required: false, blank: true, initial: "#999" }),
         // Mittlerer Pfeilbreite am Ende
-        midTargetArrowWidth: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "mid-target-arrow-width": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Mittlerer Pfeilfüllung am Ende (filled, hollow)
-        midTargetArrowFill: new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
+        "mid-target-arrow-fill": new fields$1.StringField({ required: false, blank: true, initial: "filled" }),
         // Edge-spezifische Eigenschaften
         // Linienende (butt, round, square)
-        lineCap: new fields$1.StringField({ required: false, blank: true, initial: "butt" }),
+        "line-cap": new fields$1.StringField({ required: false, blank: true, initial: "butt" }),
         // Linienfüllung (solid, linear-gradient)
-        lineFill: new fields$1.StringField({ required: false, blank: true, initial: "solid" }),
+        "line-fill": new fields$1.StringField({ required: false, blank: true, initial: "solid" }),
         // Linienumrissbreite
-        lineOutlineWidth: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "line-outline-width": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Linienumrissfarbe
-        lineOutlineColor: new fields$1.ColorField({ required: false, blank: true, initial: "#000" }),
+        "line-outline-color": new fields$1.ColorField({ required: false, blank: true, initial: "#000" }),
         // Linien-Gradient-Farben
-        lineGradientStopColors: new fields$1.StringField({ required: false, blank: true, initial: "#999" }),
+        "line-gradient-stop-colors": new fields$1.StringField({ required: false, blank: true, initial: "#999" }),
         // Linien-Gradient-Positionen
-        lineGradientStopPositions: new fields$1.StringField({ required: false, blank: true, initial: "0%" }),
+        "line-gradient-stop-positions": new fields$1.StringField({ required: false, blank: true, initial: "0%" }),
         // Strichmuster für gestrichelte Linien
-        lineDashPattern: new fields$1.ArrayField(new fields$1.NumberField(), { required: false, blank: true, initial: [6, 3] }),
+        "line-dash-pattern": new fields$1.ArrayField(new fields$1.NumberField(), { required: false, blank: true, initial: [6, 3] }),
         // Strichmuster-Offset
-        lineDashOffset: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "line-dash-offset": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Kontrollpunkt-Eigenschaften
         // Kontrollpunkt-Abstand in Pixeln
-        controlPointStepSize: new fields$1.NumberField({ required: false, blank: true, initial: 40 }),
+        "control-point-step-size": new fields$1.NumberField({ required: false, blank: true, initial: 40 }),
         // Kontrollpunkt-Gewichtung (0-1)
-        controlPointWeights: new fields$1.NumberField({ required: false, blank: true, initial: 0.5 }),
+        "control-point-weights": new fields$1.NumberField({ required: false, blank: true, initial: 0.5 }),
         // Segment-Gewichtung (0-1)
-        segmentWeights: new fields$1.NumberField({ required: false, blank: true, initial: 0.5 }),
+        "segment-weights": new fields$1.NumberField({ required: false, blank: true, initial: 0.5 }),
         // Segment-Abstände in Pixeln
-        segmentDistances: new fields$1.NumberField({ required: false, blank: true, initial: 20 }),
+        "segment-distances": new fields$1.NumberField({ required: false, blank: true, initial: 20 }),
         // Segment-Radien in Pixeln
-        segmentRadii: new fields$1.NumberField({ required: false, blank: true, initial: 15 }),
+        "segment-radii": new fields$1.NumberField({ required: false, blank: true, initial: 15 }),
         // Kurven- und Routing-Eigenschaften
         // Radius-Typ (arc-radius, arc-radius-2, arc-radius-3)
-        radiusType: new fields$1.StringField({ required: false, blank: true, initial: "arc-radius" }),
+        "radius-type": new fields$1.StringField({ required: false, blank: true, initial: "arc-radius" }),
         // Taxi-Kurve (50%, 25%, 75%)
-        taxiTurn: new fields$1.StringField({ required: false, blank: true, initial: "50%" }),
+        "taxi-turn": new fields$1.StringField({ required: false, blank: true, initial: "50%" }),
         // Taxi-Radius in Pixeln
-        taxiRadius: new fields$1.NumberField({ required: false, blank: true, initial: 15 }),
+        "taxi-radius": new fields$1.NumberField({ required: false, blank: true, initial: 15 }),
         // Minimale Taxi-Kurven-Distanz
-        taxiTurnMinDistance: new fields$1.NumberField({ required: false, blank: true, initial: 10 }),
+        "taxi-turn-min-distance": new fields$1.NumberField({ required: false, blank: true, initial: 10 }),
         // Taxi-Richtung (auto, upward, downward, leftward, rightward)
-        taxiDirection: new fields$1.StringField({ required: false, blank: true, initial: "auto" }),
+        "taxi-direction": new fields$1.StringField({ required: false, blank: true, initial: "auto" }),
         // Edge-Distanzen (intersection, node-position, 0-1)
-        edgeDistances: new fields$1.StringField({ required: false, blank: true, initial: "intersection" }),
+        "edge-distances": new fields$1.StringField({ required: false, blank: true, initial: "intersection" }),
         // Haystack-Radius in Pixeln
-        haystackRadius: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "haystack-radius": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Pfeil-Skalierung (Multiplikator)
-        arrowScale: new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
+        "arrow-scale": new fields$1.NumberField({ required: false, blank: true, initial: 1 }),
         // Loop-Eigenschaften
         // Loop-Richtung (-45deg, 45deg, 90deg, etc.)
-        loopDirection: new fields$1.StringField({ required: false, blank: true, initial: "-45deg" }),
+        "loop-direction": new fields$1.StringField({ required: false, blank: true, initial: "-45deg" }),
         // Loop-Ausrichtung (-90deg, 90deg, 180deg, etc.)
-        loopSweep: new fields$1.StringField({ required: false, blank: true, initial: "-90deg" }),
+        "loop-sweep": new fields$1.StringField({ required: false, blank: true, initial: "-90deg" }),
         // Endpunkt-Eigenschaften
         // Quell-Distanz vom Node in Pixeln
-        sourceDistanceFromNode: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "source-distance-from-node": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Ziel-Distanz vom Node in Pixeln
-        targetDistanceFromNode: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "target-distance-from-node": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Quell-Endpunkt (outside-to-node, outside-to-line, inside-to-node)
-        sourceEndpoint: new fields$1.StringField({ required: false, blank: true, initial: "outside-to-node" }),
+        "source-endpoint": new fields$1.StringField({ required: false, blank: true, initial: "outside-to-node" }),
         // Ziel-Endpunkt (outside-to-node, outside-to-line, inside-to-node)
-        targetEndpoint: new fields$1.StringField({ required: false, blank: true, initial: "outside-to-node" }),
+        "target-endpoint": new fields$1.StringField({ required: false, blank: true, initial: "outside-to-node" }),
         // Edge-spezifische Text-Eigenschaften
         // Quell-Label (Text am Anfang der Edge)
-        sourceLabel: new fields$1.StringField({ required: false, blank: true, initial: "" }),
+        "source-label": new fields$1.StringField({ required: false, blank: true, initial: "" }),
         // Quell-Text-Offset in Pixeln
-        sourceTextOffset: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "source-text-offset": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Quell-Text horizontaler Abstand
-        sourceTextMarginX: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "source-text-margin-x": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Quell-Text vertikaler Abstand
-        sourceTextMarginY: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "source-text-margin-y": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Quell-Text-Rotation (none, autorotate, 45deg, etc.)
-        sourceTextRotation: new fields$1.StringField({ required: false, blank: true, initial: "none" }),
+        "source-text-rotation": new fields$1.StringField({ required: false, blank: true, initial: "none" }),
         // Ziel-Label (Text am Ende der Edge)
-        targetLabel: new fields$1.StringField({ required: false, blank: true, initial: "" }),
+        "target-label": new fields$1.StringField({ required: false, blank: true, initial: "" }),
         // Ziel-Text-Offset in Pixeln
-        targetTextOffset: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "target-text-offset": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Ziel-Text horizontaler Abstand
-        targetTextMarginX: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "target-text-margin-x": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Ziel-Text vertikaler Abstand
-        targetTextMarginY: new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
+        "target-text-margin-y": new fields$1.NumberField({ required: false, blank: true, initial: 0 }),
         // Ziel-Text-Rotation (none, autorotate, 45deg, etc.)
-        targetTextRotation: new fields$1.StringField({ required: false, blank: true, initial: "none" })
+        "target-text-rotation": new fields$1.StringField({ required: false, blank: true, initial: "none" })
       };
     }
   }
