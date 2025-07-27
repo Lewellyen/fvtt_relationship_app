@@ -7,11 +7,15 @@
   const props = $props<{
     nodes: NodeData[];
     edges: EdgeData[];
+    selectedNodeId?: string | null;
+    selectedEdgeId?: string | null;
     width?: string;
     height?: string;
     interactive?: boolean;
     onNodeClick?: (nodeId: string) => void;
     onEdgeClick?: (edgeId: string) => void;
+    onNodeDoubleClick?: (nodeId: string) => void;
+    onEdgeDoubleClick?: (edgeId: string) => void;
   }>();
 
   let cyContainer: HTMLElement;
@@ -161,6 +165,22 @@
         console.log('Edge clicked:', edge.id());
       });
 
+      cy.on('cxttap', 'node', function(evt: any) {
+        const node = evt.target;
+        if (props.onNodeDoubleClick) {
+          props.onNodeDoubleClick(node.id());
+        }
+        console.log('Node double-clicked:', node.id());
+      });
+
+      cy.on('cxttap', 'edge', function(evt: any) {
+        const edge = evt.target;
+        if (props.onEdgeDoubleClick) {
+          props.onEdgeDoubleClick(edge.id());
+        }
+        console.log('Edge double-clicked:', edge.id());
+      });
+
       cy.on('tap', function(evt: any) {
         if (evt.target === cy) {
           console.log('Background clicked');
@@ -180,6 +200,30 @@
     }
   }
 
+  // Update selection in Cytoscape
+  function updateSelection() {
+    if (!cy) return;
+    
+    // Clear all selections first
+    cy.elements().unselect();
+    
+    // Select node if specified
+    if (props.selectedNodeId) {
+      const node = cy.getElementById(props.selectedNodeId);
+      if (node.length > 0) {
+        node.select();
+      }
+    }
+    
+    // Select edge if specified
+    if (props.selectedEdgeId) {
+      const edge = cy.getElementById(props.selectedEdgeId);
+      if (edge.length > 0) {
+        edge.select();
+      }
+    }
+  }
+
   // Reinitialize when props change
   function updateCytoscape() {
     if (cy) {
@@ -187,6 +231,13 @@
       initCytoscape();
     }
   }
+
+  // Update selection when selection props change
+  $effect(() => {
+    if (cy && (props.selectedNodeId !== undefined || props.selectedEdgeId !== undefined)) {
+      updateSelection();
+    }
+  });
 
   onMount(() => {
     initCytoscape();
