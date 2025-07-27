@@ -92,6 +92,7 @@ The module follows SOLID principles:
 - **RelationshipGraphPersistenceService**: Foundry document persistence
 - **RelationshipGraphValidationService**: Data validation
 - **RelationshipGraphCytoscapeService**: Graph visualization
+- **RelationshipGraphDemoDataService**: Provides demo graph data
 - **ServiceFactory**: Dependency injection container
 
 ### Svelte Integration
@@ -188,6 +189,9 @@ interface IRelationshipGraphService {
   // ... more methods
 }
 ```
+Additional interfaces such as `IRelationshipGraphPersistenceService`,
+`IRelationshipGraphValidationService`, and `IRelationshipGraphDemoDataService` keep persistence, validation, and demo data concerns
+separate from the main service.
 
 ## Contributing
 
