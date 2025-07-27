@@ -1,11 +1,15 @@
 import type { NodeData, EdgeData, RelationshipGraphData, IDocument } from "../global";
 import type { IRelationshipGraphService } from "./IRelationshipGraphService";
+import type { IRelationshipGraphPersistenceService } from "./IRelationshipGraphPersistenceService";
 
 export class RelationshipGraphService implements IRelationshipGraphService {
   private nodes: NodeData[] = [];
   private edges: EdgeData[] = [];
 
-  constructor(private document: IDocument) {
+  constructor(
+    private document: IDocument,
+    private persistence: IRelationshipGraphPersistenceService
+  ) {
     this.loadData();
   }
 
@@ -22,38 +26,38 @@ export class RelationshipGraphService implements IRelationshipGraphService {
       name: "Relationship Graph",
       permissions: { defaultLevel: 0, users: [] },
       nodes: this.nodes,
-      edges: this.edges
+      edges: this.edges,
     };
   }
 
   getNode(nodeId: string): NodeData | undefined {
     return this.nodes.find((n) => n.id === nodeId);
   }
-  
+
   getEdge(edgeId: string): EdgeData | undefined {
     return this.edges.find((e) => e.id === edgeId);
   }
-  
+
   getNodeByLabel(label: string): NodeData | undefined {
     return this.nodes.find((n) => n.label?.value === label);
   }
-  
+
   getEdgeByLabel(label: string): EdgeData | undefined {
     return this.edges.find((e) => e.label?.value === label);
   }
-  
+
   getNodeByType(type: string): NodeData | undefined {
     return this.nodes.find((n) => n.type.value === type);
   }
-  
+
   getEdgeByType(type: string): EdgeData | undefined {
     return this.edges.find((e) => e.type === type);
   }
-  
+
   getNodeById(id: string): NodeData | undefined {
     return this.nodes.find((n) => n.id === id);
   }
-  
+
   getEdgeById(id: string): EdgeData | undefined {
     return this.edges.find((e) => e.id === id);
   }
@@ -83,10 +87,13 @@ export class RelationshipGraphService implements IRelationshipGraphService {
     const newEdge: EdgeData = {
       ...edge,
       id: edge.id || foundry.utils.randomID(),
-      label: edge.label || { value: `${edge.source} → ${edge.target}`, permissions: defaultPermissions },
+      label: edge.label || {
+        value: `${edge.source} → ${edge.target}`,
+        permissions: defaultPermissions,
+      },
       type: edge.type || "relation",
       globalPermissions: edge.globalPermissions || defaultPermissions,
-    }
+    };
 
     const existingEdgeIndex = this.edges.findIndex((e) => e.id === newEdge.id);
     if (existingEdgeIndex >= 0) {
@@ -157,37 +164,19 @@ export class RelationshipGraphService implements IRelationshipGraphService {
   }
 
   private loadData(): void {
-    // Lade das Document frisch aus der Datenbank über die Collection
-    const documentId = (this.document as any).id || (this.document as any)._id;
-    const freshDocument = (globalThis as any).game?.journal?.get?.(documentId);
-    
-    if (freshDocument) {
-      const system = freshDocument.system;
-      this.nodes = system.nodes || [];
-      this.edges = system.edges || [];
-    } else {
-      // Fallback auf das übergebene Document
-      const system = this.document.system;
-      this.nodes = system.nodes || [];
-      this.edges = system.edges || [];
-    }
+    this.persistence
+      .load(this.document)
+      .then((graph) => {
+        this.nodes = graph.nodes;
+        this.edges = graph.edges;
+      })
+      .catch((err) => console.error(err));
   }
 
   /**
    * Speichert die übergebenen Änderungen im Dokument.
    */
   private async saveData(updateObj: object): Promise<void> {
-    const documentUuid = (this.document as any).uuid;
-    const freshDocument = await (foundry.utils as any).fromUuid(documentUuid);
-    if (freshDocument) {
-      const updates = {
-        ...freshDocument.system,
-        ...updateObj,
-      }
-      await freshDocument.update(updates);
-    }
-    else {
-      this.document.update(updateObj);
-    }
+    await this.persistence.save(this.document, updateObj);
   }
 }

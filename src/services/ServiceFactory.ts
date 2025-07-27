@@ -1,6 +1,10 @@
 import type { IServiceFactory, ServiceConstructor } from "./IServiceFactory";
 import { SERVICE_IDENTIFIERS } from "./IServiceFactory";
 import { RelationshipGraphService } from "./RelationshipGraphService";
+import { RelationshipGraphPersistenceService } from "./RelationshipGraphPersistenceService";
+import { RelationshipGraphValidationService } from "./RelationshipGraphValidationService";
+import { RelationshipGraphCytoscapeService } from "./RelationshipGraphCytoscapeService";
+import { RelationshipGraphDemoDataService } from "./RelationshipGraphDemoDataService";
 
 export class ServiceFactory implements IServiceFactory {
   private static instance: ServiceFactory;
@@ -42,5 +46,21 @@ export class ServiceFactory implements IServiceFactory {
   // Register default services
   private registerDefaultServices(): void {
     this.registerService(SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH, RelationshipGraphService);
+    this.registerService(
+      SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_PERSISTENCE,
+      RelationshipGraphPersistenceService
+    );
+    this.registerService(
+      SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_VALIDATION,
+      RelationshipGraphValidationService
+    );
+    this.registerService(
+      SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_CYTOSCAPE,
+      RelationshipGraphCytoscapeService
+    );
+    this.registerService(
+      SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_DEMO_DATA,
+      RelationshipGraphDemoDataService
+    );
   }
 }
