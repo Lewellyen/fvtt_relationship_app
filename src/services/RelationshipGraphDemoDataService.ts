@@ -1,8 +1,9 @@
 import type { IRelationshipGraphDemoDataService } from "./IRelationshipGraphDemoDataService";
 import type { IRelationshipGraphService } from "./IRelationshipGraphService";
+import type { NodeData, EdgeData } from "../global";
 
 export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoDataService {
-  async createDemoData(service: IRelationshipGraphService): Promise<void> {
+  getDemoData(): { nodes: NodeData[]; edges: EdgeData[] } {
     const defaultPermissions = { defaultLevel: 0, users: [] };
 
     const createNodeAttributes = () => {
@@ -18,7 +19,7 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
         visibility: "visible",
         events: "yes",
         "text-events": "no",
-        label: "",
+        // label: "", // Removed to prevent overriding actual labels
         "font-size": 16,
         "font-family": "Helvetica Neue, Helvetica, sans-serif",
         "font-weight": "normal",
@@ -128,7 +129,7 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
         visibility: "visible",
         events: "yes",
         "text-events": "no",
-        label: "",
+        // label: "", // Removed to prevent overriding actual labels
         "font-size": 16,
         "font-family": "Helvetica Neue, Helvetica, sans-serif",
         "font-weight": "normal",
@@ -238,76 +239,477 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
       } as any;
     };
 
-    await service.addNode({
+    const node1Id = foundry.utils.randomID();
+    const node2Id = foundry.utils.randomID();
+
+    const nodes: NodeData[] = [
+      {
+        id: node1Id,
+        x: 100,
+        y: 100,
+        label: { value: "Bauer", permissions: defaultPermissions },
+        type: { value: "person", permissions: defaultPermissions },
+        globalPermissions: defaultPermissions,
+        cytoScapeAttributes: {
+          ...createNodeAttributes(),
+          color: "#000000",
+          "background-color": "#006400",
+          shape: "ellipse",
+          width: 80,
+          height: 80,
+          "border-color": "#000",
+          "border-width": 2,
+          "text-valign": "center",
+          "text-halign": "center",
+          "font-size": 16,
+          "font-weight": "bold",
+          "font-family": "Arial, sans-serif",
+          label: "Bauer",
+          group: "bauern",
+        },
+        descriptions: [],
+        playerRelationshipEffects: [],
+        image: { path: "", permissions: defaultPermissions },
+        zIndex: 1,
+      },
+      {
+        id: node2Id,
+        x: 300,
+        y: 100,
+        label: { value: "Müller", permissions: defaultPermissions },
+        type: { value: "person", permissions: defaultPermissions },
+        globalPermissions: defaultPermissions,
+        cytoScapeAttributes: {
+          ...createNodeAttributes(),
+          color: "#000000",
+          "background-color": "#4169E1",
+          shape: "ellipse",
+          width: 80,
+          height: 80,
+          "border-color": "#000",
+          "border-width": 2,
+          "text-valign": "center",
+          "text-halign": "center",
+          "font-size": 16,
+          "font-weight": "bold",
+          "font-family": "Arial, sans-serif",
+          label: "Müller",
+          group: "bürger",
+        },
+        descriptions: [],
+        playerRelationshipEffects: [],
+        image: { path: "", permissions: defaultPermissions },
+        zIndex: 1,
+      },
+    ];
+
+    const edges: EdgeData[] = [
+      {
+        id: foundry.utils.randomID(),
+        source: node1Id,
+        target: node2Id,
+        label: { value: "Weizen", permissions: defaultPermissions },
+        type: "trade",
+        globalPermissions: defaultPermissions,
+        cytoScapeAttributes: {
+          ...createEdgeAttributes(),
+          color: "#000",
+          "line-color": "#000",
+          "line-opacity": 1,
+          "line-style": "solid",
+          "target-arrow-shape": "triangle",
+          "target-arrow-color": "#000",
+          "target-arrow-width": 2,
+          "curve-style": "bezier",
+          "text-margin-y": -10,
+          label: "Weizen", // Override the empty label from createEdgeAttributes
+        },
+      },
+    ];
+
+    return { nodes, edges };
+  }
+
+  async createDemoData(service: IRelationshipGraphService): Promise<void> {
+    const demoData = this.getDemoData();
+
+    // Erstelle das elements Objekt im korrekten Cytoscape-Format
+    const elements = {
+      nodes: demoData.nodes.map((node) => ({
+        data: {
+          id: node.id,
+          label: node.label?.value || "",
+          type: node.type?.value || "",
+          // Alle NodeData-Felder direkt in data speichern
+          x: node.x,
+          y: node.y,
+          permissions: node.globalPermissions,
+          descriptions: node.descriptions,
+          playerRelationshipEffects: node.playerRelationshipEffects,
+          image: node.image,
+          zIndex: node.zIndex,
+          // Cytoscape-Attribute
+          ...node.cytoScapeAttributes,
+        },
+        position: {
+          x: node.x,
+          y: node.y,
+        },
+      })),
+      edges: demoData.edges.map((edge) => ({
+        data: {
+          id: edge.id,
+          source: edge.source,
+          target: edge.target,
+          label: edge.label?.value || "",
+          type: edge.type,
+          // Alle EdgeData-Felder direkt in data speichern
+          permissions: edge.globalPermissions,
+          connectionCategory: edge.connectionCategory,
+          zIndex: edge.zIndex,
+          // Cytoscape-Attribute
+          ...edge.cytoScapeAttributes,
+        },
+      })),
+    };
+
+    // Speichere NUR die elements direkt in das Journal Entry
+    if (service.getDocument()) {
+      await service.getDocument().update({
+        "system.elements": elements,
+      },{render: false});
+    }
+  }
+
+  // Demo Data Templates
+  createSimpleDemo(): { nodes: NodeData[]; edges: EdgeData[] } {
+    const defaultPermissions = { defaultLevel: 0, users: [] };
+
+    const nodes: NodeData[] = [
+      {
+        id: foundry.utils.randomID(),
+        x: 100,
+        y: 100,
+        label: { value: "Node 1", permissions: defaultPermissions },
+        type: { value: "simple", permissions: defaultPermissions },
+        cytoScapeAttributes: {
+          shape: "ellipse",
+          size: 60,
+          color: "#000000",
+          "background-color": "#ffffff",
+          "border-color": "#000000",
+          "border-width": 1,
+          width: 60,
+          height: 60,
+        },
+        globalPermissions: defaultPermissions,
+      },
+      {
+        id: foundry.utils.randomID(),
+        x: 300,
+        y: 100,
+        label: { value: "Node 2", permissions: defaultPermissions },
+        type: { value: "simple", permissions: defaultPermissions },
+        cytoScapeAttributes: {
+          shape: "ellipse",
+          size: 60,
+          color: "#000000",
+          "background-color": "#ffffff",
+          "border-color": "#000000",
+          "border-width": 1,
+          width: 60,
+          height: 60,
+        },
+        globalPermissions: defaultPermissions,
+      },
+    ];
+
+    const edges: EdgeData[] = [
+      {
+        id: foundry.utils.randomID(),
+        source: nodes[0].id,
+        target: nodes[1].id,
+        label: { value: "Connection", permissions: defaultPermissions },
+        type: "simple",
+        cytoScapeAttributes: {
+          color: "#000000",
+          "line-color": "#000000",
+          width: 1,
+        },
+        globalPermissions: defaultPermissions,
+      },
+    ];
+
+    return { nodes, edges };
+  }
+
+  createComplexDemo(): { nodes: NodeData[]; edges: EdgeData[] } {
+    const defaultPermissions = { defaultLevel: 0, users: [] };
+
+    const nodes: NodeData[] = Array.from({ length: 10 }, (_, i) => ({
       id: foundry.utils.randomID(),
-      x: 150,
-      y: 200,
-      label: { value: "Bauer", permissions: defaultPermissions },
-      type: { value: "person", permissions: defaultPermissions },
-      globalPermissions: defaultPermissions,
+      x: 100 + i * 80,
+      y: 100 + i * 60,
+      label: { value: `Complex Node ${i + 1}`, permissions: defaultPermissions },
+      type: { value: "complex", permissions: defaultPermissions },
       cytoScapeAttributes: {
-        ...createNodeAttributes(),
-        color: "#000000",
-        "background-color": "#006400",
         shape: "ellipse",
+        size: 80,
+        color: "#000000",
+        "background-color": `hsl(${i * 36}, 70%, 60%)`,
+        "border-color": "#000000",
+        "border-width": 2,
         width: 80,
         height: 80,
-        "border-color": "#000",
-        "border-width": 0,
-        "text-valign": "center",
-        "text-halign": "center",
-        "font-size": 14,
-        "font-weight": "bold",
-        "font-family": "Arial, sans-serif",
       },
-    });
-
-    await service.addNode({
-      id: foundry.utils.randomID(),
-      x: 450,
-      y: 200,
-      label: { value: "Müller", permissions: defaultPermissions },
-      type: { value: "person", permissions: defaultPermissions },
       globalPermissions: defaultPermissions,
-      cytoScapeAttributes: {
-        ...createNodeAttributes(),
-        color: "#000000",
-        "background-color": "#F5DEB3",
-        shape: "ellipse",
-        width: 80,
-        height: 80,
-        "border-color": "#000",
-        "border-width": 0,
-        "text-valign": "center",
-        "text-halign": "center",
-        "font-size": 14,
-        "font-weight": "bold",
-        "font-family": "Arial, sans-serif",
-        "background-opacity": 1,
-        "outline-color": "#F5DEB3",
-        "background-gradient-stop-colors": "#F5DEB3",
-      },
-    });
+    }));
 
-    await service.addEdge({
-      id: foundry.utils.randomID(),
-      source: service.getNodeByLabel("Bauer")?.id ?? "",
-      target: service.getNodeByLabel("Müller")?.id ?? "",
-      label: { value: "Weizen", permissions: defaultPermissions },
-      type: "trade",
-      globalPermissions: defaultPermissions,
-      cytoScapeAttributes: {
-        ...createEdgeAttributes(),
-        color: "#000",
-        "line-color": "#000",
-        "line-opacity": 1,
-        "line-style": "solid",
-        "target-arrow-shape": "triangle",
-        "target-arrow-color": "#000",
-        "target-arrow-width": 2,
-        "curve-style": "bezier",
-        "text-margin-y": -10,
+    const edges: EdgeData[] = [];
+    for (let i = 0; i < nodes.length - 1; i++) {
+      edges.push({
+        id: foundry.utils.randomID(),
+        source: nodes[i].id,
+        target: nodes[i + 1].id,
+        label: { value: `Edge ${i + 1}`, permissions: defaultPermissions },
+        type: "complex",
+        cytoScapeAttributes: {
+          color: `hsl(${i * 36}, 70%, 40%)`,
+          "line-color": `hsl(${i * 36}, 70%, 40%)`,
+          width: 2,
+          "curve-style": "bezier",
+        },
+        globalPermissions: defaultPermissions,
+      });
+    }
+
+    return { nodes, edges };
+  }
+
+  createCharacterDemo(): { nodes: NodeData[]; edges: EdgeData[] } {
+    const defaultPermissions = { defaultLevel: 0, users: [] };
+
+    const nodes: NodeData[] = [
+      {
+        id: foundry.utils.randomID(),
+        x: 200,
+        y: 200,
+        label: { value: "Hero", permissions: defaultPermissions },
+        type: { value: "character", permissions: defaultPermissions },
+        cytoScapeAttributes: {
+          shape: "ellipse",
+          size: 100,
+          color: "#000000",
+          "background-color": "#ffd700",
+          "border-color": "#ff8c00",
+          "border-width": 3,
+          width: 100,
+          height: 100,
+        },
+        globalPermissions: defaultPermissions,
       },
-    });
+      {
+        id: foundry.utils.randomID(),
+        x: 400,
+        y: 150,
+        label: { value: "Villain", permissions: defaultPermissions },
+        type: { value: "character", permissions: defaultPermissions },
+        cytoScapeAttributes: {
+          shape: "ellipse",
+          size: 100,
+          color: "#000000",
+          "background-color": "#ff4444",
+          "border-color": "#cc0000",
+          "border-width": 3,
+          width: 100,
+          height: 100,
+        },
+        globalPermissions: defaultPermissions,
+      },
+      {
+        id: foundry.utils.randomID(),
+        x: 300,
+        y: 300,
+        label: { value: "Ally", permissions: defaultPermissions },
+        type: { value: "character", permissions: defaultPermissions },
+        cytoScapeAttributes: {
+          shape: "ellipse",
+          size: 100,
+          color: "#000000",
+          "background-color": "#44ff44",
+          "border-color": "#00cc00",
+          "border-width": 3,
+          width: 100,
+          height: 100,
+        },
+        globalPermissions: defaultPermissions,
+      },
+    ];
+
+    const edges: EdgeData[] = [
+      {
+        id: foundry.utils.randomID(),
+        source: nodes[0].id,
+        target: nodes[1].id,
+        label: { value: "Fights", permissions: defaultPermissions },
+        type: "enemy",
+        cytoScapeAttributes: {
+          "line-color": "#ff0000",
+          width: 3,
+          "line-style": "solid",
+          color: "#ff0000",
+        },
+        globalPermissions: defaultPermissions,
+      },
+      {
+        id: foundry.utils.randomID(),
+        source: nodes[0].id,
+        target: nodes[2].id,
+        label: { value: "Helps", permissions: defaultPermissions },
+        type: "ally",
+        cytoScapeAttributes: {
+          "line-color": "#00ff00",
+          width: 3,
+          "line-style": "solid",
+          color: "#00ff00",
+        },
+        globalPermissions: defaultPermissions,
+      },
+    ];
+
+    return { nodes, edges };
+  }
+
+  createWorldDemo(): { nodes: NodeData[]; edges: EdgeData[] } {
+    const defaultPermissions = { defaultLevel: 0, users: [] };
+
+    const nodes: NodeData[] = [
+      {
+        id: foundry.utils.randomID(),
+        x: 300,
+        y: 200,
+        label: { value: "Capital City", permissions: defaultPermissions },
+        type: { value: "city", permissions: defaultPermissions },
+        cytoScapeAttributes: {
+          shape: "rectangle",
+          size: 80,
+          color: "#87ceeb",
+          "background-color": "#87ceeb",
+          "border-color": "#4682b4",
+          "border-width": 2,
+          width: 120,
+          height: 80,
+        },
+        globalPermissions: defaultPermissions,
+      },
+      {
+        id: foundry.utils.randomID(),
+        x: 100,
+        y: 100,
+        label: { value: "Forest Village", permissions: defaultPermissions },
+        type: { value: "village", permissions: defaultPermissions },
+        cytoScapeAttributes: {
+          shape: "rectangle",
+          size: 60,
+          color: "#90ee90",
+          "background-color": "#90ee90",
+          "border-color": "#228b22",
+          "border-width": 2,
+          width: 100,
+          height: 60,
+        },
+        globalPermissions: defaultPermissions,
+      },
+      {
+        id: foundry.utils.randomID(),
+        x: 500,
+        y: 300,
+        label: { value: "Mountain Fortress", permissions: defaultPermissions },
+        type: { value: "fortress", permissions: defaultPermissions },
+        cytoScapeAttributes: {
+          shape: "rectangle",
+          size: 80,
+          color: "#d2b48c",
+          "background-color": "#d2b48c",
+          "border-color": "#8b4513",
+          "border-width": 2,
+          width: 100,
+          height: 80,
+        },
+        globalPermissions: defaultPermissions,
+      },
+    ];
+
+    const edges: EdgeData[] = [
+      {
+        id: foundry.utils.randomID(),
+        source: nodes[0].id,
+        target: nodes[1].id,
+        label: { value: "Trade Route", permissions: defaultPermissions },
+        type: "trade",
+        cytoScapeAttributes: {
+          "line-color": "#ffa500",
+          width: 2,
+          "line-style": "dashed",
+          color: "#ffa500",
+        },
+        globalPermissions: defaultPermissions,
+      },
+      {
+        id: foundry.utils.randomID(),
+        source: nodes[0].id,
+        target: nodes[2].id,
+        label: { value: "Military Road", permissions: defaultPermissions },
+        type: "military",
+        cytoScapeAttributes: {
+          "line-color": "#ff0000",
+          width: 3,
+          "line-style": "solid",
+          color: "#ff0000",
+        },
+        globalPermissions: defaultPermissions,
+      },
+    ];
+
+    return { nodes, edges };
+  }
+
+  // Demo Data Management
+  async clearDemoData(service: IRelationshipGraphService): Promise<void> {
+    // Lösche alle Elements aus dem Journal Entry
+    if (service.getDocument()) {
+      await service.getDocument().update({
+        "system.elements": { nodes: [], edges: [] },
+      });
+    }
+  }
+
+  hasDemoData(service: IRelationshipGraphService): boolean {
+    const document = service.getDocument();
+    if (!document) return false;
+
+    const elements = (document.system as any)?.elements;
+    if (!elements) return false;
+
+    return (
+      (elements.nodes && elements.nodes.length > 0) || (elements.edges && elements.edges.length > 0)
+    );
+  }
+
+  // Demo Data Configuration
+  private currentTemplate: string = "simple";
+
+  setDemoDataTemplate(template: "simple" | "complex" | "character" | "world"): void {
+    this.currentTemplate = template;
+  }
+
+  getCurrentTemplate(): string {
+    return this.currentTemplate;
+  }
+
+  // Cleanup
+  cleanup(): void {
+    // Reset to default template
+    this.currentTemplate = "simple";
   }
 }

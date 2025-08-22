@@ -1,58 +1,57 @@
 <script lang="ts">
-  import type { GraphComponentProps } from "../global";
-  import CytoscapeGraph from './CytoscapeGraph.svelte';
-  import GraphInfoPanel from './GraphInfoPanel.svelte';
-  
-  // Props mit Svelte 5 Runes-Syntax  
-  let { nodes, edges }: GraphComponentProps = $props();
+  let {
+    elements,
+    interactive,
+    onNodeClick,
+    onEdgeClick,
+  }: {
+    elements: any[];
+    interactive: boolean;
+    onNodeClick: (nodeId: string) => void;
+    onEdgeClick: (edgeId: string) => void;
+  } = $props();
 
-  console.log("[RelationshipGraphView] Props received:", { nodes, edges });
+  console.log("RelationshipGraphView", elements);
+  console.log("RelationshipGraphView", interactive);
+  console.log("RelationshipGraphView", onNodeClick);
+  console.log("RelationshipGraphView", onEdgeClick);
 
-  // Event handlers
-  function handleNodeClick(nodeId: string) {
-    console.log('Node clicked in view mode:', nodeId);
-  }
-
-  function handleEdgeClick(edgeId: string) {
-    console.log('Edge clicked in view mode:', edgeId);
-  }
 </script>
 
 <div class="relationship-graph-view">
-  <!-- Cytoscape Graph -->
-  <div class="cytoscape-wrapper">
-    <CytoscapeGraph 
-      nodes={nodes}
-      edges={edges}
-      width="100%"
-      height="500px"
-      interactive={true}
+  <div class="graph-container">
+    <div> Platzhalter für Graph</div>
+    <!-- <CytoscapeGraph
+      width="800px"
+      height="600px"
+      {elements}
+      {interactive}
       onNodeClick={handleNodeClick}
       onEdgeClick={handleEdgeClick}
-    />
+    /> -->
   </div>
-
-  <!-- Info Panel -->
-  <div class="info-panel-wrapper">
-    <GraphInfoPanel nodes={nodes} edges={edges} />
+  
+  <div class="info-container">
+    <div> Platzhalter für Info-Panel</div>
   </div>
 </div>
 
 <style>
   .relationship-graph-view {
-    padding: 1rem;
-    height: 100%;
     display: flex;
     flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    height: 100vh;
   }
 
-  .cytoscape-wrapper {
+  .graph-container {
     flex: 1;
-    margin-bottom: 1rem;
+    min-height: 0;
   }
 
-  .info-panel-wrapper {
-    flex: 1;
-    margin-bottom: 1rem;
+  .info-container {
+    height: 300px;
+    min-height: 300px;
   }
 </style>

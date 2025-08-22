@@ -22,6 +22,7 @@
   },
   "include": [
     "src/**/*",
+    "src/**/*.svelte.ts",
     "templates/**/*.hbs",
     "vite.config.ts"
   ],

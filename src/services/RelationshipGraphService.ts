@@ -1,182 +1,439 @@
-import type { NodeData, EdgeData, RelationshipGraphData, IDocument } from "../global";
+import type { RelationshipGraphData } from "../global";
 import type { IRelationshipGraphService } from "./IRelationshipGraphService";
 import type { IRelationshipGraphPersistenceService } from "./IRelationshipGraphPersistenceService";
 
 export class RelationshipGraphService implements IRelationshipGraphService {
-  private nodes: NodeData[] = [];
-  private edges: EdgeData[] = [];
+  private elements: any = { nodes: [], edges: [] };
 
   constructor(
-    private document: IDocument,
+    private document: any,
     private persistence: IRelationshipGraphPersistenceService
   ) {
-    this.loadData();
+    // Only load data if both document and persistence are available
+    if (this.document && this.persistence) {
+      this.loadData();
+    }
   }
 
-  getNodes(): NodeData[] {
-    return [...this.nodes];
+  // Neue Methoden für Cytoscape-kompatible Datenzugriffe
+  getElements(): any {
+    return this.elements;
   }
 
-  getEdges(): EdgeData[] {
-    return [...this.edges];
+  getNodes(): any[] {
+    return this.elements.nodes || [];
   }
 
-  getGraph(): RelationshipGraphData {
+  getEdges(): any[] {
+    return this.elements.edges || [];
+  }
+
+  // Document Access
+  getDocument(): any {
+    return this.document;
+  }
+
+  // Cytoscape-kompatible Suchmethoden
+  findNodeById(id: string): any {
+    return this.elements.nodes?.find((node: any) => node.data.id === id);
+  }
+
+  findEdgesBySource(sourceId: string): any[] {
+    return this.elements.edges?.filter((edge: any) => edge.data.source === sourceId) || [];
+  }
+
+  findEdgesByTarget(targetId: string): any[] {
+    return this.elements.edges?.filter((edge: any) => edge.data.target === targetId) || [];
+  }
+
+  // Filter-Methoden mit Cytoscape-Effizienz
+  filterNodesByType(type: string): any[] {
+    return this.elements.nodes?.filter((node: any) => node.data.type === type) || [];
+  }
+
+  filterEdgesByType(type: string): any[] {
+    return this.elements.edges?.filter((edge: any) => edge.data.type === type) || [];
+  }
+
+  getGraphData(): RelationshipGraphData {
     return {
-      name: "Relationship Graph",
+      name: this.document?.name || "Neuer Beziehungsgraph",
       permissions: { defaultLevel: 0, users: [] },
-      nodes: this.nodes,
-      edges: this.edges,
+      elements: this.elements,
     };
   }
 
-  getNode(nodeId: string): NodeData | undefined {
-    return this.nodes.find((n) => n.id === nodeId);
+  getNode(nodeId: string): any {
+    return this.findNodeById(nodeId);
   }
 
-  getEdge(edgeId: string): EdgeData | undefined {
-    return this.edges.find((e) => e.id === edgeId);
+  getEdge(edgeId: string): any {
+    return this.elements.edges?.find((e: any) => e.data.id === edgeId);
   }
 
-  getNodeByLabel(label: string): NodeData | undefined {
-    return this.nodes.find((n) => n.label?.value === label);
+  getNodeByLabel(label: string): any {
+    return this.elements.nodes?.find((node: any) => node.data.label === label);
   }
 
-  getEdgeByLabel(label: string): EdgeData | undefined {
-    return this.edges.find((e) => e.label?.value === label);
+  getEdgeByLabel(label: string): any {
+    return this.elements.edges?.find((edge: any) => edge.data.label === label);
   }
 
-  getNodeByType(type: string): NodeData | undefined {
-    return this.nodes.find((n) => n.type.value === type);
+  getNodeByType(type: string): any {
+    return this.elements.nodes?.find((node: any) => node.data.type === type);
   }
 
-  getEdgeByType(type: string): EdgeData | undefined {
-    return this.edges.find((e) => e.type === type);
+  getEdgeByType(type: string): any {
+    return this.elements.edges?.find((edge: any) => edge.data.type === type);
   }
 
-  getNodeById(id: string): NodeData | undefined {
-    return this.nodes.find((n) => n.id === id);
+  getNodeById(id: string): any {
+    return this.findNodeById(id);
   }
 
-  getEdgeById(id: string): EdgeData | undefined {
-    return this.edges.find((e) => e.id === id);
+  getEdgeById(id: string): any {
+    return this.elements.edges?.find((e: any) => e.data.id === id);
   }
 
   /**
-   * Fügt einen neuen Node hinzu oder aktualisiert einen bestehenden und speichert die Änderung.
+   * Fügt einen neuen Node hinzu oder aktualisiert einen bestehenden
    */
-  async addNode(node: NodeData): Promise<void> {
-    const existingNodeIndex = this.nodes.findIndex((n) => n.id === node.id);
-    if (existingNodeIndex >= 0) {
-      this.nodes[existingNodeIndex] = node;
+  async addNode(nodeData: any): Promise<void> {
+    const existingNode = this.findNodeById(nodeData.id);
+    if (existingNode) {
+      this.updateNode(nodeData.id, nodeData);
     } else {
-      this.nodes.push(node);
-    }
-    const updateObj = {
-      "system.nodes": this.nodes,
-      "system.edges": this.edges,
-    };
-    await this.saveData(updateObj);
-  }
-
-  /**
-   * Fügt eine neue Kante hinzu oder aktualisiert eine bestehende und speichert die Änderung.
-   */
-  async addEdge(edge: EdgeData): Promise<void> {
-    const defaultPermissions = { defaultLevel: 0, users: [] };
-    const newEdge: EdgeData = {
-      ...edge,
-      id: edge.id || foundry.utils.randomID(),
-      label: edge.label || {
-        value: `${edge.source} → ${edge.target}`,
-        permissions: defaultPermissions,
-      },
-      type: edge.type || "relation",
-      globalPermissions: edge.globalPermissions || defaultPermissions,
-    };
-
-    const existingEdgeIndex = this.edges.findIndex((e) => e.id === newEdge.id);
-    if (existingEdgeIndex >= 0) {
-      this.edges[existingEdgeIndex] = newEdge;
-    } else {
-      this.edges.push(newEdge);
-    }
-    const updateObj = {
-      "system.nodes": this.nodes,
-      "system.edges": this.edges,
-    };
-    await this.saveData(updateObj);
-  }
-
-  /**
-   * Aktualisiert einen bestehenden Node anhand der ID und speichert die Änderung.
-   */
-  async updateNode(nodeId: string, updates: Partial<NodeData>): Promise<void> {
-    const nodeIndex = this.nodes.findIndex((n) => n.id === nodeId);
-    if (nodeIndex >= 0) {
-      this.nodes[nodeIndex] = { ...this.nodes[nodeIndex], ...updates };
-      const updateObj = {
-        "system.nodes": this.nodes,
-        "system.edges": this.edges,
+      const newNode = {
+        data: {
+          id: nodeData.id,
+          label: nodeData.label || "",
+          type: nodeData.type || "",
+          x: nodeData.x,
+          y: nodeData.y,
+          permissions: nodeData.permissions || { defaultLevel: 0, users: [] },
+          descriptions: nodeData.descriptions,
+          playerRelationshipEffects: nodeData.playerRelationshipEffects,
+          image: nodeData.image,
+          zIndex: nodeData.zIndex,
+          ...nodeData.cytoScapeAttributes,
+        },
+        position: {
+          x: nodeData.x,
+          y: nodeData.y,
+        },
       };
-      await this.saveData(updateObj);
+      this.elements.nodes?.push(newNode);
+    }
+    await this.saveData();
+  }
+
+  /**
+   * Fügt eine neue Edge hinzu oder aktualisiert eine bestehende
+   */
+  async addEdge(edgeData: any): Promise<void> {
+    const defaultPermissions = { defaultLevel: 0, users: [] };
+    const newEdge = {
+      data: {
+        id: edgeData.id || foundry.utils.randomID(),
+        source: edgeData.source,
+        target: edgeData.target,
+        label: edgeData.label || `${edgeData.source} → ${edgeData.target}`,
+        type: edgeData.type || "relation",
+        permissions: edgeData.permissions || defaultPermissions,
+        connectionCategory: edgeData.connectionCategory,
+        zIndex: edgeData.zIndex,
+        ...edgeData.cytoScapeAttributes,
+      },
+    };
+
+    if (!this.elements.edges) {
+      this.elements.edges = [];
+    }
+
+    const existingEdgeIndex = this.elements.edges.findIndex((e: any) => e.data.id === newEdge.data.id);
+    if (existingEdgeIndex >= 0) {
+      this.elements.edges[existingEdgeIndex] = newEdge;
+    } else {
+      this.elements.edges.push(newEdge);
+    }
+    await this.saveData();
+  }
+
+  /**
+   * Aktualisiert einen bestehenden Node
+   */
+  async updateNode(nodeId: string, updates: any): Promise<void> {
+    const node = this.findNodeById(nodeId);
+    if (node) {
+      const updatedNode = {
+        ...node,
+        data: {
+          ...node.data,
+          ...updates,
+        },
+      };
+      const index = this.elements.nodes?.findIndex((n: any) => n.data.id === nodeId);
+      if (index !== undefined && index >= 0 && this.elements.nodes) {
+        this.elements.nodes[index] = updatedNode;
+      }
+      await this.saveData();
     }
   }
 
   /**
-   * Entfernt einen Node und alle zugehörigen Kanten und speichert die Änderung.
+   * Entfernt einen Node und alle verbundenen Edges
    */
   async removeNode(nodeId: string): Promise<void> {
-    this.nodes = this.nodes.filter((n) => n.id !== nodeId);
-    this.edges = this.edges.filter((e) => e.source !== nodeId && e.target !== nodeId);
-    const updateObj = {
-      "system.nodes": this.nodes,
-      "system.edges": this.edges,
-    };
-    await this.saveData(updateObj);
+    if (this.elements.nodes) {
+      this.elements.nodes = this.elements.nodes.filter((n: any) => n.data.id !== nodeId);
+    }
+    if (this.elements.edges) {
+      this.elements.edges = this.elements.edges.filter((e: any) => e.data.source !== nodeId && e.data.target !== nodeId);
+    }
+    await this.saveData();
   }
 
   /**
-   * Aktualisiert eine bestehende Kante anhand der ID und speichert die Änderung.
+   * Aktualisiert eine bestehende Edge
    */
-  async updateEdge(edgeId: string, updates: Partial<EdgeData>): Promise<void> {
-    const edgeIndex = this.edges.findIndex((e) => e.id === edgeId);
-    if (edgeIndex >= 0) {
-      this.edges[edgeIndex] = { ...this.edges[edgeIndex], ...updates };
-      const updateObj = {
-        "system.nodes": this.nodes,
-        "system.edges": this.edges,
+  async updateEdge(edgeId: string, updates: any): Promise<void> {
+    const edge = this.elements.edges?.find((e: any) => e.data.id === edgeId);
+    if (edge) {
+      const updatedEdge = {
+        ...edge,
+        data: {
+          ...edge.data,
+          ...updates,
+        },
       };
-      await this.saveData(updateObj);
+      const index = this.elements.edges?.findIndex((e: any) => e.data.id === edgeId);
+      if (index !== undefined && index >= 0 && this.elements.edges) {
+        this.elements.edges[index] = updatedEdge;
+      }
+      await this.saveData();
     }
   }
 
   /**
-   * Entfernt eine Kante anhand der ID und speichert die Änderung.
+   * Entfernt eine Edge
    */
   async removeEdge(edgeId: string): Promise<void> {
-    this.edges = this.edges.filter((e) => e.id !== edgeId);
-    const updateObj = {
-      "system.nodes": this.nodes,
-      "system.edges": this.edges,
-    };
-    await this.saveData(updateObj);
+    if (this.elements.edges) {
+      this.elements.edges = this.elements.edges.filter((e: any) => e.data.id !== edgeId);
+    }
+    await this.saveData();
   }
 
-  private loadData(): void {
-    this.persistence
-      .load(this.document)
-      .then((graph) => {
-        this.nodes = graph.nodes;
-        this.edges = graph.edges;
-      })
-      .catch((err) => console.error(err));
+  // Graph Operations
+  async moveNode(nodeId: string, x: number, y: number): Promise<void> {
+    const node = this.findNodeById(nodeId);
+    if (node) {
+      node.position.x = x;
+      node.position.y = y;
+      await this.saveData();
+    }
   }
 
   /**
-   * Speichert die übergebenen Änderungen im Dokument.
+   * Verbindet zwei Nodes mit einer Edge
    */
-  private async saveData(updateObj: object): Promise<void> {
-    await this.persistence.save(this.document, updateObj);
+  async connectNodes(
+    sourceId: string,
+    targetId: string,
+    edgeData?: any
+  ): Promise<void> {
+    const sourceNode = this.findNodeById(sourceId);
+    const targetNode = this.findNodeById(targetId);
+
+    if (!sourceNode || !targetNode) {
+      throw new Error("Source or target node not found");
+    }
+
+    const newEdge = {
+      data: {
+        id: foundry.utils.randomID(),
+        source: sourceId,
+        target: targetId,
+        label: "Relationship",
+        type: "default",
+        cytoScapeAttributes: {
+          "line-color": "#000000",
+          width: 1,
+          "line-style": "solid",
+          "curve-style": "bezier",
+          "target-arrow-color": "#000000",
+          "target-arrow-shape": "triangle",
+          color: "#000000",
+        },
+        permissions: { defaultLevel: 0, users: [] },
+        ...edgeData,
+      },
+    };
+
+    await this.addEdge(newEdge.data);
+  }
+
+  async disconnectNodes(sourceId: string, targetId: string): Promise<void> {
+    this.elements.edges = this.elements.edges?.filter((e: any) => !(e.data.source === sourceId && e.data.target === targetId));
+    await this.saveData();
+  }
+
+  // Search and Filter Operations
+  searchNodes(query: string): any[] {
+    const lowerQuery = query.toLowerCase();
+    return this.elements.nodes?.filter(
+      (node: any) =>
+        node.data.label?.toLowerCase().includes(lowerQuery) ||
+        node.data.type?.toLowerCase().includes(lowerQuery)
+    ) || [];
+  }
+
+  searchEdges(query: string): any[] {
+    const lowerQuery = query.toLowerCase();
+    return this.elements.edges?.filter(
+      (edge: any) =>
+        edge.data.label?.toLowerCase().includes(lowerQuery) ||
+        edge.data.type?.toLowerCase().includes(lowerQuery)
+    ) || [];
+  }
+
+  // Graph Analysis
+  getConnectedNodes(nodeId: string): any[] {
+    const connectedNodeIds = new Set<string>();
+
+    this.elements.edges?.forEach((edge: any) => {
+      if (edge.data.source === nodeId) {
+        connectedNodeIds.add(edge.data.target);
+      } else if (edge.data.target === nodeId) {
+        connectedNodeIds.add(edge.data.source);
+      }
+    });
+
+    return this.elements.nodes?.filter((node: any) => connectedNodeIds.has(node.data.id)) || [];
+  }
+
+  getNodeDegree(nodeId: string): number {
+    return this.elements.edges?.filter((edge: any) => edge.data.source === nodeId || edge.data.target === nodeId).length || 0;
+  }
+
+  getGraphStats(): any {
+    const nodeCount = this.elements.nodes?.length || 0;
+    const edgeCount = this.elements.edges?.length || 0;
+    const averageConnections = nodeCount > 0 ? edgeCount / nodeCount : 0;
+    const isolatedNodes = this.elements.nodes?.filter(
+      (n: any) => !this.elements.edges?.some((e: any) => e.data.source === n.data.id || e.data.target === n.data.id)
+    ).length || 0;
+
+    const nodeDegrees = this.elements.nodes?.map((node: any) => this.getNodeDegree(node.data.id)) || [];
+    const maxDegree = nodeDegrees.length > 0 ? Math.max(...nodeDegrees) : 0;
+    const minDegree = nodeDegrees.length > 0 ? Math.min(...nodeDegrees) : 0;
+
+    return {
+      nodeCount,
+      edgeCount,
+      averageConnections,
+      isolatedNodes,
+      maxDegree,
+      minDegree,
+      density: nodeCount > 1 ? (2 * edgeCount) / (nodeCount * (nodeCount - 1)) : 0,
+    };
+  }
+
+  // Demo Data Management
+  async loadDemoData(demoData: { nodes: any[]; edges: any[] }): Promise<void> {
+    if (!this.persistence || !this.document) {
+      console.warn(
+        "RelationshipGraphService: Cannot load demo data - persistence or document not available"
+      );
+      return;
+    }
+
+    try {
+      // Konvertiere Demo-Daten zu Cytoscape-Format
+      this.elements.nodes = demoData.nodes.map((node) => ({
+        data: {
+          id: node.id,
+          label: node.label?.value || "",
+          type: node.type?.value || "",
+          x: node.x,
+          y: node.y,
+          permissions: node.globalPermissions,
+          descriptions: node.descriptions,
+          playerRelationshipEffects: node.playerRelationshipEffects,
+          image: node.image,
+          zIndex: node.zIndex,
+          ...node.cytoScapeAttributes,
+        },
+        position: {
+          x: node.x,
+          y: node.y,
+        },
+      }));
+      this.elements.edges = demoData.edges.map((edge) => ({
+        data: {
+          id: edge.id,
+          source: edge.source,
+          target: edge.target,
+          label: edge.label?.value || "",
+          type: edge.type,
+          permissions: edge.globalPermissions,
+          connectionCategory: edge.connectionCategory,
+          zIndex: edge.zIndex,
+          ...edge.cytoScapeAttributes,
+        },
+      }));
+
+      // Save demo data to document
+      await this.saveData();
+
+      console.log("Demo data loaded successfully:", {
+        nodes: this.elements.nodes?.length || 0,
+        edges: this.elements.edges?.length || 0,
+      });
+    } catch (error) {
+      console.error("RelationshipGraphService: Error loading demo data:", error);
+      throw error;
+    }
+  }
+
+  async loadData(): Promise<void> {
+    if (!this.persistence || !this.document) {
+      console.warn(
+        "RelationshipGraphService: Cannot load data - persistence or document not available"
+      );
+      return;
+    }
+
+    try {
+      const graph = await this.persistence.load(this.document);
+      this.elements = graph.elements || { nodes: [], edges: [] };
+    } catch (err) {
+      console.error("RelationshipGraphService: Error loading data:", err);
+      this.elements = { nodes: [], edges: [] };
+    }
+  }
+
+  async saveData(): Promise<void> {
+    if (!this.persistence || !this.document) {
+      console.warn(
+        "RelationshipGraphService: Cannot save data - persistence or document not available"
+      );
+      return;
+    }
+
+    try {
+      await this.persistence.save(this.document, {
+        elements: this.elements,
+      });
+    } catch (error) {
+      console.error("RelationshipGraphService: Error saving data:", error);
+      throw error;
+    }
+  }
+
+  // Cleanup
+  cleanup(): void {
+    this.elements.nodes = [];
+    this.elements.edges = [];
   }
 }

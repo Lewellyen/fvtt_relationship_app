@@ -1,4 +1,6 @@
+import MetadataManagementApplication from "@/applications/MetadataManagementApplication";
 import { RegistrationService, type IRegistrationService } from "../services/RegistrationService";
+
 
 // Minimale Initialisierung
 console.log("📦 Relationship App: Core init loaded");
@@ -24,6 +26,21 @@ Hooks.once("ready", () => {
     console.log("✅ Relationship App: Model registered successfully");
   } catch (error) {
     console.error("🚨 Relationship App: Error registering model:", error);
+  }
+
+  try {
+    registrationService.registerServices();
+    console.log("✅ Relationship App: Services registered successfully");
+  } catch (error) {
+    console.error("🚨 Relationship App: Error registering services:", error);
+  }
+
+  try {
+    const metadataManagementApplication = new MetadataManagementApplication();
+    metadataManagementApplication.render({force: true});
+    console.log("✅ Relationship App: Metadata registered successfully");
+  } catch (error) {
+    console.error("🚨 Relationship App: Error registering metadata:", error);
   }
 
   console.log("✅ Relationship App: Ready!");
