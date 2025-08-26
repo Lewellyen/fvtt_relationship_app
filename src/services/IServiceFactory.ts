@@ -20,12 +20,7 @@ export type ServiceConstructor<T = any> = new (...args: any[]) => T;
 export const SERVICE_IDENTIFIERS = {
   RELATIONSHIP_GRAPH: "RelationshipGraphService",
   RELATIONSHIP_GRAPH_PERSISTENCE: "RelationshipGraphPersistenceService",
-  RELATIONSHIP_GRAPH_VALIDATION: "RelationshipGraphValidationService",
-  RELATIONSHIP_GRAPH_CYTOSCAPE: "RelationshipGraphCytoscapeService",
   RELATIONSHIP_GRAPH_DEMO_DATA: "RelationshipGraphDemoDataService",
-  RELATIONSHIP_GRAPH_HISTORY: "RelationshipGraphHistoryService",
-  RELATIONSHIP_GRAPH_EXPORT: "RelationshipGraphExportService",
-  RELATIONSHIP_GRAPH_PERFORMANCE: "RelationshipGraphPerformanceService",
 } as const;
 
 export type ServiceIdentifier = (typeof SERVICE_IDENTIFIERS)[keyof typeof SERVICE_IDENTIFIERS];

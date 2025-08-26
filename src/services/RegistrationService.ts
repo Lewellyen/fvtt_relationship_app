@@ -2,11 +2,13 @@ import JournalEntryPageRelationshipGraphSheet from "../applications/JournalEntry
 import { RelationshipGraphModel } from "../models/RelationsShipGraphModel";
 import { ServiceManager } from "./ServiceManager";
 import { SERVICE_IDENTIFIERS } from "./IServiceFactory";
+import { MODULE_ID, MODULE_METADATA_KEY } from "../constants";
 
 export interface IRegistrationService {
   registerSheet(): void;
   registerModel(): void;
   registerServices(): void;
+  registerMetadata(): void;
 }
 
 export class RegistrationService implements IRegistrationService {
@@ -31,6 +33,17 @@ export class RegistrationService implements IRegistrationService {
       RelationshipGraphModel;
   }
 
+  registerMetadata(): void {
+    console.log("🚀 Relationship App: Registering metadata...");
+    game?.settings?.register(MODULE_ID as any, MODULE_METADATA_KEY as any, {
+      name: "Relationship App Metadata",
+      hint: "Metadata for the Relationship App",
+      scope: "world",
+      config: false,
+      type: Object,
+    });
+  }
+
   registerServices(): void {
     console.log("🚀 Relationship App: Registering services in global API...");
 
@@ -47,12 +60,6 @@ export class RegistrationService implements IRegistrationService {
     // Register individual services
     moduleApi.persistenceService = serviceManager.getService(
       SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_PERSISTENCE
-    );
-    moduleApi.validationService = serviceManager.getService(
-      SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_VALIDATION
-    );
-    moduleApi.cytoscapeService = serviceManager.getService(
-      SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_CYTOSCAPE
     );
     moduleApi.demoDataService = serviceManager.getService(
       SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_DEMO_DATA

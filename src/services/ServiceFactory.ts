@@ -5,7 +5,6 @@ import { SERVICE_IDENTIFIERS } from "./IServiceFactory";
 export { SERVICE_IDENTIFIERS };
 import { RelationshipGraphService } from "./RelationshipGraphService";
 import { RelationshipGraphPersistenceService } from "./RelationshipGraphPersistenceService";
-import { RelationshipGraphCytoscapeService } from "./RelationshipGraphCytoscapeService";
 import { RelationshipGraphDemoDataService } from "./RelationshipGraphDemoDataService";
 
 export class ServiceFactory implements IServiceFactory {
@@ -51,10 +50,6 @@ export class ServiceFactory implements IServiceFactory {
     this.registerService(
       SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_PERSISTENCE,
       RelationshipGraphPersistenceService
-    );
-    this.registerService(
-      SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_CYTOSCAPE,
-      RelationshipGraphCytoscapeService
     );
     this.registerService(
       SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_DEMO_DATA,

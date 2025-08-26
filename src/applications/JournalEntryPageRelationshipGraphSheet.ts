@@ -1,4 +1,5 @@
 import RelationshipGraphView from "../svelte/RelationshipGraphView.svelte";
+import RelationshipGraphEdit from "../svelte/RelationshipGraphEdit.svelte";
 import { RelationshipGraphDemoDataService } from "../services/RelationshipGraphDemoDataService";
 import { RelationshipGraphService } from "../services/RelationshipGraphService";
 import { RelationshipGraphPersistenceService } from "../services/RelationshipGraphPersistenceService";
@@ -19,7 +20,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     const { header, footer, ...rest } = parts;
     return {
       header,
-      graph: {
+      content: {
         template:
           "modules/relationship-app/templates/journal-entry-relationship-graph-edit-part.hbs",
       },
@@ -34,7 +35,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
       .VIEW_PARTS as Record<string, { template: string }>;
     return {
       ...parts,
-      graph: {
+      content: {
         template:
           "modules/relationship-app/templates/journal-entry-relationship-graph-view-part.hbs",
       },
@@ -64,7 +65,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
   /** @override */
   async _renderHTML(context: any, options: any) {
     // Delegate template rendering to HandlebarsApplicationMixin
-    return super._renderHTML(context, options);
+    return await super._renderHTML(context, options);
   }
 
   /** @override */
@@ -73,9 +74,17 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     return super._replaceHTML(html, options, context);
   }
 
-  _prepareContext(context: any) {
-    super._prepareContext(context);
-    console.log("[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:", context);
+  async _preparePartContext(partContext: any, part: any, options: any) {
+    const context = await super._preparePartContext(partContext, part, options);
+    return context;
+  }
+
+  async _prepareContext(options: any) {
+    const context = await super._prepareContext(options);
+    console.log(
+      "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:",
+      context
+    );
     return context;
   }
 
@@ -106,11 +115,20 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     console.log("[JournalEntryPageRelationshipGraphSheet] Journal Entry UUID:", graphJournalUuid);
     console.log("[JournalEntryPageRelationshipGraphSheet] System:", system);
 
+    const relationshipGraphPersistenceService = new RelationshipGraphPersistenceService();
+    const relationshipGraphService = new RelationshipGraphService(
+      journalEntryPage as any,
+      relationshipGraphPersistenceService
+    );
 
-    const relationshipGraphPersistenceService = new RelationshipGraphPersistenceService;
-    const relationshipGraphService = new RelationshipGraphService(journalEntryPage as any, relationshipGraphPersistenceService);
-
-    if (!system || !(system as any).elements || (system as any).elements.nodes.length === 0 || (system as any).elements.edges.length === 0) {
+    if (
+      !system ||
+      !(system as any).elements ||
+      !(system as any).elements.nodes ||
+      !(system as any).elements.edges ||
+      (system as any).elements.nodes.length === 0 ||
+      (system as any).elements.edges.length === 0
+    ) {
       const demoDataService = new RelationshipGraphDemoDataService();
       await demoDataService.createDemoData(relationshipGraphService);
       system = (await foundry.utils.fromUuid(graphJournalUuid))?.system;
@@ -121,7 +139,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     console.log("[JournalEntryPageRelationshipGraphSheet] Elements:", elements);
 
     // Mount the new RelationshipGraphView component
-    this.svelteApp = mount(RelationshipGraphView, {
+    this.svelteApp = mount((this as any).isView ? RelationshipGraphView : RelationshipGraphEdit, {
       target,
       props: {
         elements: elements,

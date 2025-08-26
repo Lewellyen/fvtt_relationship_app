@@ -4,6 +4,7 @@ import type { IRelationshipGraphPersistenceService } from "./IRelationshipGraphP
 
 export class RelationshipGraphService implements IRelationshipGraphService {
   private elements: any = { nodes: [], edges: [] };
+  private style: any[] = [];
 
   constructor(
     private document: any,
@@ -57,9 +58,12 @@ export class RelationshipGraphService implements IRelationshipGraphService {
 
   getGraphData(): RelationshipGraphData {
     return {
-      name: this.document?.name || "Neuer Beziehungsgraph",
-      permissions: { defaultLevel: 0, users: [] },
+      description: this.document?.description || "Neuer Beziehungsgraph",
+      version: "1.0.0",
+      created: this.document?.created || Date.now(),
+      modified: this.document?.modified || Date.now(),
       elements: this.elements,
+      style: this.style,
     };
   }
 
@@ -150,7 +154,9 @@ export class RelationshipGraphService implements IRelationshipGraphService {
       this.elements.edges = [];
     }
 
-    const existingEdgeIndex = this.elements.edges.findIndex((e: any) => e.data.id === newEdge.data.id);
+    const existingEdgeIndex = this.elements.edges.findIndex(
+      (e: any) => e.data.id === newEdge.data.id
+    );
     if (existingEdgeIndex >= 0) {
       this.elements.edges[existingEdgeIndex] = newEdge;
     } else {
@@ -188,7 +194,9 @@ export class RelationshipGraphService implements IRelationshipGraphService {
       this.elements.nodes = this.elements.nodes.filter((n: any) => n.data.id !== nodeId);
     }
     if (this.elements.edges) {
-      this.elements.edges = this.elements.edges.filter((e: any) => e.data.source !== nodeId && e.data.target !== nodeId);
+      this.elements.edges = this.elements.edges.filter(
+        (e: any) => e.data.source !== nodeId && e.data.target !== nodeId
+      );
     }
     await this.saveData();
   }
@@ -237,11 +245,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
   /**
    * Verbindet zwei Nodes mit einer Edge
    */
-  async connectNodes(
-    sourceId: string,
-    targetId: string,
-    edgeData?: any
-  ): Promise<void> {
+  async connectNodes(sourceId: string, targetId: string, edgeData?: any): Promise<void> {
     const sourceNode = this.findNodeById(sourceId);
     const targetNode = this.findNodeById(targetId);
 
@@ -274,27 +278,33 @@ export class RelationshipGraphService implements IRelationshipGraphService {
   }
 
   async disconnectNodes(sourceId: string, targetId: string): Promise<void> {
-    this.elements.edges = this.elements.edges?.filter((e: any) => !(e.data.source === sourceId && e.data.target === targetId));
+    this.elements.edges = this.elements.edges?.filter(
+      (e: any) => !(e.data.source === sourceId && e.data.target === targetId)
+    );
     await this.saveData();
   }
 
   // Search and Filter Operations
   searchNodes(query: string): any[] {
     const lowerQuery = query.toLowerCase();
-    return this.elements.nodes?.filter(
-      (node: any) =>
-        node.data.label?.toLowerCase().includes(lowerQuery) ||
-        node.data.type?.toLowerCase().includes(lowerQuery)
-    ) || [];
+    return (
+      this.elements.nodes?.filter(
+        (node: any) =>
+          node.data.label?.toLowerCase().includes(lowerQuery) ||
+          node.data.type?.toLowerCase().includes(lowerQuery)
+      ) || []
+    );
   }
 
   searchEdges(query: string): any[] {
     const lowerQuery = query.toLowerCase();
-    return this.elements.edges?.filter(
-      (edge: any) =>
-        edge.data.label?.toLowerCase().includes(lowerQuery) ||
-        edge.data.type?.toLowerCase().includes(lowerQuery)
-    ) || [];
+    return (
+      this.elements.edges?.filter(
+        (edge: any) =>
+          edge.data.label?.toLowerCase().includes(lowerQuery) ||
+          edge.data.type?.toLowerCase().includes(lowerQuery)
+      ) || []
+    );
   }
 
   // Graph Analysis
@@ -313,18 +323,27 @@ export class RelationshipGraphService implements IRelationshipGraphService {
   }
 
   getNodeDegree(nodeId: string): number {
-    return this.elements.edges?.filter((edge: any) => edge.data.source === nodeId || edge.data.target === nodeId).length || 0;
+    return (
+      this.elements.edges?.filter(
+        (edge: any) => edge.data.source === nodeId || edge.data.target === nodeId
+      ).length || 0
+    );
   }
 
   getGraphStats(): any {
     const nodeCount = this.elements.nodes?.length || 0;
     const edgeCount = this.elements.edges?.length || 0;
     const averageConnections = nodeCount > 0 ? edgeCount / nodeCount : 0;
-    const isolatedNodes = this.elements.nodes?.filter(
-      (n: any) => !this.elements.edges?.some((e: any) => e.data.source === n.data.id || e.data.target === n.data.id)
-    ).length || 0;
+    const isolatedNodes =
+      this.elements.nodes?.filter(
+        (n: any) =>
+          !this.elements.edges?.some(
+            (e: any) => e.data.source === n.data.id || e.data.target === n.data.id
+          )
+      ).length || 0;
 
-    const nodeDegrees = this.elements.nodes?.map((node: any) => this.getNodeDegree(node.data.id)) || [];
+    const nodeDegrees =
+      this.elements.nodes?.map((node: any) => this.getNodeDegree(node.data.id)) || [];
     const maxDegree = nodeDegrees.length > 0 ? Math.max(...nodeDegrees) : 0;
     const minDegree = nodeDegrees.length > 0 ? Math.min(...nodeDegrees) : 0;
 
@@ -407,9 +426,11 @@ export class RelationshipGraphService implements IRelationshipGraphService {
     try {
       const graph = await this.persistence.load(this.document);
       this.elements = graph.elements || { nodes: [], edges: [] };
+      this.style = graph.style || [];
     } catch (err) {
       console.error("RelationshipGraphService: Error loading data:", err);
       this.elements = { nodes: [], edges: [] };
+      this.style = [];
     }
   }
 
@@ -424,6 +445,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
     try {
       await this.persistence.save(this.document, {
         elements: this.elements,
+        style: this.style || [],
       });
     } catch (error) {
       console.error("RelationshipGraphService: Error saving data:", error);
@@ -435,5 +457,6 @@ export class RelationshipGraphService implements IRelationshipGraphService {
   cleanup(): void {
     this.elements.nodes = [];
     this.elements.edges = [];
+    this.style = [];
   }
 }

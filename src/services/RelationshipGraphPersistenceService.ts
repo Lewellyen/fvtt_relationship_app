@@ -6,30 +6,40 @@ export class RelationshipGraphPersistenceService implements IRelationshipGraphPe
     const documentUuid = (document as any).uuid;
     const freshDocument = await (foundry.utils as any).fromUuid(documentUuid);
     const system = freshDocument?.system ?? document.system;
-    
-    // Lade nur aus system.elements
+
+    // Lade elements und style aus dem system
     const elements = system.elements || { nodes: [], edges: [] };
-    
+    const style = system.style || [];
+
     return {
-      name: "Relationship Graph",
-      permissions: { defaultLevel: 0, users: [] },
-      // Keine Transformation - verwende elements direkt
+      description: system.description,
+      version: system.version,
+      created: system.created,
+      modified: system.modified,
       elements: elements,
+      style: style,
     };
   }
 
   async save(document: IDocument, data: Partial<RelationshipGraphData> | object): Promise<void> {
     const documentUuid = (document as any).uuid;
     const freshDocument = await (foundry.utils as any).fromUuid(documentUuid);
-    
+
+    // Type guard to check if data has elements property
+    const hasElements = (obj: any): obj is { elements?: { nodes: any[]; edges: any[] } } => {
+      return obj && typeof obj === "object" && "elements" in obj;
+    };
+
+    const elements = hasElements(data) ? data.elements : { nodes: [], edges: [] };
+
     if (freshDocument) {
       // Speichere elements direkt
       await freshDocument.update({
-        "system.elements": data.elements || { nodes: [], edges: [] },
+        "system.elements": elements,
       });
     } else {
       await document.update({
-        "system.elements": data.elements || { nodes: [], edges: [] },
+        "system.elements": elements,
       });
     }
   }
@@ -63,7 +73,14 @@ export class RelationshipGraphPersistenceService implements IRelationshipGraphPe
   // Backup and Restore
   async createBackup(): Promise<RelationshipGraphData> {
     // Create a backup of current data
-    return { nodes: [], edges: [], name: "Backup", permissions: { defaultLevel: 0, users: [] } };
+    return {
+      description: "Backup",
+      version: "1.0.0",
+      created: Date.now(),
+      modified: Date.now(),
+      elements: { nodes: [], edges: [] },
+      style: [],
+    };
   }
 
   async restoreFromBackup(backup: RelationshipGraphData): Promise<void> {
@@ -77,7 +94,20 @@ export class RelationshipGraphPersistenceService implements IRelationshipGraphPe
       return false;
     }
 
-    // Check for required structure
+    // Check for required structure - support both old and new format
+    if (
+      data.elements &&
+      data.elements.nodes &&
+      Array.isArray(data.elements.nodes) &&
+      data.elements.edges &&
+      Array.isArray(data.elements.edges) &&
+      data.style &&
+      Array.isArray(data.style)
+    ) {
+      return true;
+    }
+
+    // Legacy support for old format
     if (data.nodes && Array.isArray(data.nodes) && data.edges && Array.isArray(data.edges)) {
       return true;
     }
@@ -87,11 +117,37 @@ export class RelationshipGraphPersistenceService implements IRelationshipGraphPe
 
   sanitizeData(data: any): RelationshipGraphData {
     // Sanitize and clean the data
+    let nodes: any[] = [];
+    let edges: any[] = [];
+    let style: any[] = [];
+
+    // Support both old and new format
+    if (data.elements && data.elements.nodes && Array.isArray(data.elements.nodes)) {
+      nodes = data.elements.nodes;
+    } else if (Array.isArray(data.nodes)) {
+      nodes = data.nodes;
+    }
+
+    if (data.elements && data.elements.edges && Array.isArray(data.elements.edges)) {
+      edges = data.elements.edges;
+    } else if (Array.isArray(data.edges)) {
+      edges = data.edges;
+    }
+
+    if (data.style && Array.isArray(data.style)) {
+      style = data.style;
+    }
+
     const sanitized: RelationshipGraphData = {
-      nodes: Array.isArray(data.nodes) ? data.nodes : [],
-      edges: Array.isArray(data.edges) ? data.edges : [],
-      name: data.name || "Sanitized Graph",
-      permissions: data.permissions || { defaultLevel: 0, users: [] },
+      description: data.description || "Sanitized Graph",
+      version: data.version || "1.0.0",
+      created: data.created || Date.now(),
+      modified: data.modified || Date.now(),
+      elements: {
+        nodes: nodes,
+        edges: edges,
+      },
+      style: style,
     };
 
     // Additional sanitization logic here

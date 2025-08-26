@@ -290,24 +290,19 @@ export interface EdgeData {
 
 export interface RelationshipGraphData {
   // GRAPH METADATA
-  name: string;
   description?: string;
-  permissions: Permission;
   version?: string;
   created?: number;
   modified?: number;
-
-  // GRAPH SETTINGS
-  zoom?: number;
-  panX?: number;
-  panY?: number;
-  layoutType?: string;
 
   // GRAPH ELEMENTS - Direkt im Cytoscape-Format
   elements: {
     nodes: any[];
     edges: any[];
   };
+
+  // CYTOGRAPHE STYLE als JSON
+  style: any[];
 }
 
 // ========================================

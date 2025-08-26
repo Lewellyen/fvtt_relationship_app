@@ -6,12 +6,12 @@ export interface IRelationshipGraphService {
   getNodes(): any[];
   getEdges(): any[];
   getGraphData(): RelationshipGraphData;
-  
+
   // Cytoscape-kompatible Suchmethoden
   findNodeById(id: string): any;
   findEdgesBySource(sourceId: string): any[];
   findEdgesByTarget(targetId: string): any[];
-  
+
   // Standard Access Methods
   getNode(nodeId: string): any;
   getEdge(edgeId: string): any;

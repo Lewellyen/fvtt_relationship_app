@@ -1,16 +1,15 @@
 import type { IRelationshipGraphService } from "./IRelationshipGraphService";
-import type { NodeData, EdgeData } from "../global";
 
 export interface IRelationshipGraphDemoDataService {
   // Demo Data Creation
   createDemoData(service: IRelationshipGraphService): Promise<void>;
-  getDemoData(): { nodes: NodeData[]; edges: EdgeData[] };
+  getDemoData(): { nodes: any[]; edges: any[] };
 
   // Demo Data Templates
-  createSimpleDemo(): { nodes: NodeData[]; edges: EdgeData[] };
-  createComplexDemo(): { nodes: NodeData[]; edges: EdgeData[] };
-  createCharacterDemo(): { nodes: NodeData[]; edges: EdgeData[] };
-  createWorldDemo(): { nodes: NodeData[]; edges: EdgeData[] };
+  createSimpleDemo(): { nodes: any[]; edges: any[] };
+  createComplexDemo(): { nodes: any[]; edges: any[] };
+  createCharacterDemo(): { nodes: any[]; edges: any[] };
+  createWorldDemo(): { nodes: any[]; edges: any[] };
 
   // Demo Data Management
   clearDemoData(service: IRelationshipGraphService): Promise<void>;

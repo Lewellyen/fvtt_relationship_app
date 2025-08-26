@@ -1,15 +1,16 @@
 import { mount, unmount } from "svelte";
 import MetadataManagementView from "../svelte/MetadataManagementView.svelte";
 
-
-export default class MetadataManagementApplication extends foundry.applications.api.HandlebarsApplicationMixin(foundry.applications.api.ApplicationV2) {
+export default class MetadataManagementApplication extends foundry.applications.api.HandlebarsApplicationMixin(
+  foundry.applications.api.ApplicationV2
+) {
   /**
    * Merge the default parts, inserting our graph part between header and footer.
    */
   static PARTS = {
     main: {
       template: "modules/relationship-app/templates/metadata-management-main.hbs",
-    }
+    },
   };
 
   svelteApp: any = null;
@@ -23,8 +24,7 @@ export default class MetadataManagementApplication extends foundry.applications.
     // Window sizing and behavior
     position: { width: 800, height: 600 },
     window: { title: "Metadata Management", resizable: true },
-    tag: "form",
-    form: {submitOnChange: false, closeOnSubmit: false},
+    tag: "div",
   };
 
   /** @override */
@@ -73,13 +73,10 @@ export default class MetadataManagementApplication extends foundry.applications.
     // Mount the new MetadataManagementView component
     this.svelteApp = mount(MetadataManagementView, {
       target,
-      props: {
-      },
+      props: {},
     });
 
-    console.log(
-      "[MetadataManagementApplication] MetadataManagementView mounted successfully"
-    );
+    console.log("[MetadataManagementApplication] MetadataManagementView mounted successfully");
   }
 
   /** @override */
