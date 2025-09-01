@@ -1,0 +1,7 @@
+/* Dynamic Dialog App Styles */
+.metadata-management-main {
+  height: 100%;
+  overflow-y: auto;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}

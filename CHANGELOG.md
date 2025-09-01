@@ -286,6 +286,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 - Keine besonderen Maßnahmen erforderlich
 
+## [0.12.0] - 2025-09-01
+### Hinzugefügt
+- DynamicDialog-Klasse
+
+### Geändert
+- Keine Einträge
+
+### Fehlerbehebungen
+- Keine Einträge
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.11.0] - 2025-08-26
 ### Hinzugefügt
 - Metadateneditor

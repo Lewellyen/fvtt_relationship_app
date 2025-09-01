@@ -43,6 +43,10 @@
   "RELATIONSHIP_APP.CLEAR_GRAPH_CONFIRM_CONTENT": "Sind Sie sicher, dass Sie alle Knoten und Kanten löschen möchten?",
   "RELATIONSHIP_APP.GRAPH_CLEARED": "Graph wurde geleert",
   "RELATIONSHIP_APP.GRAPH_EXPORTED": "Graph wurde exportiert",
+  "RELATIONSHIP_APP.RELATIONSHIP_GRAPH": "Beziehungsgraph",
+  "RELATIONSHIP_APP.RELATIONSHIP_GRAPH_TYPE": "Beziehungsgraph",
+  "TYPES.JournalEntryPage.relationship-graph": "Beziehungsgraph",
+  "TYPES.JournalEntryPage.relationship-app.relationship-graph": "Beziehungsgraph",
   "JOURNAL.EditPage": "Seite bearbeiten",
   "JOURNAL.ViewPage": "Seite anzeigen"
 }

@@ -20,9 +20,15 @@ export class RegistrationService implements IRegistrationService {
       "relationship-app",
       JournalEntryPageRelationshipGraphSheet,
       {
-        label: "Relationship App.RelationshipGraph",
-        makeDefault: true,
         types: ["relationship-app.relationship-graph"],
+        makeDefault: true,
+        label: () => {
+          return (
+            game?.i18n?.format("TYPES.JournalEntryPage.relationship-graph", {
+              page: game?.i18n?.localize("TYPES.JournalEntryPage.relationship-graph"),
+            }) || "Relationship Graph"
+          );
+        },
       }
     );
   }

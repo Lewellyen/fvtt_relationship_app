@@ -5,7 +5,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   "use strict";
   var _a;
   var __vite_style__ = document.createElement("style");
-  __vite_style__.textContent = '\n  .metadata-management-view.svelte-gw41vd {\n    padding: 1rem;\n    max-width: 1200px;\n    margin: 0 auto;\n  }\n\n  h1.svelte-gw41vd {\n    color: #2c3e50;\n    margin-bottom: 2rem;\n    text-align: center;\n  }\n\n  .section.svelte-gw41vd {\n    margin-bottom: 2rem;\n    background: #f8f9fa;\n    border-radius: 8px;\n    padding: 1.5rem;\n  }\n\n  .section-header.svelte-gw41vd {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 1rem;\n  }\n\n  .section-header.svelte-gw41vd h2:where(.svelte-gw41vd) {\n    margin: 0;\n    color: #34495e;\n  }\n\n  .schema-list.svelte-gw41vd {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .schema-item.svelte-gw41vd {\n    background: white;\n    border: 1px solid #dee2e6;\n    border-radius: 6px;\n    overflow: hidden;\n  }\n\n  .schema-item.selected.svelte-gw41vd {\n    border-color: #007bff;\n    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);\n  }\n\n  .schema-header.svelte-gw41vd {\n    padding: 1rem;\n    background: #f8f9fa;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    gap: 1rem;\n  }\n\n  .schema-header.svelte-gw41vd:hover {\n    background: #e9ecef;\n  }\n\n  .schema-header.svelte-gw41vd h3:where(.svelte-gw41vd) {\n    margin: 0;\n    color: #2c3e50;\n  }\n\n  .schema-name.svelte-gw41vd {\n    color: #6c757d;\n    font-family: monospace;\n    font-size: 0.9em;\n  }\n\n  .schema-version.svelte-gw41vd {\n    background: #17a2b8;\n    color: white;\n    padding: 0.2rem 0.5rem;\n    border-radius: 4px;\n    font-size: 0.8em;\n  }\n\n  .schema-details.svelte-gw41vd {\n    padding: 1rem;\n    border-top: 1px solid #dee2e6;\n  }\n\n  .schema-details.svelte-gw41vd p:where(.svelte-gw41vd) {\n    margin: 0.5rem 0;\n    color: #495057;\n  }\n\n  .schema-actions.svelte-gw41vd {\n    display: flex;\n    gap: 0.5rem;\n    margin: 1rem 0;\n  }\n\n  .metadata-rows-section.svelte-gw41vd {\n    margin-top: 1.5rem;\n    padding-top: 1.5rem;\n    border-top: 1px solid #dee2e6;\n  }\n\n  .metadata-rows-section.svelte-gw41vd h4:where(.svelte-gw41vd) {\n    margin: 0 0 1rem 0;\n    color: #34495e;\n  }\n\n  .metadata-rows-list.svelte-gw41vd {\n    display: flex;\n    flex-direction: column;\n    gap: 0.5rem;\n  }\n\n  .metadata-row-item.svelte-gw41vd {\n    background: #f8f9fa;\n    border: 1px solid #dee2e6;\n    border-radius: 4px;\n    padding: 0.75rem;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n  }\n\n  .row-header.svelte-gw41vd {\n    display: flex;\n    align-items: center;\n    gap: 1rem;\n  }\n\n  .row-label.svelte-gw41vd {\n    font-weight: 500;\n    color: #2c3e50;\n  }\n\n  .row-name.svelte-gw41vd {\n    color: #6c757d;\n    font-family: monospace;\n    font-size: 0.9em;\n  }\n\n  .row-type.svelte-gw41vd {\n    background: #6f42c1;\n    color: white;\n    padding: 0.2rem 0.5rem;\n    border-radius: 4px;\n    font-size: 0.8em;\n  }\n\n  .required-badge.svelte-gw41vd {\n    background: #dc3545;\n    color: white;\n    padding: 0.2rem 0.5rem;\n    border-radius: 4px;\n    font-size: 0.8em;\n  }\n\n  .row-actions.svelte-gw41vd {\n    display: flex;\n    gap: 0.5rem;\n  }\n\n  .btn.svelte-gw41vd {\n    padding: 0.5rem 1rem;\n    border: none;\n    border-radius: 4px;\n    cursor: pointer;\n    font-size: 0.9rem;\n    transition: all 0.2s;\n  }\n\n  .btn.svelte-gw41vd:hover {\n    transform: translateY(-1px);\n    box-shadow: 0 2px 4px rgba(0,0,0,0.1);\n  }\n\n  .btn-primary.svelte-gw41vd {\n    background: #007bff;\n    color: white;\n  }\n\n  .btn-primary.svelte-gw41vd:hover {\n    background: #0056b3;\n  }\n\n  .btn-secondary.svelte-gw41vd {\n    background: #6c757d;\n    color: white;\n  }\n\n  .btn-secondary.svelte-gw41vd:hover {\n    background: #545b62;\n  }\n\n  .btn-danger.svelte-gw41vd {\n    background: #dc3545;\n    color: white;\n  }\n\n  .btn-danger.svelte-gw41vd:hover {\n    background: #c82333;\n  }\n\n  .btn-small.svelte-gw41vd {\n    padding: 0.25rem 0.5rem;\n    font-size: 0.8rem;\n  }\n\n  .modal-overlay.svelte-gw41vd {\n    position: fixed;\n    top: 0;\n    left: 0;\n    right: 0;\n    bottom: 0;\n    background: rgba(0, 0, 0, 0.5);\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    z-index: 1000;\n  }\n\n  .modal.svelte-gw41vd {\n    background: white;\n    border-radius: 8px;\n    padding: 2rem;\n    max-width: 600px;\n    width: 90%;\n    max-height: 90vh;\n    overflow-y: auto;\n  }\n\n  .modal.svelte-gw41vd h3:where(.svelte-gw41vd) {\n    margin: 0 0 1.5rem 0;\n    color: #2c3e50;\n  }\n\n  .form-group.svelte-gw41vd {\n    margin-bottom: 1rem;\n  }\n\n  .form-row.svelte-gw41vd {\n    display: grid;\n    grid-template-columns: 1fr 1fr;\n    gap: 1rem;\n  }\n\n  .form-group.svelte-gw41vd label:where(.svelte-gw41vd) {\n    display: block;\n    margin-bottom: 0.5rem;\n    font-weight: 500;\n    color: #495057;\n  }\n\n  .form-group.svelte-gw41vd input:where(.svelte-gw41vd),\n  .form-group.svelte-gw41vd select:where(.svelte-gw41vd),\n  .form-group.svelte-gw41vd textarea:where(.svelte-gw41vd) {\n    width: 100%;\n    padding: 0.5rem;\n    border: 1px solid #ced4da;\n    border-radius: 4px;\n    font-size: 0.9rem;\n  }\n\n  .form-group.svelte-gw41vd textarea:where(.svelte-gw41vd) {\n    min-height: 80px;\n    resize: vertical;\n  }\n\n  .checkbox-label.svelte-gw41vd {\n    display: flex;\n    align-items: center;\n    gap: 0.5rem;\n    cursor: pointer;\n  }\n\n  .checkbox-label.svelte-gw41vd input[type="checkbox"]:where(.svelte-gw41vd) {\n    width: auto;\n  }\n\n  .option-row.svelte-gw41vd {\n    display: flex;\n    gap: 0.5rem;\n    margin-bottom: 0.5rem;\n    align-items: center;\n  }\n\n  .option-row.svelte-gw41vd input:where(.svelte-gw41vd) {\n    flex: 1;\n  }\n\n  .form-actions.svelte-gw41vd {\n    display: flex;\n    gap: 1rem;\n    justify-content: flex-end;\n    margin-top: 2rem;\n    padding-top: 1rem;\n    border-top: 1px solid #dee2e6;\n  }\n\n  .error-message.svelte-gw41vd,\n  .success-message.svelte-gw41vd {\n    padding: 1rem;\n    border-radius: 4px;\n    margin-bottom: 1rem;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n  }\n\n  .error-message.svelte-gw41vd {\n    background: #f8d7da;\n    color: #721c24;\n    border: 1px solid #f5c6cb;\n  }\n\n  .success-message.svelte-gw41vd {\n    background: #d4edda;\n    color: #155724;\n    border: 1px solid #c3e6cb;\n  }\n\n  .close-btn.svelte-gw41vd {\n    background: none;\n    border: none;\n    font-size: 1.2rem;\n    cursor: pointer;\n    color: inherit;\n    padding: 0;\n    margin-left: 1rem;\n  }\n\n  .close-btn.svelte-gw41vd:hover {\n    opacity: 0.7;\n  }\n\n  @media (max-width: 768px) {\n    .form-row.svelte-gw41vd {\n      grid-template-columns: 1fr;\n    }\n    \n    .schema-header.svelte-gw41vd {\n      flex-direction: column;\n      align-items: flex-start;\n      gap: 0.5rem;\n    }\n    \n    .schema-actions.svelte-gw41vd {\n      flex-direction: column;\n    }\n    \n    .row-actions.svelte-gw41vd {\n      flex-direction: column;\n    }\n  }\n\n  .relationship-graph-view.svelte-qaxdvx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n    height: 100vh;\n  }\n\n  .graph-container.svelte-qaxdvx {\n    flex: 1;\n    min-height: 0;\n  }\n\n  .info-container.svelte-qaxdvx {\n    height: 300px;\n    min-height: 300px;\n  }\n\n  .relationship-graph-view.svelte-i1dhkx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n  }\n/*$vite$:1*/';
+  __vite_style__.textContent = '\r\n  .form-field.svelte-1ykx1li {\r\n    margin-bottom: 1rem;\r\n  }\r\n  \r\n  .field-width-full.svelte-1ykx1li {\r\n    width: 100%;\r\n  }\r\n  \r\n  .field-width-half.svelte-1ykx1li {\r\n    width: calc(50% - 0.5rem);\r\n  }\r\n  \r\n  .field-width-third.svelte-1ykx1li {\r\n    width: calc(33.333% - 0.667rem);\r\n  }\r\n  \r\n  .field-label.svelte-1ykx1li {\r\n    display: block;\r\n    margin-bottom: 0.5rem;\r\n    font-weight: 500;\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li,\r\n  .field-textarea.svelte-1ykx1li,\r\n  .field-select.svelte-1ykx1li {\r\n    width: 100%;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    font-size: 0.9rem;\r\n    transition: border-color 0.2s, box-shadow 0.2s;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li:focus,\r\n  .field-textarea.svelte-1ykx1li:focus,\r\n  .field-select.svelte-1ykx1li:focus {\r\n    outline: none;\r\n    border-color: var(--color-primary);\r\n    box-shadow: 0 0 0 2px var(--color-primary-alpha);\r\n  }\r\n  \r\n  .field-textarea.svelte-1ykx1li {\r\n    min-height: 80px;\r\n    resize: vertical;\r\n    font-family: inherit;\r\n  }\r\n  \r\n  .field-select.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  /* Checkbox-Gruppe Styles */\r\n  .checkbox-group.svelte-1ykx1li {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 0.5rem;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    background: var(--color-background-primary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    cursor: pointer;\r\n    padding: 0.25rem;\r\n    border-radius: 4px;\r\n    transition: background-color 0.2s;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li:hover {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li input[type="checkbox"]:where(.svelte-1ykx1li) {\r\n    margin: 0;\r\n    accent-color: var(--color-primary);\r\n    width: 1.2rem;\r\n    height: 1.2rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li span:where(.svelte-1ykx1li) {\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-checkbox.svelte-1ykx1li {\r\n    margin-right: 0.5rem;\r\n    width: auto;\r\n  }\r\n  \r\n  .checkbox-label.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-text.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-container.svelte-1ykx1li {\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    align-items: center;\r\n  }\r\n  \r\n  .field-color.svelte-1ykx1li {\r\n    width: 3rem;\r\n    height: 2.5rem;\r\n    padding: 0;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-text.svelte-1ykx1li {\r\n    flex: 1;\r\n    font-family: monospace;\r\n  }\r\n  \r\n  .field-description.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .field-error.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    color: var(--color-error);\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    border-color: var(--color-error);\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li):focus {\r\n    border-color: var(--color-error);\r\n    box-shadow: 0 0 0 2px var(--color-error-alpha);\r\n  }\r\n  \r\n  .disabled.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-select:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-checkbox:where(.svelte-1ykx1li) {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .readonly.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    background-color: var(--color-background-secondary);\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  /* Responsive Design */\r\n  @media (max-width: 768px) {\r\n    .field-width-half.svelte-1ykx1li,\r\n    .field-width-third.svelte-1ykx1li {\r\n      width: 100%;\r\n    }\r\n  }\r\n\r\n  /* Foundry VTT CSS-Variablen verwenden */\r\n  .form-container.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    padding: 1rem;\r\n  }\r\n  \r\n  .form-header.svelte-1hegfbw {\r\n    border-bottom: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: var(--border-radius) var(--border-radius) 0 0;\r\n    margin: -1rem -1rem 1rem -1rem;\r\n  }\r\n  \r\n  .form-title.svelte-1hegfbw {\r\n    color: var(--color-text-primary);\r\n    margin: 0;\r\n    font-size: 1.2rem;\r\n    font-weight: 600;\r\n  }\r\n  \r\n  .form-description.svelte-1hegfbw {\r\n    color: var(--color-text-secondary);\r\n    margin: 0.5rem 0 0 0;\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n\r\n  \r\n  .field-container.svelte-1hegfbw {\r\n    margin-bottom: 1.5rem;\r\n    transition: all 0.3s ease;\r\n  }\r\n  \r\n  .field-container.svelte-1hegfbw:focus-within {\r\n    transform: translateY(-2px);\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\r\n    border-radius: var(--border-radius);\r\n    padding: 0.5rem;\r\n    margin: 0.5rem -0.5rem 1.5rem -0.5rem;\r\n  }\r\n  \r\n  .form-actions.svelte-1hegfbw {\r\n    border-top: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: 0 0 var(--border-radius) var(--border-radius);\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    justify-content: flex-end;\r\n    margin: 1rem -1rem -1rem -1rem;\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw {\r\n    padding: 0.5rem 1rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    cursor: pointer;\r\n    font-size: 0.9rem;\r\n    transition: all 0.2s;\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw {\r\n    background: var(--color-primary);\r\n    color: var(--color-text-primary);\r\n    border-color: var(--color-primary);\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-primary-hover);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw:disabled {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .spinner.svelte-1hegfbw {\r\n    display: inline-block;\r\n    width: 1rem;\r\n    height: 1rem;\r\n    border: 2px solid transparent;\r\n    border-top: 2px solid currentColor;\r\n    border-radius: 50%;\r\n    animation: svelte-1hegfbw-spin 1s linear infinite;\r\n  }\r\n  \r\n  @keyframes svelte-1hegfbw-spin {\r\n    0% { transform: rotate(0deg); }\r\n    100% { transform: rotate(360deg); }\r\n  }\r\n  \r\n  /* Scroll-Indikator für bessere UX */\r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar {\r\n    width: 12px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-track {\r\n    background: var(--color-background-secondary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb {\r\n    background: var(--color-border-primary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb:hover {\r\n    background: var(--color-primary);\r\n  }\r\n  \r\n  /* Fokus-Indikator für bessere Accessibility */\r\n  .field-container.svelte-1hegfbw:focus-within .field-label {\r\n    color: var(--color-primary);\r\n    font-weight: 600;\r\n  }\r\n  \r\n  /* Smooth Transitions für alle interaktiven Elemente */\r\n  .form-container.svelte-1hegfbw :where(.svelte-1hegfbw) {\r\n    transition: border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;\r\n  }\r\n\n  /* Gleiches Scrolling wie DynamicFormSheet */\n  .metadata-container.svelte-4kvlhy {\n    height: 100vh;\n    max-height: 100vh;\n    overflow-y: auto;\n    padding: 1rem;\n    box-sizing: border-box;\n  }\n\n  .metadata-header.svelte-4kvlhy {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 2rem;\n    padding-bottom: 1rem;\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .metadata-header.svelte-4kvlhy h1:where(.svelte-4kvlhy) {\n    margin: 0;\n    font-size: 1.5rem;\n    font-weight: 600;\n  }\n\n  .metadata-content.svelte-4kvlhy {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .schema-card.svelte-4kvlhy {\n    background: var(--color-background-secondary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 6px;\n    overflow: hidden;\n  }\n\n  .schema-card.selected.svelte-4kvlhy {\n    border-color: var(--color-primary);\n  }\n\n  .schema-header.svelte-4kvlhy {\n    padding: 1rem;\n    cursor: pointer;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    background: var(--color-background-primary);\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .schema-header.svelte-4kvlhy:hover {\n    background: var(--color-background-tertiary);\n  }\n\n  .schema-header.svelte-4kvlhy h3:where(.svelte-4kvlhy) {\n    margin: 0;\n    font-size: 1.1rem;\n    font-weight: 600;\n  }\n\n  .version.svelte-4kvlhy {\n    background: var(--color-info);\n    color: var(--color-text-primary);\n    padding: 0.2rem 0.5rem;\n    border-radius: 4px;\n    font-size: 0.8rem;\n  }\n\n  .schema-details.svelte-4kvlhy {\n    padding: 1rem;\n    background: var(--color-background-secondary);\n  }\n\n  .schema-details.svelte-4kvlhy p:where(.svelte-4kvlhy) {\n    margin: 0.5rem 0;\n    font-size: 0.9rem;\n  }\n\n  .actions.svelte-4kvlhy {\n    display: flex;\n    gap: 0.5rem;\n    margin: 1rem 0;\n    flex-wrap: wrap;\n  }\n\n  .rows-section.svelte-4kvlhy {\n    margin-top: 1.5rem;\n    padding-top: 1rem;\n    border-top: 1px solid var(--color-border-primary);\n  }\n\n  .rows-section.svelte-4kvlhy h4:where(.svelte-4kvlhy) {\n    margin: 0 0 1rem 0;\n    font-size: 1rem;\n    font-weight: 600;\n  }\n\n  .row-item.svelte-4kvlhy {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0.75rem;\n    background: var(--color-background-primary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 4px;\n    margin-bottom: 0.5rem;\n  }\n\n  .row-info.svelte-4kvlhy {\n    font-size: 0.9rem;\n  }\n\n  .row-actions.svelte-4kvlhy {\n    display: flex;\n    gap: 0.5rem;\n  }\n\n  .error-message.svelte-4kvlhy,\n  .success-message.svelte-4kvlhy {\n    padding: 1rem;\n    border-radius: 4px;\n    margin-bottom: 1rem;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n  }\n\n  .error-message.svelte-4kvlhy {\n    background: var(--color-error-background);\n    color: var(--color-error);\n    border: 1px solid var(--color-error-border);\n  }\n  \n  .success-message.svelte-4kvlhy {\n    background: var(--color-success-background);\n    color: var(--color-success);\n    border: 1px solid var(--color-success-border);\n  }\n\n  .close-btn.svelte-4kvlhy {\n    background: none;\n    border: none;\n    font-size: 1.2rem;\n    cursor: pointer;\n    color: inherit;\n    padding: 0;\n    margin-left: 1rem;\n  }\n\n  .close-btn.svelte-4kvlhy:hover {\n    opacity: 0.7;\n  }\n\n  .relationship-graph-view.svelte-qaxdvx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n    height: 100vh;\n  }\n\n  .graph-container.svelte-qaxdvx {\n    flex: 1;\n    min-height: 0;\n  }\n\n  .info-container.svelte-qaxdvx {\n    height: 300px;\n    min-height: 300px;\n  }\n\n  .relationship-graph-view.svelte-i1dhkx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n  }\n/*$vite$:1*/';
   document.head.appendChild(__vite_style__);
   Object.assign = function(target, ...sources) {
     for (const source2 of sources) {
@@ -118,6 +118,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   const EACH_IS_CONTROLLED = 1 << 2;
   const EACH_IS_ANIMATED = 1 << 3;
   const EACH_ITEM_IMMUTABLE = 1 << 4;
+  const TEMPLATE_FRAGMENT = 1;
   const TEMPLATE_USE_IMPORT_NODE = 1 << 1;
   const UNINITIALIZED = Symbol();
   const NAMESPACE_HTML = "http://www.w3.org/1999/xhtml";
@@ -361,18 +362,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
     );
   }
-  function get_proxied_value(value) {
-    try {
-      if (value !== null && typeof value === "object" && STATE_SYMBOL in value) {
-        return value[STATE_SYMBOL];
-      }
-    } catch {
-    }
-    return value;
-  }
-  function is(a, b) {
-    return Object.is(get_proxied_value(a), get_proxied_value(b));
-  }
   // @__NO_SIDE_EFFECTS__
   function derived(fn) {
     var flags = DERIVED | DIRTY;
@@ -559,11 +548,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
     }
   }
-  function select_multiple_invalid_value() {
-    {
-      console.warn(`https://svelte.dev/e/select_multiple_invalid_value`);
-    }
-  }
   let hydrating = false;
   var $window;
   var is_firefox;
@@ -607,6 +591,19 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       return /* @__PURE__ */ get_first_child(node);
     }
   }
+  function first_child(fragment, is_text) {
+    {
+      var first = (
+        /** @type {DocumentFragment} */
+        /* @__PURE__ */ get_first_child(
+          /** @type {Node} */
+          fragment
+        )
+      );
+      if (first instanceof Comment && first.data === "") return /* @__PURE__ */ get_next_sibling(first);
+      return first;
+    }
+  }
   function sibling(node, count = 1, is_text = false) {
     let next_sibling = node;
     while (count--) {
@@ -631,19 +628,19 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       effect_in_teardown();
     }
   }
-  function push_effect(effect2, parent_effect) {
+  function push_effect(effect, parent_effect) {
     var parent_last = parent_effect.last;
     if (parent_last === null) {
-      parent_effect.last = parent_effect.first = effect2;
+      parent_effect.last = parent_effect.first = effect;
     } else {
-      parent_last.next = effect2;
-      effect2.prev = parent_last;
-      parent_effect.last = effect2;
+      parent_last.next = effect;
+      effect.prev = parent_last;
+      parent_effect.last = effect;
     }
   }
   function create_effect(type, fn, sync, push2 = true) {
     var parent = active_effect;
-    var effect2 = {
+    var effect = {
       ctx: component_context,
       deps: null,
       nodes_start: null,
@@ -663,35 +660,35 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     };
     if (sync) {
       try {
-        update_effect(effect2);
-        effect2.f |= EFFECT_RAN;
+        update_effect(effect);
+        effect.f |= EFFECT_RAN;
       } catch (e) {
-        destroy_effect(effect2);
+        destroy_effect(effect);
         throw e;
       }
     } else if (fn !== null) {
-      schedule_effect(effect2);
+      schedule_effect(effect);
     }
-    var inert = sync && effect2.deps === null && effect2.first === null && effect2.nodes_start === null && effect2.teardown === null && (effect2.f & (EFFECT_PRESERVED | BOUNDARY_EFFECT)) === 0;
+    var inert = sync && effect.deps === null && effect.first === null && effect.nodes_start === null && effect.teardown === null && (effect.f & (EFFECT_PRESERVED | BOUNDARY_EFFECT)) === 0;
     if (!inert && push2) {
       if (parent !== null) {
-        push_effect(effect2, parent);
+        push_effect(effect, parent);
       }
       if (active_reaction !== null && (active_reaction.f & DERIVED) !== 0) {
         var derived2 = (
           /** @type {Derived} */
           active_reaction
         );
-        (derived2.effects ?? (derived2.effects = [])).push(effect2);
+        (derived2.effects ?? (derived2.effects = [])).push(effect);
       }
     }
-    return effect2;
+    return effect;
   }
   function teardown(fn) {
-    const effect2 = create_effect(RENDER_EFFECT, null, false);
-    set_signal_status(effect2, CLEAN);
-    effect2.teardown = fn;
-    return effect2;
+    const effect = create_effect(RENDER_EFFECT, null, false);
+    set_signal_status(effect, CLEAN);
+    effect.teardown = fn;
+    return effect;
   }
   function user_effect(fn) {
     validate_effect();
@@ -709,40 +706,34 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     return create_effect(EFFECT | USER_EFFECT, fn, false);
   }
   function component_root(fn) {
-    const effect2 = create_effect(ROOT_EFFECT, fn, true);
+    const effect = create_effect(ROOT_EFFECT, fn, true);
     return (options = {}) => {
       return new Promise((fulfil) => {
         if (options.outro) {
-          pause_effect(effect2, () => {
-            destroy_effect(effect2);
+          pause_effect(effect, () => {
+            destroy_effect(effect);
             fulfil(void 0);
           });
         } else {
-          destroy_effect(effect2);
+          destroy_effect(effect);
           fulfil(void 0);
         }
       });
     };
-  }
-  function effect(fn) {
-    return create_effect(EFFECT, fn, false);
-  }
-  function render_effect(fn) {
-    return create_effect(RENDER_EFFECT, fn, true);
   }
   function template_effect(fn, thunks = [], d = derived) {
     const deriveds = thunks.map(d);
     return block(() => fn(...deriveds.map(get)));
   }
   function block(fn, flags = 0) {
-    var effect2 = create_effect(RENDER_EFFECT | BLOCK_EFFECT | flags, fn, true);
-    return effect2;
+    var effect = create_effect(RENDER_EFFECT | BLOCK_EFFECT | flags, fn, true);
+    return effect;
   }
   function branch(fn, push2 = true) {
     return create_effect(RENDER_EFFECT | BRANCH_EFFECT, fn, true, push2);
   }
-  function execute_effect_teardown(effect2) {
-    var teardown2 = effect2.teardown;
+  function execute_effect_teardown(effect) {
+    var teardown2 = effect.teardown;
     if (teardown2 !== null) {
       const previously_destroying_effect = is_destroying_effect;
       const previous_reaction = active_reaction;
@@ -757,54 +748,54 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
   }
   function destroy_effect_children(signal, remove_dom = false) {
-    var effect2 = signal.first;
+    var effect = signal.first;
     signal.first = signal.last = null;
-    while (effect2 !== null) {
-      effect2.ac?.abort(STALE_REACTION);
-      var next = effect2.next;
-      if ((effect2.f & ROOT_EFFECT) !== 0) {
-        effect2.parent = null;
+    while (effect !== null) {
+      effect.ac?.abort(STALE_REACTION);
+      var next = effect.next;
+      if ((effect.f & ROOT_EFFECT) !== 0) {
+        effect.parent = null;
       } else {
-        destroy_effect(effect2, remove_dom);
+        destroy_effect(effect, remove_dom);
       }
-      effect2 = next;
+      effect = next;
     }
   }
   function destroy_block_effect_children(signal) {
-    var effect2 = signal.first;
-    while (effect2 !== null) {
-      var next = effect2.next;
-      if ((effect2.f & BRANCH_EFFECT) === 0) {
-        destroy_effect(effect2);
+    var effect = signal.first;
+    while (effect !== null) {
+      var next = effect.next;
+      if ((effect.f & BRANCH_EFFECT) === 0) {
+        destroy_effect(effect);
       }
-      effect2 = next;
+      effect = next;
     }
   }
-  function destroy_effect(effect2, remove_dom = true) {
+  function destroy_effect(effect, remove_dom = true) {
     var removed = false;
-    if ((remove_dom || (effect2.f & HEAD_EFFECT) !== 0) && effect2.nodes_start !== null && effect2.nodes_end !== null) {
+    if ((remove_dom || (effect.f & HEAD_EFFECT) !== 0) && effect.nodes_start !== null && effect.nodes_end !== null) {
       remove_effect_dom(
-        effect2.nodes_start,
+        effect.nodes_start,
         /** @type {TemplateNode} */
-        effect2.nodes_end
+        effect.nodes_end
       );
       removed = true;
     }
-    destroy_effect_children(effect2, remove_dom && !removed);
-    remove_reactions(effect2, 0);
-    set_signal_status(effect2, DESTROYED);
-    var transitions = effect2.transitions;
+    destroy_effect_children(effect, remove_dom && !removed);
+    remove_reactions(effect, 0);
+    set_signal_status(effect, DESTROYED);
+    var transitions = effect.transitions;
     if (transitions !== null) {
       for (const transition of transitions) {
         transition.stop();
       }
     }
-    execute_effect_teardown(effect2);
-    var parent = effect2.parent;
+    execute_effect_teardown(effect);
+    var parent = effect.parent;
     if (parent !== null && parent.first !== null) {
-      unlink_effect(effect2);
+      unlink_effect(effect);
     }
-    effect2.next = effect2.prev = effect2.teardown = effect2.ctx = effect2.deps = effect2.fn = effect2.nodes_start = effect2.nodes_end = effect2.ac = null;
+    effect.next = effect.prev = effect.teardown = effect.ctx = effect.deps = effect.fn = effect.nodes_start = effect.nodes_end = effect.ac = null;
   }
   function remove_effect_dom(node, end) {
     while (node !== null) {
@@ -816,22 +807,22 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       node = next;
     }
   }
-  function unlink_effect(effect2) {
-    var parent = effect2.parent;
-    var prev = effect2.prev;
-    var next = effect2.next;
+  function unlink_effect(effect) {
+    var parent = effect.parent;
+    var prev = effect.prev;
+    var next = effect.next;
     if (prev !== null) prev.next = next;
     if (next !== null) next.prev = prev;
     if (parent !== null) {
-      if (parent.first === effect2) parent.first = next;
-      if (parent.last === effect2) parent.last = prev;
+      if (parent.first === effect) parent.first = next;
+      if (parent.last === effect) parent.last = prev;
     }
   }
-  function pause_effect(effect2, callback) {
+  function pause_effect(effect, callback) {
     var transitions = [];
-    pause_children(effect2, transitions, true);
+    pause_children(effect, transitions, true);
     run_out_transitions(transitions, () => {
-      destroy_effect(effect2);
+      destroy_effect(effect);
       if (callback) callback();
     });
   }
@@ -846,17 +837,17 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       fn();
     }
   }
-  function pause_children(effect2, transitions, local) {
-    if ((effect2.f & INERT) !== 0) return;
-    effect2.f ^= INERT;
-    if (effect2.transitions !== null) {
-      for (const transition of effect2.transitions) {
+  function pause_children(effect, transitions, local) {
+    if ((effect.f & INERT) !== 0) return;
+    effect.f ^= INERT;
+    if (effect.transitions !== null) {
+      for (const transition of effect.transitions) {
         if (transition.is_global || local) {
           transitions.push(transition);
         }
       }
     }
-    var child2 = effect2.first;
+    var child2 = effect.first;
     while (child2 !== null) {
       var sibling2 = child2.next;
       var transparent = (child2.f & EFFECT_TRANSPARENT) !== 0 || (child2.f & BRANCH_EFFECT) !== 0;
@@ -864,21 +855,21 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       child2 = sibling2;
     }
   }
-  function resume_effect(effect2) {
-    resume_children(effect2, true);
+  function resume_effect(effect) {
+    resume_children(effect, true);
   }
-  function resume_children(effect2, local) {
-    if ((effect2.f & INERT) === 0) return;
-    effect2.f ^= INERT;
-    var child2 = effect2.first;
+  function resume_children(effect, local) {
+    if ((effect.f & INERT) === 0) return;
+    effect.f ^= INERT;
+    var child2 = effect.first;
     while (child2 !== null) {
       var sibling2 = child2.next;
       var transparent = (child2.f & EFFECT_TRANSPARENT) !== 0 || (child2.f & BRANCH_EFFECT) !== 0;
       resume_children(child2, transparent ? local : false);
       child2 = sibling2;
     }
-    if (effect2.transitions !== null) {
-      for (const transition of effect2.transitions) {
+    if (effect.transitions !== null) {
+      for (const transition of effect.transitions) {
         if (transition.is_global || local) {
           transition.in();
         }
@@ -898,29 +889,29 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     micro_tasks.push(fn);
   }
   function handle_error(error) {
-    var effect2 = (
+    var effect = (
       /** @type {Effect} */
       active_effect
     );
-    if ((effect2.f & EFFECT_RAN) === 0) {
-      if ((effect2.f & BOUNDARY_EFFECT) === 0) {
+    if ((effect.f & EFFECT_RAN) === 0) {
+      if ((effect.f & BOUNDARY_EFFECT) === 0) {
         throw error;
       }
-      effect2.fn(error);
+      effect.fn(error);
     } else {
-      invoke_error_boundary(error, effect2);
+      invoke_error_boundary(error, effect);
     }
   }
-  function invoke_error_boundary(error, effect2) {
-    while (effect2 !== null) {
-      if ((effect2.f & BOUNDARY_EFFECT) !== 0) {
+  function invoke_error_boundary(error, effect) {
+    while (effect !== null) {
+      if ((effect.f & BOUNDARY_EFFECT) !== 0) {
         try {
-          effect2.b.error(error);
+          effect.b.error(error);
           return;
         } catch {
         }
       }
-      effect2 = effect2.parent;
+      effect = effect.parent;
     }
     throw error;
   }
@@ -939,8 +930,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     active_reaction = reaction;
   }
   let active_effect = null;
-  function set_active_effect(effect2) {
-    active_effect = effect2;
+  function set_active_effect(effect) {
+    active_effect = effect;
   }
   let current_sources = null;
   function push_reaction_value(value) {
@@ -1023,7 +1014,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return false;
   }
-  function schedule_possible_effect_self_invalidation(signal, effect2, root2 = true) {
+  function schedule_possible_effect_self_invalidation(signal, effect, root2 = true) {
     var reactions = signal.reactions;
     if (reactions === null) return;
     if (current_sources?.includes(signal)) {
@@ -1035,10 +1026,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         schedule_possible_effect_self_invalidation(
           /** @type {Derived} */
           reaction,
-          effect2,
+          effect,
           false
         );
-      } else if (effect2 === reaction) {
+      } else if (effect === reaction) {
         if (root2) {
           set_signal_status(reaction, DIRTY);
         } else if ((reaction.f & CLEAN) !== 0) {
@@ -1183,28 +1174,28 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       remove_reaction(signal, dependencies[i]);
     }
   }
-  function update_effect(effect2) {
-    var flags = effect2.f;
+  function update_effect(effect) {
+    var flags = effect.f;
     if ((flags & DESTROYED) !== 0) {
       return;
     }
-    set_signal_status(effect2, CLEAN);
+    set_signal_status(effect, CLEAN);
     var previous_effect = active_effect;
     var was_updating_effect = is_updating_effect;
-    active_effect = effect2;
+    active_effect = effect;
     is_updating_effect = true;
     try {
       if ((flags & BLOCK_EFFECT) !== 0) {
-        destroy_block_effect_children(effect2);
+        destroy_block_effect_children(effect);
       } else {
-        destroy_effect_children(effect2);
+        destroy_effect_children(effect);
       }
-      execute_effect_teardown(effect2);
-      var teardown2 = update_reaction(effect2);
-      effect2.teardown = typeof teardown2 === "function" ? teardown2 : null;
-      effect2.wv = write_version;
+      execute_effect_teardown(effect);
+      var teardown2 = update_reaction(effect);
+      effect.teardown = typeof teardown2 === "function" ? teardown2 : null;
+      effect.wv = write_version;
       var dep;
-      if (DEV && tracing_mode_flag && (effect2.f & DIRTY) !== 0 && effect2.deps !== null) ;
+      if (DEV && tracing_mode_flag && (effect.f & DIRTY) !== 0 && effect.deps !== null) ;
       if (DEV) ;
     } finally {
       is_updating_effect = was_updating_effect;
@@ -1252,19 +1243,19 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     var length = effects.length;
     if (length === 0) return;
     for (var i = 0; i < length; i++) {
-      var effect2 = effects[i];
-      if ((effect2.f & (DESTROYED | INERT)) === 0) {
-        if (check_dirtiness(effect2)) {
+      var effect = effects[i];
+      if ((effect.f & (DESTROYED | INERT)) === 0) {
+        if (check_dirtiness(effect)) {
           var wv = write_version;
-          update_effect(effect2);
-          if (effect2.deps === null && effect2.first === null && effect2.nodes_start === null) {
-            if (effect2.teardown === null) {
-              unlink_effect(effect2);
+          update_effect(effect);
+          if (effect.deps === null && effect.first === null && effect.nodes_start === null) {
+            if (effect.teardown === null) {
+              unlink_effect(effect);
             } else {
-              effect2.fn = null;
+              effect.fn = null;
             }
           }
-          if (write_version > wv && (effect2.f & USER_EFFECT) !== 0) {
+          if (write_version > wv && (effect.f & USER_EFFECT) !== 0) {
             break;
           }
         }
@@ -1279,44 +1270,44 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       is_flushing = true;
       queueMicrotask(flush_queued_root_effects);
     }
-    var effect2 = last_scheduled_effect = signal;
-    while (effect2.parent !== null) {
-      effect2 = effect2.parent;
-      var flags = effect2.f;
+    var effect = last_scheduled_effect = signal;
+    while (effect.parent !== null) {
+      effect = effect.parent;
+      var flags = effect.f;
       if ((flags & (ROOT_EFFECT | BRANCH_EFFECT)) !== 0) {
         if ((flags & CLEAN) === 0) return;
-        effect2.f ^= CLEAN;
+        effect.f ^= CLEAN;
       }
     }
-    queued_root_effects.push(effect2);
+    queued_root_effects.push(effect);
   }
   function process_effects(root2) {
     var effects = [];
-    var effect2 = root2;
-    while (effect2 !== null) {
-      var flags = effect2.f;
+    var effect = root2;
+    while (effect !== null) {
+      var flags = effect.f;
       var is_branch = (flags & (BRANCH_EFFECT | ROOT_EFFECT)) !== 0;
       var is_skippable_branch = is_branch && (flags & CLEAN) !== 0;
       if (!is_skippable_branch && (flags & INERT) === 0) {
         if ((flags & EFFECT) !== 0) {
-          effects.push(effect2);
+          effects.push(effect);
         } else if (is_branch) {
-          effect2.f ^= CLEAN;
+          effect.f ^= CLEAN;
         } else {
-          if (check_dirtiness(effect2)) {
-            update_effect(effect2);
+          if (check_dirtiness(effect)) {
+            update_effect(effect);
           }
         }
-        var child2 = effect2.first;
+        var child2 = effect.first;
         if (child2 !== null) {
-          effect2 = child2;
+          effect = child2;
           continue;
         }
       }
-      var parent = effect2.parent;
-      effect2 = effect2.next;
-      while (effect2 === null && parent !== null) {
-        effect2 = parent.next;
+      var parent = effect.parent;
+      effect = effect.next;
+      while (effect === null && parent !== null) {
+        effect = parent.next;
         parent = parent.parent;
       }
     }
@@ -1408,30 +1399,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function is_passive_event(name) {
     return PASSIVE_EVENTS.includes(name);
   }
-  let listening_to_form_reset = false;
-  function add_form_reset_listener() {
-    if (!listening_to_form_reset) {
-      listening_to_form_reset = true;
-      document.addEventListener(
-        "reset",
-        (evt) => {
-          Promise.resolve().then(() => {
-            if (!evt.defaultPrevented) {
-              for (
-                const e of
-                /**@type {HTMLFormElement} */
-                evt.target.elements
-              ) {
-                e.__on_r?.();
-              }
-            }
-          });
-        },
-        // In the capture phase to guarantee we get noticed of it (no possiblity of stopPropagation)
-        { capture: true }
-      );
-    }
-  }
   function without_reactive_context(fn) {
     var previous_reaction = active_reaction;
     var previous_effect = active_effect;
@@ -1443,19 +1410,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       set_active_reaction(previous_reaction);
       set_active_effect(previous_effect);
     }
-  }
-  function listen_to_event_and_reset_event(element, event2, handler, on_reset = handler) {
-    element.addEventListener(event2, () => without_reactive_context(handler));
-    const prev = element.__on_r;
-    if (prev) {
-      element.__on_r = () => {
-        prev();
-        on_reset(true);
-      };
-    } else {
-      element.__on_r = () => on_reset(true);
-    }
-    add_form_reset_listener();
   }
   const all_registered_events = /* @__PURE__ */ new Set();
   const root_event_handles = /* @__PURE__ */ new Set();
@@ -1593,35 +1547,54 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     return elem.content;
   }
   function assign_nodes(start, end) {
-    var effect2 = (
+    var effect = (
       /** @type {Effect} */
       active_effect
     );
-    if (effect2.nodes_start === null) {
-      effect2.nodes_start = start;
-      effect2.nodes_end = end;
+    if (effect.nodes_start === null) {
+      effect.nodes_start = start;
+      effect.nodes_end = end;
     }
   }
   // @__NO_SIDE_EFFECTS__
   function from_html(content, flags) {
+    var is_fragment = (flags & TEMPLATE_FRAGMENT) !== 0;
     var use_import_node = (flags & TEMPLATE_USE_IMPORT_NODE) !== 0;
     var node;
     var has_start = !content.startsWith("<!>");
     return () => {
       if (node === void 0) {
         node = create_fragment_from_html(has_start ? content : "<!>" + content);
-        node = /** @type {Node} */
+        if (!is_fragment) node = /** @type {Node} */
         /* @__PURE__ */ get_first_child(node);
       }
       var clone = (
         /** @type {TemplateNode} */
         use_import_node || is_firefox ? document.importNode(node, true) : node.cloneNode(true)
       );
-      {
+      if (is_fragment) {
+        var start = (
+          /** @type {TemplateNode} */
+          /* @__PURE__ */ get_first_child(clone)
+        );
+        var end = (
+          /** @type {TemplateNode} */
+          clone.lastChild
+        );
+        assign_nodes(start, end);
+      } else {
         assign_nodes(clone, clone);
       }
       return clone;
     };
+  }
+  function comment() {
+    var frag = document.createDocumentFragment();
+    var start = document.createComment("");
+    var anchor = create_text();
+    frag.append(start, anchor);
+    assign_nodes(start, anchor);
+    return frag;
   }
   function append(anchor, dom) {
     if (anchor === null) {
@@ -2067,9 +2040,29 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       next.e.prev = prev && prev.e;
     }
   }
+  function r(e) {
+    var t, f, n = "";
+    if ("string" == typeof e || "number" == typeof e) n += e;
+    else if ("object" == typeof e) if (Array.isArray(e)) {
+      var o = e.length;
+      for (t = 0; t < o; t++) e[t] && (f = r(e[t])) && (n && (n += " "), n += f);
+    } else for (f in e) e[f] && (n && (n += " "), n += f);
+    return n;
+  }
+  function clsx$1() {
+    for (var e, t, f = 0, n = "", o = arguments.length; f < o; f++) (e = arguments[f]) && (t = r(e)) && (n && (n += " "), n += t);
+    return n;
+  }
+  function clsx(value) {
+    if (typeof value === "object") {
+      return clsx$1(value);
+    } else {
+      return value ?? "";
+    }
+  }
   function to_class(value, hash, directives) {
     var classname = value == null ? "" : "" + value;
-    {
+    if (hash) {
       classname = classname ? classname + " " + hash : hash;
     }
     return classname === "" ? null : classname;
@@ -2089,85 +2082,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return next_classes;
   }
-  function select_option(select, value, mounting = false) {
-    if (select.multiple) {
-      if (value == void 0) {
-        return;
-      }
-      if (!is_array(value)) {
-        return select_multiple_invalid_value();
-      }
-      for (var option of select.options) {
-        option.selected = value.includes(get_option_value(option));
-      }
-      return;
-    }
-    for (option of select.options) {
-      var option_value = get_option_value(option);
-      if (is(option_value, value)) {
-        option.selected = true;
-        return;
-      }
-    }
-    if (!mounting || value !== void 0) {
-      select.selectedIndex = -1;
-    }
-  }
-  function init_select(select) {
-    var observer = new MutationObserver(() => {
-      select_option(select, select.__value);
-    });
-    observer.observe(select, {
-      // Listen to option element changes
-      childList: true,
-      subtree: true,
-      // because of <optgroup>
-      // Listen to option element value attribute changes
-      // (doesn't get notified of select value changes,
-      // because that property is not reflected as an attribute)
-      attributes: true,
-      attributeFilter: ["value"]
-    });
-    teardown(() => {
-      observer.disconnect();
-    });
-  }
-  function bind_select_value(select, get2, set2 = get2) {
-    var mounting = true;
-    listen_to_event_and_reset_event(select, "change", (is_reset) => {
-      var query = is_reset ? "[selected]" : ":checked";
-      var value;
-      if (select.multiple) {
-        value = [].map.call(select.querySelectorAll(query), get_option_value);
-      } else {
-        var selected_option = select.querySelector(query) ?? // will fall back to first non-disabled option if no option is selected
-        select.querySelector("option:not([disabled])");
-        value = selected_option && get_option_value(selected_option);
-      }
-      set2(value);
-    });
-    effect(() => {
-      var value = get2();
-      select_option(select, value, mounting);
-      if (mounting && value === void 0) {
-        var selected_option = select.querySelector(":checked");
-        if (selected_option !== null) {
-          value = get_option_value(selected_option);
-          set2(value);
-        }
-      }
-      select.__value = value;
-      mounting = false;
-    });
-    init_select(select);
-  }
-  function get_option_value(option) {
-    if ("__value" in option) {
-      return option.__value;
-    } else {
-      return option.value;
-    }
-  }
   const IS_CUSTOM_ELEMENT = Symbol("is custom element");
   const IS_HTML = Symbol("is html");
   function set_value(element, value) {
@@ -2179,6 +2093,23 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       return;
     }
     element.value = value ?? "";
+  }
+  function set_checked(element, checked) {
+    var attributes = get_attributes(element);
+    if (attributes.checked === (attributes.checked = // treat null and undefined the same for the initial value
+    checked ?? void 0)) {
+      return;
+    }
+    element.checked = checked;
+  }
+  function set_selected(element, selected) {
+    if (selected) {
+      if (!element.hasAttribute("selected")) {
+        element.setAttribute("selected", "");
+      }
+    } else {
+      element.removeAttribute("selected");
+    }
   }
   function set_attribute(element, attribute, value, skip_warning) {
     var attributes = get_attributes(element);
@@ -2223,68 +2154,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return setters;
   }
-  function bind_value(input, get2, set2 = get2) {
-    listen_to_event_and_reset_event(input, "input", (is_reset) => {
-      var value = is_reset ? input.defaultValue : input.value;
-      value = is_numberlike_input(input) ? to_number(value) : value;
-      set2(value);
-      if (value !== (value = get2())) {
-        var start = input.selectionStart;
-        var end = input.selectionEnd;
-        input.value = value ?? "";
-        if (end !== null) {
-          input.selectionStart = start;
-          input.selectionEnd = Math.min(end, input.value.length);
-        }
-      }
-    });
-    if (
-      // If we are hydrating and the value has since changed,
-      // then use the updated value from the input instead.
-      // If defaultValue is set, then value == defaultValue
-      // TODO Svelte 6: remove input.value check and set to empty string?
-      untrack(get2) == null && input.value
-    ) {
-      set2(is_numberlike_input(input) ? to_number(input.value) : input.value);
-    }
-    render_effect(() => {
-      var value = get2();
-      if (is_numberlike_input(input) && value === to_number(input.value)) {
-        return;
-      }
-      if (input.type === "date" && !value && !input.value) {
-        return;
-      }
-      if (value !== input.value) {
-        input.value = value ?? "";
-      }
-    });
-  }
-  function bind_checked(input, get2, set2 = get2) {
-    listen_to_event_and_reset_event(input, "change", (is_reset) => {
-      var value = is_reset ? input.defaultChecked : input.checked;
-      set2(value);
-    });
-    if (
-      // If we are hydrating and the value has since changed,
-      // then use the update value from the input instead.
-      // If defaultChecked is set, then checked == defaultChecked
-      untrack(get2) == null
-    ) {
-      set2(input.checked);
-    }
-    render_effect(() => {
-      var value = get2();
-      input.checked = Boolean(value);
-    });
-  }
-  function is_numberlike_input(input) {
-    var type = input.type;
-    return type === "number" || type === "range";
-  }
-  function to_number(value) {
-    return value === "" ? null : +value;
-  }
   function onMount(fn) {
     if (component_context === null) {
       lifecycle_outside_component();
@@ -2305,49 +2174,1136 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   }
   const MODULE_ID = "relationship-app";
   const MODULE_METADATA_KEY = "metadata";
-  function addNewOption(__1, editingRow, newRow) {
-    if (get(editingRow)) {
-      get(editingRow).options = [...get(editingRow).options || [], ""];
-    } else {
-      newRow.options = [...newRow.options || [], ""];
-    }
+  function createElement(config) {
+    return {
+      id: config.field,
+      name: config.field,
+      label: config.label || config.field,
+      type: config.type,
+      required: config.required || false,
+      placeholder: config.placeholder || "",
+      default: config.default,
+      options: config.options || [],
+      description: config.description || "",
+      category: config.category || "Allgemein",
+      validation: config.validation || {},
+      ui: {
+        width: config.ui?.width || "full",
+        multiline: config.ui?.multiline || false,
+        rows: config.ui?.rows || 3,
+        disabled: config.ui?.disabled || false,
+        readonly: config.ui?.readonly || false
+      },
+      showIf: config.showIf
+    };
   }
-  var on_click = (
-    // Bestehende Funktionen
-    // Globaler Escape-Key-Listener für Modals
-    (__2, errorMessage) => set(errorMessage, null)
+  function createTextElement(field, options = {}) {
+    return createElement({
+      field,
+      type: options.multiline ? "textarea" : "text",
+      label: options.label,
+      required: options.required,
+      placeholder: options.placeholder,
+      default: options.default,
+      description: options.description,
+      category: options.category,
+      validation: options.validation,
+      showIf: options.showIf,
+      ui: {
+        width: "full",
+        multiline: options.multiline,
+        rows: options.multiline ? 3 : void 0
+      }
+    });
+  }
+  function createSelectElement(field, options) {
+    return createElement({
+      field,
+      type: "select",
+      label: options.label,
+      required: options.required,
+      options: options.options,
+      default: options.default,
+      description: options.description,
+      category: options.category
+    });
+  }
+  function createMultiSelectElement(field, options) {
+    return createElement({
+      field,
+      type: "multiselect",
+      label: options.label,
+      required: options.required,
+      options: options.options,
+      default: options.default || [],
+      description: options.description,
+      category: options.category
+    });
+  }
+  function createBooleanElement(field, options = {}) {
+    return createElement({
+      field,
+      type: "boolean",
+      label: options.label,
+      required: options.required,
+      default: options.default,
+      description: options.description,
+      category: options.category
+    });
+  }
+  function createOptions(...options) {
+    return options;
+  }
+  function handleCheckboxChange(e, updateValue) {
+    const target = e.target;
+    updateValue(target.checked);
+  }
+  function handleSelectChange(e, updateValue) {
+    const target = e.target;
+    updateValue(target.value);
+  }
+  var on_input = (
+    // Multi-Select Funktionen
+    // Option hinzufügen
+    // Option entfernen
+    // CSS-Klassen für Feldbreite
+    // CSS-Klassen für Fehlerzustand
+    (e, updateValue) => updateValue(e.target.value)
   );
-  var root_1 = /* @__PURE__ */ from_html(`<div class="error-message svelte-gw41vd"> <button class="close-btn svelte-gw41vd" aria-label="Fehlermeldung schließen">×</button></div>`);
-  var on_click_1 = (__3, successMessage) => set(successMessage, null);
-  var root_2 = /* @__PURE__ */ from_html(`<div class="success-message svelte-gw41vd"> <button class="close-btn svelte-gw41vd" aria-label="Erfolgsmeldung schließen">×</button></div>`);
-  var on_click_2 = (__4, isCreatingNewSchema, editingSchema, errorMessage) => {
-    set(isCreatingNewSchema, true);
-    set(editingSchema, null);
-    set(errorMessage, null);
+  var root_2$1 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
+  var root_3$1 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_1$2 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <input type="text" class="field-input svelte-1ykx1li"/> <!> <!></div>`);
+  var on_input_1 = (e, updateValue) => updateValue(e.target.value);
+  var root_6 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
+  var root_7$1 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_5$2 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <textarea class="field-textarea svelte-1ykx1li"></textarea> <!> <!></div>`);
+  var root_11$1 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var root_12 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var root_13 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
+  var root_14 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_9$1 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <select class="field-select svelte-1ykx1li"><option>Bitte wählen...</option><!></select> <!> <!></div>`);
+  var on_change = (e, toggleSelection, option) => toggleSelection(get(option), e.target.checked);
+  var root_18 = /* @__PURE__ */ from_html(`<label class="checkbox-option svelte-1ykx1li"><input type="checkbox" class="svelte-1ykx1li"/> <span class="svelte-1ykx1li"> </span></label>`);
+  var on_change_1 = (e, toggleSelection, option) => toggleSelection(get(option).value, e.target.checked);
+  var root_19 = /* @__PURE__ */ from_html(`<label class="checkbox-option svelte-1ykx1li"><input type="checkbox" class="svelte-1ykx1li"/> <span class="svelte-1ykx1li"> </span></label>`);
+  var root_20 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
+  var root_21 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_16 = /* @__PURE__ */ from_html(`<div><div class="field-label svelte-1ykx1li"> </div> <div class="checkbox-group svelte-1ykx1li"></div> <!> <!></div>`);
+  var root_24 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
+  var root_25 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_23 = /* @__PURE__ */ from_html(`<div><label class="field-label checkbox-label svelte-1ykx1li"><input type="checkbox" class="field-checkbox svelte-1ykx1li"/> <span class="checkbox-text svelte-1ykx1li"> </span></label> <!> <!></div>`);
+  var on_input_2 = (e, updateValue) => updateValue(Number(e.target.value));
+  var root_28 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
+  var root_29 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_27 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <input type="number" class="field-input svelte-1ykx1li"/> <!> <!></div>`);
+  var on_change_2 = (e, updateValue) => updateValue(e.target.value);
+  var root_32 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
+  var root_33 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_31 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <input type="date" class="field-input svelte-1ykx1li"/> <!> <!></div>`);
+  var on_change_3 = (e, updateValue) => updateValue(e.target.value);
+  var on_input_3 = (e, updateValue) => updateValue(e.target.value);
+  var root_36 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
+  var root_37 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_35 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <div class="color-input-container"><input type="color" class="field-color svelte-1ykx1li"/> <input type="text" class="field-color-text svelte-1ykx1li" placeholder="#000000"/></div> <!> <!></div>`);
+  var on_input_4 = (e, updateValue) => updateValue(e.target.value);
+  var root_39 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
+  var root_40 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_38 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <input type="text" class="field-input svelte-1ykx1li"/> <!> <!></div>`);
+  function DynamicFormField($$anchor, $$props) {
+    push($$props, true);
+    function updateValue(newValue) {
+      $$props.onUpdate(newValue);
+    }
+    function handleBlur(e) {
+      const target = e.target;
+      updateValue(target.value);
+    }
+    function toggleSelection(optionValue, checked) {
+      const currentValues = $$props.value || [];
+      let newValues;
+      if (checked) {
+        newValues = [...currentValues, optionValue];
+      } else {
+        newValues = currentValues.filter((v) => v !== optionValue);
+      }
+      updateValue(newValues);
+    }
+    const fieldWidthClass = /* @__PURE__ */ user_derived(() => `field-width-${$$props.element.ui?.width || "full"}`);
+    const fieldClasses = /* @__PURE__ */ user_derived(() => [
+      "form-field",
+      get(fieldWidthClass),
+      $$props.error ? "has-error" : "",
+      $$props.element.ui?.disabled ? "disabled" : "",
+      $$props.element.ui?.readonly ? "readonly" : ""
+    ].filter(Boolean).join(" "));
+    var fragment = comment();
+    var node = first_child(fragment);
+    {
+      var consequent_2 = ($$anchor2) => {
+        var div = root_1$2();
+        var label = child(div);
+        var text = child(label);
+        var input = sibling(label, 2);
+        input.__input = [on_input, updateValue];
+        var node_1 = sibling(input, 2);
+        {
+          var consequent = ($$anchor3) => {
+            var small = root_2$1();
+            var text_1 = child(small);
+            template_effect(() => set_text(text_1, $$props.element.description));
+            append($$anchor3, small);
+          };
+          if_block(node_1, ($$render) => {
+            if ($$props.element.description) $$render(consequent);
+          });
+        }
+        var node_2 = sibling(node_1, 2);
+        {
+          var consequent_1 = ($$anchor3) => {
+            var div_1 = root_3$1();
+            var text_2 = child(div_1);
+            template_effect(() => set_text(text_2, $$props.error));
+            append($$anchor3, div_1);
+          };
+          if_block(node_2, ($$render) => {
+            if ($$props.error) $$render(consequent_1);
+          });
+        }
+        template_effect(() => {
+          set_class(div, 1, clsx(get(fieldClasses)), "svelte-1ykx1li");
+          set_attribute(label, "for", $$props.element.id);
+          set_text(text, `${$$props.element.label ?? ""}${$$props.element.required ? " *" : ""}`);
+          set_attribute(input, "id", $$props.element.id);
+          set_value(input, $$props.value || "");
+          set_attribute(input, "placeholder", $$props.element.placeholder || "");
+          input.required = $$props.element.required || false;
+          input.disabled = $$props.element.ui?.disabled || false;
+          input.readOnly = $$props.element.ui?.readonly || false;
+        });
+        event("blur", input, handleBlur);
+        append($$anchor2, div);
+      };
+      var alternate = ($$anchor2, $$elseif) => {
+        {
+          var consequent_5 = ($$anchor3) => {
+            var div_2 = root_5$2();
+            var label_1 = child(div_2);
+            var text_3 = child(label_1);
+            var textarea = sibling(label_1, 2);
+            textarea.__input = [on_input_1, updateValue];
+            var node_3 = sibling(textarea, 2);
+            {
+              var consequent_3 = ($$anchor4) => {
+                var small_1 = root_6();
+                var text_4 = child(small_1);
+                template_effect(() => set_text(text_4, $$props.element.description));
+                append($$anchor4, small_1);
+              };
+              if_block(node_3, ($$render) => {
+                if ($$props.element.description) $$render(consequent_3);
+              });
+            }
+            var node_4 = sibling(node_3, 2);
+            {
+              var consequent_4 = ($$anchor4) => {
+                var div_3 = root_7$1();
+                var text_5 = child(div_3);
+                template_effect(() => set_text(text_5, $$props.error));
+                append($$anchor4, div_3);
+              };
+              if_block(node_4, ($$render) => {
+                if ($$props.error) $$render(consequent_4);
+              });
+            }
+            template_effect(() => {
+              set_class(div_2, 1, clsx(get(fieldClasses)), "svelte-1ykx1li");
+              set_attribute(label_1, "for", $$props.element.id);
+              set_text(text_3, `${$$props.element.label ?? ""}${$$props.element.required ? " *" : ""}`);
+              set_attribute(textarea, "id", $$props.element.id);
+              set_attribute(textarea, "rows", $$props.element.ui?.rows || 3);
+              set_attribute(textarea, "placeholder", $$props.element.placeholder || "");
+              textarea.required = $$props.element.required || false;
+              textarea.disabled = $$props.element.ui?.disabled || false;
+              textarea.readOnly = $$props.element.ui?.readonly || false;
+              set_value(textarea, $$props.value || "");
+            });
+            event("blur", textarea, handleBlur);
+            append($$anchor3, div_2);
+          };
+          var alternate_1 = ($$anchor3, $$elseif2) => {
+            {
+              var consequent_9 = ($$anchor4) => {
+                var div_4 = root_9$1();
+                var label_2 = child(div_4);
+                var text_6 = child(label_2);
+                var select = sibling(label_2, 2);
+                select.__change = [handleSelectChange, updateValue];
+                var option_1 = child(select);
+                option_1.value = option_1.__value = "";
+                var node_5 = sibling(option_1);
+                each(node_5, 17, () => $$props.element.options || [], index, ($$anchor5, option) => {
+                  var fragment_1 = comment();
+                  var node_6 = first_child(fragment_1);
+                  {
+                    var consequent_6 = ($$anchor6) => {
+                      var option_2 = root_11$1();
+                      var text_7 = child(option_2);
+                      var option_2_value = {};
+                      template_effect(() => {
+                        set_selected(option_2, $$props.value === get(option));
+                        set_text(text_7, get(option));
+                        if (option_2_value !== (option_2_value = get(option))) {
+                          option_2.value = (option_2.__value = get(option)) ?? "";
+                        }
+                      });
+                      append($$anchor6, option_2);
+                    };
+                    var alternate_2 = ($$anchor6) => {
+                      var option_3 = root_12();
+                      var text_8 = child(option_3);
+                      var option_3_value = {};
+                      template_effect(() => {
+                        set_selected(option_3, $$props.value === get(option).value);
+                        set_text(text_8, get(option).label || get(option).value);
+                        if (option_3_value !== (option_3_value = get(option).value)) {
+                          option_3.value = (option_3.__value = get(option).value) ?? "";
+                        }
+                      });
+                      append($$anchor6, option_3);
+                    };
+                    if_block(node_6, ($$render) => {
+                      if (typeof get(option) === "string") $$render(consequent_6);
+                      else $$render(alternate_2, false);
+                    });
+                  }
+                  append($$anchor5, fragment_1);
+                });
+                var node_7 = sibling(select, 2);
+                {
+                  var consequent_7 = ($$anchor5) => {
+                    var small_2 = root_13();
+                    var text_9 = child(small_2);
+                    template_effect(() => set_text(text_9, $$props.element.description));
+                    append($$anchor5, small_2);
+                  };
+                  if_block(node_7, ($$render) => {
+                    if ($$props.element.description) $$render(consequent_7);
+                  });
+                }
+                var node_8 = sibling(node_7, 2);
+                {
+                  var consequent_8 = ($$anchor5) => {
+                    var div_5 = root_14();
+                    var text_10 = child(div_5);
+                    template_effect(() => set_text(text_10, $$props.error));
+                    append($$anchor5, div_5);
+                  };
+                  if_block(node_8, ($$render) => {
+                    if ($$props.error) $$render(consequent_8);
+                  });
+                }
+                template_effect(() => {
+                  set_class(div_4, 1, clsx(get(fieldClasses)), "svelte-1ykx1li");
+                  set_attribute(label_2, "for", $$props.element.id);
+                  set_text(text_6, `${$$props.element.label ?? ""}${$$props.element.required ? " *" : ""}`);
+                  set_attribute(select, "id", $$props.element.id);
+                  select.required = $$props.element.required || false;
+                  select.disabled = $$props.element.ui?.disabled || false;
+                });
+                append($$anchor4, div_4);
+              };
+              var alternate_3 = ($$anchor4, $$elseif3) => {
+                {
+                  var consequent_13 = ($$anchor5) => {
+                    var div_6 = root_16();
+                    var div_7 = child(div_6);
+                    var text_11 = child(div_7);
+                    var div_8 = sibling(div_7, 2);
+                    each(div_8, 21, () => $$props.element.options || [], index, ($$anchor6, option) => {
+                      var fragment_2 = comment();
+                      var node_9 = first_child(fragment_2);
+                      {
+                        var consequent_10 = ($$anchor7) => {
+                          var label_3 = root_18();
+                          var input_1 = child(label_3);
+                          input_1.__change = [on_change, toggleSelection, option];
+                          var span = sibling(input_1, 2);
+                          var text_12 = child(span);
+                          template_effect(
+                            ($0) => {
+                              set_checked(input_1, $0);
+                              set_text(text_12, get(option));
+                            },
+                            [() => ($$props.value || []).includes(get(option))]
+                          );
+                          append($$anchor7, label_3);
+                        };
+                        var alternate_4 = ($$anchor7) => {
+                          var label_4 = root_19();
+                          var input_2 = child(label_4);
+                          input_2.__change = [on_change_1, toggleSelection, option];
+                          var span_1 = sibling(input_2, 2);
+                          var text_13 = child(span_1);
+                          template_effect(
+                            ($0) => {
+                              set_checked(input_2, $0);
+                              set_text(text_13, get(option).label || get(option).value);
+                            },
+                            [() => ($$props.value || []).includes(get(option).value)]
+                          );
+                          append($$anchor7, label_4);
+                        };
+                        if_block(node_9, ($$render) => {
+                          if (typeof get(option) === "string") $$render(consequent_10);
+                          else $$render(alternate_4, false);
+                        });
+                      }
+                      append($$anchor6, fragment_2);
+                    });
+                    var node_10 = sibling(div_8, 2);
+                    {
+                      var consequent_11 = ($$anchor6) => {
+                        var small_3 = root_20();
+                        var text_14 = child(small_3);
+                        template_effect(() => set_text(text_14, $$props.element.description));
+                        append($$anchor6, small_3);
+                      };
+                      if_block(node_10, ($$render) => {
+                        if ($$props.element.description) $$render(consequent_11);
+                      });
+                    }
+                    var node_11 = sibling(node_10, 2);
+                    {
+                      var consequent_12 = ($$anchor6) => {
+                        var div_9 = root_21();
+                        var text_15 = child(div_9);
+                        template_effect(() => set_text(text_15, $$props.error));
+                        append($$anchor6, div_9);
+                      };
+                      if_block(node_11, ($$render) => {
+                        if ($$props.error) $$render(consequent_12);
+                      });
+                    }
+                    template_effect(() => {
+                      set_class(div_6, 1, clsx(get(fieldClasses)), "svelte-1ykx1li");
+                      set_text(text_11, `${$$props.element.label ?? ""}${$$props.element.required ? " *" : ""}`);
+                    });
+                    append($$anchor5, div_6);
+                  };
+                  var alternate_5 = ($$anchor5, $$elseif4) => {
+                    {
+                      var consequent_16 = ($$anchor6) => {
+                        var div_10 = root_23();
+                        var label_5 = child(div_10);
+                        var input_3 = child(label_5);
+                        input_3.__change = [handleCheckboxChange, updateValue];
+                        var span_2 = sibling(input_3, 2);
+                        var text_16 = child(span_2);
+                        var node_12 = sibling(label_5, 2);
+                        {
+                          var consequent_14 = ($$anchor7) => {
+                            var small_4 = root_24();
+                            var text_17 = child(small_4);
+                            template_effect(() => set_text(text_17, $$props.element.description));
+                            append($$anchor7, small_4);
+                          };
+                          if_block(node_12, ($$render) => {
+                            if ($$props.element.description) $$render(consequent_14);
+                          });
+                        }
+                        var node_13 = sibling(node_12, 2);
+                        {
+                          var consequent_15 = ($$anchor7) => {
+                            var div_11 = root_25();
+                            var text_18 = child(div_11);
+                            template_effect(() => set_text(text_18, $$props.error));
+                            append($$anchor7, div_11);
+                          };
+                          if_block(node_13, ($$render) => {
+                            if ($$props.error) $$render(consequent_15);
+                          });
+                        }
+                        template_effect(() => {
+                          set_class(div_10, 1, clsx(get(fieldClasses)), "svelte-1ykx1li");
+                          set_attribute(input_3, "id", $$props.element.id);
+                          set_checked(input_3, $$props.value || false);
+                          input_3.disabled = $$props.element.ui?.disabled || false;
+                          set_text(text_16, `${$$props.element.label ?? ""}${$$props.element.required ? " *" : ""}`);
+                        });
+                        append($$anchor6, div_10);
+                      };
+                      var alternate_6 = ($$anchor6, $$elseif5) => {
+                        {
+                          var consequent_19 = ($$anchor7) => {
+                            var div_12 = root_27();
+                            var label_6 = child(div_12);
+                            var text_19 = child(label_6);
+                            var input_4 = sibling(label_6, 2);
+                            input_4.__input = [on_input_2, updateValue];
+                            var node_14 = sibling(input_4, 2);
+                            {
+                              var consequent_17 = ($$anchor8) => {
+                                var small_5 = root_28();
+                                var text_20 = child(small_5);
+                                template_effect(() => set_text(text_20, $$props.element.description));
+                                append($$anchor8, small_5);
+                              };
+                              if_block(node_14, ($$render) => {
+                                if ($$props.element.description) $$render(consequent_17);
+                              });
+                            }
+                            var node_15 = sibling(node_14, 2);
+                            {
+                              var consequent_18 = ($$anchor8) => {
+                                var div_13 = root_29();
+                                var text_21 = child(div_13);
+                                template_effect(() => set_text(text_21, $$props.error));
+                                append($$anchor8, div_13);
+                              };
+                              if_block(node_15, ($$render) => {
+                                if ($$props.error) $$render(consequent_18);
+                              });
+                            }
+                            template_effect(() => {
+                              set_class(div_12, 1, clsx(get(fieldClasses)), "svelte-1ykx1li");
+                              set_attribute(label_6, "for", $$props.element.id);
+                              set_text(text_19, `${$$props.element.label ?? ""}${$$props.element.required ? " *" : ""}`);
+                              set_attribute(input_4, "id", $$props.element.id);
+                              set_value(input_4, $$props.value || "");
+                              set_attribute(input_4, "placeholder", $$props.element.placeholder || "");
+                              input_4.required = $$props.element.required || false;
+                              set_attribute(input_4, "min", $$props.element.validation?.min);
+                              set_attribute(input_4, "max", $$props.element.validation?.max);
+                              input_4.disabled = $$props.element.ui?.disabled || false;
+                              input_4.readOnly = $$props.element.ui?.readonly || false;
+                            });
+                            event("blur", input_4, handleBlur);
+                            append($$anchor7, div_12);
+                          };
+                          var alternate_7 = ($$anchor7, $$elseif6) => {
+                            {
+                              var consequent_22 = ($$anchor8) => {
+                                var div_14 = root_31();
+                                var label_7 = child(div_14);
+                                var text_22 = child(label_7);
+                                var input_5 = sibling(label_7, 2);
+                                input_5.__change = [on_change_2, updateValue];
+                                var node_16 = sibling(input_5, 2);
+                                {
+                                  var consequent_20 = ($$anchor9) => {
+                                    var small_6 = root_32();
+                                    var text_23 = child(small_6);
+                                    template_effect(() => set_text(text_23, $$props.element.description));
+                                    append($$anchor9, small_6);
+                                  };
+                                  if_block(node_16, ($$render) => {
+                                    if ($$props.element.description) $$render(consequent_20);
+                                  });
+                                }
+                                var node_17 = sibling(node_16, 2);
+                                {
+                                  var consequent_21 = ($$anchor9) => {
+                                    var div_15 = root_33();
+                                    var text_24 = child(div_15);
+                                    template_effect(() => set_text(text_24, $$props.error));
+                                    append($$anchor9, div_15);
+                                  };
+                                  if_block(node_17, ($$render) => {
+                                    if ($$props.error) $$render(consequent_21);
+                                  });
+                                }
+                                template_effect(() => {
+                                  set_class(div_14, 1, clsx(get(fieldClasses)), "svelte-1ykx1li");
+                                  set_attribute(label_7, "for", $$props.element.id);
+                                  set_text(text_22, `${$$props.element.label ?? ""}${$$props.element.required ? " *" : ""}`);
+                                  set_attribute(input_5, "id", $$props.element.id);
+                                  set_value(input_5, $$props.value || "");
+                                  input_5.required = $$props.element.required || false;
+                                  input_5.disabled = $$props.element.ui?.disabled || false;
+                                  input_5.readOnly = $$props.element.ui?.readonly || false;
+                                });
+                                append($$anchor8, div_14);
+                              };
+                              var alternate_8 = ($$anchor8, $$elseif7) => {
+                                {
+                                  var consequent_25 = ($$anchor9) => {
+                                    var div_16 = root_35();
+                                    var label_8 = child(div_16);
+                                    var text_25 = child(label_8);
+                                    var div_17 = sibling(label_8, 2);
+                                    var input_6 = child(div_17);
+                                    input_6.__change = [on_change_3, updateValue];
+                                    var input_7 = sibling(input_6, 2);
+                                    input_7.__input = [on_input_3, updateValue];
+                                    var node_18 = sibling(div_17, 2);
+                                    {
+                                      var consequent_23 = ($$anchor10) => {
+                                        var small_7 = root_36();
+                                        var text_26 = child(small_7);
+                                        template_effect(() => set_text(text_26, $$props.element.description));
+                                        append($$anchor10, small_7);
+                                      };
+                                      if_block(node_18, ($$render) => {
+                                        if ($$props.element.description) $$render(consequent_23);
+                                      });
+                                    }
+                                    var node_19 = sibling(node_18, 2);
+                                    {
+                                      var consequent_24 = ($$anchor10) => {
+                                        var div_18 = root_37();
+                                        var text_27 = child(div_18);
+                                        template_effect(() => set_text(text_27, $$props.error));
+                                        append($$anchor10, div_18);
+                                      };
+                                      if_block(node_19, ($$render) => {
+                                        if ($$props.error) $$render(consequent_24);
+                                      });
+                                    }
+                                    template_effect(() => {
+                                      set_class(div_16, 1, clsx(get(fieldClasses)), "svelte-1ykx1li");
+                                      set_attribute(label_8, "for", $$props.element.id);
+                                      set_text(text_25, `${$$props.element.label ?? ""}${$$props.element.required ? " *" : ""}`);
+                                      set_attribute(input_6, "id", $$props.element.id);
+                                      set_value(input_6, $$props.value || "#000000");
+                                      input_6.required = $$props.element.required || false;
+                                      input_6.disabled = $$props.element.ui?.disabled || false;
+                                      set_value(input_7, $$props.value || "#000000");
+                                      input_7.required = $$props.element.required || false;
+                                      input_7.disabled = $$props.element.ui?.disabled || false;
+                                      input_7.readOnly = $$props.element.ui?.readonly || false;
+                                    });
+                                    event("blur", input_7, handleBlur);
+                                    append($$anchor9, div_16);
+                                  };
+                                  var alternate_9 = ($$anchor9) => {
+                                    var div_19 = root_38();
+                                    var label_9 = child(div_19);
+                                    var text_28 = child(label_9);
+                                    var input_8 = sibling(label_9, 2);
+                                    input_8.__input = [on_input_4, updateValue];
+                                    var node_20 = sibling(input_8, 2);
+                                    {
+                                      var consequent_26 = ($$anchor10) => {
+                                        var small_8 = root_39();
+                                        var text_29 = child(small_8);
+                                        template_effect(() => set_text(text_29, $$props.element.description));
+                                        append($$anchor10, small_8);
+                                      };
+                                      if_block(node_20, ($$render) => {
+                                        if ($$props.element.description) $$render(consequent_26);
+                                      });
+                                    }
+                                    var node_21 = sibling(node_20, 2);
+                                    {
+                                      var consequent_27 = ($$anchor10) => {
+                                        var div_20 = root_40();
+                                        var text_30 = child(div_20);
+                                        template_effect(() => set_text(text_30, $$props.error));
+                                        append($$anchor10, div_20);
+                                      };
+                                      if_block(node_21, ($$render) => {
+                                        if ($$props.error) $$render(consequent_27);
+                                      });
+                                    }
+                                    template_effect(() => {
+                                      set_class(div_19, 1, clsx(get(fieldClasses)), "svelte-1ykx1li");
+                                      set_attribute(label_9, "for", $$props.element.id);
+                                      set_text(text_28, `${$$props.element.label ?? ""}${$$props.element.required ? " *" : ""}`);
+                                      set_attribute(input_8, "id", $$props.element.id);
+                                      set_value(input_8, $$props.value || "");
+                                      set_attribute(input_8, "placeholder", $$props.element.placeholder || "");
+                                      input_8.required = $$props.element.required || false;
+                                      input_8.disabled = $$props.element.ui?.disabled || false;
+                                      input_8.readOnly = $$props.element.ui?.readonly || false;
+                                    });
+                                    event("blur", input_8, handleBlur);
+                                    append($$anchor9, div_19);
+                                  };
+                                  if_block(
+                                    $$anchor8,
+                                    ($$render) => {
+                                      if ($$props.element.type === "color") $$render(consequent_25);
+                                      else $$render(alternate_9, false);
+                                    },
+                                    $$elseif7
+                                  );
+                                }
+                              };
+                              if_block(
+                                $$anchor7,
+                                ($$render) => {
+                                  if ($$props.element.type === "date") $$render(consequent_22);
+                                  else $$render(alternate_8, false);
+                                },
+                                $$elseif6
+                              );
+                            }
+                          };
+                          if_block(
+                            $$anchor6,
+                            ($$render) => {
+                              if ($$props.element.type === "number") $$render(consequent_19);
+                              else $$render(alternate_7, false);
+                            },
+                            $$elseif5
+                          );
+                        }
+                      };
+                      if_block(
+                        $$anchor5,
+                        ($$render) => {
+                          if ($$props.element.type === "boolean") $$render(consequent_16);
+                          else $$render(alternate_6, false);
+                        },
+                        $$elseif4
+                      );
+                    }
+                  };
+                  if_block(
+                    $$anchor4,
+                    ($$render) => {
+                      if ($$props.element.type === "multiselect") $$render(consequent_13);
+                      else $$render(alternate_5, false);
+                    },
+                    $$elseif3
+                  );
+                }
+              };
+              if_block(
+                $$anchor3,
+                ($$render) => {
+                  if ($$props.element.type === "select") $$render(consequent_9);
+                  else $$render(alternate_3, false);
+                },
+                $$elseif2
+              );
+            }
+          };
+          if_block(
+            $$anchor2,
+            ($$render) => {
+              if ($$props.element.type === "textarea") $$render(consequent_5);
+              else $$render(alternate_1, false);
+            },
+            $$elseif
+          );
+        }
+      };
+      if_block(node, ($$render) => {
+        if ($$props.element.type === "text") $$render(consequent_2);
+        else $$render(alternate, false);
+      });
+    }
+    append($$anchor, fragment);
+    pop();
+  }
+  delegate(["input", "change"]);
+  var root_1$1 = /* @__PURE__ */ from_html(`<p class="form-description svelte-1hegfbw"> </p>`);
+  var root_3 = /* @__PURE__ */ from_html(`<div class="field-container svelte-1hegfbw"><!></div>`);
+  var root_4 = /* @__PURE__ */ from_html(`<span class="spinner svelte-1hegfbw"></span>`);
+  var root_5$1 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-secondary svelte-1hegfbw"> </button>`);
+  var root$3 = /* @__PURE__ */ from_html(`<div><div class="form-header svelte-1hegfbw"><h3 class="form-title svelte-1hegfbw"> </h3> <!></div> <form class="dynamic-form svelte-1hegfbw"><!> <div class="form-actions svelte-1hegfbw"><button type="submit" class="btn btn-primary svelte-1hegfbw"><!> </button> <!></div></form></div>`);
+  function DynamicFormSheet($$anchor, $$props) {
+    push($$props, true);
+    let formValues = /* @__PURE__ */ state(proxy({}));
+    let errors = /* @__PURE__ */ state(proxy({}));
+    let isSubmitting = /* @__PURE__ */ state(false);
+    const defaultConfig = {
+      submitLabel: "Speichern",
+      cancelLabel: "Abbrechen",
+      showCancelButton: true,
+      modalSize: "medium",
+      embedding: { mode: "embedded", zIndex: 1e3, animation: "fade" },
+      validation: { location: "child", timing: "onSubmit" },
+      styling: { theme: "foundry", inheritParentStyles: true }
+    };
+    const mergedConfig = /* @__PURE__ */ user_derived(() => ({
+      ...defaultConfig,
+      ...$$props.config,
+      embedding: { ...defaultConfig.embedding, ...$$props.config.embedding },
+      validation: { ...defaultConfig.validation, ...$$props.config.validation },
+      styling: { ...defaultConfig.styling, ...$$props.config.styling }
+    }));
+    user_effect(() => {
+      if ($$props.config.initialValues) {
+        set(formValues, { ...$$props.config.initialValues }, true);
+      } else {
+        const defaults = {};
+        $$props.config.elements.forEach((element) => {
+          if (element.default !== void 0) {
+            defaults[element.name] = element.default;
+          }
+        });
+        set(formValues, defaults, true);
+      }
+      scrollToFirstField();
+    });
+    function updateFieldValue(fieldName, value) {
+      set(formValues, { ...get(formValues), [fieldName]: value }, true);
+      if (get(mergedConfig).validation.timing === "onChange") {
+        validateField(fieldName);
+      }
+      if (get(mergedConfig).state?.shareIntermediateValues && get(mergedConfig).state?.onIntermediateUpdate) {
+        get(mergedConfig).state.onIntermediateUpdate(get(formValues));
+      }
+    }
+    function validateField(fieldName) {
+      const element = $$props.config.elements.find((e) => e.name === fieldName);
+      if (!element) return;
+      const fieldErrors = [];
+      if (element.required && (!get(formValues)[fieldName] || get(formValues)[fieldName] === "")) {
+        fieldErrors.push(`${element.label} ist erforderlich`);
+      }
+      if (element.validation?.pattern && get(formValues)[fieldName]) {
+        const regex = new RegExp(element.validation.pattern);
+        if (!regex.test(get(formValues)[fieldName])) {
+          fieldErrors.push(`${element.label} entspricht nicht dem erwarteten Format`);
+        }
+      }
+      if (element.type === "number" && get(formValues)[fieldName] !== void 0) {
+        const numValue = Number(get(formValues)[fieldName]);
+        if (element.validation?.min !== void 0 && numValue < element.validation.min) {
+          fieldErrors.push(`${element.label} muss mindestens ${element.validation.min} sein`);
+        }
+        if (element.validation?.max !== void 0 && numValue > element.validation.max) {
+          fieldErrors.push(`${element.label} darf maximal ${element.validation.max} sein`);
+        }
+      }
+      if (element.validation?.custom) {
+        const customError = element.validation.custom(get(formValues)[fieldName]);
+        if (customError) fieldErrors.push(customError);
+      }
+      if (fieldErrors.length > 0) {
+        get(errors)[fieldName] = fieldErrors.join(", ");
+        scrollToField(fieldName);
+      } else {
+        delete get(errors)[fieldName];
+        set(errors, { ...get(errors) }, true);
+      }
+    }
+    function validateAllFields() {
+      $$props.config.elements.forEach((element) => validateField(element.name));
+      return Object.keys(get(errors)).length === 0;
+    }
+    function scrollToField(fieldName) {
+      const fieldElement = document.querySelector(`[data-field-name="${fieldName}"]`);
+      if (fieldElement) {
+        fieldElement.scrollIntoView({ behavior: "smooth", block: "center", inline: "nearest" });
+        const inputElement = fieldElement.querySelector("input, textarea, select");
+        if (inputElement) {
+          setTimeout(
+            () => {
+              inputElement.focus();
+            },
+            300
+          );
+        }
+      }
+    }
+    function scrollToFirstField() {
+      const firstVisibleField = $$props.config.elements.find((element) => !element.showIf || element.showIf(get(formValues)));
+      if (firstVisibleField) {
+        setTimeout(
+          () => {
+            scrollToField(firstVisibleField.name);
+          },
+          100
+        );
+      }
+    }
+    async function handleSubmit(e) {
+      e.preventDefault();
+      if (get(isSubmitting)) return;
+      if (!validateAllFields()) {
+        const firstErrorField = Object.keys(get(errors))[0];
+        if (firstErrorField) {
+          scrollToField(firstErrorField);
+        }
+        return;
+      }
+      set(isSubmitting, true);
+      try {
+        if ($$props.config.onSubmit) {
+          await $$props.config.onSubmit(get(formValues));
+        } else if ($$props.onSubmit) {
+          await $$props.onSubmit(get(formValues));
+        }
+        closeModal();
+      } catch (error) {
+        console.error("Fehler beim Absenden des Formulars:", error);
+      } finally {
+        set(isSubmitting, false);
+      }
+    }
+    function closeModal() {
+      if ($$props.config.onCancel) {
+        $$props.config.onCancel();
+      }
+      if ($$props.onCancel) {
+        $$props.onCancel();
+      }
+    }
+    function handleKeydown(e) {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    }
+    function handleKeyNavigation(e) {
+      if (e.key === "Enter" && e.ctrlKey) {
+        e.preventDefault();
+        handleSubmit(e);
+      }
+    }
+    const formClasses = /* @__PURE__ */ user_derived(() => [
+      "dynamic-form-sheet",
+      `form-size-${get(mergedConfig).modalSize}`,
+      `theme-${get(mergedConfig).styling.theme}`,
+      get(mergedConfig).styling.customClasses?.container || ""
+    ].filter(Boolean).join(" "));
+    var div = root$3();
+    event("keydown", $window, handleKeydown);
+    event("keyup", $window, handleKeyNavigation);
+    var div_1 = child(div);
+    var h3 = child(div_1);
+    var text = child(h3);
+    var node = sibling(h3, 2);
+    {
+      var consequent = ($$anchor2) => {
+        var p = root_1$1();
+        var text_1 = child(p);
+        template_effect(() => set_text(text_1, get(mergedConfig).description));
+        append($$anchor2, p);
+      };
+      if_block(node, ($$render) => {
+        if (get(mergedConfig).description) $$render(consequent);
+      });
+    }
+    var form = sibling(div_1, 2);
+    var node_1 = child(form);
+    each(node_1, 17, () => $$props.config.elements, (element) => element.id, ($$anchor2, element) => {
+      var fragment = comment();
+      var node_2 = first_child(fragment);
+      {
+        var consequent_1 = ($$anchor3) => {
+          var div_2 = root_3();
+          var node_3 = child(div_2);
+          DynamicFormField(node_3, {
+            get element() {
+              return get(element);
+            },
+            get value() {
+              return get(formValues)[get(element).name];
+            },
+            get error() {
+              return get(errors)[get(element).name];
+            },
+            onUpdate: (value) => updateFieldValue(get(element).name, value)
+          });
+          template_effect(() => set_attribute(div_2, "data-field-name", get(element).name));
+          append($$anchor3, div_2);
+        };
+        if_block(node_2, ($$render) => {
+          if (!get(element).showIf || get(element).showIf(get(formValues))) $$render(consequent_1);
+        });
+      }
+      append($$anchor2, fragment);
+    });
+    var div_3 = sibling(node_1, 2);
+    var button = child(div_3);
+    var node_4 = child(button);
+    {
+      var consequent_2 = ($$anchor2) => {
+        var span = root_4();
+        append($$anchor2, span);
+      };
+      if_block(node_4, ($$render) => {
+        if (get(isSubmitting)) $$render(consequent_2);
+      });
+    }
+    var text_2 = sibling(node_4);
+    var node_5 = sibling(button, 2);
+    {
+      var consequent_3 = ($$anchor2) => {
+        var button_1 = root_5$1();
+        button_1.__click = closeModal;
+        var text_3 = child(button_1);
+        template_effect(() => {
+          button_1.disabled = get(isSubmitting);
+          set_text(text_3, get(mergedConfig).cancelLabel);
+        });
+        append($$anchor2, button_1);
+      };
+      if_block(node_5, ($$render) => {
+        if (get(mergedConfig).showCancelButton) $$render(consequent_3);
+      });
+    }
+    template_effect(() => {
+      set_class(div, 1, `form-container ${get(formClasses) ?? ""}`, "svelte-1hegfbw");
+      set_text(text, get(mergedConfig).title);
+      button.disabled = get(isSubmitting);
+      set_text(text_2, ` ${get(mergedConfig).submitLabel ?? ""}`);
+    });
+    event("submit", form, handleSubmit);
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["click"]);
+  const _DynamicDialogApp = class _DynamicDialogApp extends foundry.applications.api.HandlebarsApplicationMixin(
+    foundry.applications.api.ApplicationV2
+  ) {
+    constructor() {
+      super(...arguments);
+      this.svelteApp = null;
+    }
+    /** @override */
+    get title() {
+      return this.options.window.title;
+    }
+    /** @override */
+    async _renderHTML(context, options) {
+      return super._renderHTML(context, options);
+    }
+    /** @override */
+    _replaceHTML(html, options, context) {
+      return super._replaceHTML(html, options, context);
+    }
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      console.log(`[${_DynamicDialogApp.appId}] _prepareContext called with context:`, context);
+      console.log(`[${_DynamicDialogApp.appId}] _prepareContext called with options:`, options);
+      return context;
+    }
+    async _prepareConfig(config) {
+      _DynamicDialogApp.config = config;
+      console.log(`[${_DynamicDialogApp.appId}] _prepareConfig called with config:`, _DynamicDialogApp.config);
+      return _DynamicDialogApp.config;
+    }
+    async _prepareOnSubmit(onSubmit) {
+      _DynamicDialogApp.onSubmit = onSubmit;
+      console.log(`[${_DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`, _DynamicDialogApp.onSubmit);
+      return _DynamicDialogApp.onSubmit;
+    }
+    async _prepareOnCancel(onCancel) {
+      _DynamicDialogApp.onCancel = onCancel;
+      console.log(`[${_DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`, _DynamicDialogApp.onCancel);
+      return _DynamicDialogApp.onCancel;
+    }
+    async _onRender(context, options) {
+      console.log(`[${_DynamicDialogApp.appId}] _onRender started`, { context, options });
+      try {
+        await super._onRender(context, options);
+        await this._loadCSS();
+        const target = this.element.querySelector("#dynamic-dialog-svelte");
+        if (!target) {
+          throw new Error("Svelte mount point '#dynamic-dialog-svelte' not found");
+        }
+        console.log(`[${_DynamicDialogApp.appId}] Found target element:`, target);
+        if (this.svelteApp) {
+          console.log(`[${_DynamicDialogApp.appId}] Unmounting existing Svelte app`);
+          await unmount(this.svelteApp);
+          this.svelteApp = null;
+        }
+        this.svelteApp = mount(DynamicFormSheet, {
+          target,
+          props: {
+            config: _DynamicDialogApp.config,
+            onSubmit: _DynamicDialogApp.onSubmit,
+            onCancel: _DynamicDialogApp.onCancel
+          }
+        });
+        console.log(`[${_DynamicDialogApp.appId}] DynamicFormSheet mounted successfully`);
+      } catch (error) {
+        console.error(`[${_DynamicDialogApp.appId}] Error during render:`, error);
+        throw error;
+      }
+    }
+    /**
+     * CSS-Datei für die DynamicDialogApp laden
+     */
+    async _loadCSS() {
+      const cssPath = "modules/relationship-app/styles/dynamic-dialog-app.css";
+      if (document.querySelector(`link[href*="${cssPath}"]`)) {
+        return;
+      }
+      const link2 = document.createElement("link");
+      link2.rel = "stylesheet";
+      link2.type = "text/css";
+      link2.href = cssPath;
+      document.head.appendChild(link2);
+      console.log(`[${_DynamicDialogApp.appId}] CSS loaded: ${cssPath}`);
+    }
+    /** @override */
+    async _onClose(options) {
+      console.log(`[${_DynamicDialogApp.appId}] _onClose called with options:`, options);
+      if (this.svelteApp) {
+        await unmount(this.svelteApp);
+        this.svelteApp = null;
+      }
+      return super._onClose(options);
+    }
+    /**
+     * Statische Methode zum einfachen Öffnen des Dialogs
+     */
+    static async show(config) {
+      return new Promise((resolve) => {
+        const app = new _DynamicDialogApp();
+        app._prepareConfig(config);
+        app._prepareOnSubmit((values) => {
+          app.close();
+          resolve(values);
+        });
+        app._prepareOnCancel(() => {
+          app.close();
+          resolve(null);
+        });
+        app.render(true);
+      });
+    }
   };
-  var on_click_3 = (__5, selectedSchemaId, schema) => set(selectedSchemaId, get(selectedSchemaId) === get(schema).id ? null : get(schema).id, true);
-  var on_keydown = (e, selectedSchemaId, schema) => e.key === "Enter" && set(selectedSchemaId, get(selectedSchemaId) === get(schema).id ? null : get(schema).id, true);
-  var on_click_4 = (__6, startEditingSchema, schema) => startEditingSchema(get(schema));
-  var on_click_5 = (__7, duplicateSchema, schema) => duplicateSchema(get(schema).id);
-  var on_click_6 = (__8, deleteSchema, schema) => deleteSchema(get(schema).id);
-  var on_click_7 = (__9, isCreatingNewRow, editingRow, errorMessage) => {
-    set(isCreatingNewRow, true);
-    set(editingRow, null);
-    set(errorMessage, null);
+  _DynamicDialogApp.PARTS = {
+    main: {
+      template: "modules/relationship-app/templates/DynamicFormApp.hbs"
+    }
   };
-  var root_6 = /* @__PURE__ */ from_html(`<span class="required-badge svelte-gw41vd">Pflicht</span>`);
-  var on_click_8 = (__10, startEditingRow, row) => startEditingRow(get(row));
-  var on_click_9 = (__11, deleteMetadataRow, schema, row) => deleteMetadataRow(get(schema).id, get(row).id);
-  var root_5 = /* @__PURE__ */ from_html(`<div class="metadata-row-item svelte-gw41vd"><div class="row-header svelte-gw41vd"><span class="row-label svelte-gw41vd"> </span> <span class="row-name svelte-gw41vd"> </span> <span class="row-type svelte-gw41vd"> </span> <!></div> <div class="row-actions svelte-gw41vd"><button class="btn btn-small btn-secondary svelte-gw41vd">Bearbeiten</button> <button class="btn btn-small btn-danger svelte-gw41vd">Löschen</button></div></div>`);
-  var root_4 = /* @__PURE__ */ from_html(`<div class="schema-details svelte-gw41vd"><p class="svelte-gw41vd"><strong>Beschreibung:</strong> </p> <p class="svelte-gw41vd"><strong>Autor:</strong> </p> <p class="svelte-gw41vd"><strong>Kategorien:</strong> </p> <p class="svelte-gw41vd"><strong>Metadaten-Zeilen:</strong> </p> <div class="schema-actions svelte-gw41vd"><button class="btn btn-secondary svelte-gw41vd">Bearbeiten</button> <button class="btn btn-secondary svelte-gw41vd">Duplizieren</button> <button class="btn btn-danger svelte-gw41vd">Löschen</button></div> <div class="metadata-rows-section svelte-gw41vd"><div class="section-header svelte-gw41vd"><h4 class="svelte-gw41vd">Metadaten-Zeilen</h4> <button class="btn btn-primary svelte-gw41vd">Neue Zeile hinzufügen</button></div> <div class="metadata-rows-list svelte-gw41vd"></div></div></div>`);
-  var root_3 = /* @__PURE__ */ from_html(`<div><div class="schema-header svelte-gw41vd" role="button" tabindex="0"><h3 class="svelte-gw41vd"> </h3> <span class="schema-name svelte-gw41vd"> </span> <span class="schema-version svelte-gw41vd"> </span></div> <!></div>`);
-  var root_7 = /* @__PURE__ */ from_html(`<div class="modal-overlay svelte-gw41vd" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="schema-modal-title"><div class="modal svelte-gw41vd" role="region" aria-label="Modal-Inhalt"><h3 id="schema-modal-title" class="svelte-gw41vd"> </h3> <form><div class="form-group svelte-gw41vd"><label for="schema-name" class="svelte-gw41vd">Name *</label> <input id="schema-name" type="text" placeholder="Technischer Name (z.B. character_metadata)" required class="svelte-gw41vd"/></div> <div class="form-group svelte-gw41vd"><label for="schema-label" class="svelte-gw41vd">Label *</label> <input id="schema-label" type="text" placeholder="Anzeigename (z.B. Charakter-Metadaten)" required class="svelte-gw41vd"/></div> <div class="form-group svelte-gw41vd"><label for="schema-description" class="svelte-gw41vd">Beschreibung</label> <textarea id="schema-description" placeholder="Beschreibung des Schemas" class="svelte-gw41vd"></textarea></div> <div class="form-row svelte-gw41vd"><div class="form-group svelte-gw41vd"><label for="schema-version" class="svelte-gw41vd">Version</label> <input id="schema-version" type="text" placeholder="1.0.0" class="svelte-gw41vd"/></div> <div class="form-group svelte-gw41vd"><label for="schema-author" class="svelte-gw41vd">Autor</label> <input id="schema-author" type="text" placeholder="Ihr Name" class="svelte-gw41vd"/></div></div> <div class="form-actions svelte-gw41vd"><button type="submit" class="btn btn-primary svelte-gw41vd"> </button> <button type="button" class="btn btn-secondary svelte-gw41vd" aria-label="Schema-Erstellung abbrechen">Abbrechen</button></div></form></div></div>`);
-  var root_9 = /* @__PURE__ */ from_html(`<option> </option>`);
-  var root_10 = /* @__PURE__ */ from_html(`<option> </option>`);
-  var root_12 = /* @__PURE__ */ from_html(`<div class="option-row svelte-gw41vd"><input type="text" class="svelte-gw41vd"/> <button type="button" class="btn btn-small btn-danger svelte-gw41vd">Entfernen</button></div>`);
-  var root_11 = /* @__PURE__ */ from_html(`<div class="form-group svelte-gw41vd"><label for="options-container" class="svelte-gw41vd">Auswahloptionen</label> <div id="options-container"><!> <button type="button" class="btn btn-secondary svelte-gw41vd" aria-label="Neue Auswahloption hinzufügen">Option hinzufügen</button></div></div>`);
-  var root_8 = /* @__PURE__ */ from_html(`<div class="modal-overlay svelte-gw41vd" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="row-modal-title"><div class="modal svelte-gw41vd" role="region" aria-label="Modal-Inhalt"><h3 id="row-modal-title" class="svelte-gw41vd"> </h3> <form><div class="form-row svelte-gw41vd"><div class="form-group svelte-gw41vd"><label for="row-name" class="svelte-gw41vd">Name *</label> <input id="row-name" type="text" placeholder="Technischer Name (z.B. strength)" required class="svelte-gw41vd"/></div> <div class="form-group svelte-gw41vd"><label for="row-label" class="svelte-gw41vd">Label *</label> <input id="row-label" type="text" placeholder="Anzeigename (z.B. Stärke)" required class="svelte-gw41vd"/></div></div> <div class="form-row svelte-gw41vd"><div class="form-group svelte-gw41vd"><label for="row-type" class="svelte-gw41vd">Typ *</label> <select id="row-type" required class="svelte-gw41vd"></select></div> <div class="form-group svelte-gw41vd"><label for="row-category" class="svelte-gw41vd">Kategorie</label> <select id="row-category" class="svelte-gw41vd"></select></div></div> <div class="form-group svelte-gw41vd"><label for="row-description" class="svelte-gw41vd">Beschreibung</label> <textarea id="row-description" placeholder="Beschreibung des Feldes" class="svelte-gw41vd"></textarea></div> <div class="form-row svelte-gw41vd"><div class="form-group svelte-gw41vd"><label for="row-placeholder" class="svelte-gw41vd">Platzhalter</label> <input id="row-placeholder" type="text" placeholder="Platzhaltertext" class="svelte-gw41vd"/></div> <div class="form-group svelte-gw41vd"><label for="row-default" class="svelte-gw41vd">Standardwert</label> <input id="row-default" type="text" placeholder="Standardwert" class="svelte-gw41vd"/></div></div> <div class="form-group svelte-gw41vd"><label class="checkbox-label svelte-gw41vd"><input type="checkbox" class="svelte-gw41vd"/> Pflichtfeld</label></div> <!> <div class="form-actions svelte-gw41vd"><button type="submit" class="btn btn-primary svelte-gw41vd"> </button> <button type="button" class="btn btn-secondary svelte-gw41vd" aria-label="Metadaten-Zeile-Erstellung abbrechen">Abbrechen</button></div></form></div></div>`);
-  var root$2 = /* @__PURE__ */ from_html(`<div class="metadata-management-view svelte-gw41vd"><h1 class="svelte-gw41vd">Metadaten-Verwaltung</h1> <!> <!> <div class="section svelte-gw41vd"><div class="section-header svelte-gw41vd"><h2 class="svelte-gw41vd">Schemas</h2> <button class="btn btn-primary svelte-gw41vd" aria-label="Neues Metadaten-Schema erstellen">Neues Schema erstellen</button></div> <div class="schema-list svelte-gw41vd"></div></div> <!> <!></div>`);
+  _DynamicDialogApp.appId = "DynamicDialogApp";
+  _DynamicDialogApp.config = {
+    title: "Dynamic Dialog",
+    elements: []
+  };
+  _DynamicDialogApp.onSubmit = () => {
+  };
+  _DynamicDialogApp.onCancel = () => {
+  };
+  _DynamicDialogApp.DEFAULT_OPTIONS = {
+    // Unique ID for the sheet
+    id: "dynamic-dialog",
+    // CSS classes to apply
+    classes: ["dynamic-dialog"],
+    // Window sizing and behavior
+    position: { width: 800, height: 600 },
+    window: { title: "Dynamic Dialog", resizable: true },
+    tag: "div"
+  };
+  let DynamicDialogApp = _DynamicDialogApp;
+  var on_click = (__1, startCreatingNewSchema) => startCreatingNewSchema();
+  var on_click_1 = (__2, errorMessage) => set(errorMessage, null);
+  var root_1 = /* @__PURE__ */ from_html(`<div class="error-message svelte-4kvlhy"><span> </span> <button class="close-btn svelte-4kvlhy">×</button></div>`);
+  var on_click_2 = (__3, successMessage) => set(successMessage, null);
+  var root_2 = /* @__PURE__ */ from_html(`<div class="success-message svelte-4kvlhy"><span> </span> <button class="close-btn svelte-4kvlhy">×</button></div>`);
+  var root_5 = /* @__PURE__ */ from_html(`<p>Keine Schemas vorhanden. Erstellen Sie Ihr erstes Schema.</p>`);
+  var on_click_3 = (__4, selectSchema, schema) => selectSchema(get(schema).id);
+  var on_click_4 = (__5, startEditingSchema, schema) => startEditingSchema(get(schema));
+  var on_click_5 = (__6, duplicateSchema, schema) => duplicateSchema(get(schema).id);
+  var on_click_6 = (__7, deleteSchema, schema) => deleteSchema(get(schema).id);
+  var on_click_7 = (__8, startCreatingNewRow, schema) => startCreatingNewRow(get(schema).id);
+  var root_11 = /* @__PURE__ */ from_html(`- <em>Erforderlich</em>`, 1);
+  var on_click_8 = (__9, startEditingRow, schema, row) => startEditingRow(get(schema).id, get(row));
+  var on_click_9 = (__10, deleteMetadataRow, schema, row) => deleteMetadataRow(get(schema).id, get(row).id);
+  var root_10 = /* @__PURE__ */ from_html(`<div class="row-item svelte-4kvlhy"><div class="row-info svelte-4kvlhy"><strong> </strong> <!></div> <div class="row-actions svelte-4kvlhy"><button>Bearbeiten</button> <button>Löschen</button></div></div>`);
+  var root_9 = /* @__PURE__ */ from_html(`<div class="rows-section svelte-4kvlhy"><h4 class="svelte-4kvlhy">Metadaten-Zeilen</h4> <!></div>`);
+  var root_8 = /* @__PURE__ */ from_html(`<div class="schema-details svelte-4kvlhy"><p class="svelte-4kvlhy"><strong>Beschreibung:</strong> </p> <p class="svelte-4kvlhy"><strong>Autor:</strong> </p> <p class="svelte-4kvlhy"><strong>Kategorien:</strong> </p> <p class="svelte-4kvlhy"><strong>Metadaten-Zeilen:</strong> </p> <div class="actions svelte-4kvlhy"><button>Bearbeiten</button> <button>Duplizieren</button> <button>Löschen</button> <button class="bright">Neue Zeile</button></div> <!></div>`);
+  var root_7 = /* @__PURE__ */ from_html(`<div><button class="schema-header svelte-4kvlhy"><h3 class="svelte-4kvlhy"> </h3> <span class="version svelte-4kvlhy"> </span></button> <!></div>`);
+  var root$2 = /* @__PURE__ */ from_html(`<div class="metadata-container svelte-4kvlhy"><div class="metadata-header svelte-4kvlhy"><h1 class="svelte-4kvlhy">Metadaten-Verwaltung</h1> <button class="bright">Neues Schema</button></div> <!> <!> <div class="metadata-content svelte-4kvlhy"><!></div></div>`);
   function MetadataManagementView($$anchor, $$props) {
     push($$props, true);
     console.log("MetadataManagementView");
@@ -2359,14 +3315,16 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     let isCreatingNewRow = /* @__PURE__ */ state(false);
     let errorMessage = /* @__PURE__ */ state(null);
     let successMessage = /* @__PURE__ */ state(null);
-    let newSchema = proxy({
+    proxy({
       name: "",
       label: "",
       description: "",
       author: "",
-      version: "1.0.0"
+      version: "1.0.0",
+      categories: [],
+      rows: []
     });
-    let newRow = proxy({
+    proxy({
       name: "",
       label: "",
       type: "string",
@@ -2377,13 +3335,6 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       placeholder: "",
       description: ""
     });
-    const FIELD_TYPES = [
-      { value: "string", label: "Text" },
-      { value: "number", label: "Zahl" },
-      { value: "boolean", label: "Wahr/Falsch" },
-      { value: "select", label: "Auswahl" },
-      { value: "textarea", label: "Mehrzeiliger Text" }
-    ];
     const DEFAULT_CATEGORIES = [
       "Allgemein",
       "Beziehungen",
@@ -2419,23 +3370,25 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         set(errorMessage, errors.join(", "), true);
         return;
       }
-      const newSchema2 = {
+      const newSchema = {
         id: generateSchemaId(),
         rows: [],
-        categories: [...DEFAULT_CATEGORIES],
+        categories: Array.isArray(schemaData.categories) ? [...schemaData.categories] : [...DEFAULT_CATEGORIES],
         name: schemaData.name || "",
         label: schemaData.label || "",
         description: schemaData.description || "",
         version: schemaData.version || "1.0.0",
         author: schemaData.author || ""
       };
-      get(metadata).schemas.push(newSchema2);
+      get(metadata).schemas.push(newSchema);
       await saveMetadataToRegistry(get(metadata));
-      newSchema2.name = "";
-      newSchema2.label = "";
-      newSchema2.description = "";
-      newSchema2.author = "";
-      newSchema2.version = "1.0.0";
+      newSchema.name = "";
+      newSchema.label = "";
+      newSchema.description = "";
+      newSchema.author = "";
+      newSchema.version = "1.0.0";
+      newSchema.categories = [];
+      newSchema.rows = [];
       set(isCreatingNewSchema, false);
       set(successMessage, "Schema erfolgreich erstellt");
       setTimeout(() => set(successMessage, null), 3e3);
@@ -2488,7 +3441,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
       const schema = getSchemaById(schemaId);
       if (!schema) return;
-      const newRow2 = {
+      const newRow = {
         id: generateRowId(),
         name: rowData.name || "",
         label: rowData.label || "",
@@ -2501,17 +3454,17 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         description: rowData.description || "",
         category: rowData.category || "Allgemein"
       };
-      schema.rows.push(newRow2);
+      schema.rows.push(newRow);
       await saveMetadataToRegistry(get(metadata));
-      newRow2.name = "";
-      newRow2.label = "";
-      newRow2.type = "string";
-      newRow2.required = false;
-      newRow2.category = "Allgemein";
-      newRow2.default = "";
-      newRow2.options = [];
-      newRow2.placeholder = "";
-      newRow2.description = "";
+      newRow.name = "";
+      newRow.label = "";
+      newRow.type = "string";
+      newRow.required = false;
+      newRow.category = "Allgemein";
+      newRow.default = "";
+      newRow.options = [];
+      newRow.placeholder = "";
+      newRow.description = "";
       set(isCreatingNewRow, false);
       set(successMessage, "Metadaten-Zeile erfolgreich hinzugefügt");
       setTimeout(() => set(successMessage, null), 3e3);
@@ -2519,7 +3472,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     async function updateMetadataRow(schemaId, rowId, updates) {
       const schema = getSchemaById(schemaId);
       if (!schema) return;
-      const rowIndex = schema.rows.findIndex((r) => r.id === rowId);
+      const rowIndex = schema.rows.findIndex((r2) => r2.id === rowId);
       if (rowIndex === -1) return;
       const errors = validateMetadataRow(updates);
       if (errors.length > 0) {
@@ -2536,42 +3489,175 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       if (confirm("Sind Sie sicher, dass Sie diese Metadaten-Zeile löschen möchten?")) {
         const schema = getSchemaById(schemaId);
         if (!schema) return;
-        schema.rows = schema.rows.filter((r) => r.id !== rowId);
+        schema.rows = schema.rows.filter((r2) => r2.id !== rowId);
         await saveMetadataToRegistry(get(metadata));
         set(successMessage, "Metadaten-Zeile erfolgreich gelöscht");
         setTimeout(() => set(successMessage, null), 3e3);
       }
     }
-    function startEditingSchema(schema) {
-      set(editingSchema, { ...schema }, true);
+    async function startCreatingNewSchema() {
+      set(isCreatingNewSchema, true);
+      set(editingSchema, null);
+      const config = createSchemaFormConfig();
+      const result = await DynamicDialogApp.show(config);
+      if (result) {
+        console.log("Neues Schema erstellt:", result);
+      }
       set(isCreatingNewSchema, false);
     }
-    function startEditingRow(row) {
+    async function startEditingSchema(schema) {
+      set(editingSchema, schema, true);
+      set(isCreatingNewSchema, false);
+      const config = createSchemaFormConfig();
+      const result = await DynamicDialogApp.show(config);
+      if (result) {
+        console.log("Schema bearbeitet:", result);
+      }
+      set(editingSchema, null);
+    }
+    async function startEditingRow(schemaId, row) {
       set(editingRow, { ...row }, true);
       set(isCreatingNewRow, false);
-    }
-    function cancelEditing() {
-      set(editingSchema, null);
+      const config = createRowFormConfig();
+      const result = await DynamicDialogApp.show(config);
+      if (result) {
+        console.log("Metadaten-Zeile bearbeitet:", result);
+      }
       set(editingRow, null);
-      set(isCreatingNewSchema, false);
+    }
+    async function startCreatingNewRow(schemaId) {
+      set(isCreatingNewRow, true);
+      set(editingRow, null);
+      const config = createRowFormConfig();
+      const result = await DynamicDialogApp.show(config);
+      if (result) {
+        console.log("Neue Metadaten-Zeile erstellt:", result);
+      }
       set(isCreatingNewRow, false);
-      set(errorMessage, null);
     }
-    let schemaFormData = /* @__PURE__ */ user_derived(() => get(editingSchema) || newSchema);
-    let rowFormData = /* @__PURE__ */ user_derived(() => get(editingRow) || newRow);
-    function removeOption(index2) {
-      if (get(editingRow) && get(editingRow).options) {
-        get(editingRow).options = get(editingRow).options.filter((_, i) => i !== index2);
-      } else if (newRow.options) {
-        newRow.options = newRow.options.filter((_, i) => i !== index2);
-      }
+    function selectSchema(schemaId) {
+      set(selectedSchemaId, get(selectedSchemaId) === schemaId ? null : schemaId, true);
     }
-    function updateOption(index2, value) {
-      if (get(editingRow) && get(editingRow).options) {
-        get(editingRow).options = get(editingRow).options.map((opt, i) => i === index2 ? value : opt);
-      } else if (newRow.options) {
-        newRow.options = newRow.options.map((opt, i) => i === index2 ? value : opt);
-      }
+    function createSchemaFormConfig() {
+      let elements = [];
+      elements.push(createTextElement("name", {
+        required: true,
+        placeholder: "Technischer Name (z.B. character_metadata)",
+        label: "Name",
+        description: "Technischer Name für API-Zugriffe"
+      }));
+      elements.push(createTextElement("label", {
+        required: true,
+        placeholder: "Anzeigename (z.B. Charakter-Metadaten)",
+        label: "Label",
+        description: "Benutzerfreundlicher Anzeigename"
+      }));
+      elements.push(createTextElement("description", {
+        multiline: true,
+        placeholder: "Beschreibung des Schemas",
+        label: "Beschreibung",
+        description: "Detaillierte Beschreibung des Schemas"
+      }));
+      elements.push(createTextElement("version", {
+        default: "1.0.0",
+        placeholder: "1.0.0",
+        label: "Version",
+        description: "Versionsnummer des Schemas"
+      }));
+      elements.push(createTextElement("author", {
+        placeholder: "Ihr Name",
+        label: "Autor",
+        description: "Name des Autors oder der Organisation"
+      }));
+      elements.push(createMultiSelectElement("categories", {
+        options: DEFAULT_CATEGORIES,
+        label: "Kategorien",
+        description: "Verfügbare Kategorien für die Gruppierung der Metadaten"
+      }));
+      return {
+        title: get(isCreatingNewSchema) ? "Neues Schema erstellen" : "Schema bearbeiten",
+        elements,
+        initialValues: get(editingSchema) || {},
+        submitLabel: get(isCreatingNewSchema) ? "Erstellen" : "Aktualisieren",
+        onSubmit: async (values) => {
+          if (get(editingSchema)) {
+            await updateSchema(get(editingSchema).id, values);
+          } else {
+            await createSchema(values);
+          }
+        },
+        onCancel: () => {
+        }
+      };
+    }
+    function createRowFormConfig() {
+      let elements = [];
+      elements.push(createTextElement("name", {
+        required: true,
+        placeholder: "Technischer Name (z.B. strength)",
+        label: "Name",
+        description: "Technischer Name für API-Zugriffe"
+      }));
+      elements.push(createTextElement("label", {
+        required: true,
+        placeholder: "Anzeigename (z.B. Stärke)",
+        label: "Label",
+        description: "Benutzerfreundlicher Anzeigename"
+      }));
+      elements.push(createSelectElement("type", {
+        required: true,
+        options: createOptions("string", "number", "boolean", "select", "textarea"),
+        label: "Typ",
+        description: "Datentyp des Feldes"
+      }));
+      elements.push(createMultiSelectElement("category", {
+        options: DEFAULT_CATEGORIES,
+        label: "Kategorie",
+        description: "Kategorie für die Gruppierung"
+      }));
+      elements.push(createTextElement("description", {
+        multiline: true,
+        placeholder: "Beschreibung des Feldes",
+        label: "Beschreibung",
+        description: "Detaillierte Beschreibung des Feldes"
+      }));
+      elements.push(createTextElement("placeholder", {
+        placeholder: "Platzhaltertext",
+        label: "Platzhalter",
+        description: "Text der im Eingabefeld angezeigt wird"
+      }));
+      elements.push(createTextElement("default", {
+        placeholder: "Standardwert",
+        label: "Standardwert",
+        description: "Standardwert wenn kein Wert gesetzt ist"
+      }));
+      elements.push(createBooleanElement("required", {
+        default: false,
+        label: "Pflichtfeld",
+        description: "Gibt an, ob das Feld zwingend ausgefüllt werden muss"
+      }));
+      elements.push(createTextElement("options", {
+        multiline: true,
+        placeholder: "Option1, Option2, Option3 (kommagetrennt)",
+        label: "Verfügbare Optionen",
+        description: "Verfügbare Auswahlmöglichkeiten (kommagetrennt) - nur für Select-Felder relevant",
+        showIf: (values) => values.type === "select"
+      }));
+      return {
+        title: get(isCreatingNewRow) ? "Neue Metadaten-Zeile erstellen" : "Metadaten-Zeile bearbeiten",
+        elements,
+        initialValues: get(editingRow) || {},
+        submitLabel: get(isCreatingNewRow) ? "Erstellen" : "Aktualisieren",
+        onSubmit: async (values) => {
+          if (get(editingRow) && get(selectedSchemaId)) {
+            await updateMetadataRow(get(selectedSchemaId), get(editingRow).id, values);
+          } else if (get(selectedSchemaId)) {
+            await addMetadataRow(get(selectedSchemaId), values);
+          }
+        },
+        onCancel: () => {
+        }
+      };
     }
     async function saveMetadataToRegistry(metadataParameter) {
       await game?.settings?.set(MODULE_ID, MODULE_METADATA_KEY, metadataParameter);
@@ -2582,20 +3668,37 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     async function loadMetadata() {
       const loaded = await getMetadataFromRegistry();
       if (loaded && loaded.schemas) {
+        loaded.schemas.forEach((schema) => {
+          if (!schema.categories || !Array.isArray(schema.categories)) {
+            schema.categories = [...DEFAULT_CATEGORIES];
+          } else {
+            schema.categories = [...schema.categories];
+          }
+          if (!schema.rows || !Array.isArray(schema.rows)) {
+            schema.rows = [];
+          } else {
+            schema.rows = [...schema.rows];
+          }
+        });
         set(metadata, loaded, true);
+      } else {
+        set(metadata, { schemas: [] }, true);
       }
     }
     user_effect(() => {
-      if (get(metadata) && get(metadata).schemas !== void 0) {
-        saveMetadataToRegistry(get(metadata));
+      if (get(metadata) && get(metadata).schemas !== void 0 && get(metadata).schemas.length > 0) {
+        setTimeout(
+          () => {
+            saveMetadataToRegistry(get(metadata));
+          },
+          100
+        );
       }
     });
     onMount(() => {
       loadMetadata();
       const handleEscape = (e) => {
-        if (e.key === "Escape" && (get(isCreatingNewSchema) || get(editingSchema) || get(isCreatingNewRow) || get(editingRow))) {
-          cancelEditing();
-        }
+        if (e.key === "Escape" && (get(isCreatingNewSchema) || get(editingSchema) || get(isCreatingNewRow) || get(editingRow))) ;
       };
       document.addEventListener("keydown", handleEscape);
       return () => {
@@ -2603,15 +3706,19 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       };
     });
     var div = root$2();
-    var node = sibling(child(div), 2);
+    var div_1 = child(div);
+    var button = sibling(child(div_1), 2);
+    button.__click = [on_click, startCreatingNewSchema];
+    var node = sibling(div_1, 2);
     {
       var consequent = ($$anchor2) => {
-        var div_1 = root_1();
-        var text = child(div_1);
-        var button = sibling(text);
-        button.__click = [on_click, errorMessage];
-        template_effect(() => set_text(text, `${get(errorMessage) ?? ""} `));
-        append($$anchor2, div_1);
+        var div_2 = root_1();
+        var span = child(div_2);
+        var text = child(span);
+        var button_1 = sibling(span, 2);
+        button_1.__click = [on_click_1, errorMessage];
+        template_effect(() => set_text(text, get(errorMessage)));
+        append($$anchor2, div_2);
       };
       if_block(node, ($$render) => {
         if (get(errorMessage)) $$render(consequent);
@@ -2620,274 +3727,139 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     var node_1 = sibling(node, 2);
     {
       var consequent_1 = ($$anchor2) => {
-        var div_2 = root_2();
-        var text_1 = child(div_2);
-        var button_1 = sibling(text_1);
-        button_1.__click = [on_click_1, successMessage];
-        template_effect(() => set_text(text_1, `${get(successMessage) ?? ""} `));
-        append($$anchor2, div_2);
+        var div_3 = root_2();
+        var span_1 = child(div_3);
+        var text_1 = child(span_1);
+        var button_2 = sibling(span_1, 2);
+        button_2.__click = [on_click_2, successMessage];
+        template_effect(() => set_text(text_1, get(successMessage)));
+        append($$anchor2, div_3);
       };
       if_block(node_1, ($$render) => {
         if (get(successMessage)) $$render(consequent_1);
       });
     }
-    var div_3 = sibling(node_1, 2);
-    var div_4 = child(div_3);
-    var button_2 = sibling(child(div_4), 2);
-    button_2.__click = [on_click_2, isCreatingNewSchema, editingSchema, errorMessage];
-    var div_5 = sibling(div_4, 2);
-    each(div_5, 21, () => get(metadata).schemas, (schema) => schema.id, ($$anchor2, schema) => {
-      var div_6 = root_3();
-      var div_7 = child(div_6);
-      div_7.__click = [on_click_3, selectedSchemaId, schema];
-      div_7.__keydown = [on_keydown, selectedSchemaId, schema];
-      var h3 = child(div_7);
-      var text_2 = child(h3);
-      var span = sibling(h3, 2);
-      var text_3 = child(span);
-      var span_1 = sibling(span, 2);
-      var text_4 = child(span_1);
-      var node_2 = sibling(div_7, 2);
-      {
-        var consequent_3 = ($$anchor3) => {
-          var div_8 = root_4();
-          var p = child(div_8);
-          var text_5 = sibling(child(p));
-          var p_1 = sibling(p, 2);
-          var text_6 = sibling(child(p_1));
-          var p_2 = sibling(p_1, 2);
-          var text_7 = sibling(child(p_2));
-          var p_3 = sibling(p_2, 2);
-          var text_8 = sibling(child(p_3));
-          var div_9 = sibling(p_3, 2);
-          var button_3 = child(div_9);
-          button_3.__click = [on_click_4, startEditingSchema, schema];
-          var button_4 = sibling(button_3, 2);
-          button_4.__click = [on_click_5, duplicateSchema, schema];
-          var button_5 = sibling(button_4, 2);
-          button_5.__click = [on_click_6, deleteSchema, schema];
-          var div_10 = sibling(div_9, 2);
-          var div_11 = child(div_10);
-          var button_6 = sibling(child(div_11), 2);
-          button_6.__click = [on_click_7, isCreatingNewRow, editingRow, errorMessage];
-          var div_12 = sibling(div_11, 2);
-          each(div_12, 21, () => get(schema).rows, (row) => row.id, ($$anchor4, row) => {
-            var div_13 = root_5();
-            var div_14 = child(div_13);
-            var span_2 = child(div_14);
-            var text_9 = child(span_2);
-            var span_3 = sibling(span_2, 2);
-            var text_10 = child(span_3);
-            var span_4 = sibling(span_3, 2);
-            var text_11 = child(span_4);
-            var node_3 = sibling(span_4, 2);
-            {
-              var consequent_2 = ($$anchor5) => {
-                var span_5 = root_6();
-                append($$anchor5, span_5);
-              };
-              if_block(node_3, ($$render) => {
-                if (get(row).required) $$render(consequent_2);
-              });
-            }
-            var div_15 = sibling(div_14, 2);
-            var button_7 = child(div_15);
-            button_7.__click = [on_click_8, startEditingRow, row];
-            var button_8 = sibling(button_7, 2);
-            button_8.__click = [on_click_9, deleteMetadataRow, schema, row];
-            template_effect(() => {
-              set_text(text_9, get(row).label);
-              set_text(text_10, `(${get(row).name ?? ""})`);
-              set_text(text_11, get(row).type);
-              set_attribute(button_7, "aria-label", `Metadaten-Zeile ${get(row).label ?? ""} bearbeiten`);
-              set_attribute(button_8, "aria-label", `Metadaten-Zeile ${get(row).label ?? ""} löschen`);
-            });
-            append($$anchor4, div_13);
-          });
-          template_effect(
-            ($0) => {
-              set_text(text_5, ` ${get(schema).description ?? ""}`);
-              set_text(text_6, ` ${get(schema).author ?? ""}`);
-              set_text(text_7, ` ${$0 ?? ""}`);
-              set_text(text_8, ` ${get(schema).rows.length ?? ""}`);
-              set_attribute(button_3, "aria-label", `Schema ${get(schema).label ?? ""} bearbeiten`);
-              set_attribute(button_4, "aria-label", `Schema ${get(schema).label ?? ""} duplizieren`);
-              set_attribute(button_5, "aria-label", `Schema ${get(schema).label ?? ""} löschen`);
-              set_attribute(button_6, "aria-label", `Neue Metadaten-Zeile zum Schema ${get(schema).label ?? ""} hinzufügen`);
-            },
-            [() => get(schema).categories.join(", ")]
-          );
-          append($$anchor3, div_8);
-        };
-        if_block(node_2, ($$render) => {
-          if (get(selectedSchemaId) === get(schema).id) $$render(consequent_3);
-        });
-      }
-      template_effect(() => {
-        set_class(div_6, 1, `schema-item ${get(selectedSchemaId) === get(schema).id ? "selected" : ""}`, "svelte-gw41vd");
-        set_text(text_2, get(schema).label);
-        set_text(text_3, `(${get(schema).name ?? ""})`);
-        set_text(text_4, `v${get(schema).version ?? ""}`);
-      });
-      append($$anchor2, div_6);
-    });
-    var node_4 = sibling(div_3, 2);
+    var div_4 = sibling(node_1, 2);
+    var node_2 = child(div_4);
     {
-      var consequent_4 = ($$anchor2) => {
-        var div_16 = root_7();
-        var div_17 = child(div_16);
-        var h3_1 = child(div_17);
-        var text_12 = child(h3_1);
-        var form = sibling(h3_1, 2);
-        var div_18 = child(form);
-        var input = sibling(child(div_18), 2);
-        var div_19 = sibling(div_18, 2);
-        var input_1 = sibling(child(div_19), 2);
-        var div_20 = sibling(div_19, 2);
-        var textarea = sibling(child(div_20), 2);
-        var div_21 = sibling(div_20, 2);
-        var div_22 = child(div_21);
-        var input_2 = sibling(child(div_22), 2);
-        var div_23 = sibling(div_22, 2);
-        var input_3 = sibling(child(div_23), 2);
-        var div_24 = sibling(div_21, 2);
-        var button_9 = child(div_24);
-        var text_13 = child(button_9);
-        var button_10 = sibling(button_9, 2);
-        button_10.__click = cancelEditing;
-        template_effect(() => {
-          set_text(text_12, get(editingSchema) ? "Schema bearbeiten" : "Neues Schema erstellen");
-          set_attribute(button_9, "aria-label", get(editingSchema) ? "Schema aktualisieren" : "Schema erstellen");
-          set_text(text_13, get(editingSchema) ? "Aktualisieren" : "Erstellen");
-        });
-        event("submit", form, (e) => {
-          e.preventDefault();
-          get(editingSchema) ? updateSchema(get(editingSchema).id, get(editingSchema)) : createSchema(newSchema);
-        });
-        bind_value(input, () => get(schemaFormData).name, ($$value) => get(schemaFormData).name = $$value);
-        bind_value(input_1, () => get(schemaFormData).label, ($$value) => get(schemaFormData).label = $$value);
-        bind_value(textarea, () => get(schemaFormData).description, ($$value) => get(schemaFormData).description = $$value);
-        bind_value(input_2, () => get(schemaFormData).version, ($$value) => get(schemaFormData).version = $$value);
-        bind_value(input_3, () => get(schemaFormData).author, ($$value) => get(schemaFormData).author = $$value);
-        append($$anchor2, div_16);
-      };
-      if_block(node_4, ($$render) => {
-        if (get(isCreatingNewSchema) || get(editingSchema)) $$render(consequent_4);
-      });
-    }
-    var node_5 = sibling(node_4, 2);
-    {
-      var consequent_6 = ($$anchor2) => {
-        var div_25 = root_8();
-        var div_26 = child(div_25);
-        var h3_2 = child(div_26);
-        var text_14 = child(h3_2);
-        var form_1 = sibling(h3_2, 2);
-        var div_27 = child(form_1);
-        var div_28 = child(div_27);
-        var input_4 = sibling(child(div_28), 2);
-        var div_29 = sibling(div_28, 2);
-        var input_5 = sibling(child(div_29), 2);
-        var div_30 = sibling(div_27, 2);
-        var div_31 = child(div_30);
-        var select = sibling(child(div_31), 2);
-        each(select, 21, () => FIELD_TYPES, index, ($$anchor3, type) => {
-          var option_1 = root_9();
-          var text_15 = child(option_1);
-          var option_1_value = {};
-          template_effect(() => {
-            set_text(text_15, get(type).label);
-            if (option_1_value !== (option_1_value = get(type).value)) {
-              option_1.value = (option_1.__value = get(type).value) ?? "";
-            }
-          });
-          append($$anchor3, option_1);
-        });
-        var div_32 = sibling(div_31, 2);
-        var select_1 = sibling(child(div_32), 2);
-        each(select_1, 21, () => DEFAULT_CATEGORIES, index, ($$anchor3, category) => {
-          var option_2 = root_10();
-          var text_16 = child(option_2);
-          var option_2_value = {};
-          template_effect(() => {
-            set_text(text_16, get(category));
-            if (option_2_value !== (option_2_value = get(category))) {
-              option_2.value = (option_2.__value = get(category)) ?? "";
-            }
-          });
-          append($$anchor3, option_2);
-        });
-        var div_33 = sibling(div_30, 2);
-        var textarea_1 = sibling(child(div_33), 2);
-        var div_34 = sibling(div_33, 2);
-        var div_35 = child(div_34);
-        var input_6 = sibling(child(div_35), 2);
-        var div_36 = sibling(div_35, 2);
-        var input_7 = sibling(child(div_36), 2);
-        var div_37 = sibling(div_34, 2);
-        var label = child(div_37);
-        var input_8 = child(label);
-        var node_6 = sibling(div_37, 2);
+      var alternate = ($$anchor2, $$elseif) => {
         {
-          var consequent_5 = ($$anchor3) => {
-            var div_38 = root_11();
-            var div_39 = sibling(child(div_38), 2);
-            var node_7 = child(div_39);
-            each(node_7, 17, () => get(rowFormData).options || [], index, ($$anchor4, option, index2) => {
-              var div_40 = root_12();
-              var input_9 = child(div_40);
-              input_9.__input = (e) => updateOption(index2, e.target.value);
-              set_attribute(input_9, "placeholder", `Option ${index2 + 1}`);
-              var button_11 = sibling(input_9, 2);
-              button_11.__click = () => removeOption(index2);
-              set_attribute(button_11, "aria-label", `Option ${index2 + 1} entfernen`);
-              template_effect(() => set_value(input_9, (get(rowFormData).options || [])[index2] || ""));
-              append($$anchor4, div_40);
-            });
-            var button_12 = sibling(node_7, 2);
-            button_12.__click = [addNewOption, editingRow, newRow];
-            append($$anchor3, div_38);
+          var consequent_3 = ($$anchor3) => {
+            var p_1 = root_5();
+            append($$anchor3, p_1);
           };
-          if_block(node_6, ($$render) => {
-            if (get(rowFormData).type === "select") $$render(consequent_5);
-          });
+          var alternate_1 = ($$anchor3) => {
+            var fragment = comment();
+            var node_3 = first_child(fragment);
+            each(node_3, 17, () => get(metadata).schemas, (schema) => schema.id, ($$anchor4, schema) => {
+              var div_5 = root_7();
+              var button_3 = child(div_5);
+              button_3.__click = [on_click_3, selectSchema, schema];
+              var h3 = child(button_3);
+              var text_2 = child(h3);
+              var span_2 = sibling(h3, 2);
+              var text_3 = child(span_2);
+              var node_4 = sibling(button_3, 2);
+              {
+                var consequent_6 = ($$anchor5) => {
+                  var div_6 = root_8();
+                  var p_2 = child(div_6);
+                  var text_4 = sibling(child(p_2));
+                  var p_3 = sibling(p_2, 2);
+                  var text_5 = sibling(child(p_3));
+                  var p_4 = sibling(p_3, 2);
+                  var text_6 = sibling(child(p_4));
+                  var p_5 = sibling(p_4, 2);
+                  var text_7 = sibling(child(p_5));
+                  var div_7 = sibling(p_5, 2);
+                  var button_4 = child(div_7);
+                  button_4.__click = [on_click_4, startEditingSchema, schema];
+                  var button_5 = sibling(button_4, 2);
+                  button_5.__click = [on_click_5, duplicateSchema, schema];
+                  var button_6 = sibling(button_5, 2);
+                  button_6.__click = [on_click_6, deleteSchema, schema];
+                  var button_7 = sibling(button_6, 2);
+                  button_7.__click = [on_click_7, startCreatingNewRow, schema];
+                  var node_5 = sibling(div_7, 2);
+                  {
+                    var consequent_5 = ($$anchor6) => {
+                      var div_8 = root_9();
+                      var node_6 = sibling(child(div_8), 2);
+                      each(node_6, 17, () => get(schema).rows, (row) => row.id, ($$anchor7, row) => {
+                        var div_9 = root_10();
+                        var div_10 = child(div_9);
+                        var strong = child(div_10);
+                        var text_8 = child(strong);
+                        var text_9 = sibling(strong);
+                        var node_7 = sibling(text_9);
+                        {
+                          var consequent_4 = ($$anchor8) => {
+                            var fragment_1 = root_11();
+                            append($$anchor8, fragment_1);
+                          };
+                          if_block(node_7, ($$render) => {
+                            if (get(row).required) $$render(consequent_4);
+                          });
+                        }
+                        var div_11 = sibling(div_10, 2);
+                        var button_8 = child(div_11);
+                        button_8.__click = [on_click_8, startEditingRow, schema, row];
+                        var button_9 = sibling(button_8, 2);
+                        button_9.__click = [on_click_9, deleteMetadataRow, schema, row];
+                        template_effect(() => {
+                          set_text(text_8, get(row).label);
+                          set_text(text_9, ` (${get(row).name ?? ""}) - ${get(row).type ?? ""} `);
+                        });
+                        append($$anchor7, div_9);
+                      });
+                      append($$anchor6, div_8);
+                    };
+                    if_block(node_5, ($$render) => {
+                      if (get(schema).rows.length > 0) $$render(consequent_5);
+                    });
+                  }
+                  template_effect(
+                    ($0) => {
+                      set_text(text_4, ` ${get(schema).description || "Keine Beschreibung"}`);
+                      set_text(text_5, ` ${get(schema).author || "Unbekannt"}`);
+                      set_text(text_6, ` ${$0 ?? ""}`);
+                      set_text(text_7, ` ${get(schema).rows.length ?? ""}`);
+                    },
+                    [() => get(schema).categories.join(", ")]
+                  );
+                  append($$anchor5, div_6);
+                };
+                if_block(node_4, ($$render) => {
+                  if (get(selectedSchemaId) === get(schema).id) $$render(consequent_6);
+                });
+              }
+              template_effect(() => {
+                set_class(div_5, 1, `schema-card ${get(selectedSchemaId) === get(schema).id ? "selected" : ""}`, "svelte-4kvlhy");
+                set_text(text_2, get(schema).label);
+                set_text(text_3, `v${get(schema).version ?? ""}`);
+              });
+              append($$anchor4, div_5);
+            });
+            append($$anchor3, fragment);
+          };
+          if_block(
+            $$anchor2,
+            ($$render) => {
+              if (get(metadata).schemas.length === 0) $$render(consequent_3);
+              else $$render(alternate_1, false);
+            },
+            $$elseif
+          );
         }
-        var div_41 = sibling(node_6, 2);
-        var button_13 = child(div_41);
-        var text_17 = child(button_13);
-        var button_14 = sibling(button_13, 2);
-        button_14.__click = cancelEditing;
-        template_effect(() => {
-          set_text(text_14, get(editingRow) ? "Metadaten-Zeile bearbeiten" : "Neue Metadaten-Zeile erstellen");
-          set_attribute(button_13, "aria-label", get(editingRow) ? "Metadaten-Zeile aktualisieren" : "Metadaten-Zeile erstellen");
-          set_text(text_17, get(editingRow) ? "Aktualisieren" : "Erstellen");
-        });
-        event("submit", form_1, (e) => {
-          e.preventDefault();
-          if (get(editingRow) && get(selectedSchemaId)) {
-            updateMetadataRow(get(selectedSchemaId), get(editingRow).id, get(editingRow));
-          } else if (get(selectedSchemaId)) {
-            addMetadataRow(get(selectedSchemaId), newRow);
-          }
-        });
-        bind_value(input_4, () => get(rowFormData).name, ($$value) => get(rowFormData).name = $$value);
-        bind_value(input_5, () => get(rowFormData).label, ($$value) => get(rowFormData).label = $$value);
-        bind_select_value(select, () => get(rowFormData).type, ($$value) => get(rowFormData).type = $$value);
-        bind_select_value(select_1, () => get(rowFormData).category, ($$value) => get(rowFormData).category = $$value);
-        bind_value(textarea_1, () => get(rowFormData).description, ($$value) => get(rowFormData).description = $$value);
-        bind_value(input_6, () => get(rowFormData).placeholder, ($$value) => get(rowFormData).placeholder = $$value);
-        bind_value(input_7, () => get(rowFormData).default, ($$value) => get(rowFormData).default = $$value);
-        bind_checked(input_8, () => get(rowFormData).required, ($$value) => get(rowFormData).required = $$value);
-        append($$anchor2, div_25);
       };
-      if_block(node_5, ($$render) => {
-        if (get(isCreatingNewRow) || get(editingRow)) $$render(consequent_6);
+      if_block(node_2, ($$render) => {
+        $$render(alternate, false);
       });
     }
     append($$anchor, div);
     pop();
   }
-  delegate(["click", "keydown", "input"]);
+  delegate(["click"]);
   const _MetadataManagementApplication = class _MetadataManagementApplication extends foundry.applications.api.HandlebarsApplicationMixin(
     foundry.applications.api.ApplicationV2
   ) {
@@ -2913,6 +3885,18 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       console.log("[MetadataManagementApplication] _prepareContext called with options:", options);
       return context;
     }
+    async _loadCSS() {
+      const cssPath = "modules/relationship-app/styles/metadata-management-app.css";
+      if (document.querySelector(`link[href*="${cssPath}"]`)) {
+        return;
+      }
+      const link2 = document.createElement("link");
+      link2.rel = "stylesheet";
+      link2.type = "text/css";
+      link2.href = cssPath;
+      document.head.appendChild(link2);
+      console.log("[MetadataManagementApplication] CSS loaded: ", cssPath);
+    }
     async _onRender(context, options) {
       console.log("[MetadataManagementApplication] _onRender started", { context, options });
       await super._onRender(context, options);
@@ -2927,6 +3911,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         await unmount(this.svelteApp);
         this.svelteApp = null;
       }
+      await this._loadCSS();
       this.svelteApp = mount(MetadataManagementView, {
         target,
         props: {}
@@ -3850,6 +4835,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     id: "journal-entry-relationship-graph",
     // CSS classes to apply
     classes: ["journal-entry-page", "relationship-graph"],
+    type: "relationship-app.relationship-graph",
     // Window sizing and behavior
     position: { width: 800, height: 600 },
     window: { title: "Beziehungsgraph" },
@@ -3981,9 +4967,13 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         "relationship-app",
         JournalEntryPageRelationshipGraphSheet,
         {
-          label: "Relationship App.RelationshipGraph",
+          types: ["relationship-app.relationship-graph"],
           makeDefault: true,
-          types: ["relationship-app.relationship-graph"]
+          label: () => {
+            return game?.i18n?.format("TYPES.JournalEntryPage.relationship-graph", {
+              page: game?.i18n?.localize("TYPES.JournalEntryPage.relationship-graph")
+            }) || "Relationship Graph";
+          }
         }
       );
     }

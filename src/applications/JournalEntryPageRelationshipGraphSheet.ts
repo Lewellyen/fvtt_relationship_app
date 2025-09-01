@@ -50,6 +50,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     id: "journal-entry-relationship-graph",
     // CSS classes to apply
     classes: ["journal-entry-page", "relationship-graph"],
+    type: "relationship-app.relationship-graph",
     // Window sizing and behavior
     position: { width: 800, height: 600 },
     window: { title: "Beziehungsgraph" },

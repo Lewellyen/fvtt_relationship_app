@@ -51,6 +51,19 @@ export default class MetadataManagementApplication extends foundry.applications.
     return context;
   }
 
+  async _loadCSS() {
+    const cssPath = "modules/relationship-app/styles/metadata-management-app.css";
+    if (document.querySelector(`link[href*="${cssPath}"]`)) {
+      return;
+    }
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.type = "text/css";
+    link.href = cssPath;
+    document.head.appendChild(link);
+    console.log("[MetadataManagementApplication] CSS loaded: ", cssPath);
+  }
+
   async _onRender(context: any, options: any) {
     console.log("[MetadataManagementApplication] _onRender started", { context, options });
 
@@ -70,6 +83,8 @@ export default class MetadataManagementApplication extends foundry.applications.
       this.svelteApp = null;
     }
 
+
+    await this._loadCSS();
     // Mount the new MetadataManagementView component
     this.svelteApp = mount(MetadataManagementView, {
       target,

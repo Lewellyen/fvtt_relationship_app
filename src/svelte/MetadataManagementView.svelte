@@ -3,6 +3,16 @@
 
   import { MODULE_ID, MODULE_METADATA_KEY } from '../constants';
   import { onMount } from 'svelte';
+  import type { IDynamicFormConfig } from '../types/DynamicFormTypes';
+  import { 
+  createTextElement, 
+  createSelectElement, 
+  createMultiSelectElement,
+  createBooleanElement, 
+  createOptions 
+} from '../utils/formWrappers';
+  import DynamicDialogApp from '../applications/DynamicDialogApp';
+
 
   interface IMetadata {
     schemas: ISchema[]; // Array aller Schemas
@@ -15,7 +25,7 @@
     // Liste aller verfügbaren Kategorien für die Gruppierung der Metadaten
     categories: string[];
     
-    // Eindeutige ID des Schemas
+    // Eindeutige ID des Schemas (für API-Zugriffe und interne Verarbeitung)
     id: string;
     
     // Technischer Name des Schemas (für API-Zugriffe und interne Verarbeitung)
@@ -83,6 +93,7 @@
   let isLoading: boolean = $state(false);
   let errorMessage: string | null = $state(null);
   let successMessage: string | null = $state(null);
+  // App-Instanz nicht mehr benötigt, da wir die statische show()-Methode verwenden
 
   // Neue Schema-Erstellung
   let newSchema: Partial<ISchema> = $state({
@@ -90,7 +101,9 @@
     label: '',
     description: '',
     author: '',
-    version: '1.0.0'
+    version: '1.0.0',
+    categories: [],
+    rows: []
   });
 
   // Neue Zeilen-Erstellung
@@ -171,7 +184,7 @@
     const newSchema: ISchema = {
       id: generateSchemaId(),
       rows: [],
-      categories: [...DEFAULT_CATEGORIES],
+      categories: Array.isArray(schemaData.categories) ? [...schemaData.categories] : [...DEFAULT_CATEGORIES],
       name: schemaData.name || '',
       label: schemaData.label || '',
       description: schemaData.description || '',
@@ -188,6 +201,8 @@
     newSchema.description = '';
     newSchema.author = '';
     newSchema.version = '1.0.0';
+    newSchema.categories = [];
+    newSchema.rows = [];
     
     isCreatingNewSchema = false;
     successMessage = 'Schema erfolgreich erstellt';
@@ -338,27 +353,226 @@
   }
 
   // UI-Hilfsfunktionen
-  function startEditingSchema(schema: ISchema): void {
-    editingSchema = { ...schema };
+  // Neue Schema-Erstellung
+  async function startCreatingNewSchema(): Promise<void> {
+    isCreatingNewSchema = true;
+    editingSchema = null;
+    
+    const config = createSchemaFormConfig();
+    const result = await DynamicDialogApp.show(config);
+    
+    if (result) {
+      console.log('Neues Schema erstellt:', result);
+      // Hier würde die Schema-Erstellung implementiert
+    }
+    
     isCreatingNewSchema = false;
   }
 
-  function startEditingRow(row: IMetadataRow): void {
+  // Schema-Bearbeitung starten
+  async function startEditingSchema(schema: ISchema): Promise<void> {
+    editingSchema = schema;
+    isCreatingNewSchema = false;
+    
+    const config = createSchemaFormConfig();
+    const result = await DynamicDialogApp.show(config);
+    
+    if (result) {
+      console.log('Schema bearbeitet:', result);
+      // Hier würde die Schema-Bearbeitung implementiert
+    }
+    
+    editingSchema = null;
+  }
+
+  // Zeilen-Bearbeitung starten
+  async function startEditingRow(schemaId: string, row: IMetadataRow): Promise<void> {
     editingRow = { ...row };
     isCreatingNewRow = false;
+    
+    const config = createRowFormConfig();
+    const result = await DynamicDialogApp.show(config);
+    
+    if (result) {
+      console.log('Metadaten-Zeile bearbeitet:', result);
+      // Hier würde die Metadaten-Zeile-Bearbeitung implementiert
+    }
+    
+    editingRow = null;
   }
 
-  function cancelEditing(): void {
-    editingSchema = null;
+  // Neue Zeilen-Erstellung
+  async function startCreatingNewRow(schemaId: string): Promise<void> {
+    isCreatingNewRow = true;
     editingRow = null;
-    isCreatingNewSchema = false;
+    
+    const config = createRowFormConfig();
+    const result = await DynamicDialogApp.show(config);
+    
+    if (result) {
+      console.log('Neue Metadaten-Zeile erstellt:', result);
+      // Hier würde die Metadaten-Zeile-Erstellung implementiert
+    }
+    
     isCreatingNewRow = false;
-    errorMessage = null;
+  }
+  
+
+  // Schema auswählen
+  function selectSchema(schemaId: string): void {
+    selectedSchemaId = selectedSchemaId === schemaId ? null : schemaId;
   }
 
   // Separate Variablen für Formular-Bindings
   let schemaFormData = $derived(editingSchema || newSchema);
   let rowFormData = $derived(editingRow || newRow);
+  
+  // Schema-Formular mit Wrappern erstellen
+  function createSchemaFormConfig() {
+    let elements = [];
+    
+    elements.push(createTextElement('name', { 
+      required: true, 
+      placeholder: 'Technischer Name (z.B. character_metadata)',
+      label: 'Name',
+      description: 'Technischer Name für API-Zugriffe'
+    }));
+    
+    elements.push(createTextElement('label', { 
+      required: true, 
+      placeholder: 'Anzeigename (z.B. Charakter-Metadaten)',
+      label: 'Label',
+      description: 'Benutzerfreundlicher Anzeigename'
+    }));
+    
+    elements.push(createTextElement('description', { 
+      multiline: true, 
+      placeholder: 'Beschreibung des Schemas',
+      label: 'Beschreibung',
+      description: 'Detaillierte Beschreibung des Schemas'
+    }));
+    
+    elements.push(createTextElement('version', { 
+      default: '1.0.0', 
+      placeholder: '1.0.0',
+      label: 'Version',
+      description: 'Versionsnummer des Schemas'
+    }));
+    
+    elements.push(createTextElement('author', { 
+      placeholder: 'Ihr Name',
+      label: 'Autor',
+      description: 'Name des Autors oder der Organisation'
+    }));
+    
+    elements.push(createMultiSelectElement('categories', {
+      options: DEFAULT_CATEGORIES,
+      label: 'Kategorien',
+      description: 'Verfügbare Kategorien für die Gruppierung der Metadaten'
+    }));
+    
+    return {
+      title: isCreatingNewSchema ? 'Neues Schema erstellen' : 'Schema bearbeiten',
+      elements: elements,
+      initialValues: editingSchema || {},
+      submitLabel: isCreatingNewSchema ? 'Erstellen' : 'Aktualisieren',
+      onSubmit: async (values: any) => {
+        if (editingSchema) {
+          await updateSchema(editingSchema.id, values);
+        } else {
+          await createSchema(values);
+        }
+        // Dialog wird automatisch geschlossen
+      },
+      onCancel: () => {
+        // Dialog wird automatisch geschlossen
+      }
+    };
+  }
+  
+  // Metadaten-Zeile Formular mit Wrappern erstellen
+  function createRowFormConfig() {
+    let elements = [];
+    
+    elements.push(createTextElement('name', { 
+      required: true, 
+      placeholder: 'Technischer Name (z.B. strength)',
+      label: 'Name',
+      description: 'Technischer Name für API-Zugriffe'
+    }));
+    
+    elements.push(createTextElement('label', { 
+      required: true, 
+      placeholder: 'Anzeigename (z.B. Stärke)',
+      label: 'Label',
+      description: 'Benutzerfreundlicher Anzeigename'
+    }));
+    
+    elements.push(createSelectElement('type', {
+      required: true,
+      options: createOptions('string', 'number', 'boolean', 'select', 'textarea'),
+      label: 'Typ',
+      description: 'Datentyp des Feldes'
+    }));
+    
+    elements.push(createMultiSelectElement('category', {
+      options: DEFAULT_CATEGORIES,
+      label: 'Kategorie',
+      description: 'Kategorie für die Gruppierung'
+    }));
+    
+    elements.push(createTextElement('description', { 
+      multiline: true, 
+      placeholder: 'Beschreibung des Feldes',
+      label: 'Beschreibung',
+      description: 'Detaillierte Beschreibung des Feldes'
+    }));
+    
+    elements.push(createTextElement('placeholder', { 
+      placeholder: 'Platzhaltertext',
+      label: 'Platzhalter',
+      description: 'Text der im Eingabefeld angezeigt wird'
+    }));
+    
+    elements.push(createTextElement('default', { 
+      placeholder: 'Standardwert',
+      label: 'Standardwert',
+      description: 'Standardwert wenn kein Wert gesetzt ist'
+    }));
+    
+    elements.push(createBooleanElement('required', {
+      default: false,
+      label: 'Pflichtfeld',
+      description: 'Gibt an, ob das Feld zwingend ausgefüllt werden muss'
+    }));
+    
+    // Options-Feld für Select-Typen
+    elements.push(createTextElement('options', {
+      multiline: true,
+      placeholder: 'Option1, Option2, Option3 (kommagetrennt)',
+      label: 'Verfügbare Optionen',
+      description: 'Verfügbare Auswahlmöglichkeiten (kommagetrennt) - nur für Select-Felder relevant',
+      showIf: (values) => values.type === 'select'
+    }));
+    
+    return {
+      title: isCreatingNewRow ? 'Neue Metadaten-Zeile erstellen' : 'Metadaten-Zeile bearbeiten',
+      elements: elements,
+      initialValues: editingRow || {},
+      submitLabel: isCreatingNewRow ? 'Erstellen' : 'Aktualisieren',
+      onSubmit: async (values: any) => {
+        if (editingRow && selectedSchemaId) {
+          await updateMetadataRow(selectedSchemaId, editingRow.id, values);
+        } else if (selectedSchemaId) {
+          await addMetadataRow(selectedSchemaId, values);
+        }
+        // Dialog wird automatisch geschlossen
+      },
+      onCancel: () => {
+        // Dialog wird automatisch geschlossen
+      }
+    };
+  }
 
   function addNewOption(): void {
     if (editingRow) {
@@ -396,13 +610,38 @@
   async function loadMetadata() {
     const loaded = await getMetadataFromRegistry() as IMetadata;
     if (loaded && loaded.schemas) {
+      // Sicherstellen, dass alle Schemata ein categories Array haben
+      loaded.schemas.forEach(schema => {
+        // Kategorien validieren und als echtes Array setzen
+        if (!schema.categories || !Array.isArray(schema.categories)) {
+          schema.categories = [...DEFAULT_CATEGORIES];
+        } else {
+          // Sicherstellen, dass es ein echtes Array ist (nicht Proxy)
+          schema.categories = [...schema.categories];
+        }
+        
+        // Rows validieren und als echtes Array setzen
+        if (!schema.rows || !Array.isArray(schema.rows)) {
+          schema.rows = [];
+        } else {
+          // Sicherstellen, dass es ein echtes Array ist (nicht Proxy)
+          schema.rows = [...schema.rows];
+        }
+      });
       metadata = loaded;
+    } else {
+      // Fallback: Leere Metadaten initialisieren
+      metadata = { schemas: [] };
     }
   }
 
+  // Nur speichern wenn sich die Daten tatsächlich geändert haben
   $effect(() => {
-    if (metadata && metadata.schemas !== undefined) {
-      saveMetadataToRegistry(metadata);
+    if (metadata && metadata.schemas !== undefined && metadata.schemas.length > 0) {
+      // Verzögertes Speichern um Endlosschleifen zu vermeiden
+      setTimeout(() => {
+        saveMetadataToRegistry(metadata);
+      }, 100);
     }
   })
 
@@ -412,7 +651,7 @@
     // Globaler Escape-Key-Listener für Modals
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && (isCreatingNewSchema || editingSchema || isCreatingNewRow || editingRow)) {
-        cancelEditing();
+        // Escape-Handling wird jetzt von DynamicDialogApp übernommen
       }
     };
     
@@ -425,631 +664,197 @@
 
 </script>
 
-<div class="metadata-management-view">
-  <h1>Metadaten-Verwaltung</h1>
-  
-  <!-- Fehlermeldungen und Erfolgsmeldungen -->
+<div class="metadata-container">
+  <div class="metadata-header">
+    <h1>Metadaten-Verwaltung</h1>
+    <button class="bright" onclick={() => startCreatingNewSchema()}>
+      Neues Schema
+    </button>
+  </div>
+
   {#if errorMessage}
     <div class="error-message">
-      {errorMessage}
-      <button onclick={() => errorMessage = null} class="close-btn" aria-label="Fehlermeldung schließen">×</button>
+      <span>{errorMessage}</span>
+      <button class="close-btn" onclick={() => errorMessage = null}>×</button>
     </div>
   {/if}
   
   {#if successMessage}
     <div class="success-message">
-      {successMessage}
-      <button onclick={() => successMessage = null} class="close-btn" aria-label="Erfolgsmeldung schließen">×</button>
+      <span>{successMessage}</span>
+      <button class="close-btn" onclick={() => successMessage = null}>×</button>
     </div>
   {/if}
 
-  <!-- Schema-Verwaltung -->
-  <div class="section">
-    <div class="section-header">
-      <h2>Schemas</h2>
-      <button 
-        class="btn btn-primary" 
-        onclick={() => {
-          isCreatingNewSchema = true;
-          editingSchema = null;
-          errorMessage = null;
-        }}
-        aria-label="Neues Metadaten-Schema erstellen"
-      >
-        Neues Schema erstellen
-      </button>
-    </div>
-
-    <!-- Schema-Liste -->
-    <div class="schema-list">
+  <div class="metadata-content">
+    {#if isLoading}
+      <p>Lade Schemas...</p>
+    {:else if metadata.schemas.length === 0}
+      <p>Keine Schemas vorhanden. Erstellen Sie Ihr erstes Schema.</p>
+    {:else}
       {#each metadata.schemas as schema (schema.id)}
-        <div class="schema-item {selectedSchemaId === schema.id ? 'selected' : ''}">
-          <div class="schema-header" role="button" tabindex="0" onclick={() => selectedSchemaId = selectedSchemaId === schema.id ? null : schema.id} onkeydown={(e) => e.key === 'Enter' && (selectedSchemaId = selectedSchemaId === schema.id ? null : schema.id)}>
+        <div class="schema-card {selectedSchemaId === schema.id ? 'selected' : ''}">
+          <button class="schema-header" onclick={() => selectSchema(schema.id)}>
             <h3>{schema.label}</h3>
-            <span class="schema-name">({schema.name})</span>
-            <span class="schema-version">v{schema.version}</span>
-          </div>
+            <span class="version">v{schema.version}</span>
+          </button>
           
           {#if selectedSchemaId === schema.id}
             <div class="schema-details">
-              <p><strong>Beschreibung:</strong> {schema.description}</p>
-              <p><strong>Autor:</strong> {schema.author}</p>
+              <p><strong>Beschreibung:</strong> {schema.description || 'Keine Beschreibung'}</p>
+              <p><strong>Autor:</strong> {schema.author || 'Unbekannt'}</p>
               <p><strong>Kategorien:</strong> {schema.categories.join(', ')}</p>
               <p><strong>Metadaten-Zeilen:</strong> {schema.rows.length}</p>
               
-              <div class="schema-actions">
-                <button class="btn btn-secondary" onclick={() => startEditingSchema(schema)} aria-label="Schema {schema.label} bearbeiten">
-                  Bearbeiten
-                </button>
-                <button class="btn btn-secondary" onclick={() => duplicateSchema(schema.id)} aria-label="Schema {schema.label} duplizieren">
-                  Duplizieren
-                </button>
-                <button class="btn btn-danger" onclick={() => deleteSchema(schema.id)} aria-label="Schema {schema.label} löschen">
-                  Löschen
-                </button>
+              <div class="actions">
+                <button onclick={() => startEditingSchema(schema)}>Bearbeiten</button>
+                <button onclick={() => duplicateSchema(schema.id)}>Duplizieren</button>
+                <button onclick={() => deleteSchema(schema.id)}>Löschen</button>
+                <button class="bright" onclick={() => startCreatingNewRow(schema.id)}>Neue Zeile</button>
               </div>
-
-              <!-- Metadaten-Zeilen für dieses Schema -->
-              <div class="metadata-rows-section">
-                <div class="section-header">
+              
+              {#if schema.rows.length > 0}
+                <div class="rows-section">
                   <h4>Metadaten-Zeilen</h4>
-                  <button 
-                    class="btn btn-primary" 
-                    onclick={() => {
-                      isCreatingNewRow = true;
-                      editingRow = null;
-                      errorMessage = null;
-                    }}
-                    aria-label="Neue Metadaten-Zeile zum Schema {schema.label} hinzufügen"
-                  >
-                    Neue Zeile hinzufügen
-                  </button>
-                </div>
-
-                <div class="metadata-rows-list">
                   {#each schema.rows as row (row.id)}
-                    <div class="metadata-row-item">
-                      <div class="row-header">
-                        <span class="row-label">{row.label}</span>
-                        <span class="row-name">({row.name})</span>
-                        <span class="row-type">{row.type}</span>
-                        {#if row.required}<span class="required-badge">Pflicht</span>{/if}
+                    <div class="row-item">
+                      <div class="row-info">
+                        <strong>{row.label}</strong> ({row.name}) - {row.type}
+                        {#if row.required} - <em>Erforderlich</em>{/if}
                       </div>
-                      
                       <div class="row-actions">
-                        <button class="btn btn-small btn-secondary" onclick={() => startEditingRow(row)} aria-label="Metadaten-Zeile {row.label} bearbeiten">
-                          Bearbeiten
-                        </button>
-                        <button class="btn btn-small btn-danger" onclick={() => deleteMetadataRow(schema.id, row.id)} aria-label="Metadaten-Zeile {row.label} löschen">
-                          Löschen
-                        </button>
+                        <button onclick={() => startEditingRow(schema.id, row)}>Bearbeiten</button>
+                        <button onclick={() => deleteMetadataRow(schema.id, row.id)}>Löschen</button>
                       </div>
                     </div>
                   {/each}
                 </div>
-              </div>
+              {/if}
             </div>
           {/if}
         </div>
       {/each}
-    </div>
+    {/if}
   </div>
-
-  <!-- Schema-Erstellung/Bearbeitung Modal -->
-  {#if isCreatingNewSchema || editingSchema}
-    <div class="modal-overlay" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="schema-modal-title">
-      <div class="modal" role="region" aria-label="Modal-Inhalt">
-        <h3 id="schema-modal-title">{editingSchema ? 'Schema bearbeiten' : 'Neues Schema erstellen'}</h3>
-        
-        <form onsubmit={(e) => { e.preventDefault(); editingSchema ? updateSchema(editingSchema.id, editingSchema) : createSchema(newSchema); }}>
-          <div class="form-group">
-            <label for="schema-name">Name *</label>
-            <input 
-              id="schema-name"
-              type="text" 
-              bind:value={schemaFormData.name}
-              placeholder="Technischer Name (z.B. character_metadata)"
-              required
-            />
-          </div>
-          
-          <div class="form-group">
-            <label for="schema-label">Label *</label>
-            <input 
-              id="schema-label"
-              type="text" 
-              bind:value={schemaFormData.label}
-              placeholder="Anzeigename (z.B. Charakter-Metadaten)"
-              required
-            />
-          </div>
-          
-          <div class="form-group">
-            <label for="schema-description">Beschreibung</label>
-            <textarea 
-              id="schema-description"
-              bind:value={schemaFormData.description}
-              placeholder="Beschreibung des Schemas"
-            ></textarea>
-          </div>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label for="schema-version">Version</label>
-              <input 
-                id="schema-version"
-                type="text" 
-                bind:value={schemaFormData.version}
-                placeholder="1.0.0"
-              />
-            </div>
-            
-            <div class="form-group">
-              <label for="schema-author">Autor</label>
-              <input 
-                id="schema-author"
-                type="text" 
-                bind:value={schemaFormData.author}
-                placeholder="Ihr Name"
-              />
-            </div>
-          </div>
-          
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary" aria-label={editingSchema ? 'Schema aktualisieren' : 'Schema erstellen'}>
-              {editingSchema ? 'Aktualisieren' : 'Erstellen'}
-            </button>
-            <button type="button" class="btn btn-secondary" onclick={cancelEditing} aria-label="Schema-Erstellung abbrechen">
-              Abbrechen
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  {/if}
-
-  <!-- Metadaten-Zeile Erstellung/Bearbeitung Modal -->
-  {#if isCreatingNewRow || editingRow}
-    <div class="modal-overlay" role="dialog" aria-modal="true" tabindex="-1" aria-labelledby="row-modal-title">
-      <div class="modal" role="region" aria-label="Modal-Inhalt">
-        <h3 id="row-modal-title">{editingRow ? 'Metadaten-Zeile bearbeiten' : 'Neue Metadaten-Zeile erstellen'}</h3>
-        
-        <form onsubmit={(e) => { 
-          e.preventDefault();
-          if (editingRow && selectedSchemaId) {
-            updateMetadataRow(selectedSchemaId, editingRow.id, editingRow);
-          } else if (selectedSchemaId) {
-            addMetadataRow(selectedSchemaId, newRow);
-          }
-        }}>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="row-name">Name *</label>
-              <input 
-                id="row-name"
-                type="text" 
-                bind:value={rowFormData.name}
-                placeholder="Technischer Name (z.B. strength)"
-                required
-              />
-            </div>
-            
-            <div class="form-group">
-              <label for="row-label">Label *</label>
-              <input 
-                id="row-label"
-                type="text" 
-                bind:value={rowFormData.label}
-                placeholder="Anzeigename (z.B. Stärke)"
-                required
-              />
-            </div>
-          </div>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label for="row-type">Typ *</label>
-              <select 
-                id="row-type"
-                bind:value={rowFormData.type}
-                required
-              >
-                {#each FIELD_TYPES as type}
-                  <option value={type.value}>{type.label}</option>
-                {/each}
-              </select>
-            </div>
-            
-            <div class="form-group">
-              <label for="row-category">Kategorie</label>
-              <select 
-                id="row-category"
-                bind:value={rowFormData.category}
-              >
-                {#each DEFAULT_CATEGORIES as category}
-                  <option value={category}>{category}</option>
-                {/each}
-              </select>
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label for="row-description">Beschreibung</label>
-            <textarea 
-              id="row-description"
-              bind:value={rowFormData.description}
-              placeholder="Beschreibung des Feldes"
-            ></textarea>
-          </div>
-          
-          <div class="form-row">
-            <div class="form-group">
-              <label for="row-placeholder">Platzhalter</label>
-              <input 
-                id="row-placeholder"
-                type="text" 
-                bind:value={rowFormData.placeholder}
-                placeholder="Platzhaltertext"
-              />
-            </div>
-            
-            <div class="form-group">
-              <label for="row-default">Standardwert</label>
-              <input 
-                id="row-default"
-                type="text" 
-                bind:value={rowFormData.default}
-                placeholder="Standardwert"
-              />
-            </div>
-          </div>
-          
-          <div class="form-group">
-            <label class="checkbox-label">
-              <input 
-                type="checkbox" 
-                bind:checked={rowFormData.required}
-              />
-              Pflichtfeld
-            </label>
-          </div>
-          
-          {#if rowFormData.type === 'select'}
-            <div class="form-group">
-              <label for="options-container">Auswahloptionen</label>
-              <div id="options-container">
-                {#each (rowFormData.options || []) as option, index}
-                <div class="option-row">
-                  <input 
-                    type="text" 
-                    value={(rowFormData.options || [])[index] || ''}
-                    oninput={(e) => updateOption(index, (e.target as HTMLInputElement).value)}
-                    placeholder="Option {index + 1}"
-                  />
-                  <button type="button" class="btn btn-small btn-danger" onclick={() => removeOption(index)} aria-label="Option {index + 1} entfernen">
-                    Entfernen
-                  </button>
-                </div>
-              {/each}
-              <button type="button" class="btn btn-secondary" onclick={addNewOption} aria-label="Neue Auswahloption hinzufügen">
-                Option hinzufügen
-              </button>
-              </div>
-            </div>
-          {/if}
-          
-          <div class="form-actions">
-            <button type="submit" class="btn btn-primary" aria-label={editingRow ? 'Metadaten-Zeile aktualisieren' : 'Metadaten-Zeile erstellen'}>
-              {editingRow ? 'Aktualisieren' : 'Erstellen'}
-            </button>
-            <button type="button" class="btn btn-secondary" onclick={cancelEditing} aria-label="Metadaten-Zeile-Erstellung abbrechen">
-              Abbrechen
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  {/if}
 </div>
 
 <style>
-  .metadata-management-view {
+  /* Gleiches Scrolling wie DynamicFormSheet */
+  .metadata-container {
+    height: 100vh;
+    max-height: 100vh;
+    overflow-y: auto;
     padding: 1rem;
-    max-width: 1200px;
-    margin: 0 auto;
+    box-sizing: border-box;
   }
 
-  h1 {
-    color: #2c3e50;
-    margin-bottom: 2rem;
-    text-align: center;
-  }
-
-  .section {
-    margin-bottom: 2rem;
-    background: #f8f9fa;
-    border-radius: 8px;
-    padding: 1.5rem;
-  }
-
-  .section-header {
+  .metadata-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-border-primary);
   }
 
-  .section-header h2 {
+  .metadata-header h1 {
     margin: 0;
-    color: #34495e;
+    font-size: 1.5rem;
+    font-weight: 600;
   }
 
-  .schema-list {
+  .metadata-content {
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
 
-  .schema-item {
-    background: white;
-    border: 1px solid #dee2e6;
+  .schema-card {
+    background: var(--color-background-secondary);
+    border: 1px solid var(--color-border-primary);
     border-radius: 6px;
     overflow: hidden;
   }
 
-  .schema-item.selected {
-    border-color: #007bff;
-    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  .schema-card.selected {
+    border-color: var(--color-primary);
   }
 
   .schema-header {
     padding: 1rem;
-    background: #f8f9fa;
     cursor: pointer;
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: 1rem;
+    background: var(--color-background-primary);
+    border-bottom: 1px solid var(--color-border-primary);
   }
 
   .schema-header:hover {
-    background: #e9ecef;
+    background: var(--color-background-tertiary);
   }
 
   .schema-header h3 {
     margin: 0;
-    color: #2c3e50;
+    font-size: 1.1rem;
+    font-weight: 600;
   }
 
-  .schema-name {
-    color: #6c757d;
-    font-family: monospace;
-    font-size: 0.9em;
-  }
-
-  .schema-version {
-    background: #17a2b8;
-    color: white;
+  .version {
+    background: var(--color-info);
+    color: var(--color-text-primary);
     padding: 0.2rem 0.5rem;
     border-radius: 4px;
-    font-size: 0.8em;
+    font-size: 0.8rem;
   }
 
   .schema-details {
     padding: 1rem;
-    border-top: 1px solid #dee2e6;
+    background: var(--color-background-secondary);
   }
 
   .schema-details p {
     margin: 0.5rem 0;
-    color: #495057;
+    font-size: 0.9rem;
   }
 
-  .schema-actions {
+  .actions {
     display: flex;
     gap: 0.5rem;
     margin: 1rem 0;
+    flex-wrap: wrap;
   }
 
-  .metadata-rows-section {
+  .rows-section {
     margin-top: 1.5rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid #dee2e6;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-border-primary);
   }
 
-  .metadata-rows-section h4 {
+  .rows-section h4 {
     margin: 0 0 1rem 0;
-    color: #34495e;
+    font-size: 1rem;
+    font-weight: 600;
   }
 
-  .metadata-rows-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .metadata-row-item {
-    background: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    padding: 0.75rem;
+  .row-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
-
-  .row-header {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .row-label {
-    font-weight: 500;
-    color: #2c3e50;
-  }
-
-  .row-name {
-    color: #6c757d;
-    font-family: monospace;
-    font-size: 0.9em;
-  }
-
-  .row-type {
-    background: #6f42c1;
-    color: white;
-    padding: 0.2rem 0.5rem;
+    padding: 0.75rem;
+    background: var(--color-background-primary);
+    border: 1px solid var(--color-border-primary);
     border-radius: 4px;
-    font-size: 0.8em;
+    margin-bottom: 0.5rem;
   }
 
-  .required-badge {
-    background: #dc3545;
-    color: white;
-    padding: 0.2rem 0.5rem;
-    border-radius: 4px;
-    font-size: 0.8em;
+  .row-info {
+    font-size: 0.9rem;
   }
 
   .row-actions {
     display: flex;
     gap: 0.5rem;
-  }
-
-  .btn {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    transition: all 0.2s;
-  }
-
-  .btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  }
-
-  .btn-primary {
-    background: #007bff;
-    color: white;
-  }
-
-  .btn-primary:hover {
-    background: #0056b3;
-  }
-
-  .btn-secondary {
-    background: #6c757d;
-    color: white;
-  }
-
-  .btn-secondary:hover {
-    background: #545b62;
-  }
-
-  .btn-danger {
-    background: #dc3545;
-    color: white;
-  }
-
-  .btn-danger:hover {
-    background: #c82333;
-  }
-
-  .btn-small {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.8rem;
-  }
-
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-
-  .modal {
-    background: white;
-    border-radius: 8px;
-    padding: 2rem;
-    max-width: 600px;
-    width: 90%;
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-
-  .modal h3 {
-    margin: 0 0 1.5rem 0;
-    color: #2c3e50;
-  }
-
-  .form-group {
-    margin-bottom: 1rem;
-  }
-
-  .form-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-  }
-
-  .form-group label {
-    display: block;
-    margin-bottom: 0.5rem;
-    font-weight: 500;
-    color: #495057;
-  }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #ced4da;
-    border-radius: 4px;
-    font-size: 0.9rem;
-  }
-
-  .form-group textarea {
-    min-height: 80px;
-    resize: vertical;
-  }
-
-  .checkbox-label {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-  }
-
-  .checkbox-label input[type="checkbox"] {
-    width: auto;
-  }
-
-  .option-row {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-    align-items: center;
-  }
-
-  .option-row input {
-    flex: 1;
-  }
-
-  .form-actions {
-    display: flex;
-    gap: 1rem;
-    justify-content: flex-end;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid #dee2e6;
   }
 
   .error-message,
@@ -1063,15 +868,15 @@
   }
 
   .error-message {
-    background: #f8d7da;
-    color: #721c24;
-    border: 1px solid #f5c6cb;
+    background: var(--color-error-background);
+    color: var(--color-error);
+    border: 1px solid var(--color-error-border);
   }
-
+  
   .success-message {
-    background: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    background: var(--color-success-background);
+    color: var(--color-success);
+    border: 1px solid var(--color-success-border);
   }
 
   .close-btn {
@@ -1086,25 +891,5 @@
 
   .close-btn:hover {
     opacity: 0.7;
-  }
-
-  @media (max-width: 768px) {
-    .form-row {
-      grid-template-columns: 1fr;
-    }
-    
-    .schema-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-    }
-    
-    .schema-actions {
-      flex-direction: column;
-    }
-    
-    .row-actions {
-      flex-direction: column;
-    }
   }
 </style>
