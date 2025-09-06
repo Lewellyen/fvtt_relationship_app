@@ -5,7 +5,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   "use strict";
   var _a;
   var __vite_style__ = document.createElement("style");
-  __vite_style__.textContent = '\r\n  .form-field.svelte-1ykx1li {\r\n    margin-bottom: 1rem;\r\n  }\r\n  \r\n  .field-width-full.svelte-1ykx1li {\r\n    width: 100%;\r\n  }\r\n  \r\n  .field-width-half.svelte-1ykx1li {\r\n    width: calc(50% - 0.5rem);\r\n  }\r\n  \r\n  .field-width-third.svelte-1ykx1li {\r\n    width: calc(33.333% - 0.667rem);\r\n  }\r\n  \r\n  .field-label.svelte-1ykx1li {\r\n    display: block;\r\n    margin-bottom: 0.5rem;\r\n    font-weight: 500;\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li,\r\n  .field-textarea.svelte-1ykx1li,\r\n  .field-select.svelte-1ykx1li {\r\n    width: 100%;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    font-size: 0.9rem;\r\n    transition: border-color 0.2s, box-shadow 0.2s;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li:focus,\r\n  .field-textarea.svelte-1ykx1li:focus,\r\n  .field-select.svelte-1ykx1li:focus {\r\n    outline: none;\r\n    border-color: var(--color-primary);\r\n    box-shadow: 0 0 0 2px var(--color-primary-alpha);\r\n  }\r\n  \r\n  .field-textarea.svelte-1ykx1li {\r\n    min-height: 80px;\r\n    resize: vertical;\r\n    font-family: inherit;\r\n  }\r\n  \r\n  .field-select.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  /* Checkbox-Gruppe Styles */\r\n  .checkbox-group.svelte-1ykx1li {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 0.5rem;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    background: var(--color-background-primary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    cursor: pointer;\r\n    padding: 0.25rem;\r\n    border-radius: 4px;\r\n    transition: background-color 0.2s;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li:hover {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li input[type="checkbox"]:where(.svelte-1ykx1li) {\r\n    margin: 0;\r\n    accent-color: var(--color-primary);\r\n    width: 1.2rem;\r\n    height: 1.2rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li span:where(.svelte-1ykx1li) {\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-checkbox.svelte-1ykx1li {\r\n    margin-right: 0.5rem;\r\n    width: auto;\r\n  }\r\n  \r\n  .checkbox-label.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-text.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-container.svelte-1ykx1li {\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    align-items: center;\r\n  }\r\n  \r\n  .field-color.svelte-1ykx1li {\r\n    width: 3rem;\r\n    height: 2.5rem;\r\n    padding: 0;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-text.svelte-1ykx1li {\r\n    flex: 1;\r\n    font-family: monospace;\r\n  }\r\n  \r\n  .field-description.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .field-error.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    color: var(--color-error);\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    border-color: var(--color-error);\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li):focus {\r\n    border-color: var(--color-error);\r\n    box-shadow: 0 0 0 2px var(--color-error-alpha);\r\n  }\r\n  \r\n  .disabled.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-select:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-checkbox:where(.svelte-1ykx1li) {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .readonly.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    background-color: var(--color-background-secondary);\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  /* Responsive Design */\r\n  @media (max-width: 768px) {\r\n    .field-width-half.svelte-1ykx1li,\r\n    .field-width-third.svelte-1ykx1li {\r\n      width: 100%;\r\n    }\r\n  }\r\n\r\n  /* Foundry VTT CSS-Variablen verwenden */\r\n  .form-container.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    padding: 1rem;\r\n  }\r\n  \r\n  .form-header.svelte-1hegfbw {\r\n    border-bottom: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: var(--border-radius) var(--border-radius) 0 0;\r\n    margin: -1rem -1rem 1rem -1rem;\r\n  }\r\n  \r\n  .form-title.svelte-1hegfbw {\r\n    color: var(--color-text-primary);\r\n    margin: 0;\r\n    font-size: 1.2rem;\r\n    font-weight: 600;\r\n  }\r\n  \r\n  .form-description.svelte-1hegfbw {\r\n    color: var(--color-text-secondary);\r\n    margin: 0.5rem 0 0 0;\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n\r\n  \r\n  .field-container.svelte-1hegfbw {\r\n    margin-bottom: 1.5rem;\r\n    transition: all 0.3s ease;\r\n  }\r\n  \r\n  .field-container.svelte-1hegfbw:focus-within {\r\n    transform: translateY(-2px);\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\r\n    border-radius: var(--border-radius);\r\n    padding: 0.5rem;\r\n    margin: 0.5rem -0.5rem 1.5rem -0.5rem;\r\n  }\r\n  \r\n  .form-actions.svelte-1hegfbw {\r\n    border-top: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: 0 0 var(--border-radius) var(--border-radius);\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    justify-content: flex-end;\r\n    margin: 1rem -1rem -1rem -1rem;\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw {\r\n    padding: 0.5rem 1rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    cursor: pointer;\r\n    font-size: 0.9rem;\r\n    transition: all 0.2s;\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw {\r\n    background: var(--color-primary);\r\n    color: var(--color-text-primary);\r\n    border-color: var(--color-primary);\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-primary-hover);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw:disabled {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .spinner.svelte-1hegfbw {\r\n    display: inline-block;\r\n    width: 1rem;\r\n    height: 1rem;\r\n    border: 2px solid transparent;\r\n    border-top: 2px solid currentColor;\r\n    border-radius: 50%;\r\n    animation: svelte-1hegfbw-spin 1s linear infinite;\r\n  }\r\n  \r\n  @keyframes svelte-1hegfbw-spin {\r\n    0% { transform: rotate(0deg); }\r\n    100% { transform: rotate(360deg); }\r\n  }\r\n  \r\n  /* Scroll-Indikator für bessere UX */\r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar {\r\n    width: 12px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-track {\r\n    background: var(--color-background-secondary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb {\r\n    background: var(--color-border-primary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb:hover {\r\n    background: var(--color-primary);\r\n  }\r\n  \r\n  /* Fokus-Indikator für bessere Accessibility */\r\n  .field-container.svelte-1hegfbw:focus-within .field-label {\r\n    color: var(--color-primary);\r\n    font-weight: 600;\r\n  }\r\n  \r\n  /* Smooth Transitions für alle interaktiven Elemente */\r\n  .form-container.svelte-1hegfbw :where(.svelte-1hegfbw) {\r\n    transition: border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;\r\n  }\r\n\n  /* Gleiches Scrolling wie DynamicFormSheet */\n  .metadata-container.svelte-4kvlhy {\n    height: 100vh;\n    max-height: 100vh;\n    overflow-y: auto;\n    padding: 1rem;\n    box-sizing: border-box;\n  }\n\n  .metadata-header.svelte-4kvlhy {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 2rem;\n    padding-bottom: 1rem;\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .metadata-header.svelte-4kvlhy h1:where(.svelte-4kvlhy) {\n    margin: 0;\n    font-size: 1.5rem;\n    font-weight: 600;\n  }\n\n  .metadata-content.svelte-4kvlhy {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .schema-card.svelte-4kvlhy {\n    background: var(--color-background-secondary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 6px;\n    overflow: hidden;\n  }\n\n  .schema-card.selected.svelte-4kvlhy {\n    border-color: var(--color-primary);\n  }\n\n  .schema-header.svelte-4kvlhy {\n    padding: 1rem;\n    cursor: pointer;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    background: var(--color-background-primary);\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .schema-header.svelte-4kvlhy:hover {\n    background: var(--color-background-tertiary);\n  }\n\n  .schema-header.svelte-4kvlhy h3:where(.svelte-4kvlhy) {\n    margin: 0;\n    font-size: 1.1rem;\n    font-weight: 600;\n  }\n\n  .version.svelte-4kvlhy {\n    background: var(--color-info);\n    color: var(--color-text-primary);\n    padding: 0.2rem 0.5rem;\n    border-radius: 4px;\n    font-size: 0.8rem;\n  }\n\n  .schema-details.svelte-4kvlhy {\n    padding: 1rem;\n    background: var(--color-background-secondary);\n  }\n\n  .schema-details.svelte-4kvlhy p:where(.svelte-4kvlhy) {\n    margin: 0.5rem 0;\n    font-size: 0.9rem;\n  }\n\n  .actions.svelte-4kvlhy {\n    display: flex;\n    gap: 0.5rem;\n    margin: 1rem 0;\n    flex-wrap: wrap;\n  }\n\n  .rows-section.svelte-4kvlhy {\n    margin-top: 1.5rem;\n    padding-top: 1rem;\n    border-top: 1px solid var(--color-border-primary);\n  }\n\n  .rows-section.svelte-4kvlhy h4:where(.svelte-4kvlhy) {\n    margin: 0 0 1rem 0;\n    font-size: 1rem;\n    font-weight: 600;\n  }\n\n  .row-item.svelte-4kvlhy {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0.75rem;\n    background: var(--color-background-primary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 4px;\n    margin-bottom: 0.5rem;\n  }\n\n  .row-info.svelte-4kvlhy {\n    font-size: 0.9rem;\n  }\n\n  .row-actions.svelte-4kvlhy {\n    display: flex;\n    gap: 0.5rem;\n  }\n\n  .error-message.svelte-4kvlhy,\n  .success-message.svelte-4kvlhy {\n    padding: 1rem;\n    border-radius: 4px;\n    margin-bottom: 1rem;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n  }\n\n  .error-message.svelte-4kvlhy {\n    background: var(--color-error-background);\n    color: var(--color-error);\n    border: 1px solid var(--color-error-border);\n  }\n  \n  .success-message.svelte-4kvlhy {\n    background: var(--color-success-background);\n    color: var(--color-success);\n    border: 1px solid var(--color-success-border);\n  }\n\n  .close-btn.svelte-4kvlhy {\n    background: none;\n    border: none;\n    font-size: 1.2rem;\n    cursor: pointer;\n    color: inherit;\n    padding: 0;\n    margin-left: 1rem;\n  }\n\n  .close-btn.svelte-4kvlhy:hover {\n    opacity: 0.7;\n  }\n\n  .relationship-graph-view.svelte-qaxdvx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n    height: 100vh;\n  }\n\n  .graph-container.svelte-qaxdvx {\n    flex: 1;\n    min-height: 0;\n  }\n\n  .info-container.svelte-qaxdvx {\n    height: 300px;\n    min-height: 300px;\n  }\n\n  .relationship-graph-view.svelte-i1dhkx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n  }\n/*$vite$:1*/';
+  __vite_style__.textContent = '\r\n  .form-field.svelte-1ykx1li {\r\n    margin-bottom: 1rem;\r\n  }\r\n  \r\n  .field-width-full.svelte-1ykx1li {\r\n    width: 100%;\r\n  }\r\n  \r\n  .field-width-half.svelte-1ykx1li {\r\n    width: calc(50% - 0.5rem);\r\n  }\r\n  \r\n  .field-width-third.svelte-1ykx1li {\r\n    width: calc(33.333% - 0.667rem);\r\n  }\r\n  \r\n  .field-label.svelte-1ykx1li {\r\n    display: block;\r\n    margin-bottom: 0.5rem;\r\n    font-weight: 500;\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li,\r\n  .field-textarea.svelte-1ykx1li,\r\n  .field-select.svelte-1ykx1li {\r\n    width: 100%;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    font-size: 0.9rem;\r\n    transition: border-color 0.2s, box-shadow 0.2s;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li:focus,\r\n  .field-textarea.svelte-1ykx1li:focus,\r\n  .field-select.svelte-1ykx1li:focus {\r\n    outline: none;\r\n    border-color: var(--color-primary);\r\n    box-shadow: 0 0 0 2px var(--color-primary-alpha);\r\n  }\r\n  \r\n  .field-textarea.svelte-1ykx1li {\r\n    min-height: 80px;\r\n    resize: vertical;\r\n    font-family: inherit;\r\n  }\r\n  \r\n  .field-select.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  /* Checkbox-Gruppe Styles */\r\n  .checkbox-group.svelte-1ykx1li {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 0.5rem;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    background: var(--color-background-primary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    cursor: pointer;\r\n    padding: 0.25rem;\r\n    border-radius: 4px;\r\n    transition: background-color 0.2s;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li:hover {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li input[type="checkbox"]:where(.svelte-1ykx1li) {\r\n    margin: 0;\r\n    accent-color: var(--color-primary);\r\n    width: 1.2rem;\r\n    height: 1.2rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li span:where(.svelte-1ykx1li) {\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-checkbox.svelte-1ykx1li {\r\n    margin-right: 0.5rem;\r\n    width: auto;\r\n  }\r\n  \r\n  .checkbox-label.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-text.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-container.svelte-1ykx1li {\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    align-items: center;\r\n  }\r\n  \r\n  .field-color.svelte-1ykx1li {\r\n    width: 3rem;\r\n    height: 2.5rem;\r\n    padding: 0;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-text.svelte-1ykx1li {\r\n    flex: 1;\r\n    font-family: monospace;\r\n  }\r\n  \r\n  .field-description.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .field-error.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    color: var(--color-error);\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    border-color: var(--color-error);\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li):focus {\r\n    border-color: var(--color-error);\r\n    box-shadow: 0 0 0 2px var(--color-error-alpha);\r\n  }\r\n  \r\n  .disabled.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-select:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-checkbox:where(.svelte-1ykx1li) {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .readonly.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    background-color: var(--color-background-secondary);\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  /* Responsive Design */\r\n  @media (max-width: 768px) {\r\n    .field-width-half.svelte-1ykx1li,\r\n    .field-width-third.svelte-1ykx1li {\r\n      width: 100%;\r\n    }\r\n  }\r\n\r\n  /* Foundry VTT CSS-Variablen verwenden */\r\n  .form-container.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    padding: 1rem;\r\n  }\r\n  \r\n  .form-header.svelte-1hegfbw {\r\n    border-bottom: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: var(--border-radius) var(--border-radius) 0 0;\r\n    margin: -1rem -1rem 1rem -1rem;\r\n  }\r\n  \r\n  .form-title.svelte-1hegfbw {\r\n    color: var(--color-text-primary);\r\n    margin: 0;\r\n    font-size: 1.2rem;\r\n    font-weight: 600;\r\n  }\r\n  \r\n  .form-description.svelte-1hegfbw {\r\n    color: var(--color-text-secondary);\r\n    margin: 0.5rem 0 0 0;\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n\r\n  \r\n  .field-container.svelte-1hegfbw {\r\n    margin-bottom: 1.5rem;\r\n    transition: all 0.3s ease;\r\n  }\r\n  \r\n  .field-container.svelte-1hegfbw:focus-within {\r\n    transform: translateY(-2px);\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\r\n    border-radius: var(--border-radius);\r\n    padding: 0.5rem;\r\n    margin: 0.5rem -0.5rem 1.5rem -0.5rem;\r\n  }\r\n  \r\n  .form-actions.svelte-1hegfbw {\r\n    border-top: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: 0 0 var(--border-radius) var(--border-radius);\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    justify-content: flex-end;\r\n    margin: 1rem -1rem -1rem -1rem;\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw {\r\n    padding: 0.5rem 1rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    cursor: pointer;\r\n    font-size: 0.9rem;\r\n    transition: all 0.2s;\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw {\r\n    background: var(--color-primary);\r\n    color: var(--color-text-primary);\r\n    border-color: var(--color-primary);\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-primary-hover);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw:disabled {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .spinner.svelte-1hegfbw {\r\n    display: inline-block;\r\n    width: 1rem;\r\n    height: 1rem;\r\n    border: 2px solid transparent;\r\n    border-top: 2px solid currentColor;\r\n    border-radius: 50%;\r\n    animation: svelte-1hegfbw-spin 1s linear infinite;\r\n  }\r\n  \r\n  @keyframes svelte-1hegfbw-spin {\r\n    0% { transform: rotate(0deg); }\r\n    100% { transform: rotate(360deg); }\r\n  }\r\n  \r\n  /* Scroll-Indikator für bessere UX */\r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar {\r\n    width: 12px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-track {\r\n    background: var(--color-background-secondary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb {\r\n    background: var(--color-border-primary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb:hover {\r\n    background: var(--color-primary);\r\n  }\r\n  \r\n  /* Fokus-Indikator für bessere Accessibility */\r\n  .field-container.svelte-1hegfbw:focus-within .field-label {\r\n    color: var(--color-primary);\r\n    font-weight: 600;\r\n  }\r\n  \r\n  /* Smooth Transitions für alle interaktiven Elemente */\r\n  .form-container.svelte-1hegfbw :where(.svelte-1hegfbw) {\r\n    transition: border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;\r\n  }\r\n\r\n  .table-toolbar.svelte-1j21m60 {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    margin-bottom: 1rem;\r\n    gap: 1rem;\r\n  }\r\n  \r\n  .toolbar-left.svelte-1j21m60,\r\n  .toolbar-right.svelte-1j21m60 {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n  }\r\n  \r\n  .toolbar-right.svelte-1j21m60 {\r\n    flex-wrap: wrap;\r\n  }\r\n  \r\n  .btn.svelte-1j21m60 {\r\n    padding: 0.5rem 1rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    cursor: pointer;\r\n    font-size: 0.9rem;\r\n    transition: all 0.2s;\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    background: var(--color-background-primary);\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .btn.svelte-1j21m60:hover:not(:disabled) {\r\n    background: var(--color-background-secondary);\r\n    border-color: var(--color-primary);\r\n  }\r\n  \r\n  .btn-primary.svelte-1j21m60 {\r\n    background: var(--color-primary);\r\n    color: var(--color-text-primary);\r\n    border-color: var(--color-primary);\r\n  }\r\n  \r\n  .btn-primary.svelte-1j21m60:hover:not(:disabled) {\r\n    background: var(--color-primary-hover);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1j21m60 {\r\n    background: var(--color-background-primary);\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .btn-icon.svelte-1j21m60 {\r\n    padding: 0.5rem;\r\n    min-width: 2.5rem;\r\n    justify-content: center;\r\n  }\r\n  \r\n  .btn.svelte-1j21m60:disabled {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .icon.svelte-1j21m60 {\r\n    font-size: 1rem;\r\n    line-height: 1;\r\n  }\r\n  \r\n  .bulk-actions.svelte-1j21m60 {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    padding: 0.5rem;\r\n    background: var(--color-background-primary);\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n  }\r\n  \r\n  .bulk-info.svelte-1j21m60 {\r\n    color: var(--color-text-secondary);\r\n    font-size: 0.9rem;\r\n    margin-right: 0.5rem;\r\n  }\r\n  \r\n  .search-container.svelte-1j21m60 {\r\n    display: flex;\r\n    align-items: center;\r\n    background: var(--color-background-primary);\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    overflow: hidden;\r\n  }\r\n  \r\n  .search-input.svelte-1j21m60 {\r\n    padding: 0.5rem;\r\n    border: none;\r\n    background: transparent;\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n    min-width: 200px;\r\n  }\r\n  \r\n  .search-input.svelte-1j21m60:focus {\r\n    outline: none;\r\n  }\r\n  \r\n  .search-input.svelte-1j21m60::-moz-placeholder {\r\n    color: var(--color-text-secondary);\r\n  }\r\n  \r\n  .search-input.svelte-1j21m60::placeholder {\r\n    color: var(--color-text-secondary);\r\n  }\r\n  \r\n  .column-management.svelte-1j21m60,\r\n  .import-export.svelte-1j21m60 {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n  }\r\n  \r\n  /* Responsive Design */\r\n  @media (max-width: 768px) {\r\n    .table-toolbar.svelte-1j21m60 {\r\n      flex-direction: column;\r\n      align-items: stretch;\r\n    }\r\n    \r\n    .toolbar-left.svelte-1j21m60,\r\n    .toolbar-right.svelte-1j21m60 {\r\n      justify-content: center;\r\n    }\r\n    \r\n    .search-input.svelte-1j21m60 {\r\n      min-width: 150px;\r\n    }\r\n  }\r\n  \r\n  @media (max-width: 480px) {\r\n    .toolbar-left.svelte-1j21m60,\r\n    .toolbar-right.svelte-1j21m60 {\r\n      flex-wrap: wrap;\r\n    }\r\n    \r\n    .search-input.svelte-1j21m60 {\r\n      min-width: 120px;\r\n    }\r\n    \r\n    .bulk-actions.svelte-1j21m60 {\r\n      flex-wrap: wrap;\r\n    }\r\n  }\r\n\r\n  .table-header.svelte-b0n5qh {\r\n    background: var(--color-background-secondary);\r\n    border-bottom: 2px solid var(--color-border-primary);\r\n  }\r\n  \r\n  .header-row.svelte-b0n5qh {\r\n    height: auto;\r\n  }\r\n  \r\n  .header-cell.svelte-b0n5qh {\r\n    padding: 0.5rem;\r\n    text-align: left;\r\n    vertical-align: top;\r\n    border-right: 1px solid var(--color-border-primary);\r\n    background: var(--color-background-secondary);\r\n    position: sticky;\r\n    top: 0;\r\n    z-index: 10;\r\n  }\r\n  \r\n  .header-cell.svelte-b0n5qh:last-child {\r\n    border-right: none;\r\n  }\r\n  \r\n  .select-column.svelte-b0n5qh {\r\n    width: 3rem;\r\n    min-width: 3rem;\r\n    text-align: center;\r\n  }\r\n  \r\n  .actions-column.svelte-b0n5qh {\r\n    width: 8rem;\r\n    min-width: 8rem;\r\n    text-align: center;\r\n  }\r\n  \r\n  .header-content.svelte-b0n5qh {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 0.5rem;\r\n  }\r\n  \r\n  .column-title.svelte-b0n5qh {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.25rem;\r\n    font-weight: 600;\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n    background: none;\r\n    border: none;\r\n    padding: 0;\r\n    margin: 0;\r\n    width: 100%;\r\n    text-align: left;\r\n  }\r\n  \r\n  .column-title.clickable.svelte-b0n5qh {\r\n    cursor: pointer;\r\n    -webkit-user-select: none;\r\n       -moz-user-select: none;\r\n            user-select: none;\r\n  }\r\n  \r\n  .column-title.clickable.svelte-b0n5qh:hover {\r\n    color: var(--color-primary);\r\n  }\r\n  \r\n  .title-text.svelte-b0n5qh {\r\n    flex: 1;\r\n  }\r\n  \r\n  .required-indicator.svelte-b0n5qh {\r\n    color: var(--color-error);\r\n    font-weight: bold;\r\n  }\r\n  \r\n  .sort-icon.svelte-b0n5qh {\r\n    font-size: 0.8rem;\r\n    opacity: 0.7;\r\n  }\r\n  \r\n  .filter-container.svelte-b0n5qh {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 0.25rem;\r\n  }\r\n  \r\n  .filter-select.svelte-b0n5qh,\r\n  .filter-input.svelte-b0n5qh {\r\n    width: 100%;\r\n    padding: 0.25rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 3px;\r\n    font-size: 0.8rem;\r\n    background: var(--color-background-primary);\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .filter-select.svelte-b0n5qh:focus,\r\n  .filter-input.svelte-b0n5qh:focus {\r\n    outline: none;\r\n    border-color: var(--color-primary);\r\n    box-shadow: 0 0 0 1px var(--color-primary-alpha);\r\n  }\r\n  \r\n  .number-filter.svelte-b0n5qh {\r\n    display: flex;\r\n    gap: 0.25rem;\r\n  }\r\n  \r\n  .number-filter.svelte-b0n5qh .filter-input:where(.svelte-b0n5qh) {\r\n    flex: 1;\r\n  }\r\n  \r\n  .text-filter.svelte-b0n5qh {\r\n    position: relative;\r\n    display: flex;\r\n    align-items: center;\r\n  }\r\n  \r\n  .text-filter.svelte-b0n5qh .filter-input:where(.svelte-b0n5qh) {\r\n    padding-right: 1.5rem;\r\n  }\r\n  \r\n  .filter-clear.svelte-b0n5qh {\r\n    position: absolute;\r\n    right: 0.25rem;\r\n    top: 50%;\r\n    transform: translateY(-50%);\r\n    background: none;\r\n    border: none;\r\n    color: var(--color-text-secondary);\r\n    cursor: pointer;\r\n    font-size: 1rem;\r\n    line-height: 1;\r\n    padding: 0;\r\n    width: 1rem;\r\n    height: 1rem;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n  }\r\n  \r\n  .filter-clear.svelte-b0n5qh:hover {\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .select-all-checkbox.svelte-b0n5qh {\r\n    width: 1rem;\r\n    height: 1rem;\r\n    cursor: pointer;\r\n    accent-color: var(--color-primary);\r\n  }\r\n  \r\n  /* Responsive Design */\r\n  @media (max-width: 768px) {\r\n    .header-cell.svelte-b0n5qh {\r\n      padding: 0.25rem;\r\n    }\r\n    \r\n    .column-title.svelte-b0n5qh {\r\n      font-size: 0.8rem;\r\n    }\r\n    \r\n    .filter-select.svelte-b0n5qh,\r\n    .filter-input.svelte-b0n5qh {\r\n      font-size: 0.7rem;\r\n      padding: 0.2rem;\r\n    }\r\n    \r\n    .number-filter.svelte-b0n5qh {\r\n      flex-direction: column;\r\n    }\r\n  }\r\n  \r\n  /* Hover-Effekte */\r\n  .header-cell.sortable.svelte-b0n5qh:hover {\r\n    background: var(--color-background-primary);\r\n  }\r\n  \r\n  .header-cell.filterable.svelte-b0n5qh:hover {\r\n    background: var(--color-background-primary);\r\n  }\r\n\r\n  .table-cell-content.svelte-13boekn {\r\n    position: relative;\r\n    min-height: 2rem;\r\n    padding: 0.25rem;\r\n    border-radius: 3px;\r\n    transition: all 0.2s ease;\r\n    background: none;\r\n    border: none;\r\n    width: 100%;\r\n    text-align: left;\r\n  }\r\n  \r\n  .table-cell-content.svelte-13boekn:hover {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .table-cell-content.editing.svelte-13boekn {\r\n    background: var(--color-warning-alpha);\r\n    border: 1px solid var(--color-warning);\r\n  }\r\n  \r\n  .table-cell-content.has-error.svelte-13boekn {\r\n    background: var(--color-error-alpha);\r\n    border: 1px solid var(--color-error);\r\n  }\r\n  \r\n  .table-cell-content.required.svelte-13boekn {\r\n    border-left: 3px solid var(--color-primary);\r\n  }\r\n  \r\n  .table-cell-content.readonly.svelte-13boekn {\r\n    background: var(--color-background-secondary);\r\n    opacity: 0.8;\r\n  }\r\n  \r\n  .table-cell-content.disabled.svelte-13boekn {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .cell-edit-mode.svelte-13boekn {\r\n    width: 100%;\r\n  }\r\n  \r\n  .cell-display-mode.svelte-13boekn {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.25rem;\r\n    min-height: 1.5rem;\r\n  }\r\n  \r\n  .cell-value.svelte-13boekn {\r\n    flex: 1;\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n    line-height: 1.4;\r\n    word-break: break-word;\r\n  }\r\n  \r\n  .required-indicator.svelte-13boekn {\r\n    color: var(--color-error);\r\n    font-weight: bold;\r\n    font-size: 0.8rem;\r\n  }\r\n  \r\n  .cell-error.svelte-13boekn {\r\n    position: absolute;\r\n    top: 100%;\r\n    left: 0;\r\n    right: 0;\r\n    background: var(--color-error);\r\n    color: white;\r\n    font-size: 0.7rem;\r\n    padding: 0.25rem;\r\n    border-radius: 3px;\r\n    z-index: 10;\r\n    margin-top: 0.25rem;\r\n    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\r\n  }\r\n  \r\n  /* Spezielle Formatierung für verschiedene Datentypen */\r\n  .cell-value.boolean.svelte-13boekn {\r\n    font-weight: 600;\r\n  }\r\n  \r\n  .cell-value.number.svelte-13boekn {\r\n    text-align: right;\r\n    font-family: monospace;\r\n  }\r\n  \r\n  .cell-value.date.svelte-13boekn {\r\n    font-family: monospace;\r\n  }\r\n  \r\n  .cell-value.multiselect.svelte-13boekn {\r\n    font-style: italic;\r\n  }\r\n  \r\n  /* Hover-Effekte für Click-to-Edit */\r\n  .table-cell-content.svelte-13boekn:not(.readonly):not(.disabled):not(.editing) {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .table-cell-content.svelte-13boekn:not(.readonly):not(.disabled):not(.editing):hover {\r\n    background: var(--color-primary-alpha);\r\n  }\r\n  \r\n  /* Responsive Design */\r\n  @media (max-width: 768px) {\r\n    .table-cell-content.svelte-13boekn {\r\n      padding: 0.2rem;\r\n      min-height: 1.5rem;\r\n    }\r\n    \r\n    .cell-value.svelte-13boekn {\r\n      font-size: 0.8rem;\r\n    }\r\n    \r\n    .cell-error.svelte-13boekn {\r\n      font-size: 0.6rem;\r\n      padding: 0.2rem;\r\n    }\r\n  }\r\n  \r\n  /* Animationen */\r\n  .table-cell-content.svelte-13boekn {\r\n    animation: svelte-13boekn-cellFadeIn 0.2s ease-in;\r\n  }\r\n  \r\n  @keyframes svelte-13boekn-cellFadeIn {\r\n    from {\r\n      opacity: 0;\r\n    }\r\n    to {\r\n      opacity: 1;\r\n    }\r\n  }\r\n  \r\n  /* Fokus-Management */\r\n  .table-cell-content.svelte-13boekn:focus-within {\r\n    outline: 2px solid var(--color-primary);\r\n    outline-offset: -2px;\r\n  }\r\n  \r\n  /* Truncation für lange Texte */\r\n  .cell-value.svelte-13boekn {\r\n    overflow: hidden;\r\n    text-overflow: ellipsis;\r\n    white-space: nowrap;\r\n  }\r\n  \r\n  .table-cell-content.svelte-13boekn:hover .cell-value:where(.svelte-13boekn) {\r\n    white-space: normal;\r\n    word-break: break-word;\r\n  }\r\n\r\n  .table-row.svelte-1on7u65 {\r\n    border-bottom: 1px solid var(--color-border-primary);\r\n    transition: all 0.2s ease;\r\n  }\r\n  \r\n  .table-row.svelte-1on7u65:hover {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .table-row.selected.svelte-1on7u65 {\r\n    background: var(--color-primary-alpha);\r\n  }\r\n  \r\n  .table-row.editing.svelte-1on7u65 {\r\n    background: var(--color-warning-alpha);\r\n  }\r\n  \r\n  .table-row.new.svelte-1on7u65 {\r\n    background: var(--color-success-alpha);\r\n  }\r\n  \r\n  .table-row.modified.svelte-1on7u65 {\r\n    background: var(--color-info-alpha);\r\n  }\r\n  \r\n  .table-row.deleted.svelte-1on7u65 {\r\n    background: var(--color-error-alpha);\r\n    opacity: 0.6;\r\n  }\r\n  \r\n  .table-cell.svelte-1on7u65 {\r\n    padding: 0.5rem;\r\n    vertical-align: top;\r\n    border-right: 1px solid var(--color-border-primary);\r\n  }\r\n  \r\n  .table-cell.svelte-1on7u65:last-child {\r\n    border-right: none;\r\n  }\r\n  \r\n  .select-cell.svelte-1on7u65 {\r\n    width: 3rem;\r\n    min-width: 3rem;\r\n    text-align: center;\r\n  }\r\n  \r\n  .data-cell.svelte-1on7u65 {\r\n    min-width: 100px;\r\n  }\r\n  \r\n  .actions-cell.svelte-1on7u65 {\r\n    width: 8rem;\r\n    min-width: 8rem;\r\n    text-align: center;\r\n  }\r\n  \r\n  .row-checkbox.svelte-1on7u65 {\r\n    width: 1rem;\r\n    height: 1rem;\r\n    cursor: pointer;\r\n    accent-color: var(--color-primary);\r\n  }\r\n  \r\n  .row-actions.svelte-1on7u65 {\r\n    display: flex;\r\n    gap: 0.25rem;\r\n    justify-content: center;\r\n    align-items: center;\r\n  }\r\n  \r\n  .btn.svelte-1on7u65 {\r\n    padding: 0.25rem 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 3px;\r\n    cursor: pointer;\r\n    font-size: 0.8rem;\r\n    transition: all 0.2s;\r\n    display: flex;\r\n    align-items: center;\r\n    justify-content: center;\r\n    min-width: 2rem;\r\n    height: 2rem;\r\n  }\r\n  \r\n  .btn-sm.svelte-1on7u65 {\r\n    padding: 0.2rem 0.4rem;\r\n    font-size: 0.7rem;\r\n    min-width: 1.8rem;\r\n    height: 1.8rem;\r\n  }\r\n  \r\n  .btn-primary.svelte-1on7u65 {\r\n    background: var(--color-primary);\r\n    color: var(--color-text-primary);\r\n    border-color: var(--color-primary);\r\n  }\r\n  \r\n  .btn-primary.svelte-1on7u65:hover:not(:disabled) {\r\n    background: var(--color-primary-hover);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1on7u65 {\r\n    background: var(--color-background-primary);\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1on7u65:hover:not(:disabled) {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .btn-success.svelte-1on7u65 {\r\n    background: var(--color-success);\r\n    color: white;\r\n    border-color: var(--color-success);\r\n  }\r\n  \r\n  .btn-success.svelte-1on7u65:hover:not(:disabled) {\r\n    background: var(--color-success-hover);\r\n  }\r\n  \r\n  .btn-danger.svelte-1on7u65 {\r\n    background: var(--color-error);\r\n    color: white;\r\n    border-color: var(--color-error);\r\n  }\r\n  \r\n  .btn-danger.svelte-1on7u65:hover:not(:disabled) {\r\n    background: var(--color-error-hover);\r\n  }\r\n  \r\n  .btn.svelte-1on7u65:disabled {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .icon.svelte-1on7u65 {\r\n    font-size: 0.8rem;\r\n    line-height: 1;\r\n  }\r\n  \r\n  /* Responsive Design */\r\n  @media (max-width: 768px) {\r\n    .table-cell.svelte-1on7u65 {\r\n      padding: 0.25rem;\r\n    }\r\n    \r\n    .row-actions.svelte-1on7u65 {\r\n      flex-direction: column;\r\n      gap: 0.1rem;\r\n    }\r\n    \r\n    .btn-sm.svelte-1on7u65 {\r\n      min-width: 1.5rem;\r\n      height: 1.5rem;\r\n      font-size: 0.6rem;\r\n    }\r\n  }\r\n  \r\n  /* Animationen */\r\n  .table-row.svelte-1on7u65 {\r\n    animation: svelte-1on7u65-fadeIn 0.3s ease-in;\r\n  }\r\n  \r\n  @keyframes svelte-1on7u65-fadeIn {\r\n    from {\r\n      opacity: 0;\r\n      transform: translateY(-10px);\r\n    }\r\n    to {\r\n      opacity: 1;\r\n      transform: translateY(0);\r\n    }\r\n  }\r\n  \r\n  /* Fokus-Management */\r\n  .table-row.svelte-1on7u65:focus-within {\r\n    outline: 2px solid var(--color-primary);\r\n    outline-offset: -2px;\r\n  }\r\n\r\n  /* Foundry VTT CSS-Variablen verwenden */\r\n  .table-container.svelte-17jwc3b {\r\n    background: var(--color-background-primary);\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    padding: 1rem;\r\n    height: 100%;\r\n    display: flex;\r\n    flex-direction: column;\r\n  }\r\n  \r\n  .table-header.svelte-17jwc3b {\r\n    border-bottom: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: var(--border-radius) var(--border-radius) 0 0;\r\n    margin: -1rem -1rem 1rem -1rem;\r\n  }\r\n  \r\n  .table-title.svelte-17jwc3b {\r\n    color: var(--color-text-primary);\r\n    margin: 0;\r\n    font-size: 1.2rem;\r\n    font-weight: 600;\r\n  }\r\n  \r\n  .table-description.svelte-17jwc3b {\r\n    color: var(--color-text-secondary);\r\n    margin: 0.5rem 0 0 0;\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n  .table-wrapper.svelte-17jwc3b {\r\n    flex: 1;\r\n    overflow: auto;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n  }\r\n  \r\n  .data-table.svelte-17jwc3b {\r\n    width: 100%;\r\n    border-collapse: collapse;\r\n    background: var(--color-background-primary);\r\n  }\r\n  \r\n  .table-pagination.svelte-17jwc3b {\r\n    display: flex;\r\n    justify-content: space-between;\r\n    align-items: center;\r\n    padding: 1rem;\r\n    border-top: 1px solid var(--color-border-primary);\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .pagination-info.svelte-17jwc3b {\r\n    color: var(--color-text-secondary);\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n  .pagination-controls.svelte-17jwc3b {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 1rem;\r\n  }\r\n  \r\n  .pagination-page.svelte-17jwc3b {\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n  .table-actions.svelte-17jwc3b {\r\n    border-top: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: 0 0 var(--border-radius) var(--border-radius);\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    justify-content: flex-end;\r\n    margin: 1rem -1rem -1rem -1rem;\r\n  }\r\n  \r\n  .btn.svelte-17jwc3b {\r\n    padding: 0.5rem 1rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    cursor: pointer;\r\n    font-size: 0.9rem;\r\n    transition: all 0.2s;\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n  }\r\n  \r\n  .btn-primary.svelte-17jwc3b {\r\n    background: var(--color-primary);\r\n    color: var(--color-text-primary);\r\n    border-color: var(--color-primary);\r\n  }\r\n  \r\n  .btn-primary.svelte-17jwc3b:hover:not(:disabled) {\r\n    background: var(--color-primary-hover);\r\n  }\r\n  \r\n  .btn-secondary.svelte-17jwc3b {\r\n    background: var(--color-background-primary);\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .btn-secondary.svelte-17jwc3b:hover:not(:disabled) {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .btn.svelte-17jwc3b:disabled {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .spinner.svelte-17jwc3b {\r\n    display: inline-block;\r\n    width: 1rem;\r\n    height: 1rem;\r\n    border: 2px solid transparent;\r\n    border-top: 2px solid currentColor;\r\n    border-radius: 50%;\r\n    animation: svelte-17jwc3b-spin 1s linear infinite;\r\n  }\r\n  \r\n  @keyframes svelte-17jwc3b-spin {\r\n    0% { transform: rotate(0deg); }\r\n    100% { transform: rotate(360deg); }\r\n  }\r\n  \r\n  /* Scroll-Indikator für bessere UX */\r\n  .table-wrapper.svelte-17jwc3b::-webkit-scrollbar {\r\n    width: 12px;\r\n    height: 12px;\r\n  }\r\n  \r\n  .table-wrapper.svelte-17jwc3b::-webkit-scrollbar-track {\r\n    background: var(--color-background-secondary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .table-wrapper.svelte-17jwc3b::-webkit-scrollbar-thumb {\r\n    background: var(--color-border-primary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .table-wrapper.svelte-17jwc3b::-webkit-scrollbar-thumb:hover {\r\n    background: var(--color-primary);\r\n  }\r\n\n  /* Gleiches Scrolling wie DynamicFormSheet */\n  .metadata-container.svelte-qx734j {\n    height: 100vh;\n    max-height: 100vh;\n    overflow-y: auto;\n    padding: 1rem;\n    box-sizing: border-box;\n  }\n\n  .metadata-header.svelte-qx734j {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 2rem;\n    padding-bottom: 1rem;\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .header-actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n    align-items: center;\n  }\n\n  .metadata-header.svelte-qx734j h1:where(.svelte-qx734j) {\n    margin: 0;\n    font-size: 1.5rem;\n    font-weight: 600;\n  }\n\n  .metadata-content.svelte-qx734j {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .schema-card.svelte-qx734j {\n    background: var(--color-background-secondary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 6px;\n    overflow: hidden;\n  }\n\n  .schema-card.selected.svelte-qx734j {\n    border-color: var(--color-primary);\n  }\n\n  .schema-header.svelte-qx734j {\n    padding: 1rem;\n    cursor: pointer;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    background: var(--color-background-primary);\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .schema-header.svelte-qx734j:hover {\n    background: var(--color-background-tertiary);\n  }\n\n  .schema-header.svelte-qx734j h3:where(.svelte-qx734j) {\n    margin: 0;\n    font-size: 1.1rem;\n    font-weight: 600;\n  }\n\n  .version.svelte-qx734j {\n    background: var(--color-info);\n    color: var(--color-text-primary);\n    padding: 0.2rem 0.5rem;\n    border-radius: 4px;\n    font-size: 0.8rem;\n  }\n\n  .schema-details.svelte-qx734j {\n    padding: 1rem;\n    background: var(--color-background-secondary);\n  }\n\n  .schema-details.svelte-qx734j p:where(.svelte-qx734j) {\n    margin: 0.5rem 0;\n    font-size: 0.9rem;\n  }\n\n  .actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n    margin: 1rem 0;\n    flex-wrap: wrap;\n  }\n\n  .rows-section.svelte-qx734j {\n    margin-top: 1.5rem;\n    padding-top: 1rem;\n    border-top: 1px solid var(--color-border-primary);\n  }\n\n  .rows-section.svelte-qx734j h4:where(.svelte-qx734j) {\n    margin: 0 0 1rem 0;\n    font-size: 1rem;\n    font-weight: 600;\n  }\n\n  .row-item.svelte-qx734j {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0.75rem;\n    background: var(--color-background-primary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 4px;\n    margin-bottom: 0.5rem;\n  }\n\n  .row-info.svelte-qx734j {\n    font-size: 0.9rem;\n  }\n\n  .row-actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n  }\n\n  .error-message.svelte-qx734j,\n  .success-message.svelte-qx734j {\n    padding: 1rem;\n    border-radius: 4px;\n    margin-bottom: 1rem;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n  }\n\n  .error-message.svelte-qx734j {\n    background: var(--color-error-background);\n    color: var(--color-error);\n    border: 1px solid var(--color-error-border);\n  }\n  \n  .success-message.svelte-qx734j {\n    background: var(--color-success-background);\n    color: var(--color-success);\n    border: 1px solid var(--color-success-border);\n  }\n\n  .close-btn.svelte-qx734j {\n    background: none;\n    border: none;\n    font-size: 1.2rem;\n    cursor: pointer;\n    color: inherit;\n    padding: 0;\n    margin-left: 1rem;\n  }\n\n  .close-btn.svelte-qx734j:hover {\n    opacity: 0.7;\n  }\n\n  .relationship-graph-view.svelte-qaxdvx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n    height: 100vh;\n  }\n\n  .graph-container.svelte-qaxdvx {\n    flex: 1;\n    min-height: 0;\n  }\n\n  .info-container.svelte-qaxdvx {\n    height: 300px;\n    min-height: 300px;\n  }\n\n  .relationship-graph-view.svelte-i1dhkx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n  }\n/*$vite$:1*/';
   document.head.appendChild(__vite_style__);
   Object.assign = function(target, ...sources) {
     for (const source2 of sources) {
@@ -362,6 +362,18 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
     );
   }
+  function get_proxied_value(value) {
+    try {
+      if (value !== null && typeof value === "object" && STATE_SYMBOL in value) {
+        return value[STATE_SYMBOL];
+      }
+    } catch {
+    }
+    return value;
+  }
+  function is(a, b) {
+    return Object.is(get_proxied_value(a), get_proxied_value(b));
+  }
   // @__NO_SIDE_EFFECTS__
   function derived(fn) {
     var flags = DERIVED | DIRTY;
@@ -548,6 +560,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
     }
   }
+  function select_multiple_invalid_value() {
+    {
+      console.warn(`https://svelte.dev/e/select_multiple_invalid_value`);
+    }
+  }
   let hydrating = false;
   var $window;
   var is_firefox;
@@ -720,6 +737,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         }
       });
     };
+  }
+  function render_effect(fn) {
+    return create_effect(RENDER_EFFECT, fn, true);
   }
   function template_effect(fn, thunks = [], d = derived) {
     const deriveds = thunks.map(d);
@@ -1399,6 +1419,30 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   function is_passive_event(name) {
     return PASSIVE_EVENTS.includes(name);
   }
+  let listening_to_form_reset = false;
+  function add_form_reset_listener() {
+    if (!listening_to_form_reset) {
+      listening_to_form_reset = true;
+      document.addEventListener(
+        "reset",
+        (evt) => {
+          Promise.resolve().then(() => {
+            if (!evt.defaultPrevented) {
+              for (
+                const e of
+                /**@type {HTMLFormElement} */
+                evt.target.elements
+              ) {
+                e.__on_r?.();
+              }
+            }
+          });
+        },
+        // In the capture phase to guarantee we get noticed of it (no possiblity of stopPropagation)
+        { capture: true }
+      );
+    }
+  }
   function without_reactive_context(fn) {
     var previous_reaction = active_reaction;
     var previous_effect = active_effect;
@@ -1410,6 +1454,19 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       set_active_reaction(previous_reaction);
       set_active_effect(previous_effect);
     }
+  }
+  function listen_to_event_and_reset_event(element, event2, handler, on_reset = handler) {
+    element.addEventListener(event2, () => without_reactive_context(handler));
+    const prev = element.__on_r;
+    if (prev) {
+      element.__on_r = () => {
+        prev();
+        on_reset(true);
+      };
+    } else {
+      element.__on_r = () => on_reset(true);
+    }
+    add_form_reset_listener();
   }
   const all_registered_events = /* @__PURE__ */ new Set();
   const root_event_handles = /* @__PURE__ */ new Set();
@@ -2067,6 +2124,9 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     }
     return classname === "" ? null : classname;
   }
+  function to_style(value, styles) {
+    return value == null ? null : String(value);
+  }
   function set_class(dom, is_html, value, hash, prev_classes, next_classes) {
     var prev = dom.__className;
     if (prev !== value || prev === void 0) {
@@ -2081,6 +2141,71 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       dom.__className = value;
     }
     return next_classes;
+  }
+  function set_style(dom, value, prev_styles, next_styles) {
+    var prev = dom.__style;
+    if (prev !== value) {
+      var next_style_attr = to_style(value);
+      {
+        if (next_style_attr == null) {
+          dom.removeAttribute("style");
+        } else {
+          dom.style.cssText = next_style_attr;
+        }
+      }
+      dom.__style = value;
+    }
+    return next_styles;
+  }
+  function select_option(select, value, mounting = false) {
+    if (select.multiple) {
+      if (value == void 0) {
+        return;
+      }
+      if (!is_array(value)) {
+        return select_multiple_invalid_value();
+      }
+      for (var option of select.options) {
+        option.selected = value.includes(get_option_value(option));
+      }
+      return;
+    }
+    for (option of select.options) {
+      var option_value = get_option_value(option);
+      if (is(option_value, value)) {
+        option.selected = true;
+        return;
+      }
+    }
+    if (!mounting || value !== void 0) {
+      select.selectedIndex = -1;
+    }
+  }
+  function init_select(select) {
+    var observer = new MutationObserver(() => {
+      select_option(select, select.__value);
+    });
+    observer.observe(select, {
+      // Listen to option element changes
+      childList: true,
+      subtree: true,
+      // because of <optgroup>
+      // Listen to option element value attribute changes
+      // (doesn't get notified of select value changes,
+      // because that property is not reflected as an attribute)
+      attributes: true,
+      attributeFilter: ["value"]
+    });
+    teardown(() => {
+      observer.disconnect();
+    });
+  }
+  function get_option_value(option) {
+    if ("__value" in option) {
+      return option.__value;
+    } else {
+      return option.value;
+    }
   }
   const IS_CUSTOM_ELEMENT = Symbol("is custom element");
   const IS_HTML = Symbol("is html");
@@ -2153,6 +2278,50 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       proto = get_prototype_of(proto);
     }
     return setters;
+  }
+  function bind_value(input, get2, set2 = get2) {
+    listen_to_event_and_reset_event(input, "input", (is_reset) => {
+      var value = is_reset ? input.defaultValue : input.value;
+      value = is_numberlike_input(input) ? to_number(value) : value;
+      set2(value);
+      if (value !== (value = get2())) {
+        var start = input.selectionStart;
+        var end = input.selectionEnd;
+        input.value = value ?? "";
+        if (end !== null) {
+          input.selectionStart = start;
+          input.selectionEnd = Math.min(end, input.value.length);
+        }
+      }
+    });
+    if (
+      // If we are hydrating and the value has since changed,
+      // then use the updated value from the input instead.
+      // If defaultValue is set, then value == defaultValue
+      // TODO Svelte 6: remove input.value check and set to empty string?
+      untrack(get2) == null && input.value
+    ) {
+      set2(is_numberlike_input(input) ? to_number(input.value) : input.value);
+    }
+    render_effect(() => {
+      var value = get2();
+      if (is_numberlike_input(input) && value === to_number(input.value)) {
+        return;
+      }
+      if (input.type === "date" && !value && !input.value) {
+        return;
+      }
+      if (value !== input.value) {
+        input.value = value ?? "";
+      }
+    });
+  }
+  function is_numberlike_input(input) {
+    var type = input.type;
+    return type === "number" || type === "range";
+  }
+  function to_number(value) {
+    return value === "" ? null : +value;
   }
   function onMount(fn) {
     if (component_context === null) {
@@ -2262,7 +2431,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     const target = e.target;
     updateValue(target.value);
   }
-  var on_input = (
+  var on_input$1 = (
     // Multi-Select Funktionen
     // Option hinzufügen
     // Option entfernen
@@ -2270,25 +2439,25 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     // CSS-Klassen für Fehlerzustand
     (e, updateValue) => updateValue(e.target.value)
   );
-  var root_2$1 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
-  var root_3$1 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
-  var root_1$2 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <input type="text" class="field-input svelte-1ykx1li"/> <!> <!></div>`);
+  var root_2$5 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
+  var root_3$6 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_1$7 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <input type="text" class="field-input svelte-1ykx1li"/> <!> <!></div>`);
   var on_input_1 = (e, updateValue) => updateValue(e.target.value);
-  var root_6 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
-  var root_7$1 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
-  var root_5$2 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <textarea class="field-textarea svelte-1ykx1li"></textarea> <!> <!></div>`);
+  var root_6$3 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
+  var root_7$4 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_5$6 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <textarea class="field-textarea svelte-1ykx1li"></textarea> <!> <!></div>`);
   var root_11$1 = /* @__PURE__ */ from_html(`<option> </option>`);
-  var root_12 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var root_12$1 = /* @__PURE__ */ from_html(`<option> </option>`);
   var root_13 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
-  var root_14 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
-  var root_9$1 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <select class="field-select svelte-1ykx1li"><option>Bitte wählen...</option><!></select> <!> <!></div>`);
-  var on_change = (e, toggleSelection, option) => toggleSelection(get(option), e.target.checked);
+  var root_14$1 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
+  var root_9$4 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <select class="field-select svelte-1ykx1li"><option>Bitte wählen...</option><!></select> <!> <!></div>`);
+  var on_change$1 = (e, toggleSelection, option) => toggleSelection(get(option), e.target.checked);
   var root_18 = /* @__PURE__ */ from_html(`<label class="checkbox-option svelte-1ykx1li"><input type="checkbox" class="svelte-1ykx1li"/> <span class="svelte-1ykx1li"> </span></label>`);
-  var on_change_1 = (e, toggleSelection, option) => toggleSelection(get(option).value, e.target.checked);
+  var on_change_1$1 = (e, toggleSelection, option) => toggleSelection(get(option).value, e.target.checked);
   var root_19 = /* @__PURE__ */ from_html(`<label class="checkbox-option svelte-1ykx1li"><input type="checkbox" class="svelte-1ykx1li"/> <span class="svelte-1ykx1li"> </span></label>`);
   var root_20 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
   var root_21 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
-  var root_16 = /* @__PURE__ */ from_html(`<div><div class="field-label svelte-1ykx1li"> </div> <div class="checkbox-group svelte-1ykx1li"></div> <!> <!></div>`);
+  var root_16$1 = /* @__PURE__ */ from_html(`<div><div class="field-label svelte-1ykx1li"> </div> <div class="checkbox-group svelte-1ykx1li"></div> <!> <!></div>`);
   var root_24 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
   var root_25 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
   var root_23 = /* @__PURE__ */ from_html(`<div><label class="field-label checkbox-label svelte-1ykx1li"><input type="checkbox" class="field-checkbox svelte-1ykx1li"/> <span class="checkbox-text svelte-1ykx1li"> </span></label> <!> <!></div>`);
@@ -2296,11 +2465,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
   var root_28 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
   var root_29 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
   var root_27 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <input type="number" class="field-input svelte-1ykx1li"/> <!> <!></div>`);
-  var on_change_2 = (e, updateValue) => updateValue(e.target.value);
+  var on_change_2$1 = (e, updateValue) => updateValue(e.target.value);
   var root_32 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
   var root_33 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
   var root_31 = /* @__PURE__ */ from_html(`<div><label class="field-label svelte-1ykx1li"> </label> <input type="date" class="field-input svelte-1ykx1li"/> <!> <!></div>`);
-  var on_change_3 = (e, updateValue) => updateValue(e.target.value);
+  var on_change_3$1 = (e, updateValue) => updateValue(e.target.value);
   var on_input_3 = (e, updateValue) => updateValue(e.target.value);
   var root_36 = /* @__PURE__ */ from_html(`<small class="field-description svelte-1ykx1li"> </small>`);
   var root_37 = /* @__PURE__ */ from_html(`<div class="field-error svelte-1ykx1li"> </div>`);
@@ -2340,15 +2509,15 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     var node = first_child(fragment);
     {
       var consequent_2 = ($$anchor2) => {
-        var div = root_1$2();
+        var div = root_1$7();
         var label = child(div);
         var text = child(label);
         var input = sibling(label, 2);
-        input.__input = [on_input, updateValue];
+        input.__input = [on_input$1, updateValue];
         var node_1 = sibling(input, 2);
         {
           var consequent = ($$anchor3) => {
-            var small = root_2$1();
+            var small = root_2$5();
             var text_1 = child(small);
             template_effect(() => set_text(text_1, $$props.element.description));
             append($$anchor3, small);
@@ -2360,7 +2529,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         var node_2 = sibling(node_1, 2);
         {
           var consequent_1 = ($$anchor3) => {
-            var div_1 = root_3$1();
+            var div_1 = root_3$6();
             var text_2 = child(div_1);
             template_effect(() => set_text(text_2, $$props.error));
             append($$anchor3, div_1);
@@ -2386,7 +2555,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       var alternate = ($$anchor2, $$elseif) => {
         {
           var consequent_5 = ($$anchor3) => {
-            var div_2 = root_5$2();
+            var div_2 = root_5$6();
             var label_1 = child(div_2);
             var text_3 = child(label_1);
             var textarea = sibling(label_1, 2);
@@ -2394,7 +2563,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             var node_3 = sibling(textarea, 2);
             {
               var consequent_3 = ($$anchor4) => {
-                var small_1 = root_6();
+                var small_1 = root_6$3();
                 var text_4 = child(small_1);
                 template_effect(() => set_text(text_4, $$props.element.description));
                 append($$anchor4, small_1);
@@ -2406,7 +2575,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             var node_4 = sibling(node_3, 2);
             {
               var consequent_4 = ($$anchor4) => {
-                var div_3 = root_7$1();
+                var div_3 = root_7$4();
                 var text_5 = child(div_3);
                 template_effect(() => set_text(text_5, $$props.error));
                 append($$anchor4, div_3);
@@ -2433,7 +2602,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
           var alternate_1 = ($$anchor3, $$elseif2) => {
             {
               var consequent_9 = ($$anchor4) => {
-                var div_4 = root_9$1();
+                var div_4 = root_9$4();
                 var label_2 = child(div_4);
                 var text_6 = child(label_2);
                 var select = sibling(label_2, 2);
@@ -2459,7 +2628,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                       append($$anchor6, option_2);
                     };
                     var alternate_2 = ($$anchor6) => {
-                      var option_3 = root_12();
+                      var option_3 = root_12$1();
                       var text_8 = child(option_3);
                       var option_3_value = {};
                       template_effect(() => {
@@ -2493,7 +2662,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                 var node_8 = sibling(node_7, 2);
                 {
                   var consequent_8 = ($$anchor5) => {
-                    var div_5 = root_14();
+                    var div_5 = root_14$1();
                     var text_10 = child(div_5);
                     template_effect(() => set_text(text_10, $$props.error));
                     append($$anchor5, div_5);
@@ -2515,7 +2684,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
               var alternate_3 = ($$anchor4, $$elseif3) => {
                 {
                   var consequent_13 = ($$anchor5) => {
-                    var div_6 = root_16();
+                    var div_6 = root_16$1();
                     var div_7 = child(div_6);
                     var text_11 = child(div_7);
                     var div_8 = sibling(div_7, 2);
@@ -2526,7 +2695,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                         var consequent_10 = ($$anchor7) => {
                           var label_3 = root_18();
                           var input_1 = child(label_3);
-                          input_1.__change = [on_change, toggleSelection, option];
+                          input_1.__change = [on_change$1, toggleSelection, option];
                           var span = sibling(input_1, 2);
                           var text_12 = child(span);
                           template_effect(
@@ -2541,7 +2710,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                         var alternate_4 = ($$anchor7) => {
                           var label_4 = root_19();
                           var input_2 = child(label_4);
-                          input_2.__change = [on_change_1, toggleSelection, option];
+                          input_2.__change = [on_change_1$1, toggleSelection, option];
                           var span_1 = sibling(input_2, 2);
                           var text_13 = child(span_1);
                           template_effect(
@@ -2687,7 +2856,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                                 var label_7 = child(div_14);
                                 var text_22 = child(label_7);
                                 var input_5 = sibling(label_7, 2);
-                                input_5.__change = [on_change_2, updateValue];
+                                input_5.__change = [on_change_2$1, updateValue];
                                 var node_16 = sibling(input_5, 2);
                                 {
                                   var consequent_20 = ($$anchor9) => {
@@ -2732,7 +2901,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                                     var text_25 = child(label_8);
                                     var div_17 = sibling(label_8, 2);
                                     var input_6 = child(div_17);
-                                    input_6.__change = [on_change_3, updateValue];
+                                    input_6.__change = [on_change_3$1, updateValue];
                                     var input_7 = sibling(input_6, 2);
                                     input_7.__input = [on_input_3, updateValue];
                                     var node_18 = sibling(div_17, 2);
@@ -2898,11 +3067,11 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     pop();
   }
   delegate(["input", "change"]);
-  var root_1$1 = /* @__PURE__ */ from_html(`<p class="form-description svelte-1hegfbw"> </p>`);
-  var root_3 = /* @__PURE__ */ from_html(`<div class="field-container svelte-1hegfbw"><!></div>`);
-  var root_4 = /* @__PURE__ */ from_html(`<span class="spinner svelte-1hegfbw"></span>`);
-  var root_5$1 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-secondary svelte-1hegfbw"> </button>`);
-  var root$3 = /* @__PURE__ */ from_html(`<div><div class="form-header svelte-1hegfbw"><h3 class="form-title svelte-1hegfbw"> </h3> <!></div> <form class="dynamic-form svelte-1hegfbw"><!> <div class="form-actions svelte-1hegfbw"><button type="submit" class="btn btn-primary svelte-1hegfbw"><!> </button> <!></div></form></div>`);
+  var root_1$6 = /* @__PURE__ */ from_html(`<p class="form-description svelte-1hegfbw"> </p>`);
+  var root_3$5 = /* @__PURE__ */ from_html(`<div class="field-container svelte-1hegfbw"><!></div>`);
+  var root_4$4 = /* @__PURE__ */ from_html(`<span class="spinner svelte-1hegfbw"></span>`);
+  var root_5$5 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-secondary svelte-1hegfbw"> </button>`);
+  var root$7 = /* @__PURE__ */ from_html(`<div><div class="form-header svelte-1hegfbw"><h3 class="form-title svelte-1hegfbw"> </h3> <!></div> <form class="dynamic-form svelte-1hegfbw"><!> <div class="form-actions svelte-1hegfbw"><button type="submit" class="btn btn-primary svelte-1hegfbw"><!> </button> <!></div></form></div>`);
   function DynamicFormSheet($$anchor, $$props) {
     push($$props, true);
     let formValues = /* @__PURE__ */ state(proxy({}));
@@ -3043,7 +3212,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
         $$props.onCancel();
       }
     }
-    function handleKeydown(e) {
+    function handleKeydown2(e) {
       if (e.key === "Escape") {
         closeModal();
       }
@@ -3060,8 +3229,8 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       `theme-${get(mergedConfig).styling.theme}`,
       get(mergedConfig).styling.customClasses?.container || ""
     ].filter(Boolean).join(" "));
-    var div = root$3();
-    event("keydown", $window, handleKeydown);
+    var div = root$7();
+    event("keydown", $window, handleKeydown2);
     event("keyup", $window, handleKeyNavigation);
     var div_1 = child(div);
     var h3 = child(div_1);
@@ -3069,7 +3238,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     var node = sibling(h3, 2);
     {
       var consequent = ($$anchor2) => {
-        var p = root_1$1();
+        var p = root_1$6();
         var text_1 = child(p);
         template_effect(() => set_text(text_1, get(mergedConfig).description));
         append($$anchor2, p);
@@ -3085,7 +3254,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       var node_2 = first_child(fragment);
       {
         var consequent_1 = ($$anchor3) => {
-          var div_2 = root_3();
+          var div_2 = root_3$5();
           var node_3 = child(div_2);
           DynamicFormField(node_3, {
             get element() {
@@ -3113,7 +3282,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     var node_4 = child(button);
     {
       var consequent_2 = ($$anchor2) => {
-        var span = root_4();
+        var span = root_4$4();
         append($$anchor2, span);
       };
       if_block(node_4, ($$render) => {
@@ -3124,7 +3293,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     var node_5 = sibling(button, 2);
     {
       var consequent_3 = ($$anchor2) => {
-        var button_1 = root_5$1();
+        var button_1 = root_5$5();
         button_1.__click = closeModal;
         var text_3 = child(button_1);
         template_effect(() => {
@@ -3285,25 +3454,1289 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     tag: "div"
   };
   let DynamicDialogApp = _DynamicDialogApp;
-  var on_click = (__1, startCreatingNewSchema) => startCreatingNewSchema();
-  var on_click_1 = (__2, errorMessage) => set(errorMessage, null);
-  var root_1 = /* @__PURE__ */ from_html(`<div class="error-message svelte-4kvlhy"><span> </span> <button class="close-btn svelte-4kvlhy">×</button></div>`);
-  var on_click_2 = (__3, successMessage) => set(successMessage, null);
-  var root_2 = /* @__PURE__ */ from_html(`<div class="success-message svelte-4kvlhy"><span> </span> <button class="close-btn svelte-4kvlhy">×</button></div>`);
+  function clearSearch(_, searchTerm, $$props) {
+    set(searchTerm, "");
+    $$props.onGlobalSearch("");
+  }
+  function handleKeydown$1(e, handleSearch) {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  }
+  var root_1$5 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-primary svelte-1j21m60" title="Neue Zeile hinzufügen"><span class="icon svelte-1j21m60">+</span> Hinzufügen</button>`);
+  var on_click$3 = (
+    // Bulk-Aktionen filtern (nur verfügbare anzeigen)
+    // Ausgewählte Zeilen-Info
+    (__1, $$props, action) => $$props.onBulkAction(get(action).id)
+  );
+  var root_4$3 = /* @__PURE__ */ from_html(`<span class="icon svelte-1j21m60"> </span>`);
+  var root_3$4 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-secondary svelte-1j21m60"><!> </button>`);
+  var root_2$4 = /* @__PURE__ */ from_html(`<div class="bulk-actions svelte-1j21m60"><span class="bulk-info svelte-1j21m60"> </span> <!></div>`);
+  var root_6$2 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-icon svelte-1j21m60" title="Suche zurücksetzen"><span class="icon svelte-1j21m60">×</span></button>`);
+  var root_5$4 = /* @__PURE__ */ from_html(`<div class="search-container svelte-1j21m60"><input type="text" class="search-input svelte-1j21m60" placeholder="Suchen..."/> <!> <button type="button" class="btn btn-icon svelte-1j21m60" title="Suchen"><span class="icon svelte-1j21m60">🔍</span></button></div>`);
+  var root_8$2 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-secondary svelte-1j21m60" title="Daten importieren"><span class="icon svelte-1j21m60">📥</span> Import</button>`);
+  var root_9$3 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-secondary svelte-1j21m60" title="Daten exportieren"><span class="icon svelte-1j21m60">📤</span> Export</button>`);
+  var root_7$3 = /* @__PURE__ */ from_html(`<div class="import-export svelte-1j21m60"><!> <!></div>`);
+  var root$6 = /* @__PURE__ */ from_html(`<div class="table-toolbar svelte-1j21m60"><div class="toolbar-left svelte-1j21m60"><!> <!></div> <div class="toolbar-right svelte-1j21m60"><!> <div class="column-management svelte-1j21m60"><button type="button" class="btn btn-secondary svelte-1j21m60" title="Spalten verwalten"><span class="icon svelte-1j21m60">⚙️</span> Spalten</button></div> <!></div></div>`);
+  function DynamicTableToolbar($$anchor, $$props) {
+    push($$props, true);
+    let searchTerm = /* @__PURE__ */ state("");
+    function handleSearch() {
+      $$props.onGlobalSearch(get(searchTerm));
+    }
+    const availableBulkActions = /* @__PURE__ */ user_derived(() => () => {
+      if (!$$props.config.bulkActions || !$$props.config.allowBulkActions) return [];
+      const selectedRows = $$props.tableState.selectedRows;
+      return $$props.config.bulkActions.filter((action) => !action.enabled || action.enabled(selectedRows.map((id) => ({ id }))));
+    });
+    const selectedCount = /* @__PURE__ */ user_derived(() => $$props.tableState.selectedRows.length);
+    var div = root$6();
+    var div_1 = child(div);
+    var node = child(div_1);
+    {
+      var consequent = ($$anchor2) => {
+        var button = root_1$5();
+        button.__click = function(...$$args) {
+          $$props.onAddRow?.apply(this, $$args);
+        };
+        append($$anchor2, button);
+      };
+      if_block(node, ($$render) => {
+        if ($$props.config.allowAdd) $$render(consequent);
+      });
+    }
+    var node_1 = sibling(node, 2);
+    {
+      var consequent_2 = ($$anchor2) => {
+        var div_2 = root_2$4();
+        var span = child(div_2);
+        var text = child(span);
+        var node_2 = sibling(span, 2);
+        each(node_2, 17, () => get(availableBulkActions)(), index, ($$anchor3, action) => {
+          var button_1 = root_3$4();
+          button_1.__click = [on_click$3, $$props, action];
+          var node_3 = child(button_1);
+          {
+            var consequent_1 = ($$anchor4) => {
+              var span_1 = root_4$3();
+              var text_1 = child(span_1);
+              template_effect(() => set_text(text_1, get(action).icon));
+              append($$anchor4, span_1);
+            };
+            if_block(node_3, ($$render) => {
+              if (get(action).icon) $$render(consequent_1);
+            });
+          }
+          var text_2 = sibling(node_3);
+          template_effect(() => {
+            set_attribute(button_1, "title", get(action).label);
+            set_text(text_2, ` ${get(action).label ?? ""}`);
+          });
+          append($$anchor3, button_1);
+        });
+        template_effect(() => set_text(text, `${get(selectedCount) ?? ""} von ${$$props.totalCount ?? ""} ausgewählt`));
+        append($$anchor2, div_2);
+      };
+      if_block(node_1, ($$render) => {
+        if ($$props.config.allowBulkActions && get(selectedCount) > 0) $$render(consequent_2);
+      });
+    }
+    var div_3 = sibling(div_1, 2);
+    var node_4 = child(div_3);
+    {
+      var consequent_4 = ($$anchor2) => {
+        var div_4 = root_5$4();
+        var input = child(div_4);
+        input.__keydown = [handleKeydown$1, handleSearch];
+        input.__input = handleSearch;
+        var node_5 = sibling(input, 2);
+        {
+          var consequent_3 = ($$anchor3) => {
+            var button_2 = root_6$2();
+            button_2.__click = [clearSearch, searchTerm, $$props];
+            append($$anchor3, button_2);
+          };
+          if_block(node_5, ($$render) => {
+            if (get(searchTerm)) $$render(consequent_3);
+          });
+        }
+        var button_3 = sibling(node_5, 2);
+        button_3.__click = handleSearch;
+        bind_value(input, () => get(searchTerm), ($$value) => set(searchTerm, $$value));
+        append($$anchor2, div_4);
+      };
+      if_block(node_4, ($$render) => {
+        if ($$props.config.allowFiltering) $$render(consequent_4);
+      });
+    }
+    var node_6 = sibling(node_4, 4);
+    {
+      var consequent_7 = ($$anchor2) => {
+        var div_5 = root_7$3();
+        var node_7 = child(div_5);
+        {
+          var consequent_5 = ($$anchor3) => {
+            var button_4 = root_8$2();
+            append($$anchor3, button_4);
+          };
+          if_block(node_7, ($$render) => {
+            if ($$props.config.allowImport) $$render(consequent_5);
+          });
+        }
+        var node_8 = sibling(node_7, 2);
+        {
+          var consequent_6 = ($$anchor3) => {
+            var button_5 = root_9$3();
+            append($$anchor3, button_5);
+          };
+          if_block(node_8, ($$render) => {
+            if ($$props.config.allowExport) $$render(consequent_6);
+          });
+        }
+        append($$anchor2, div_5);
+      };
+      if_block(node_6, ($$render) => {
+        if ($$props.config.allowImport || $$props.config.allowExport) $$render(consequent_7);
+      });
+    }
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["click", "keydown", "input"]);
+  var on_click$2 = (_, $$props, column) => $$props.onSort(get(column).name);
+  var on_keydown = (e, $$props, column) => e.key === "Enter" && $$props.onSort(get(column).name);
+  var root_3$3 = /* @__PURE__ */ from_html(`<span class="required-indicator svelte-b0n5qh">*</span>`);
+  var root_2$3 = /* @__PURE__ */ from_html(`<button class="column-title clickable svelte-b0n5qh"><span class="title-text svelte-b0n5qh"> </span> <!> <span class="sort-icon svelte-b0n5qh"> </span></button>`);
+  var root_5$3 = /* @__PURE__ */ from_html(`<span class="required-indicator svelte-b0n5qh">*</span>`);
+  var root_4$2 = /* @__PURE__ */ from_html(`<div class="column-title svelte-b0n5qh"><span class="title-text svelte-b0n5qh"> </span> <!></div>`);
+  var on_change = (e, setColumnFilter, column) => setColumnFilter(get(column).name, e.target.value || void 0);
+  var root_9$2 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var root_10$2 = /* @__PURE__ */ from_html(`<option> </option>`);
+  var root_7$2 = /* @__PURE__ */ from_html(`<select class="filter-select svelte-b0n5qh"><option>Alle</option><!></select>`);
+  var on_change_1 = (e, setColumnFilter, column) => setColumnFilter(get(column).name, e.target.value || void 0);
+  var root_12 = /* @__PURE__ */ from_html(`<select class="filter-select svelte-b0n5qh"><option>Alle</option><option>Ja</option><option>Nein</option></select>`);
+  var on_change_2 = (e, setColumnFilter, column) => setColumnFilter(get(column).name + "_min", e.target.value || void 0);
+  var on_change_3 = (e, setColumnFilter, column) => setColumnFilter(get(column).name + "_max", e.target.value || void 0);
+  var root_14 = /* @__PURE__ */ from_html(`<div class="number-filter svelte-b0n5qh"><input type="number" class="filter-input svelte-b0n5qh" placeholder="Min"/> <input type="number" class="filter-input svelte-b0n5qh" placeholder="Max"/></div>`);
+  var on_input = (e, setColumnFilter, column) => setColumnFilter(get(column).name, e.target.value || void 0);
+  var on_click_1$2 = (__1, clearColumnFilter, column) => clearColumnFilter(get(column).name);
+  var root_16 = /* @__PURE__ */ from_html(`<button type="button" class="filter-clear svelte-b0n5qh" title="Filter zurücksetzen">×</button>`);
+  var root_15 = /* @__PURE__ */ from_html(`<div class="text-filter svelte-b0n5qh"><input type="text" class="filter-input svelte-b0n5qh" placeholder="Filter..."/> <!></div>`);
+  var root_6$1 = /* @__PURE__ */ from_html(`<div class="filter-container svelte-b0n5qh"><!></div>`);
+  var root_1$4 = /* @__PURE__ */ from_html(`<th><div class="header-content svelte-b0n5qh"><!> <!></div></th>`);
+  var root$5 = /* @__PURE__ */ from_html(`<thead class="table-header svelte-b0n5qh"><tr class="header-row svelte-b0n5qh"><th class="header-cell select-column svelte-b0n5qh"><input type="checkbox" class="select-all-checkbox svelte-b0n5qh" title="Alle auswählen/abwählen"/></th><!><th class="header-cell actions-column svelte-b0n5qh">Aktionen</th></tr></thead>`);
+  function DynamicTableHeader($$anchor, $$props) {
+    push($$props, true);
+    let columnFilters = proxy({});
+    function setColumnFilter(columnName, value) {
+      columnFilters[columnName] = value;
+      $$props.onFilter(columnName, value);
+    }
+    function clearColumnFilter(columnName) {
+      delete columnFilters[columnName];
+      $$props.onFilter(columnName, void 0);
+    }
+    function getSortIcon(columnName) {
+      if ($$props.tableState.sortColumn !== columnName) return "↕️";
+      return $$props.tableState.sortDirection === "asc" ? "↑" : "↓";
+    }
+    function getColumnWidth(column) {
+      if (column.width) {
+        return typeof column.width === "number" ? `${column.width}px` : column.width;
+      }
+      return "auto";
+    }
+    function getFilterOptions(column) {
+      if (column.filterOptions) {
+        return column.filterOptions;
+      }
+      if (column.type === "select" && column.options) {
+        return column.options;
+      }
+      return [];
+    }
+    var thead = root$5();
+    var tr = child(thead);
+    var th = child(tr);
+    var input = child(th);
+    input.__change = function(...$$args) {
+      $$props.onToggleSelectAll?.apply(this, $$args);
+    };
+    var node = sibling(th);
+    each(node, 17, () => $$props.columns, index, ($$anchor2, column) => {
+      var th_1 = root_1$4();
+      var div = child(th_1);
+      var node_1 = child(div);
+      {
+        var consequent_1 = ($$anchor3) => {
+          var button = root_2$3();
+          button.__click = [on_click$2, $$props, column];
+          button.__keydown = [on_keydown, $$props, column];
+          var span = child(button);
+          var text = child(span);
+          var node_2 = sibling(span, 2);
+          {
+            var consequent = ($$anchor4) => {
+              var span_1 = root_3$3();
+              append($$anchor4, span_1);
+            };
+            if_block(node_2, ($$render) => {
+              if (get(column).required) $$render(consequent);
+            });
+          }
+          var span_2 = sibling(node_2, 2);
+          var text_1 = child(span_2);
+          template_effect(
+            ($0) => {
+              set_attribute(button, "title", get(column).description || get(column).label);
+              set_text(text, get(column).label);
+              set_text(text_1, $0);
+            },
+            [() => getSortIcon(get(column).name)]
+          );
+          append($$anchor3, button);
+        };
+        var alternate = ($$anchor3) => {
+          var div_1 = root_4$2();
+          var span_3 = child(div_1);
+          var text_2 = child(span_3);
+          var node_3 = sibling(span_3, 2);
+          {
+            var consequent_2 = ($$anchor4) => {
+              var span_4 = root_5$3();
+              append($$anchor4, span_4);
+            };
+            if_block(node_3, ($$render) => {
+              if (get(column).required) $$render(consequent_2);
+            });
+          }
+          template_effect(() => {
+            set_attribute(div_1, "title", get(column).description || get(column).label);
+            set_text(text_2, get(column).label);
+          });
+          append($$anchor3, div_1);
+        };
+        if_block(node_1, ($$render) => {
+          if (get(column).sortable) $$render(consequent_1);
+          else $$render(alternate, false);
+        });
+      }
+      var node_4 = sibling(node_1, 2);
+      {
+        var consequent_8 = ($$anchor3) => {
+          var div_2 = root_6$1();
+          var node_5 = child(div_2);
+          {
+            var consequent_4 = ($$anchor4) => {
+              var select = root_7$2();
+              select.__change = [on_change, setColumnFilter, column];
+              var option_1 = child(select);
+              option_1.value = option_1.__value = "";
+              var node_6 = sibling(option_1);
+              each(node_6, 17, () => getFilterOptions(get(column)), index, ($$anchor5, option) => {
+                var fragment = comment();
+                var node_7 = first_child(fragment);
+                {
+                  var consequent_3 = ($$anchor6) => {
+                    var option_2 = root_9$2();
+                    var text_3 = child(option_2);
+                    var option_2_value = {};
+                    template_effect(() => {
+                      set_text(text_3, get(option));
+                      if (option_2_value !== (option_2_value = get(option))) {
+                        option_2.value = (option_2.__value = get(option)) ?? "";
+                      }
+                    });
+                    append($$anchor6, option_2);
+                  };
+                  var alternate_1 = ($$anchor6) => {
+                    var option_3 = root_10$2();
+                    var text_4 = child(option_3);
+                    var option_3_value = {};
+                    template_effect(() => {
+                      set_text(text_4, get(option).label || get(option).value);
+                      if (option_3_value !== (option_3_value = get(option).value)) {
+                        option_3.value = (option_3.__value = get(option).value) ?? "";
+                      }
+                    });
+                    append($$anchor6, option_3);
+                  };
+                  if_block(node_7, ($$render) => {
+                    if (typeof get(option) === "string") $$render(consequent_3);
+                    else $$render(alternate_1, false);
+                  });
+                }
+                append($$anchor5, fragment);
+              });
+              var select_value;
+              init_select(select);
+              template_effect(() => {
+                if (select_value !== (select_value = columnFilters[get(column).name] || "")) {
+                  select.value = (select.__value = columnFilters[get(column).name] || "") ?? "", select_option(select, columnFilters[get(column).name] || "");
+                }
+              });
+              append($$anchor4, select);
+            };
+            var alternate_2 = ($$anchor4, $$elseif) => {
+              {
+                var consequent_5 = ($$anchor5) => {
+                  var select_1 = root_12();
+                  select_1.__change = [on_change_1, setColumnFilter, column];
+                  var option_4 = child(select_1);
+                  option_4.value = option_4.__value = "";
+                  var option_5 = sibling(option_4);
+                  option_5.value = option_5.__value = "true";
+                  var option_6 = sibling(option_5);
+                  option_6.value = option_6.__value = "false";
+                  var select_1_value;
+                  init_select(select_1);
+                  template_effect(() => {
+                    if (select_1_value !== (select_1_value = columnFilters[get(column).name] || "")) {
+                      select_1.value = (select_1.__value = columnFilters[get(column).name] || "") ?? "", select_option(select_1, columnFilters[get(column).name] || "");
+                    }
+                  });
+                  append($$anchor5, select_1);
+                };
+                var alternate_3 = ($$anchor5, $$elseif2) => {
+                  {
+                    var consequent_6 = ($$anchor6) => {
+                      var div_3 = root_14();
+                      var input_1 = child(div_3);
+                      input_1.__change = [on_change_2, setColumnFilter, column];
+                      var input_2 = sibling(input_1, 2);
+                      input_2.__change = [on_change_3, setColumnFilter, column];
+                      template_effect(() => {
+                        set_value(input_1, columnFilters[get(column).name + "_min"] || "");
+                        set_value(input_2, columnFilters[get(column).name + "_max"] || "");
+                      });
+                      append($$anchor6, div_3);
+                    };
+                    var alternate_4 = ($$anchor6) => {
+                      var div_4 = root_15();
+                      var input_3 = child(div_4);
+                      input_3.__input = [on_input, setColumnFilter, column];
+                      var node_8 = sibling(input_3, 2);
+                      {
+                        var consequent_7 = ($$anchor7) => {
+                          var button_1 = root_16();
+                          button_1.__click = [on_click_1$2, clearColumnFilter, column];
+                          append($$anchor7, button_1);
+                        };
+                        if_block(node_8, ($$render) => {
+                          if (columnFilters[get(column).name]) $$render(consequent_7);
+                        });
+                      }
+                      template_effect(() => set_value(input_3, columnFilters[get(column).name] || ""));
+                      append($$anchor6, div_4);
+                    };
+                    if_block(
+                      $$anchor5,
+                      ($$render) => {
+                        if (get(column).type === "number") $$render(consequent_6);
+                        else $$render(alternate_4, false);
+                      },
+                      $$elseif2
+                    );
+                  }
+                };
+                if_block(
+                  $$anchor4,
+                  ($$render) => {
+                    if (get(column).type === "boolean") $$render(consequent_5);
+                    else $$render(alternate_3, false);
+                  },
+                  $$elseif
+                );
+              }
+            };
+            if_block(node_5, ($$render) => {
+              if (get(column).type === "select" || get(column).type === "multiselect") $$render(consequent_4);
+              else $$render(alternate_2, false);
+            });
+          }
+          append($$anchor3, div_2);
+        };
+        if_block(node_4, ($$render) => {
+          if (get(column).filterable) $$render(consequent_8);
+        });
+      }
+      template_effect(
+        ($0) => {
+          set_class(th_1, 1, `header-cell ${get(column).sortable ? "sortable" : ""} ${get(column).filterable ? "filterable" : ""}`, "svelte-b0n5qh");
+          set_style(th_1, `width: ${$0 ?? ""}; min-width: ${get(column).minWidth || 100}px; max-width: ${get(column).maxWidth || "none"};`);
+        },
+        [() => getColumnWidth(get(column))]
+      );
+      append($$anchor2, th_1);
+    });
+    template_effect(() => set_checked(input, $$props.tableState.selectAll));
+    append($$anchor, thead);
+    pop();
+  }
+  delegate(["change", "click", "keydown", "input"]);
+  function handleKeydown(e, handleCellClick) {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleCellClick();
+    }
+  }
+  var root_2$2 = /* @__PURE__ */ from_html(`<div class="cell-edit-mode svelte-13boekn"><!></div>`);
+  var root_4$1 = /* @__PURE__ */ from_html(`<span class="required-indicator svelte-13boekn" title="Pflichtfeld">*</span>`);
+  var root_3$2 = /* @__PURE__ */ from_html(`<div class="cell-display-mode svelte-13boekn"><span> </span> <!></div>`);
+  var root_5$2 = /* @__PURE__ */ from_html(`<div class="cell-error svelte-13boekn"> </div>`);
+  var root_1$3 = /* @__PURE__ */ from_html(`<button title="Klicken zum Bearbeiten"><!> <!></button>`);
+  var root_7$1 = /* @__PURE__ */ from_html(`<div class="cell-edit-mode svelte-13boekn"><!></div>`);
+  var root_9$1 = /* @__PURE__ */ from_html(`<span class="required-indicator svelte-13boekn" title="Pflichtfeld">*</span>`);
+  var root_8$1 = /* @__PURE__ */ from_html(`<div class="cell-display-mode svelte-13boekn"><span> </span> <!></div>`);
+  var root_10$1 = /* @__PURE__ */ from_html(`<div class="cell-error svelte-13boekn"> </div>`);
+  var root_6 = /* @__PURE__ */ from_html(`<div><!> <!></div>`);
+  function DynamicTableCell($$anchor, $$props) {
+    push($$props, true);
+    const cellValue = /* @__PURE__ */ user_derived(() => $$props.row[$$props.column.name]);
+    const cellError = /* @__PURE__ */ user_derived(() => $$props.errors[`${$$props.row.id}-${$$props.column.name}`]);
+    const hasError = /* @__PURE__ */ user_derived(() => !!get(cellError));
+    const isRequired = /* @__PURE__ */ user_derived(() => $$props.column.required || false);
+    const isReadonly = /* @__PURE__ */ user_derived(() => $$props.column.ui?.readonly || false);
+    const isDisabled = /* @__PURE__ */ user_derived(() => $$props.column.ui?.disabled || false);
+    const cellClasses = /* @__PURE__ */ user_derived(() => [
+      "table-cell-content",
+      get(hasError) ? "has-error" : "",
+      get(isRequired) ? "required" : "",
+      get(isReadonly) ? "readonly" : "",
+      get(isDisabled) ? "disabled" : "",
+      $$props.isEditing ? "editing" : "display"
+    ].filter(Boolean).join(" "));
+    function formatDisplayValue(value) {
+      if (value === null || value === void 0) {
+        return "";
+      }
+      if ($$props.column.renderer) {
+        return $$props.column.renderer(value, $$props.row);
+      }
+      switch ($$props.column.type) {
+        case "boolean":
+          return value ? "Ja" : "Nein";
+        case "date":
+          return value ? new Date(value).toLocaleDateString() : "";
+        case "number":
+          return typeof value === "number" ? value.toString() : "";
+        case "multiselect":
+          if (Array.isArray(value)) {
+            return value.join(", ");
+          }
+          return "";
+        case "select":
+          if ($$props.column.options) {
+            const option = $$props.column.options.find((opt) => (typeof opt === "string" ? opt : opt.value) === value);
+            if (option) {
+              return typeof option === "string" ? option : option.label || option.value;
+            }
+          }
+          return value || "";
+        default:
+          return value.toString();
+      }
+    }
+    function handleValueUpdate(newValue) {
+      $$props.onUpdate(newValue);
+    }
+    function handleCellClick() {
+      if (!$$props.isEditing && !get(isReadonly) && !get(isDisabled)) ;
+    }
+    var fragment = comment();
+    var node = first_child(fragment);
+    {
+      var consequent_3 = ($$anchor2) => {
+        var button = root_1$3();
+        button.__click = handleCellClick;
+        button.__keydown = [handleKeydown, handleCellClick];
+        var node_1 = child(button);
+        {
+          var consequent = ($$anchor3) => {
+            var div = root_2$2();
+            var node_2 = child(div);
+            const expression = /* @__PURE__ */ user_derived(() => ({
+              ...$$props.column,
+              value: get(cellValue),
+              ui: { ...$$props.column.ui, width: "full" }
+            }));
+            DynamicFormField(node_2, {
+              get element() {
+                return get(expression);
+              },
+              get value() {
+                return get(cellValue);
+              },
+              get error() {
+                return get(cellError);
+              },
+              onUpdate: handleValueUpdate
+            });
+            append($$anchor3, div);
+          };
+          var alternate = ($$anchor3) => {
+            var div_1 = root_3$2();
+            var span = child(div_1);
+            var text = child(span);
+            var node_3 = sibling(span, 2);
+            {
+              var consequent_1 = ($$anchor4) => {
+                var span_1 = root_4$1();
+                append($$anchor4, span_1);
+              };
+              if_block(node_3, ($$render) => {
+                if (get(isRequired) && !get(cellValue)) $$render(consequent_1);
+              });
+            }
+            template_effect(
+              ($0) => {
+                set_class(span, 1, `cell-value ${$$props.column.type ?? ""}`, "svelte-13boekn");
+                set_attribute(span, "title", get(cellValue));
+                set_text(text, $0);
+              },
+              [() => formatDisplayValue(get(cellValue))]
+            );
+            append($$anchor3, div_1);
+          };
+          if_block(node_1, ($$render) => {
+            if ($$props.isEditing) $$render(consequent);
+            else $$render(alternate, false);
+          });
+        }
+        var node_4 = sibling(node_1, 2);
+        {
+          var consequent_2 = ($$anchor3) => {
+            var div_2 = root_5$2();
+            var text_1 = child(div_2);
+            template_effect(() => {
+              set_attribute(div_2, "title", get(cellError));
+              set_text(text_1, get(cellError));
+            });
+            append($$anchor3, div_2);
+          };
+          if_block(node_4, ($$render) => {
+            if (get(hasError)) $$render(consequent_2);
+          });
+        }
+        template_effect(() => set_class(button, 1, clsx(get(cellClasses)), "svelte-13boekn"));
+        append($$anchor2, button);
+      };
+      var alternate_1 = ($$anchor2) => {
+        var div_3 = root_6();
+        var node_5 = child(div_3);
+        {
+          var consequent_4 = ($$anchor3) => {
+            var div_4 = root_7$1();
+            var node_6 = child(div_4);
+            const expression_1 = /* @__PURE__ */ user_derived(() => ({
+              ...$$props.column,
+              value: get(cellValue),
+              ui: { ...$$props.column.ui, width: "full" }
+            }));
+            DynamicFormField(node_6, {
+              get element() {
+                return get(expression_1);
+              },
+              get value() {
+                return get(cellValue);
+              },
+              get error() {
+                return get(cellError);
+              },
+              onUpdate: handleValueUpdate
+            });
+            append($$anchor3, div_4);
+          };
+          var alternate_2 = ($$anchor3) => {
+            var div_5 = root_8$1();
+            var span_2 = child(div_5);
+            var text_2 = child(span_2);
+            var node_7 = sibling(span_2, 2);
+            {
+              var consequent_5 = ($$anchor4) => {
+                var span_3 = root_9$1();
+                append($$anchor4, span_3);
+              };
+              if_block(node_7, ($$render) => {
+                if (get(isRequired) && !get(cellValue)) $$render(consequent_5);
+              });
+            }
+            template_effect(
+              ($0) => {
+                set_class(span_2, 1, `cell-value ${$$props.column.type ?? ""}`, "svelte-13boekn");
+                set_attribute(span_2, "title", get(cellValue));
+                set_text(text_2, $0);
+              },
+              [() => formatDisplayValue(get(cellValue))]
+            );
+            append($$anchor3, div_5);
+          };
+          if_block(node_5, ($$render) => {
+            if ($$props.isEditing) $$render(consequent_4);
+            else $$render(alternate_2, false);
+          });
+        }
+        var node_8 = sibling(node_5, 2);
+        {
+          var consequent_6 = ($$anchor3) => {
+            var div_6 = root_10$1();
+            var text_3 = child(div_6);
+            template_effect(() => {
+              set_attribute(div_6, "title", get(cellError));
+              set_text(text_3, get(cellError));
+            });
+            append($$anchor3, div_6);
+          };
+          if_block(node_8, ($$render) => {
+            if (get(hasError)) $$render(consequent_6);
+          });
+        }
+        template_effect(() => set_class(div_3, 1, clsx(get(cellClasses)), "svelte-13boekn"));
+        append($$anchor2, div_3);
+      };
+      if_block(node, ($$render) => {
+        if (!$$props.isEditing && !get(isReadonly) && !get(isDisabled)) $$render(consequent_3);
+        else $$render(alternate_1, false);
+      });
+    }
+    append($$anchor, fragment);
+    pop();
+  }
+  delegate(["click", "keydown"]);
+  function handleEdit(_, $$props) {
+    $$props.onEdit($$props.row.id);
+  }
+  function handleSave(__1, $$props) {
+    $$props.onSave($$props.row.id);
+  }
+  function handleDelete(__2, $$props) {
+    if (confirm("Möchten Sie diese Zeile wirklich löschen?")) {
+      $$props.onDelete($$props.row.id);
+    }
+  }
+  function handleCancel(__3, $$props) {
+    $$props.onCancel($$props.row.id);
+  }
+  function handleToggleSelection(__4, $$props) {
+    $$props.onToggleSelection($$props.row.id);
+  }
+  var root_1$2 = /* @__PURE__ */ from_html(`<td class="table-cell data-cell svelte-1on7u65"><!></td>`);
+  var root_2$1 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-sm btn-success svelte-1on7u65" title="Speichern"><span class="icon svelte-1on7u65">✓</span></button> <button type="button" class="btn btn-sm btn-secondary svelte-1on7u65" title="Abbrechen"><span class="icon svelte-1on7u65">×</span></button>`, 1);
+  var root_3$1 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-sm btn-primary svelte-1on7u65" title="Bearbeiten"><span class="icon svelte-1on7u65">✏️</span></button> <button type="button" class="btn btn-sm btn-danger svelte-1on7u65" title="Löschen"><span class="icon svelte-1on7u65">🗑️</span></button>`, 1);
+  var root$4 = /* @__PURE__ */ from_html(`<tr><td class="table-cell select-cell svelte-1on7u65"><input type="checkbox" class="row-checkbox svelte-1on7u65"/></td><!><td class="table-cell actions-cell svelte-1on7u65"><div class="row-actions svelte-1on7u65"><!></div></td></tr>`);
+  function DynamicTableRow($$anchor, $$props) {
+    push($$props, true);
+    const isSelected = /* @__PURE__ */ user_derived(() => $$props.tableState.selectedRows.includes($$props.row.id));
+    const isEditing = /* @__PURE__ */ user_derived(() => $$props.row._editing || false);
+    const isNew = /* @__PURE__ */ user_derived(() => $$props.row._new || false);
+    const isModified = /* @__PURE__ */ user_derived(() => $$props.row._modified || false);
+    const rowClasses = /* @__PURE__ */ user_derived(() => [
+      "table-row",
+      get(isSelected) ? "selected" : "",
+      get(isEditing) ? "editing" : "",
+      get(isNew) ? "new" : "",
+      get(isModified) ? "modified" : "",
+      $$props.row._deleted ? "deleted" : ""
+    ].filter(Boolean).join(" "));
+    function updateCellValue(columnName, value) {
+    }
+    var tr = root$4();
+    var td = child(tr);
+    var input = child(td);
+    input.__change = [handleToggleSelection, $$props];
+    var node = sibling(td);
+    each(node, 17, () => $$props.columns, index, ($$anchor2, column) => {
+      var td_1 = root_1$2();
+      var node_1 = child(td_1);
+      DynamicTableCell(node_1, {
+        get row() {
+          return $$props.row;
+        },
+        get column() {
+          return get(column);
+        },
+        get isEditing() {
+          return get(isEditing);
+        },
+        get errors() {
+          return $$props.errors;
+        },
+        onUpdate: (value) => updateCellValue(get(column).name)
+      });
+      append($$anchor2, td_1);
+    });
+    var td_2 = sibling(node);
+    var div = child(td_2);
+    var node_2 = child(div);
+    {
+      var consequent = ($$anchor2) => {
+        var fragment = root_2$1();
+        var button = first_child(fragment);
+        button.__click = [handleSave, $$props];
+        var button_1 = sibling(button, 2);
+        button_1.__click = [handleCancel, $$props];
+        append($$anchor2, fragment);
+      };
+      var alternate = ($$anchor2) => {
+        var fragment_1 = root_3$1();
+        var button_2 = first_child(fragment_1);
+        button_2.__click = [handleEdit, $$props];
+        var button_3 = sibling(button_2, 2);
+        button_3.__click = [handleDelete, $$props];
+        append($$anchor2, fragment_1);
+      };
+      if_block(node_2, ($$render) => {
+        if (get(isEditing)) $$render(consequent);
+        else $$render(alternate, false);
+      });
+    }
+    template_effect(() => {
+      set_class(tr, 1, clsx(get(rowClasses)), "svelte-1on7u65");
+      set_checked(input, get(isSelected));
+    });
+    append($$anchor, tr);
+    pop();
+  }
+  delegate(["change", "click"]);
+  var root_1$1 = /* @__PURE__ */ from_html(`<p class="table-description svelte-17jwc3b"> </p>`);
+  var on_click$1 = (_, tableState) => tableState.currentPage = Math.max(1, tableState.currentPage - 1);
+  var on_click_1$1 = (__1, tableState, totalItems) => tableState.currentPage = Math.min(Math.ceil(get(totalItems) / tableState.pageSize), tableState.currentPage + 1);
+  var root_3 = /* @__PURE__ */ from_html(`<div class="table-pagination svelte-17jwc3b"><div class="pagination-info svelte-17jwc3b"> </div> <div class="pagination-controls svelte-17jwc3b"><button type="button" class="btn btn-secondary svelte-17jwc3b">Vorherige</button> <span class="pagination-page svelte-17jwc3b"> </span> <button type="button" class="btn btn-secondary svelte-17jwc3b">Nächste</button></div></div>`);
+  var root_4 = /* @__PURE__ */ from_html(`<span class="spinner svelte-17jwc3b"></span>`);
+  var root_5$1 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-secondary svelte-17jwc3b"> </button>`);
+  var root$3 = /* @__PURE__ */ from_html(`<div><div class="table-header svelte-17jwc3b"><h3 class="table-title svelte-17jwc3b"> </h3> <!></div> <!> <form class="dynamic-table svelte-17jwc3b"><div class="table-wrapper svelte-17jwc3b"><table class="data-table svelte-17jwc3b"><!><tbody class="svelte-17jwc3b"></tbody></table></div> <!> <div class="table-actions svelte-17jwc3b"><button type="submit" class="btn btn-primary svelte-17jwc3b"><!> </button> <!></div></form></div>`);
+  function DynamicTableSheet($$anchor, $$props) {
+    push($$props, true);
+    let tableData = /* @__PURE__ */ state(proxy([]));
+    let tableState = proxy({
+      sortColumn: void 0,
+      sortDirection: "asc",
+      filters: {},
+      globalSearch: "",
+      selectedRows: [],
+      selectAll: false,
+      currentPage: 1,
+      pageSize: $$props.config.pageSize || 50,
+      columnOrder: [],
+      hiddenColumns: [],
+      columnWidths: {}
+    });
+    let errors = /* @__PURE__ */ state(proxy({}));
+    let isSubmitting = /* @__PURE__ */ state(false);
+    const defaultConfig = {
+      submitLabel: "Speichern",
+      cancelLabel: "Abbrechen",
+      showCancelButton: true,
+      tableSize: "medium",
+      allowAdd: true,
+      allowEdit: true,
+      allowDelete: true,
+      allowBulkActions: true,
+      allowSorting: true,
+      allowFiltering: true,
+      allowColumnResize: true,
+      enablePagination: true,
+      pageSize: 50,
+      styling: { theme: "foundry", inheritParentStyles: true },
+      validation: {
+        location: "cell",
+        timing: "onSubmit",
+        allowInvalidSubmit: false
+      }
+    };
+    const mergedConfig = /* @__PURE__ */ user_derived(() => ({
+      ...defaultConfig,
+      ...$$props.config,
+      styling: { ...defaultConfig.styling, ...$$props.config.styling },
+      validation: { ...defaultConfig.validation, ...$$props.config.validation }
+    }));
+    const processedData = /* @__PURE__ */ user_derived(() => () => {
+      let data = [...get(tableData)];
+      if (tableState.globalSearch) {
+        const searchTerm = tableState.globalSearch.toLowerCase();
+        data = data.filter((row) => {
+          return $$props.config.columns.some((column) => {
+            const value = row[column.name];
+            return value && value.toString().toLowerCase().includes(searchTerm);
+          });
+        });
+      }
+      Object.entries(tableState.filters).forEach(([columnName, filterValue]) => {
+        if (filterValue !== void 0 && filterValue !== "") {
+          data = data.filter((row) => {
+            const value = row[columnName];
+            if (typeof value === "string") {
+              return value.toLowerCase().includes(filterValue.toLowerCase());
+            }
+            return value === filterValue;
+          });
+        }
+      });
+      if (tableState.sortColumn) {
+        const column = $$props.config.columns.find((c) => c.name === tableState.sortColumn);
+        if (column) {
+          data.sort((a, b) => {
+            const aVal = a[tableState.sortColumn];
+            const bVal = b[tableState.sortColumn];
+            let comparison = 0;
+            if (aVal < bVal) comparison = -1;
+            else if (aVal > bVal) comparison = 1;
+            return tableState.sortDirection === "desc" ? -comparison : comparison;
+          });
+        }
+      }
+      if (get(mergedConfig).enablePagination) {
+        const startIndex = (tableState.currentPage - 1) * tableState.pageSize;
+        const endIndex = startIndex + tableState.pageSize;
+        data = data.slice(startIndex, endIndex);
+      }
+      return data;
+    });
+    const visibleColumns = /* @__PURE__ */ user_derived(() => () => {
+      return $$props.config.columns.filter((column) => !tableState.hiddenColumns.includes(column.name)).sort((a, b) => (a.order || 0) - (b.order || 0));
+    });
+    const totalItems = /* @__PURE__ */ user_derived(() => get(tableData).length);
+    let isInitialized = /* @__PURE__ */ state(false);
+    user_effect(() => {
+      if (!get(isInitialized) && $$props.config.initialData) {
+        set(tableData, $$props.config.initialData.map((row) => ({ ...row, id: row.id || foundry.utils.randomID() })), true);
+        tableState.columnOrder = $$props.config.columns.map((c) => c.name);
+        tableState.hiddenColumns = $$props.config.columns.filter((c) => c.visible === false).map((c) => c.name);
+        $$props.config.columns.forEach((column) => {
+          if (column.width && typeof column.width === "number") {
+            tableState.columnWidths[column.name] = column.width;
+          }
+        });
+        set(isInitialized, true);
+      }
+    });
+    function addRow() {
+      const newRow = { id: foundry.utils.randomID(), _new: true, _editing: true };
+      $$props.config.columns.forEach((column) => {
+        if (column.default !== void 0) {
+          newRow[column.name] = column.default;
+        }
+      });
+      set(tableData, [...get(tableData), newRow], true);
+    }
+    function editRow(rowId) {
+      set(tableData, get(tableData).map((row) => row.id === rowId ? { ...row, _editing: true } : row), true);
+    }
+    function saveRow(rowId) {
+      set(
+        tableData,
+        get(tableData).map((row) => row.id === rowId ? { ...row, _editing: false, _new: false, _modified: true } : row),
+        true
+      );
+    }
+    function deleteRow(rowId) {
+      set(tableData, get(tableData).filter((row) => row.id !== rowId), true);
+      tableState.selectedRows = tableState.selectedRows.filter((id) => id !== rowId);
+    }
+    function cancelRow(rowId) {
+      const row = get(tableData).find((r2) => r2.id === rowId);
+      if (row?._new) {
+        set(tableData, get(tableData).filter((r2) => r2.id !== rowId), true);
+      } else {
+        set(tableData, get(tableData).map((r2) => r2.id === rowId ? { ...r2, _editing: false } : r2), true);
+      }
+    }
+    function toggleRowSelection(rowId) {
+      if (tableState.selectedRows.includes(rowId)) {
+        tableState.selectedRows = tableState.selectedRows.filter((id) => id !== rowId);
+      } else {
+        tableState.selectedRows = [...tableState.selectedRows, rowId];
+      }
+      tableState.selectAll = tableState.selectedRows.length === get(totalItems);
+    }
+    function toggleSelectAll() {
+      if (tableState.selectAll) {
+        tableState.selectedRows = [];
+      } else {
+        tableState.selectedRows = get(tableData).map((row) => row.id);
+      }
+      tableState.selectAll = !tableState.selectAll;
+    }
+    function sortBy(columnName) {
+      if (tableState.sortColumn === columnName) {
+        tableState.sortDirection = tableState.sortDirection === "asc" ? "desc" : "asc";
+      } else {
+        tableState.sortColumn = columnName;
+        tableState.sortDirection = "asc";
+      }
+    }
+    function setFilter(columnName, value) {
+      tableState.filters = { ...tableState.filters, [columnName]: value };
+    }
+    function setGlobalSearch(searchTerm) {
+      tableState.globalSearch = searchTerm;
+    }
+    function executeBulkAction(actionId) {
+      const selectedRows = get(tableData).filter((row) => tableState.selectedRows.includes(row.id));
+      const action = $$props.config.bulkActions?.find((a) => a.id === actionId);
+      if (action && action.enabled?.(selectedRows) !== false) {
+        if (action.confirmMessage) {
+          if (confirm(action.confirmMessage)) {
+            action.action(selectedRows);
+          }
+        } else {
+          action.action(selectedRows);
+        }
+      }
+    }
+    function validateAllRows() {
+      set(errors, {}, true);
+      let hasErrors = false;
+      get(tableData).forEach((row) => {
+        $$props.config.columns.forEach((column) => {
+          if (column.required && (!row[column.name] || row[column.name] === "")) {
+            get(errors)[`${row.id}-${column.name}`] = `${column.label} ist erforderlich`;
+            hasErrors = true;
+          }
+        });
+      });
+      return !hasErrors;
+    }
+    async function handleSubmit(e) {
+      e.preventDefault();
+      if (get(isSubmitting)) return;
+      if (!validateAllRows()) {
+        return;
+      }
+      set(isSubmitting, true);
+      try {
+        if ($$props.config.onSubmit) {
+          await $$props.config.onSubmit(get(tableData));
+        } else if ($$props.onSubmit) {
+          await $$props.onSubmit(get(tableData));
+        }
+        closeModal();
+      } catch (error) {
+        console.error("Fehler beim Absenden der Tabelle:", error);
+      } finally {
+        set(isSubmitting, false);
+      }
+    }
+    function closeModal() {
+      if ($$props.config.onCancel) {
+        $$props.config.onCancel();
+      }
+      if ($$props.onCancel) {
+        $$props.onCancel();
+      }
+    }
+    function handleKeydown2(e) {
+      if (e.key === "Escape") {
+        closeModal();
+      }
+    }
+    const tableClasses = /* @__PURE__ */ user_derived(() => [
+      "dynamic-table-sheet",
+      `table-size-${get(mergedConfig).tableSize}`,
+      `theme-${get(mergedConfig).styling.theme}`,
+      get(mergedConfig).styling.customClasses?.container || ""
+    ].filter(Boolean).join(" "));
+    var div = root$3();
+    event("keydown", $window, handleKeydown2);
+    var div_1 = child(div);
+    var h3 = child(div_1);
+    var text = child(h3);
+    var node = sibling(h3, 2);
+    {
+      var consequent = ($$anchor2) => {
+        var p = root_1$1();
+        var text_1 = child(p);
+        template_effect(() => set_text(text_1, get(mergedConfig).description));
+        append($$anchor2, p);
+      };
+      if_block(node, ($$render) => {
+        if (get(mergedConfig).description) $$render(consequent);
+      });
+    }
+    var node_1 = sibling(div_1, 2);
+    DynamicTableToolbar(node_1, {
+      get config() {
+        return $$props.config;
+      },
+      get tableState() {
+        return tableState;
+      },
+      get totalCount() {
+        return get(totalItems);
+      },
+      onAddRow: addRow,
+      onGlobalSearch: setGlobalSearch,
+      onBulkAction: executeBulkAction
+    });
+    var form = sibling(node_1, 2);
+    var div_2 = child(form);
+    var table = child(div_2);
+    var node_2 = child(table);
+    DynamicTableHeader(node_2, {
+      get columns() {
+        return get(visibleColumns);
+      },
+      get tableState() {
+        return tableState;
+      },
+      onSort: sortBy,
+      onFilter: setFilter,
+      onToggleSelectAll: toggleSelectAll
+    });
+    var tbody = sibling(node_2);
+    each(tbody, 21, () => get(processedData)(), (row) => row.id, ($$anchor2, row) => {
+      const expression = /* @__PURE__ */ user_derived(() => get(visibleColumns)());
+      DynamicTableRow($$anchor2, {
+        get row() {
+          return get(row);
+        },
+        get columns() {
+          return get(expression);
+        },
+        get tableState() {
+          return tableState;
+        },
+        get errors() {
+          return get(errors);
+        },
+        onEdit: editRow,
+        onSave: saveRow,
+        onDelete: deleteRow,
+        onCancel: cancelRow,
+        onToggleSelection: toggleRowSelection
+      });
+    });
+    var node_3 = sibling(div_2, 2);
+    {
+      var consequent_1 = ($$anchor2) => {
+        var div_3 = root_3();
+        var div_4 = child(div_3);
+        var text_2 = child(div_4);
+        var div_5 = sibling(div_4, 2);
+        var button = child(div_5);
+        button.__click = [on_click$1, tableState];
+        var span = sibling(button, 2);
+        var text_3 = child(span);
+        var button_1 = sibling(span, 2);
+        button_1.__click = [on_click_1$1, tableState, totalItems];
+        template_effect(
+          ($0, $1, $2) => {
+            set_text(text_2, `Zeige ${(tableState.currentPage - 1) * tableState.pageSize + 1} bis 
+          ${$0 ?? ""} 
+          von ${get(totalItems) ?? ""} Einträgen`);
+            button.disabled = tableState.currentPage === 1;
+            set_text(text_3, `Seite ${tableState.currentPage ?? ""} von ${$1 ?? ""}`);
+            button_1.disabled = $2;
+          },
+          [
+            () => Math.min(tableState.currentPage * tableState.pageSize, get(totalItems)),
+            () => Math.ceil(get(totalItems) / tableState.pageSize),
+            () => tableState.currentPage >= Math.ceil(get(totalItems) / tableState.pageSize)
+          ]
+        );
+        append($$anchor2, div_3);
+      };
+      if_block(node_3, ($$render) => {
+        if (get(mergedConfig).enablePagination && get(totalItems) > tableState.pageSize) $$render(consequent_1);
+      });
+    }
+    var div_6 = sibling(node_3, 2);
+    var button_2 = child(div_6);
+    var node_4 = child(button_2);
+    {
+      var consequent_2 = ($$anchor2) => {
+        var span_1 = root_4();
+        append($$anchor2, span_1);
+      };
+      if_block(node_4, ($$render) => {
+        if (get(isSubmitting)) $$render(consequent_2);
+      });
+    }
+    var text_4 = sibling(node_4);
+    var node_5 = sibling(button_2, 2);
+    {
+      var consequent_3 = ($$anchor2) => {
+        var button_3 = root_5$1();
+        button_3.__click = closeModal;
+        var text_5 = child(button_3);
+        template_effect(() => {
+          button_3.disabled = get(isSubmitting);
+          set_text(text_5, get(mergedConfig).cancelLabel);
+        });
+        append($$anchor2, button_3);
+      };
+      if_block(node_5, ($$render) => {
+        if (get(mergedConfig).showCancelButton) $$render(consequent_3);
+      });
+    }
+    template_effect(() => {
+      set_class(div, 1, `table-container ${get(tableClasses) ?? ""}`, "svelte-17jwc3b");
+      set_text(text, get(mergedConfig).title);
+      button_2.disabled = get(isSubmitting);
+      set_text(text_4, ` ${get(mergedConfig).submitLabel ?? ""}`);
+    });
+    event("submit", form, handleSubmit);
+    append($$anchor, div);
+    pop();
+  }
+  delegate(["click"]);
+  const _DynamicTableApp = class _DynamicTableApp extends foundry.applications.api.HandlebarsApplicationMixin(
+    foundry.applications.api.ApplicationV2
+  ) {
+    constructor() {
+      super(...arguments);
+      this.svelteApp = null;
+    }
+    /** @override */
+    get title() {
+      return this.options.window.title;
+    }
+    /** @override */
+    async _renderHTML(context, options) {
+      return super._renderHTML(context, options);
+    }
+    /** @override */
+    _replaceHTML(html, options, context) {
+      return super._replaceHTML(html, options, context);
+    }
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      console.log(`[${_DynamicTableApp.appId}] _prepareContext called with context:`, context);
+      console.log(`[${_DynamicTableApp.appId}] _prepareContext called with options:`, options);
+      return context;
+    }
+    async _prepareConfig(config) {
+      _DynamicTableApp.config = config;
+      console.log(`[${_DynamicTableApp.appId}] _prepareConfig called with config:`, _DynamicTableApp.config);
+      return _DynamicTableApp.config;
+    }
+    async _prepareOnSubmit(onSubmit) {
+      _DynamicTableApp.onSubmit = onSubmit;
+      console.log(`[${_DynamicTableApp.appId}] _prepareOnSubmit called with onSubmit:`, _DynamicTableApp.onSubmit);
+      return _DynamicTableApp.onSubmit;
+    }
+    async _prepareOnCancel(onCancel) {
+      _DynamicTableApp.onCancel = onCancel;
+      console.log(`[${_DynamicTableApp.appId}] _prepareOnCancel called with onCancel:`, _DynamicTableApp.onCancel);
+      return _DynamicTableApp.onCancel;
+    }
+    async _onRender(context, options) {
+      console.log(`[${_DynamicTableApp.appId}] _onRender started`, { context, options });
+      try {
+        await super._onRender(context, options);
+        await this._loadCSS();
+        const target = this.element.querySelector("#dynamic-table-svelte");
+        if (!target) {
+          throw new Error("Svelte mount point '#dynamic-table-svelte' not found");
+        }
+        console.log(`[${_DynamicTableApp.appId}] Found target element:`, target);
+        if (this.svelteApp) {
+          console.log(`[${_DynamicTableApp.appId}] Unmounting existing Svelte app`);
+          await unmount(this.svelteApp);
+          this.svelteApp = null;
+        }
+        this.svelteApp = mount(DynamicTableSheet, {
+          target,
+          props: {
+            config: _DynamicTableApp.config,
+            onSubmit: _DynamicTableApp.onSubmit,
+            onCancel: _DynamicTableApp.onCancel
+          }
+        });
+        console.log(`[${_DynamicTableApp.appId}] DynamicTableSheet mounted successfully`);
+      } catch (error) {
+        console.error(`[${_DynamicTableApp.appId}] Error during render:`, error);
+        throw error;
+      }
+    }
+    /**
+     * CSS-Datei für die DynamicTableApp laden
+     */
+    async _loadCSS() {
+      const cssPath = "modules/relationship-app/styles/dynamic-table-app.css";
+      if (document.querySelector(`link[href*="${cssPath}"]`)) {
+        return;
+      }
+      const link2 = document.createElement("link");
+      link2.rel = "stylesheet";
+      link2.type = "text/css";
+      link2.href = cssPath;
+      document.head.appendChild(link2);
+      console.log(`[${_DynamicTableApp.appId}] CSS loaded: ${cssPath}`);
+    }
+    /** @override */
+    async _onClose(options) {
+      console.log(`[${_DynamicTableApp.appId}] _onClose called with options:`, options);
+      if (this.svelteApp) {
+        await unmount(this.svelteApp);
+        this.svelteApp = null;
+      }
+      return super._onClose(options);
+    }
+    /**
+     * Statische Methode zum einfachen Öffnen der Tabelle
+     */
+    static async show(config) {
+      return new Promise((resolve) => {
+        const app = new _DynamicTableApp();
+        app._prepareConfig(config);
+        app._prepareOnSubmit((data) => {
+          app.close();
+          resolve(data);
+        });
+        app._prepareOnCancel(() => {
+          app.close();
+          resolve(null);
+        });
+        app.render(true);
+      });
+    }
+  };
+  _DynamicTableApp.PARTS = {
+    main: {
+      template: "modules/relationship-app/templates/DynamicTableApp.hbs"
+    }
+  };
+  _DynamicTableApp.appId = "DynamicTableApp";
+  _DynamicTableApp.config = {
+    title: "Dynamic Table",
+    columns: []
+  };
+  _DynamicTableApp.onSubmit = () => {
+  };
+  _DynamicTableApp.onCancel = () => {
+  };
+  _DynamicTableApp.DEFAULT_OPTIONS = {
+    // Unique ID for the sheet
+    id: "dynamic-table",
+    // CSS classes to apply
+    classes: ["dynamic-table"],
+    // Window sizing and behavior
+    position: { width: 1200, height: 800 },
+    window: { title: "Dynamic Table", resizable: true },
+    tag: "div"
+  };
+  let DynamicTableApp = _DynamicTableApp;
+  var on_click = (__1, testDynamicTable) => testDynamicTable();
+  var on_click_1 = (__2, startCreatingNewSchema) => startCreatingNewSchema();
+  var on_click_2 = (__3, errorMessage) => set(errorMessage, null);
+  var root_1 = /* @__PURE__ */ from_html(`<div class="error-message svelte-qx734j"><span> </span> <button class="close-btn svelte-qx734j">×</button></div>`);
+  var on_click_3 = (__4, successMessage) => set(successMessage, null);
+  var root_2 = /* @__PURE__ */ from_html(`<div class="success-message svelte-qx734j"><span> </span> <button class="close-btn svelte-qx734j">×</button></div>`);
   var root_5 = /* @__PURE__ */ from_html(`<p>Keine Schemas vorhanden. Erstellen Sie Ihr erstes Schema.</p>`);
-  var on_click_3 = (__4, selectSchema, schema) => selectSchema(get(schema).id);
-  var on_click_4 = (__5, startEditingSchema, schema) => startEditingSchema(get(schema));
-  var on_click_5 = (__6, duplicateSchema, schema) => duplicateSchema(get(schema).id);
-  var on_click_6 = (__7, deleteSchema, schema) => deleteSchema(get(schema).id);
-  var on_click_7 = (__8, startCreatingNewRow, schema) => startCreatingNewRow(get(schema).id);
+  var on_click_4 = (__5, selectSchema, schema) => selectSchema(get(schema).id);
+  var on_click_5 = (__6, startEditingSchema, schema) => startEditingSchema(get(schema));
+  var on_click_6 = (__7, duplicateSchema, schema) => duplicateSchema(get(schema).id);
+  var on_click_7 = (__8, deleteSchema, schema) => deleteSchema(get(schema).id);
+  var on_click_8 = (__9, startCreatingNewRow, schema) => startCreatingNewRow(get(schema).id);
   var root_11 = /* @__PURE__ */ from_html(`- <em>Erforderlich</em>`, 1);
-  var on_click_8 = (__9, startEditingRow, schema, row) => startEditingRow(get(schema).id, get(row));
-  var on_click_9 = (__10, deleteMetadataRow, schema, row) => deleteMetadataRow(get(schema).id, get(row).id);
-  var root_10 = /* @__PURE__ */ from_html(`<div class="row-item svelte-4kvlhy"><div class="row-info svelte-4kvlhy"><strong> </strong> <!></div> <div class="row-actions svelte-4kvlhy"><button>Bearbeiten</button> <button>Löschen</button></div></div>`);
-  var root_9 = /* @__PURE__ */ from_html(`<div class="rows-section svelte-4kvlhy"><h4 class="svelte-4kvlhy">Metadaten-Zeilen</h4> <!></div>`);
-  var root_8 = /* @__PURE__ */ from_html(`<div class="schema-details svelte-4kvlhy"><p class="svelte-4kvlhy"><strong>Beschreibung:</strong> </p> <p class="svelte-4kvlhy"><strong>Autor:</strong> </p> <p class="svelte-4kvlhy"><strong>Kategorien:</strong> </p> <p class="svelte-4kvlhy"><strong>Metadaten-Zeilen:</strong> </p> <div class="actions svelte-4kvlhy"><button>Bearbeiten</button> <button>Duplizieren</button> <button>Löschen</button> <button class="bright">Neue Zeile</button></div> <!></div>`);
-  var root_7 = /* @__PURE__ */ from_html(`<div><button class="schema-header svelte-4kvlhy"><h3 class="svelte-4kvlhy"> </h3> <span class="version svelte-4kvlhy"> </span></button> <!></div>`);
-  var root$2 = /* @__PURE__ */ from_html(`<div class="metadata-container svelte-4kvlhy"><div class="metadata-header svelte-4kvlhy"><h1 class="svelte-4kvlhy">Metadaten-Verwaltung</h1> <button class="bright">Neues Schema</button></div> <!> <!> <div class="metadata-content svelte-4kvlhy"><!></div></div>`);
+  var on_click_9 = (__10, startEditingRow, schema, row) => startEditingRow(get(schema).id, get(row));
+  var on_click_10 = (__11, deleteMetadataRow, schema, row) => deleteMetadataRow(get(schema).id, get(row).id);
+  var root_10 = /* @__PURE__ */ from_html(`<div class="row-item svelte-qx734j"><div class="row-info svelte-qx734j"><strong> </strong> <!></div> <div class="row-actions svelte-qx734j"><button>Bearbeiten</button> <button>Löschen</button></div></div>`);
+  var root_9 = /* @__PURE__ */ from_html(`<div class="rows-section svelte-qx734j"><h4 class="svelte-qx734j">Metadaten-Zeilen</h4> <!></div>`);
+  var root_8 = /* @__PURE__ */ from_html(`<div class="schema-details svelte-qx734j"><p class="svelte-qx734j"><strong>Beschreibung:</strong> </p> <p class="svelte-qx734j"><strong>Autor:</strong> </p> <p class="svelte-qx734j"><strong>Kategorien:</strong> </p> <p class="svelte-qx734j"><strong>Metadaten-Zeilen:</strong> </p> <div class="actions svelte-qx734j"><button>Bearbeiten</button> <button>Duplizieren</button> <button>Löschen</button> <button class="bright">Neue Zeile</button></div> <!></div>`);
+  var root_7 = /* @__PURE__ */ from_html(`<div><button class="schema-header svelte-qx734j"><h3 class="svelte-qx734j"> </h3> <span class="version svelte-qx734j"> </span></button> <!></div>`);
+  var root$2 = /* @__PURE__ */ from_html(`<div class="metadata-container svelte-qx734j"><div class="metadata-header svelte-qx734j"><h1 class="svelte-qx734j">Metadaten-Verwaltung</h1> <div class="header-actions svelte-qx734j"><button class="bright">Test-Tabelle</button> <button class="bright">Neues Schema</button></div></div> <!> <!> <div class="metadata-content svelte-qx734j"><!></div></div>`);
   function MetadataManagementView($$anchor, $$props) {
     push($$props, true);
     console.log("MetadataManagementView");
@@ -3535,6 +4968,153 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
       }
       set(isCreatingNewRow, false);
     }
+    async function testDynamicTable() {
+      const config = {
+        title: "Test-Tabelle für Metadaten",
+        description: "Eine Test-Tabelle um die DynamicTableApp zu testen",
+        columns: [
+          {
+            id: "name",
+            name: "name",
+            label: "Name",
+            type: "text",
+            required: true,
+            sortable: true,
+            filterable: true,
+            placeholder: "Geben Sie einen Namen ein"
+          },
+          {
+            id: "type",
+            name: "type",
+            label: "Typ",
+            type: "select",
+            required: true,
+            sortable: true,
+            filterable: true,
+            options: [
+              { value: "character", label: "Charakter" },
+              { value: "item", label: "Gegenstand" },
+              { value: "location", label: "Ort" },
+              { value: "event", label: "Ereignis" }
+            ]
+          },
+          {
+            id: "strength",
+            name: "strength",
+            label: "Stärke",
+            type: "number",
+            sortable: true,
+            filterable: true,
+            validation: { min: 1, max: 20 }
+          },
+          {
+            id: "active",
+            name: "active",
+            label: "Aktiv",
+            type: "boolean",
+            sortable: true,
+            filterable: true,
+            default: true
+          },
+          {
+            id: "description",
+            name: "description",
+            label: "Beschreibung",
+            type: "textarea",
+            placeholder: "Beschreibung eingeben..."
+          },
+          {
+            id: "tags",
+            name: "tags",
+            label: "Tags",
+            type: "multiselect",
+            options: [
+              { value: "magic", label: "Magie" },
+              { value: "combat", label: "Kampf" },
+              { value: "social", label: "Sozial" },
+              { value: "stealth", label: "Heimlichkeit" }
+            ]
+          }
+        ],
+        initialData: [
+          {
+            id: foundry.utils.randomID(),
+            name: "Gandalf",
+            type: "character",
+            strength: 18,
+            active: true,
+            description: "Ein weiser Zauberer",
+            tags: ["magic", "social"]
+          },
+          {
+            id: foundry.utils.randomID(),
+            name: "Sting",
+            type: "item",
+            strength: 12,
+            active: true,
+            description: "Ein magisches Schwert",
+            tags: ["magic", "combat"]
+          },
+          {
+            id: foundry.utils.randomID(),
+            name: "Hobbiton",
+            type: "location",
+            strength: 5,
+            active: true,
+            description: "Ein friedliches Dorf",
+            tags: ["social"]
+          }
+        ],
+        allowAdd: true,
+        allowEdit: true,
+        allowDelete: true,
+        allowBulkActions: true,
+        allowSorting: true,
+        allowFiltering: true,
+        enablePagination: true,
+        pageSize: 10,
+        bulkActions: [
+          {
+            id: "activate",
+            label: "Aktivieren",
+            icon: "✓",
+            action: (rows) => {
+              console.log("Aktiviere Zeilen:", rows);
+              rows.forEach((row) => row.active = true);
+            },
+            enabled: (rows) => rows.some((row) => !row.active)
+          },
+          {
+            id: "deactivate",
+            label: "Deaktivieren",
+            icon: "×",
+            action: (rows) => {
+              console.log("Deaktiviere Zeilen:", rows);
+              rows.forEach((row) => row.active = false);
+            },
+            enabled: (rows) => rows.some((row) => row.active)
+          }
+        ],
+        onSubmit: (data) => {
+          console.log("Tabellendaten gespeichert:", data);
+          set(successMessage, `${data.length} Einträge erfolgreich gespeichert`);
+          setTimeout(() => set(successMessage, null), 3e3);
+        },
+        onCancel: () => {
+          console.log("Tabelle abgebrochen");
+        }
+      };
+      try {
+        const result = await DynamicTableApp.show(config);
+        if (result) {
+          console.log("Ergebnis der Tabelle:", result);
+        }
+      } catch (error) {
+        console.error("Fehler beim Öffnen der Tabelle:", error);
+        set(errorMessage, "Fehler beim Öffnen der Tabelle: " + error.message);
+        setTimeout(() => set(errorMessage, null), 5e3);
+      }
+    }
     function selectSchema(schemaId) {
       set(selectedSchemaId, get(selectedSchemaId) === schemaId ? null : schemaId, true);
     }
@@ -3707,18 +5287,21 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     });
     var div = root$2();
     var div_1 = child(div);
-    var button = sibling(child(div_1), 2);
-    button.__click = [on_click, startCreatingNewSchema];
+    var div_2 = sibling(child(div_1), 2);
+    var button = child(div_2);
+    button.__click = [on_click, testDynamicTable];
+    var button_1 = sibling(button, 2);
+    button_1.__click = [on_click_1, startCreatingNewSchema];
     var node = sibling(div_1, 2);
     {
       var consequent = ($$anchor2) => {
-        var div_2 = root_1();
-        var span = child(div_2);
+        var div_3 = root_1();
+        var span = child(div_3);
         var text = child(span);
-        var button_1 = sibling(span, 2);
-        button_1.__click = [on_click_1, errorMessage];
+        var button_2 = sibling(span, 2);
+        button_2.__click = [on_click_2, errorMessage];
         template_effect(() => set_text(text, get(errorMessage)));
-        append($$anchor2, div_2);
+        append($$anchor2, div_3);
       };
       if_block(node, ($$render) => {
         if (get(errorMessage)) $$render(consequent);
@@ -3727,20 +5310,20 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
     var node_1 = sibling(node, 2);
     {
       var consequent_1 = ($$anchor2) => {
-        var div_3 = root_2();
-        var span_1 = child(div_3);
+        var div_4 = root_2();
+        var span_1 = child(div_4);
         var text_1 = child(span_1);
-        var button_2 = sibling(span_1, 2);
-        button_2.__click = [on_click_2, successMessage];
+        var button_3 = sibling(span_1, 2);
+        button_3.__click = [on_click_3, successMessage];
         template_effect(() => set_text(text_1, get(successMessage)));
-        append($$anchor2, div_3);
+        append($$anchor2, div_4);
       };
       if_block(node_1, ($$render) => {
         if (get(successMessage)) $$render(consequent_1);
       });
     }
-    var div_4 = sibling(node_1, 2);
-    var node_2 = child(div_4);
+    var div_5 = sibling(node_1, 2);
+    var node_2 = child(div_5);
     {
       var alternate = ($$anchor2, $$elseif) => {
         {
@@ -3752,18 +5335,18 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
             var fragment = comment();
             var node_3 = first_child(fragment);
             each(node_3, 17, () => get(metadata).schemas, (schema) => schema.id, ($$anchor4, schema) => {
-              var div_5 = root_7();
-              var button_3 = child(div_5);
-              button_3.__click = [on_click_3, selectSchema, schema];
-              var h3 = child(button_3);
+              var div_6 = root_7();
+              var button_4 = child(div_6);
+              button_4.__click = [on_click_4, selectSchema, schema];
+              var h3 = child(button_4);
               var text_2 = child(h3);
               var span_2 = sibling(h3, 2);
               var text_3 = child(span_2);
-              var node_4 = sibling(button_3, 2);
+              var node_4 = sibling(button_4, 2);
               {
                 var consequent_6 = ($$anchor5) => {
-                  var div_6 = root_8();
-                  var p_2 = child(div_6);
+                  var div_7 = root_8();
+                  var p_2 = child(div_7);
                   var text_4 = sibling(child(p_2));
                   var p_3 = sibling(p_2, 2);
                   var text_5 = sibling(child(p_3));
@@ -3771,24 +5354,24 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                   var text_6 = sibling(child(p_4));
                   var p_5 = sibling(p_4, 2);
                   var text_7 = sibling(child(p_5));
-                  var div_7 = sibling(p_5, 2);
-                  var button_4 = child(div_7);
-                  button_4.__click = [on_click_4, startEditingSchema, schema];
-                  var button_5 = sibling(button_4, 2);
-                  button_5.__click = [on_click_5, duplicateSchema, schema];
+                  var div_8 = sibling(p_5, 2);
+                  var button_5 = child(div_8);
+                  button_5.__click = [on_click_5, startEditingSchema, schema];
                   var button_6 = sibling(button_5, 2);
-                  button_6.__click = [on_click_6, deleteSchema, schema];
+                  button_6.__click = [on_click_6, duplicateSchema, schema];
                   var button_7 = sibling(button_6, 2);
-                  button_7.__click = [on_click_7, startCreatingNewRow, schema];
-                  var node_5 = sibling(div_7, 2);
+                  button_7.__click = [on_click_7, deleteSchema, schema];
+                  var button_8 = sibling(button_7, 2);
+                  button_8.__click = [on_click_8, startCreatingNewRow, schema];
+                  var node_5 = sibling(div_8, 2);
                   {
                     var consequent_5 = ($$anchor6) => {
-                      var div_8 = root_9();
-                      var node_6 = sibling(child(div_8), 2);
+                      var div_9 = root_9();
+                      var node_6 = sibling(child(div_9), 2);
                       each(node_6, 17, () => get(schema).rows, (row) => row.id, ($$anchor7, row) => {
-                        var div_9 = root_10();
-                        var div_10 = child(div_9);
-                        var strong = child(div_10);
+                        var div_10 = root_10();
+                        var div_11 = child(div_10);
+                        var strong = child(div_11);
                         var text_8 = child(strong);
                         var text_9 = sibling(strong);
                         var node_7 = sibling(text_9);
@@ -3801,18 +5384,18 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                             if (get(row).required) $$render(consequent_4);
                           });
                         }
-                        var div_11 = sibling(div_10, 2);
-                        var button_8 = child(div_11);
-                        button_8.__click = [on_click_8, startEditingRow, schema, row];
-                        var button_9 = sibling(button_8, 2);
-                        button_9.__click = [on_click_9, deleteMetadataRow, schema, row];
+                        var div_12 = sibling(div_11, 2);
+                        var button_9 = child(div_12);
+                        button_9.__click = [on_click_9, startEditingRow, schema, row];
+                        var button_10 = sibling(button_9, 2);
+                        button_10.__click = [on_click_10, deleteMetadataRow, schema, row];
                         template_effect(() => {
                           set_text(text_8, get(row).label);
                           set_text(text_9, ` (${get(row).name ?? ""}) - ${get(row).type ?? ""} `);
                         });
-                        append($$anchor7, div_9);
+                        append($$anchor7, div_10);
                       });
-                      append($$anchor6, div_8);
+                      append($$anchor6, div_9);
                     };
                     if_block(node_5, ($$render) => {
                       if (get(schema).rows.length > 0) $$render(consequent_5);
@@ -3827,18 +5410,18 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "sy
                     },
                     [() => get(schema).categories.join(", ")]
                   );
-                  append($$anchor5, div_6);
+                  append($$anchor5, div_7);
                 };
                 if_block(node_4, ($$render) => {
                   if (get(selectedSchemaId) === get(schema).id) $$render(consequent_6);
                 });
               }
               template_effect(() => {
-                set_class(div_5, 1, `schema-card ${get(selectedSchemaId) === get(schema).id ? "selected" : ""}`, "svelte-4kvlhy");
+                set_class(div_6, 1, `schema-card ${get(selectedSchemaId) === get(schema).id ? "selected" : ""}`, "svelte-qx734j");
                 set_text(text_2, get(schema).label);
                 set_text(text_3, `v${get(schema).version ?? ""}`);
               });
-              append($$anchor4, div_5);
+              append($$anchor4, div_6);
             });
             append($$anchor3, fragment);
           };

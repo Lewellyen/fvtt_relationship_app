@@ -12,6 +12,7 @@
   createOptions 
 } from '../utils/formWrappers';
   import DynamicDialogApp from '../applications/DynamicDialogApp';
+  import DynamicTableApp from '../applications/DynamicTableApp';
 
 
   interface IMetadata {
@@ -416,6 +417,159 @@
     
     isCreatingNewRow = false;
   }
+
+  // Test-Funktion für DynamicTableApp
+  async function testDynamicTable(): Promise<void> {
+    const config = {
+      title: "Test-Tabelle für Metadaten",
+      description: "Eine Test-Tabelle um die DynamicTableApp zu testen",
+      columns: [
+        {
+          id: "name",
+          name: "name",
+          label: "Name",
+          type: "text" as const,
+          required: true,
+          sortable: true,
+          filterable: true,
+          placeholder: "Geben Sie einen Namen ein"
+        },
+        {
+          id: "type",
+          name: "type", 
+          label: "Typ",
+          type: "select" as const,
+          required: true,
+          sortable: true,
+          filterable: true,
+          options: [
+            { value: "character", label: "Charakter" },
+            { value: "item", label: "Gegenstand" },
+            { value: "location", label: "Ort" },
+            { value: "event", label: "Ereignis" }
+          ]
+        },
+        {
+          id: "strength",
+          name: "strength",
+          label: "Stärke",
+          type: "number" as const,
+          sortable: true,
+          filterable: true,
+          validation: {
+            min: 1,
+            max: 20
+          }
+        },
+        {
+          id: "active",
+          name: "active",
+          label: "Aktiv",
+          type: "boolean" as const,
+          sortable: true,
+          filterable: true,
+          default: true
+        },
+        {
+          id: "description",
+          name: "description",
+          label: "Beschreibung",
+          type: "textarea" as const,
+          placeholder: "Beschreibung eingeben..."
+        },
+        {
+          id: "tags",
+          name: "tags",
+          label: "Tags",
+          type: "multiselect" as const,
+          options: [
+            { value: "magic", label: "Magie" },
+            { value: "combat", label: "Kampf" },
+            { value: "social", label: "Sozial" },
+            { value: "stealth", label: "Heimlichkeit" }
+          ]
+        }
+      ],
+      initialData: [
+        {
+          id: foundry.utils.randomID(),
+          name: "Gandalf",
+          type: "character",
+          strength: 18,
+          active: true,
+          description: "Ein weiser Zauberer",
+          tags: ["magic", "social"]
+        },
+        {
+          id: foundry.utils.randomID(),
+          name: "Sting",
+          type: "item",
+          strength: 12,
+          active: true,
+          description: "Ein magisches Schwert",
+          tags: ["magic", "combat"]
+        },
+        {
+          id: foundry.utils.randomID(),
+          name: "Hobbiton",
+          type: "location",
+          strength: 5,
+          active: true,
+          description: "Ein friedliches Dorf",
+          tags: ["social"]
+        }
+      ],
+      allowAdd: true,
+      allowEdit: true,
+      allowDelete: true,
+      allowBulkActions: true,
+      allowSorting: true,
+      allowFiltering: true,
+      enablePagination: true,
+      pageSize: 10,
+      bulkActions: [
+        {
+          id: "activate",
+          label: "Aktivieren",
+          icon: "✓",
+          action: (rows: any[]) => {
+            console.log("Aktiviere Zeilen:", rows);
+            rows.forEach((row: any) => row.active = true);
+          },
+          enabled: (rows: any[]) => rows.some((row: any) => !row.active)
+        },
+        {
+          id: "deactivate", 
+          label: "Deaktivieren",
+          icon: "×",
+          action: (rows: any[]) => {
+            console.log("Deaktiviere Zeilen:", rows);
+            rows.forEach((row: any) => row.active = false);
+          },
+          enabled: (rows: any[]) => rows.some((row: any) => row.active)
+        }
+      ],
+      onSubmit: (data: any[]) => {
+        console.log("Tabellendaten gespeichert:", data);
+        successMessage = `${data.length} Einträge erfolgreich gespeichert`;
+        setTimeout(() => successMessage = null, 3000);
+      },
+      onCancel: () => {
+        console.log("Tabelle abgebrochen");
+      }
+    };
+
+    try {
+      const result = await DynamicTableApp.show(config);
+      if (result) {
+        console.log("Ergebnis der Tabelle:", result);
+      }
+    } catch (error) {
+      console.error("Fehler beim Öffnen der Tabelle:", error);
+      errorMessage = "Fehler beim Öffnen der Tabelle: " + (error as Error).message;
+      setTimeout(() => errorMessage = null, 5000);
+    }
+  }
   
 
   // Schema auswählen
@@ -667,9 +821,14 @@
 <div class="metadata-container">
   <div class="metadata-header">
     <h1>Metadaten-Verwaltung</h1>
-    <button class="bright" onclick={() => startCreatingNewSchema()}>
-      Neues Schema
-    </button>
+    <div class="header-actions">
+      <button class="bright" onclick={() => testDynamicTable()}>
+        Test-Tabelle
+      </button>
+      <button class="bright" onclick={() => startCreatingNewSchema()}>
+        Neues Schema
+      </button>
+    </div>
   </div>
 
   {#if errorMessage}
@@ -755,6 +914,12 @@
     margin-bottom: 2rem;
     padding-bottom: 1rem;
     border-bottom: 1px solid var(--color-border-primary);
+  }
+
+  .header-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
   }
 
   .metadata-header h1 {
