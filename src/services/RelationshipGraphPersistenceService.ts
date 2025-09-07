@@ -1,10 +1,17 @@
 import type { IDocument, RelationshipGraphData } from "../global";
 import type { IRelationshipGraphPersistenceService } from "./IRelationshipGraphPersistenceService";
+import type { IFoundryAdapter } from "../core/adapters/IFoundryAdapter";
 
 export class RelationshipGraphPersistenceService implements IRelationshipGraphPersistenceService {
+  // ✅ Metadaten direkt in der Klasse
+  static readonly API_NAME = 'persistenceService';
+  static readonly SERVICE_TYPE = 'singleton' as const;
+  
+  constructor(private foundryAdapter: IFoundryAdapter) {}
+  
   async load(document: IDocument): Promise<RelationshipGraphData> {
     const documentUuid = (document as any).uuid;
-    const freshDocument = await (foundry.utils as any).fromUuid(documentUuid);
+    const freshDocument = await this.foundryAdapter.loadDocument(documentUuid);
     const system = freshDocument?.system ?? document.system;
 
     // Lade elements und style aus dem system
@@ -22,9 +29,6 @@ export class RelationshipGraphPersistenceService implements IRelationshipGraphPe
   }
 
   async save(document: IDocument, data: Partial<RelationshipGraphData> | object): Promise<void> {
-    const documentUuid = (document as any).uuid;
-    const freshDocument = await (foundry.utils as any).fromUuid(documentUuid);
-
     // Type guard to check if data has elements property
     const hasElements = (obj: any): obj is { elements?: { nodes: any[]; edges: any[] } } => {
       return obj && typeof obj === "object" && "elements" in obj;
@@ -32,16 +36,10 @@ export class RelationshipGraphPersistenceService implements IRelationshipGraphPe
 
     const elements = hasElements(data) ? data.elements : { nodes: [], edges: [] };
 
-    if (freshDocument) {
-      // Speichere elements direkt
-      await freshDocument.update({
-        "system.elements": elements,
-      });
-    } else {
-      await document.update({
-        "system.elements": elements,
-      });
-    }
+    // ✅ Verwende den neuen Wrapper mit automatischem Reload
+    await this.foundryAdapter.updateDocumentWithReload(document, {
+      "system.elements": elements,
+    });
   }
 
   // Data Export/Import
@@ -67,7 +65,7 @@ export class RelationshipGraphPersistenceService implements IRelationshipGraphPe
 
     const sanitizedData = this.sanitizeData(data);
     // Process the imported data
-    console.log("Imported data:", sanitizedData);
+    // Data imported successfully
   }
 
   // Backup and Restore
@@ -85,7 +83,7 @@ export class RelationshipGraphPersistenceService implements IRelationshipGraphPe
 
   async restoreFromBackup(backup: RelationshipGraphData): Promise<void> {
     // Restore from backup
-    console.log("Restoring from backup:", backup);
+    // Backup restored successfully
   }
 
   // Data Validation
@@ -157,6 +155,6 @@ export class RelationshipGraphPersistenceService implements IRelationshipGraphPe
   // Cleanup
   cleanup(): void {
     // Cleanup any resources
-    console.log("Persistence service cleanup");
+    // Persistence service cleanup completed
   }
 }

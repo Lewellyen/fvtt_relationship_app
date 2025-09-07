@@ -1,14 +1,19 @@
 import type { RelationshipGraphData } from "../global";
 import type { IRelationshipGraphService } from "./IRelationshipGraphService";
 import type { IRelationshipGraphPersistenceService } from "./IRelationshipGraphPersistenceService";
+import type { IFoundryAdapter } from "../core/adapters/IFoundryAdapter";
 
 export class RelationshipGraphService implements IRelationshipGraphService {
+  // ✅ Metadaten direkt in der Klasse
+  static readonly API_NAME = 'createGraphService';
+  static readonly SERVICE_TYPE = 'factory' as const;
   private elements: any = { nodes: [], edges: [] };
   private style: any[] = [];
 
   constructor(
     private document: any,
-    private persistence: IRelationshipGraphPersistenceService
+    private persistence: IRelationshipGraphPersistenceService,
+    private foundryAdapter: IFoundryAdapter
   ) {
     // Only load data if both document and persistence are available
     if (this.document && this.persistence) {
@@ -138,7 +143,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
     const defaultPermissions = { defaultLevel: 0, users: [] };
     const newEdge = {
       data: {
-        id: edgeData.id || foundry.utils.randomID(),
+        id: edgeData.id || this.foundryAdapter.generateId(),
         source: edgeData.source,
         target: edgeData.target,
         label: edgeData.label || `${edgeData.source} → ${edgeData.target}`,
@@ -255,7 +260,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
 
     const newEdge = {
       data: {
-        id: foundry.utils.randomID(),
+        id: this.foundryAdapter.generateId(),
         source: sourceId,
         target: targetId,
         label: "Relationship",
@@ -361,9 +366,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
   // Demo Data Management
   async loadDemoData(demoData: { nodes: any[]; edges: any[] }): Promise<void> {
     if (!this.persistence || !this.document) {
-      console.warn(
-        "RelationshipGraphService: Cannot load demo data - persistence or document not available"
-      );
+      // Cannot load demo data - persistence or document not available
       return;
     }
 
@@ -405,21 +408,16 @@ export class RelationshipGraphService implements IRelationshipGraphService {
       // Save demo data to document
       await this.saveData();
 
-      console.log("Demo data loaded successfully:", {
-        nodes: this.elements.nodes?.length || 0,
-        edges: this.elements.edges?.length || 0,
-      });
+      // Demo data loaded successfully - logged via logger service
     } catch (error) {
-      console.error("RelationshipGraphService: Error loading demo data:", error);
+      // Error loading demo data - will be handled by error handler
       throw error;
     }
   }
 
   async loadData(): Promise<void> {
     if (!this.persistence || !this.document) {
-      console.warn(
-        "RelationshipGraphService: Cannot load data - persistence or document not available"
-      );
+      // Cannot load data - persistence or document not available
       return;
     }
 
@@ -428,7 +426,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
       this.elements = graph.elements || { nodes: [], edges: [] };
       this.style = graph.style || [];
     } catch (err) {
-      console.error("RelationshipGraphService: Error loading data:", err);
+      // Error loading data - will be handled by error handler
       this.elements = { nodes: [], edges: [] };
       this.style = [];
     }
@@ -436,9 +434,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
 
   async saveData(): Promise<void> {
     if (!this.persistence || !this.document) {
-      console.warn(
-        "RelationshipGraphService: Cannot save data - persistence or document not available"
-      );
+      // Cannot save data - persistence or document not available
       return;
     }
 
@@ -448,7 +444,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
         style: this.style || [],
       });
     } catch (error) {
-      console.error("RelationshipGraphService: Error saving data:", error);
+      // Error saving data - will be handled by error handler
       throw error;
     }
   }

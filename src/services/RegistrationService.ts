@@ -1,19 +1,35 @@
 import JournalEntryPageRelationshipGraphSheet from "../applications/JournalEntryPageRelationshipGraphSheet";
 import { RelationshipGraphModel } from "../models/RelationsShipGraphModel";
-import { ServiceManager } from "./ServiceManager";
-import { SERVICE_IDENTIFIERS } from "./IServiceFactory";
+import { ServiceFactory } from "./ServiceFactory";
 import { MODULE_ID, MODULE_METADATA_KEY } from "../constants";
-
-export interface IRegistrationService {
-  registerSheet(): void;
-  registerModel(): void;
-  registerServices(): void;
-  registerMetadata(): void;
-}
+import type { ILogger } from "../core/interfaces/ILogger";
+import type { IErrorHandler } from "../core/interfaces/IErrorHandler";
+import type { IRegistrationService } from "../core/interfaces/IRegistrationService";
 
 export class RegistrationService implements IRegistrationService {
-  registerSheet(): void {
-    console.log("🚀 Relationship App: Registering JournalEntryPageRelationshipGraphSheet...");
+  // ✅ Metadaten direkt in der Klasse
+  static readonly API_NAME = 'registrationService';
+  static readonly SERVICE_TYPE = 'singleton' as const;
+  
+  constructor(
+    private readonly logger: ILogger,
+    private readonly errorHandler: IErrorHandler
+  ) {}
+
+  async registerAll(): Promise<void> {
+    try {
+      await this.registerSheet();
+      await this.registerModel();
+      await this.registerMetadata();
+      await this.registerServices();
+    } catch (error) {
+      this.errorHandler.handle(error, "RegistrationService.registerAll");
+      throw error;
+    }
+  }
+
+  private async registerSheet(): Promise<void> {
+    this.logger.info("🚀 Relationship App: Registering JournalEntryPageRelationshipGraphSheet...");
     const DocumentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
     DocumentSheetConfig.registerSheet(
       JournalEntryPage,
@@ -33,14 +49,14 @@ export class RegistrationService implements IRegistrationService {
     );
   }
 
-  registerModel(): void {
-    console.log("🚀 Relationship App: Registering RelationshipGraphModel...");
+  private async registerModel(): Promise<void> {
+    this.logger.info("🚀 Relationship App: Registering RelationshipGraphModel...");
     CONFIG.JournalEntryPage.dataModels["relationship-app.relationship-graph"] =
       RelationshipGraphModel;
   }
 
-  registerMetadata(): void {
-    console.log("🚀 Relationship App: Registering metadata...");
+  private async registerMetadata(): Promise<void> {
+    this.logger.info("🚀 Relationship App: Registering metadata...");
     game?.settings?.register(MODULE_ID as any, MODULE_METADATA_KEY as any, {
       name: "Relationship App Metadata",
       hint: "Metadata for the Relationship App",
@@ -50,41 +66,13 @@ export class RegistrationService implements IRegistrationService {
     });
   }
 
-  registerServices(): void {
-    console.log("🚀 Relationship App: Registering services in global API...");
+  private async registerServices(): Promise<void> {
+    this.logger.info("🚀 Relationship App: Registering services in global API...");
 
-    // Create service manager instance
-    const serviceManager = ServiceManager.getInstance();
+    // ServiceFactory registriert alle Services automatisch
+    const serviceFactory = ServiceFactory.getInstance();
+    serviceFactory.registerAllServicesInAPI();
 
-    // Register services in global API
-    if (!(globalThis as any).game?.modules?.get("relationship-app")?.api) {
-      (globalThis as any).game.modules.get("relationship-app").api = {};
-    }
-
-    const moduleApi = (globalThis as any).game.modules.get("relationship-app").api;
-
-    // Register individual services
-    moduleApi.persistenceService = serviceManager.getService(
-      SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_PERSISTENCE
-    );
-    moduleApi.demoDataService = serviceManager.getService(
-      SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH_DEMO_DATA
-    );
-
-    // Create graph service with dependencies - we'll create it lazily when needed
-    // since it requires a document instance
-    moduleApi.createGraphService = (document: any) => {
-      return serviceManager.getService(
-        SERVICE_IDENTIFIERS.RELATIONSHIP_GRAPH,
-        document.id, // Use document ID as cache key
-        document,
-        moduleApi.persistenceService
-      );
-    };
-
-    // Register service manager
-    moduleApi.serviceManager = serviceManager;
-
-    console.log("✅ Relationship App: Services registered successfully");
+    this.logger.info("✅ Relationship App: All services registered successfully");
   }
 }

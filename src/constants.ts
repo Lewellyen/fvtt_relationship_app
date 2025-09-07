@@ -5,6 +5,9 @@
 // Modul-Identifikator
 export const MODULE_ID = "relationship-app";
 
+// Modul-Identifikator-Prefix
+export const MODULE_ID_PREFIX = `[${MODULE_ID}] |`;
+
 // Modul-Name für Anzeige
 export const MODULE_NAME = "Relationship App";
 

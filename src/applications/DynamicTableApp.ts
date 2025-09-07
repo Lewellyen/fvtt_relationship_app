@@ -2,6 +2,7 @@ import { mount, unmount } from "svelte";
 import DynamicTableSheet from "../svelte/DynamicTableSheet.svelte";
 import type { IDynamicTableConfig } from "../types/DynamicTableTypes";
 
+
 export default class DynamicTableApp extends foundry.applications.api.HandlebarsApplicationMixin(
   foundry.applications.api.ApplicationV2
 ) {
@@ -172,7 +173,7 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
       });
       
       // Tabelle öffnen
-      app.render(true);
+      app.render({ force: true });
     });
   }
 }

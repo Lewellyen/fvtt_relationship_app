@@ -1,10 +1,17 @@
 import type { IRelationshipGraphDemoDataService } from "./IRelationshipGraphDemoDataService";
 import type { IRelationshipGraphService } from "./IRelationshipGraphService";
+import type { IFoundryAdapter } from "../core/adapters/IFoundryAdapter";
 
 export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoDataService {
+  // ✅ Metadaten direkt in der Klasse
+  static readonly API_NAME = 'demoDataService';
+  static readonly SERVICE_TYPE = 'singleton' as const;
+  
+  constructor(private foundryAdapter: IFoundryAdapter) {}
+  
   getDemoData(): { nodes: any[]; edges: any[] } {
-    const node1Id = foundry.utils.randomID();
-    const node2Id = foundry.utils.randomID();
+    const node1Id = this.foundryAdapter.generateId();
+    const node2Id = this.foundryAdapter.generateId();
 
     // Direkt minimale Cytoscape-Daten erstellen
     const nodes = [
@@ -33,7 +40,7 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
     const edges = [
       {
         data: {
-          id: foundry.utils.randomID(),
+          id: this.foundryAdapter.generateId(),
           source: node1Id,
           target: node2Id,
           label: "Weizen",
@@ -49,20 +56,18 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
 
     // Speichere elements und style direkt in das Journal Entry
     if (service.getDocument()) {
-      await service.getDocument().update(
-        {
-          "system.elements": demoData,
-          "system.style": [],
-        },
-        { render: false }
-      );
+      // ✅ Verwende den neuen Wrapper mit automatischem Reload
+      await this.foundryAdapter.updateDocumentWithReload(service.getDocument(), {
+        "system.elements": demoData,
+        "system.style": [],
+      });
     }
   }
 
   // Demo Data Templates
   createSimpleDemo(): { nodes: any[]; edges: any[] } {
-    const node1Id = foundry.utils.randomID();
-    const node2Id = foundry.utils.randomID();
+    const node1Id = this.foundryAdapter.generateId();
+    const node2Id = this.foundryAdapter.generateId();
 
     const nodes = [
       {
@@ -90,7 +95,7 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
     const edges = [
       {
         data: {
-          id: foundry.utils.randomID(),
+          id: this.foundryAdapter.generateId(),
           source: node1Id,
           target: node2Id,
           label: "Connection",
@@ -103,7 +108,7 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
 
   createComplexDemo(): { nodes: any[]; edges: any[] } {
     const nodes = Array.from({ length: 10 }, (_, i) => {
-      const nodeId = foundry.utils.randomID();
+      const nodeId = this.foundryAdapter.generateId();
       return {
         data: {
           id: nodeId,
@@ -120,7 +125,7 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
     for (let i = 0; i < nodes.length - 1; i++) {
       edges.push({
         data: {
-          id: foundry.utils.randomID(),
+          id: this.foundryAdapter.generateId(),
           source: nodes[i].data.id,
           target: nodes[i + 1].data.id,
           label: `Edge ${i + 1}`,
@@ -132,9 +137,9 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
   }
 
   createCharacterDemo(): { nodes: any[]; edges: any[] } {
-    const heroId = foundry.utils.randomID();
-    const villainId = foundry.utils.randomID();
-    const allyId = foundry.utils.randomID();
+    const heroId = this.foundryAdapter.generateId();
+    const villainId = this.foundryAdapter.generateId();
+    const allyId = this.foundryAdapter.generateId();
 
     const nodes = [
       {
@@ -172,7 +177,7 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
     const edges = [
       {
         data: {
-          id: foundry.utils.randomID(),
+          id: this.foundryAdapter.generateId(),
           source: heroId,
           target: villainId,
           label: "Fights",
@@ -180,7 +185,7 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
       },
       {
         data: {
-          id: foundry.utils.randomID(),
+          id: this.foundryAdapter.generateId(),
           source: heroId,
           target: allyId,
           label: "Helps",
@@ -192,9 +197,9 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
   }
 
   createWorldDemo(): { nodes: any[]; edges: any[] } {
-    const cityId = foundry.utils.randomID();
-    const villageId = foundry.utils.randomID();
-    const fortressId = foundry.utils.randomID();
+    const cityId = this.foundryAdapter.generateId();
+    const villageId = this.foundryAdapter.generateId();
+    const fortressId = this.foundryAdapter.generateId();
 
     const nodes = [
       {
@@ -232,7 +237,7 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
     const edges = [
       {
         data: {
-          id: foundry.utils.randomID(),
+          id: this.foundryAdapter.generateId(),
           source: cityId,
           target: villageId,
           label: "Trade Route",
@@ -240,7 +245,7 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
       },
       {
         data: {
-          id: foundry.utils.randomID(),
+          id: this.foundryAdapter.generateId(),
           source: cityId,
           target: fortressId,
           label: "Military Road",
@@ -255,7 +260,7 @@ export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoD
   async clearDemoData(service: IRelationshipGraphService): Promise<void> {
     // Lösche alle Elements und Style aus dem Journal Entry
     if (service.getDocument()) {
-      await service.getDocument().update({
+      await this.foundryAdapter.updateDocument(service.getDocument(), {
         "system.elements": { nodes: [], edges: [] },
         "system.style": [],
       });
