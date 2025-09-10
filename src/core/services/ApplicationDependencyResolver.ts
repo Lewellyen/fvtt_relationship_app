@@ -34,7 +34,7 @@ export class ApplicationDependencyResolver {
     return {
       svelteManager: serviceContainer.getService(SvelteManager),
       cssManager: serviceContainer.getService(CSSManager),
-      serviceLocator: serviceContainer.getService(ServiceRegistrar), // ServiceRegistrar als ServiceLocator-Ersatz
+      serviceLocator: serviceContainer.getService(ServiceRegistrar), // ServiceRegistrar als Service-Resolver
       notificationService: serviceContainer.getService(NotificationService),
       errorHandler: serviceContainer.getService(ConsoleErrorHandler),
       foundryAdapter: serviceContainer.getService(FoundryAdapter),
@@ -49,7 +49,7 @@ export class ApplicationDependencyResolver {
     const serviceContainer = this.getServiceContainer();
 
     return {
-      serviceLocator: serviceContainer.getService(ServiceRegistrar), // ServiceRegistrar als ServiceLocator-Ersatz
+      serviceLocator: serviceContainer.getService(ServiceRegistrar), // ServiceRegistrar als Service-Resolver
       foundryAdapter: serviceContainer.getService(FoundryAdapter),
       logger: (globalThis as any).relationshipApp?.logger,
     };

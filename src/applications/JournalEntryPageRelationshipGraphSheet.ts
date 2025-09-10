@@ -1,4 +1,3 @@
-import { RelationshipGraphDemoDataService } from "../services/RelationshipGraphDemoDataService";
 import type { IServiceApplicationDependencies, ISvelteApplicationDependencies } from "../interfaces";
 import { ApplicationDependencyResolver } from "../core/services/ApplicationDependencyResolver";
 
@@ -102,32 +101,15 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
 
   async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
-    if (this.logger) {
-      this.logger.info(
-        "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:",
-        context
-      );
-    } else {
-      console.log(
-        "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:",
-        context
-      );
-    }
+    this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:", context);
     return context;
   }
 
   async _onRender(context: any, options: any) {
-    if (this.logger) {
-      this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onRender started", {
+    this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] _onRender started", {
         context,
         options,
       });
-    } else {
-      console.log("[JournalEntryPageRelationshipGraphSheet] _onRender started", {
-        context,
-        options,
-      });
-    }
 
     await super._onRender(context, options);
 
@@ -135,64 +117,24 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     const journalEntryPage = (this as any).document;
     const isEditMode = !(this as any).isView;
 
-    // Prüfe ob Demo-Daten geladen werden müssen
-    await this.ensureDemoDataLoaded(journalEntryPage);
-
     // Mounte Graph-Komponente über SvelteManager
     await this.svelteManager.mountGraphComponent(this.element, journalEntryPage, isEditMode);
 
-    if (this.logger) {
-      this.logger.info(
-        "[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully"
-      );
-    } else {
-      console.log("[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully");
-    }
-  }
-
-  /**
-   * Stellt sicher, dass Demo-Daten geladen sind falls nötig
-   * @param journalEntryPage - Das Journal Entry Document
-   */
-  private async ensureDemoDataLoaded(journalEntryPage: any): Promise<void> {
-    const system = journalEntryPage.system;
-
-    if (
-      !system ||
-      !system.elements ||
-      !system.elements.nodes ||
-      !system.elements.edges ||
-      system.elements.nodes.length === 0 ||
-      system.elements.edges.length === 0
-    ) {
-      if (this.logger) {
-        this.logger.info("[JournalEntryPageRelationshipGraphSheet] Loading demo data");
-      } else {
-        console.log("[JournalEntryPageRelationshipGraphSheet] Loading demo data");
-      }
-
-      // ✅ Service Resolution über ServiceLocator
-      const graphService = this.serviceLocator.getGraphService(journalEntryPage);
-      const demoDataService = new RelationshipGraphDemoDataService(this.foundryAdapter);
-
-      await demoDataService.createDemoData(graphService);
-    }
+    this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully");
   }
 
   /** @override */
   async _onClose(options: any) {
-    if (this.logger) {
-      this.logger.info(
-        "[JournalEntryPageRelationshipGraphSheet] _onClose called with options:",
-        options
-      );
-    } else {
-      console.log(
-        "[JournalEntryPageRelationshipGraphSheet] _onClose called with options:",
-        options
-      );
-    }
+    this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] _onClose called with options:", options);
     // ✅ Svelte Cleanup wird von SvelteManager gehandhabt
     return super._onClose(options);
+  }
+
+  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
+    if (this.logger) {
+      this.logger[modus](message, ...args);
+    } else {
+      console[modus](message, ...args);
+    }
   }
 }

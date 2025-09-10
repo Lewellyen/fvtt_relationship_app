@@ -58,7 +58,7 @@ export class ServiceRegistrar implements IServiceRegistrar {
   }
 
   /**
-   * Service über ServiceLocator abrufen
+   * Service über ServiceContainer abrufen
    */
   getService<T>(identifier: any): T {
     console.log(`[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}`);
@@ -117,7 +117,7 @@ export class ServiceRegistrar implements IServiceRegistrar {
   enableServiceDiscovery(): void {
     console.log(`[ServiceRegistrar] 🔍 Enabling service discovery`);
     
-    // ServiceLocator in globalThis verfügbar machen
+    // ServiceContainer in globalThis verfügbar machen
     (globalThis as any).relationshipApp = (globalThis as any).relationshipApp || {};
     (globalThis as any).relationshipApp.serviceLocator = this;
     

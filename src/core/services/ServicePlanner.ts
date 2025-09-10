@@ -1,5 +1,4 @@
-import type { IServiceRegistry } from "../../interfaces/infrastructure/IServiceRegistry";
-import type { IDependencyMapper, IServicePlanner } from "../../interfaces";
+import type { IServiceRegistry, IDependencyMapper, IServicePlanner } from "../../interfaces";
 import { ServiceRegistry } from "../../services/ServiceRegistry";
 import { DependencyMapper } from "./DependencyMapper";
 

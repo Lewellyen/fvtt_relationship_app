@@ -72,6 +72,6 @@ export class RegistrationService implements IRegistrationService {
     this.logger.info(
       "🚀 Relationship App: Services will be registered in API after initialization..."
     );
-    // API-Registrierung wird in init.ts gemacht, nachdem alle Services im ServiceManager registriert sind
+    // API-Registrierung wird in init-solid.ts gemacht, nachdem alle Services im ServiceContainer registriert sind
   }
 }

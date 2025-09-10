@@ -1,5 +1,4 @@
-import type { IServiceRegistry } from "../../interfaces/infrastructure/IServiceRegistry";
-import type { IDependencyMapper } from "../../interfaces";
+import type { IServiceRegistry, IDependencyMapper } from "../../interfaces";
 import { ServiceRegistry } from "../../services/ServiceRegistry";
 
 /**
@@ -157,9 +156,6 @@ export class DependencyMapper implements IDependencyMapper {
     
     console.log(`[DependencyMapper] 🔧 Initializing hardcoded dependencies`);
     
-    // Services aus ServiceRegistry holen (Single Source of Truth)
-    const allServices = this.serviceRegistry.getAllServices();
-    
     // Services aus dem Registry extrahieren (jetzt String-Namen)
     const FoundryLogger = this.serviceRegistry.getServiceConstructor('FoundryLogger');
     const ConsoleErrorHandler = this.serviceRegistry.getServiceConstructor('ConsoleErrorHandler');
@@ -167,19 +163,10 @@ export class DependencyMapper implements IDependencyMapper {
     const FoundryAdapter = this.serviceRegistry.getServiceConstructor('FoundryAdapter');
     const CSSManager = this.serviceRegistry.getServiceConstructor('CSSManager');
     const SvelteManager = this.serviceRegistry.getServiceConstructor('SvelteManager');
-    const RelationshipGraphService = this.serviceRegistry.getServiceConstructor('RelationshipGraphService');
-    const RelationshipGraphPersistenceService = this.serviceRegistry.getServiceConstructor('RelationshipGraphPersistenceService');
-    const RelationshipGraphDemoDataService = this.serviceRegistry.getServiceConstructor('RelationshipGraphDemoDataService');
-    const RelationshipGraphAnalysisService = this.serviceRegistry.getServiceConstructor('RelationshipGraphAnalysisService');
-    const RelationshipGraphCRUDService = this.serviceRegistry.getServiceConstructor('RelationshipGraphCRUDService');
-    const RelationshipGraphDemoService = this.serviceRegistry.getServiceConstructor('RelationshipGraphDemoService');
     const RegistrationService = this.serviceRegistry.getServiceConstructor('RegistrationService');
     const ModuleInitializer = this.serviceRegistry.getServiceConstructor('ModuleInitializer');
     const ServiceRegistrar = this.serviceRegistry.getServiceConstructor('ServiceRegistrar');
     const APIManager = this.serviceRegistry.getServiceConstructor('APIManager');
-    const CrossCuttingServiceManager = this.serviceRegistry.getServiceConstructor('CrossCuttingServiceManager');
-    const ServiceRegistrationManager = this.serviceRegistry.getServiceConstructor('ServiceRegistrationManager');
-    const RelationshipGraphDataManager = this.serviceRegistry.getServiceConstructor('RelationshipGraphDataManager');
     const ServiceRegistry = this.serviceRegistry.getServiceConstructor('ServiceRegistry');
 
     // Hardcoded Dependencies mit den tatsächlichen Klassen setzen
@@ -208,24 +195,6 @@ export class DependencyMapper implements IDependencyMapper {
       SvelteManager: this.hardcodedDependencies.has(SvelteManager)
     });
     
-    this.hardcodedDependencies.set(RelationshipGraphService, [
-      RelationshipGraphPersistenceService, 
-      RelationshipGraphDemoDataService, 
-      FoundryLogger
-    ]);
-    this.hardcodedDependencies.set(RelationshipGraphPersistenceService, [FoundryAdapter]);
-    this.hardcodedDependencies.set(RelationshipGraphDemoDataService, [FoundryAdapter]);
-    
-    this.hardcodedDependencies.set(RelationshipGraphAnalysisService, [RelationshipGraphDataManager]);
-    this.hardcodedDependencies.set(RelationshipGraphCRUDService, [
-      RelationshipGraphDataManager, 
-      RelationshipGraphPersistenceService, 
-      FoundryAdapter
-    ]);
-    this.hardcodedDependencies.set(RelationshipGraphDemoService, [
-      RelationshipGraphDataManager, 
-      RelationshipGraphPersistenceService
-    ]);
     
     this.hardcodedDependencies.set(RegistrationService, [FoundryLogger, ConsoleErrorHandler]);
     this.hardcodedDependencies.set(ModuleInitializer, [FoundryLogger, ConsoleErrorHandler, RegistrationService]);
@@ -233,15 +202,7 @@ export class DependencyMapper implements IDependencyMapper {
     this.hardcodedDependencies.set(ServiceRegistrar, [ServiceRegistry]);
     this.hardcodedDependencies.set(APIManager, [
       ServiceRegistry, 
-      ServiceRegistrationManager
     ]);
-    this.hardcodedDependencies.set(CrossCuttingServiceManager, [
-      FoundryAdapter, 
-      FoundryLogger, 
-      ConsoleErrorHandler, 
-      NotificationService
-    ]);
-    this.hardcodedDependencies.set(ServiceRegistrationManager, []);
     
     this.hardcodedDependenciesInitialized = true;
     console.log(`[DependencyMapper] ✅ Initialized ${this.hardcodedDependencies.size} hardcoded dependencies`);

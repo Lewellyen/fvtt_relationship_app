@@ -17,7 +17,7 @@ export interface IServiceRegistrar {
   registerService(serviceClass: any, plan: any): void;
 
   /**
-   * Service über ServiceLocator abrufen
+   * Service über ServiceContainer abrufen
    * @param identifier - Service-Identifier
    * @returns Service-Instanz
    */
