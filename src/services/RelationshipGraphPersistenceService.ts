@@ -1,14 +1,18 @@
 import type { IDocument, RelationshipGraphData } from "../global";
 import type { IRelationshipGraphPersistenceService } from "./IRelationshipGraphPersistenceService";
 import type { IFoundryAdapter } from "../core/adapters/IFoundryAdapter";
+// ✅ Services direkt importieren (zirkuläre Abhängigkeiten vermeiden)
+import { FoundryAdapter } from "../core/adapters/FoundryAdapter";
 
 export class RelationshipGraphPersistenceService implements IRelationshipGraphPersistenceService {
   // ✅ Metadaten direkt in der Klasse
-  static readonly API_NAME = 'persistenceService';
-  static readonly SERVICE_TYPE = 'singleton' as const;
-  
+  static readonly API_NAME = "persistenceService";
+  static readonly SERVICE_TYPE = "singleton" as const;
+  static readonly CLASS_NAME = "RelationshipGraphPersistenceService";
+  static readonly DEPENDENCIES = [FoundryAdapter]; // ✅ Dependencies explizit definiert
+
   constructor(private foundryAdapter: IFoundryAdapter) {}
-  
+
   async load(document: IDocument): Promise<RelationshipGraphData> {
     const documentUuid = (document as any).uuid;
     const freshDocument = await this.foundryAdapter.loadDocument(documentUuid);
@@ -63,7 +67,7 @@ export class RelationshipGraphPersistenceService implements IRelationshipGraphPe
       throw new Error("Invalid import data");
     }
 
-    const sanitizedData = this.sanitizeData(data);
+    this.sanitizeData(data);
     // Process the imported data
     // Data imported successfully
   }
@@ -81,7 +85,7 @@ export class RelationshipGraphPersistenceService implements IRelationshipGraphPe
     };
   }
 
-  async restoreFromBackup(backup: RelationshipGraphData): Promise<void> {
+  async restoreFromBackup(): Promise<void> {
     // Restore from backup
     // Backup restored successfully
   }

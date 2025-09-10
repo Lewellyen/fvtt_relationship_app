@@ -1,14 +1,18 @@
 import type { IRelationshipGraphDemoDataService } from "./IRelationshipGraphDemoDataService";
 import type { IRelationshipGraphService } from "./IRelationshipGraphService";
 import type { IFoundryAdapter } from "../core/adapters/IFoundryAdapter";
+// ✅ Services direkt importieren (zirkuläre Abhängigkeiten vermeiden)
+import { FoundryAdapter } from "../core/adapters/FoundryAdapter";
 
 export class RelationshipGraphDemoDataService implements IRelationshipGraphDemoDataService {
   // ✅ Metadaten direkt in der Klasse
-  static readonly API_NAME = 'demoDataService';
-  static readonly SERVICE_TYPE = 'singleton' as const;
-  
+  static readonly API_NAME = "demoDataService";
+  static readonly SERVICE_TYPE = "singleton" as const;
+  static readonly CLASS_NAME = "RelationshipGraphDemoDataService";
+  static readonly DEPENDENCIES = [FoundryAdapter]; // ✅ Dependencies explizit definiert
+
   constructor(private foundryAdapter: IFoundryAdapter) {}
-  
+
   getDemoData(): { nodes: any[]; edges: any[] } {
     const node1Id = this.foundryAdapter.generateId();
     const node2Id = this.foundryAdapter.generateId();

@@ -5,6 +5,7 @@
     "types": ["fvtt-types", "jquery"],
     "lib": ["DOM", "ES2021"],
     "rootDir": ".",
+    "experimentalDecorators": true,
     "allowUmdGlobalAccess": true,
     "target": "ES6",
     "module": "ESNext",

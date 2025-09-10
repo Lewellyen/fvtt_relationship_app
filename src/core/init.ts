@@ -1,52 +1,106 @@
 import MetadataManagementApplication from "@/applications/MetadataManagementApplication";
-import { ServiceFactory } from "../services/ServiceFactory";
-import { ServiceManager } from "../services/ServiceManager";
-import { SERVICE_IDENTIFIERS } from "../services/IServiceFactory";
-import type { IFoundryAdapter } from "./adapters/IFoundryAdapter";
-import { MODULE_ID_PREFIX } from "../constants";
 
-// ServiceManager setup
-import { FoundryAdapter } from "./adapters/FoundryAdapter";
+// ✅ Alle Services aus zentraler index.ts importieren
+import {
+  ServiceFactory,
+  ServiceManager,
+  ModuleInitializer,
+  FoundryAdapter,
+  FoundryLogger,
+  ConsoleErrorHandler,
+  NotificationService,
+  RegistrationService,
+} from "../services/index";
+
+// Early Bootstrap - Services so früh wie möglich erstellen
 const foundryAdapter = new FoundryAdapter();
+const logger = new FoundryLogger(foundryAdapter);
+const errorHandler = new ConsoleErrorHandler(logger, foundryAdapter);
+const notificationService = new NotificationService(foundryAdapter, logger);
+
+// Global verfügbar machen für frühe Nutzung
+(globalThis as any).relationshipApp = {
+  foundryAdapter,
+  logger,
+  errorHandler,
+  notificationService,
+};
 
 foundryAdapter.onInit(() => {
-  console.log(`${MODULE_ID_PREFIX} 🚀 Relationship App: Initializing ServiceManager...`);
-  
+  logger.info("🚀 Relationship App: Initializing ServiceManager...");
+
   // ServiceFactory und ServiceManager erstellen
   const serviceFactory = ServiceFactory.getInstance();
-  const serviceManager = ServiceManager.getInstance(serviceFactory);
-  
+  const serviceManager = ServiceManager.getInstance();
+
   // ServiceFactory automatisch alle Services im ServiceManager registrieren lassen
   serviceFactory.registerAllServicesInServiceManager(serviceManager);
-  
-  // ServiceManager global verfügbar machen
-  (globalThis as any).relationshipApp = {
-    serviceManager
-  };
-  
-  console.log(`${MODULE_ID_PREFIX} ✅ Relationship App: ServiceManager ready!`);
+
+  // Debug: Registrierte Services anzeigen
+  const registeredServices = serviceManager.getRegisteredServices();
+  logger.info(
+    `🔧 Registered Services: ${registeredServices.length}`,
+    registeredServices.map((s) => s.name || s.toString())
+  );
+
+  // Debug: Prüfen ob ModuleInitializer registriert ist
+  const isModuleInitializerRegistered = serviceManager.isRegistered(ModuleInitializer);
+  logger.info(`🔧 ModuleInitializer registered: ${isModuleInitializerRegistered}`);
+
+  // Debug: Prüfen ob Dependencies registriert sind
+  const isFoundryLoggerRegistered = serviceManager.isRegistered(FoundryLogger);
+  const isConsoleErrorHandlerRegistered = serviceManager.isRegistered(ConsoleErrorHandler);
+  const isRegistrationServiceRegistered = serviceManager.isRegistered(RegistrationService);
+  logger.info(`🔧 Dependencies registered:`, {
+    FoundryLogger: isFoundryLoggerRegistered,
+    ConsoleErrorHandler: isConsoleErrorHandlerRegistered,
+    RegistrationService: isRegistrationServiceRegistered,
+  });
+
+  // ServiceManager zu globalen Services hinzufügen
+  (globalThis as any).relationshipApp.serviceManager = serviceManager;
+
+  logger.info("✅ Relationship App: ServiceManager ready!");
 });
 
 // Vollständig SOLID Initialization
 foundryAdapter.onReady(async () => {
-  const { serviceManager } = (globalThis as any).relationshipApp;
-  
+  const { logger, errorHandler, notificationService } = (globalThis as any).relationshipApp;
+
   try {
-    // ModuleInitializer über ServiceManager auflösen
-    const moduleInitializer = serviceManager.resolve(SERVICE_IDENTIFIERS.MODULE_INITIALIZER);
-    
+    // RegistrationService manuell erstellen mit globalen Services (DI Problem umgehen)
+    const registrationService = new RegistrationService(logger, errorHandler);
+
+    // ModuleInitializer manuell erstellen mit globalen Services (DI Problem umgehen)
+    const moduleInitializer = new ModuleInitializer(logger, errorHandler, registrationService);
+
+    // ServiceManager und ServiceFactory aus globalem Scope holen
+    const { serviceManager } = (globalThis as any).relationshipApp;
+    const serviceFactory = ServiceFactory.getInstance();
+
+    // Services im ServiceManager registrieren (VOR der API-Registrierung)
+    logger.info("🚀 Relationship App: Registering services in ServiceManager...");
+    serviceFactory.registerAllServicesInServiceManager(serviceManager);
+    logger.info("✅ Relationship App: All services registered in ServiceManager");
+
     // Initialisierung starten
     await moduleInitializer.initialize();
-    
+
+    // API-Registrierung NACH der ServiceManager-Registrierung machen
+    logger.info("🚀 Relationship App: Registering services in global API...");
+    serviceFactory.registerAllServicesInAPI();
+    logger.info("✅ Relationship App: All services registered in API");
+
     // Metadata Management Application (noch nicht SOLID - wird später refactored)
     const metadataManagementApplication = new MetadataManagementApplication();
     metadataManagementApplication.render({ force: true });
-    
-    console.log(`${MODULE_ID_PREFIX} ✅ Relationship App: Fully SOLID initialization completed!`);
+
+    logger.info("✅ Relationship App: Fully SOLID initialization completed!");
+    notificationService.showSuccess("Relationship App initialized successfully!");
   } catch (error) {
-    console.error(`${MODULE_ID_PREFIX} 🚨 Relationship App: Initialization failed:`, error);
-    // FoundryAdapter für UI-Notifications verwenden
-    const foundryAdapter = serviceManager.resolve(SERVICE_IDENTIFIERS.FOUNDRY_ADAPTER) as IFoundryAdapter;
-    foundryAdapter.showError("Relationship App initialization failed. Check console for details.");
+    errorHandler.handle(error, "Module initialization");
+    notificationService.showError(
+      "Relationship App initialization failed. Check console for details."
+    );
   }
 });

@@ -1,10 +1,29 @@
-import { mount, unmount } from "svelte";
 import DynamicFormSheet from "../svelte/DynamicFormSheet.svelte";
 import type { IDynamicFormConfig } from "../types/DynamicFormTypes";
+import type { ISvelteApplicationDependencies } from "../interfaces";
+import { ApplicationDependencyResolver } from "../core/services/ApplicationDependencyResolver";
 
 export default class DynamicDialogApp extends foundry.applications.api.HandlebarsApplicationMixin(
   foundry.applications.api.ApplicationV2
 ) {
+  // ✅ Echte Dependency Injection - nur benötigte Dependencies
+  private svelteDependencies: ISvelteApplicationDependencies;
+
+  constructor() {
+    super();
+    this.svelteDependencies =
+      new ApplicationDependencyResolver().resolveSvelteApplicationDependencies();
+  }
+
+  private get svelteManager() {
+    return this.svelteDependencies.svelteManager;
+  }
+  private get cssManager() {
+    return this.svelteDependencies.cssManager;
+  }
+  private get logger() {
+    return this.svelteDependencies.logger;
+  }
   /**
    * Merge the default parts, inserting our graph part between header and footer.
    */
@@ -55,66 +74,115 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
 
   async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
-    console.log(`[${DynamicDialogApp.appId}] _prepareContext called with context:`, context);
-    console.log(`[${DynamicDialogApp.appId}] _prepareContext called with options:`, options);
+    if (this.logger) {
+      this.logger.info(`[${DynamicDialogApp.appId}] _prepareContext called with context:`, context);
+      this.logger.info(`[${DynamicDialogApp.appId}] _prepareContext called with options:`, options);
+    } else {
+      console.log(`[${DynamicDialogApp.appId}] _prepareContext called with context:`, context);
+      console.log(`[${DynamicDialogApp.appId}] _prepareContext called with options:`, options);
+    }
     return context;
   }
 
   async _prepareConfig(config: IDynamicFormConfig) {
     DynamicDialogApp.config = config;
-    console.log(`[${DynamicDialogApp.appId}] _prepareConfig called with config:`, DynamicDialogApp.config);
+    if (this.logger) {
+      this.logger.info(
+        `[${DynamicDialogApp.appId}] _prepareConfig called with config:`,
+        DynamicDialogApp.config
+      );
+    } else {
+      console.log(
+        `[${DynamicDialogApp.appId}] _prepareConfig called with config:`,
+        DynamicDialogApp.config
+      );
+    }
     return DynamicDialogApp.config;
   }
 
   async _prepareOnSubmit(onSubmit: (values: Record<string, any>) => void) {
     DynamicDialogApp.onSubmit = onSubmit;
-    console.log(`[${DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`, DynamicDialogApp.onSubmit);
+    if (this.logger) {
+      this.logger.info(
+        `[${DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`,
+        DynamicDialogApp.onSubmit
+      );
+    } else {
+      console.log(
+        `[${DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`,
+        DynamicDialogApp.onSubmit
+      );
+    }
     return DynamicDialogApp.onSubmit;
   }
 
   async _prepareOnCancel(onCancel: () => void) {
     DynamicDialogApp.onCancel = onCancel;
-    console.log(`[${DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`, DynamicDialogApp.onCancel);
+    if (this.logger) {
+      this.logger.info(
+        `[${DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`,
+        DynamicDialogApp.onCancel
+      );
+    } else {
+      console.log(
+        `[${DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`,
+        DynamicDialogApp.onCancel
+      );
+    }
     return DynamicDialogApp.onCancel;
   }
 
   async _onRender(context: any, options: any) {
-    console.log(`[${DynamicDialogApp.appId}] _onRender started`, { context, options });
+    if (this.logger) {
+      this.logger.info(`[${DynamicDialogApp.appId}] _onRender started`, { context, options });
+    } else {
+      console.log(`[${DynamicDialogApp.appId}] _onRender started`, { context, options });
+    }
 
     try {
       await super._onRender(context, options);
-      
+
       // CSS-Datei laden
       await this._loadCSS();
-      
+
       const target = this.element.querySelector("#dynamic-dialog-svelte");
-      
+
       if (!target) {
         throw new Error("Svelte mount point '#dynamic-dialog-svelte' not found");
       }
 
-      console.log(`[${DynamicDialogApp.appId}] Found target element:`, target);
-
-      // Unmount existing instance
-      if (this.svelteApp) {
-        console.log(`[${DynamicDialogApp.appId}] Unmounting existing Svelte app`);
-        await unmount(this.svelteApp);
-        this.svelteApp = null;
+      if (this.logger) {
+        this.logger.info(`[${DynamicDialogApp.appId}] Found target element:`, target);
+      } else {
+        console.log(`[${DynamicDialogApp.appId}] Found target element:`, target);
       }
 
-      // Mount the new DynamicFormSheet component
-      this.svelteApp = mount(DynamicFormSheet, {
-        target,
-        props: {
+      // ✅ Delegation an SvelteManager - Single Responsibility
+      await this.svelteManager.unmountApp(this.svelteApp);
+      this.svelteApp = null;
+
+      // Mount the new DynamicFormSheet component via SvelteManager
+      this.svelteApp = await this.svelteManager.mountComponent(
+        DynamicFormSheet,
+        target as HTMLElement,
+        {
           config: DynamicDialogApp.config,
           onSubmit: DynamicDialogApp.onSubmit,
-          onCancel: DynamicDialogApp.onCancel
-        },
-      });
+          onCancel: DynamicDialogApp.onCancel,
+        }
+      );
 
-      console.log(`[${DynamicDialogApp.appId}] DynamicFormSheet mounted successfully`);
+      if (this.logger) {
+        this.logger.info(`[${DynamicDialogApp.appId}] DynamicFormSheet mounted successfully`);
+      } else {
+        console.log(`[${DynamicDialogApp.appId}] DynamicFormSheet mounted successfully`);
+      }
     } catch (error) {
-      console.error(`[${DynamicDialogApp.appId}] Error during render:`, error);
+      if (this.logger) {
+        this.logger.error(`[${DynamicDialogApp.appId}] Error during render:`, error);
+      } else {
+        console.error(`[${DynamicDialogApp.appId}] Error during render:`, error);
+      }
       throw error;
     }
   }
@@ -124,29 +192,19 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
    */
   async _loadCSS() {
     const cssPath = "modules/relationship-app/styles/dynamic-dialog-app.css";
-    
-    // Prüfen ob CSS bereits geladen wurde
-    if (document.querySelector(`link[href*="${cssPath}"]`)) {
-      return;
-    }
-    
-    // CSS-Datei laden
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.type = "text/css";
-    link.href = cssPath;
-    document.head.appendChild(link);
-    
-    console.log(`[${DynamicDialogApp.appId}] CSS loaded: ${cssPath}`);
+    await this.cssManager.loadCSS(cssPath);
   }
 
   /** @override */
   async _onClose(options: any) {
-    console.log(`[${DynamicDialogApp.appId}] _onClose called with options:`, options);
-    if (this.svelteApp) {
-      await unmount(this.svelteApp);
-      this.svelteApp = null;
+    if (this.logger) {
+      this.logger.info(`[${DynamicDialogApp.appId}] _onClose called with options:`, options);
+    } else {
+      console.log(`[${DynamicDialogApp.appId}] _onClose called with options:`, options);
     }
+    // ✅ Delegation an SvelteManager - Single Responsibility
+    await this.svelteManager.unmountApp(this.svelteApp);
+    this.svelteApp = null;
     return super._onClose(options);
   }
 
@@ -156,21 +214,21 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
   static async show(config: IDynamicFormConfig): Promise<Record<string, any> | null> {
     return new Promise((resolve) => {
       const app = new DynamicDialogApp();
-      
+
       // Konfiguration setzen
       app._prepareConfig(config);
-      
+
       // Callbacks setzen
       app._prepareOnSubmit((values) => {
         app.close();
         resolve(values);
       });
-      
+
       app._prepareOnCancel(() => {
         app.close();
         resolve(null);
       });
-      
+
       // Dialog öffnen
       app.render(true);
     });

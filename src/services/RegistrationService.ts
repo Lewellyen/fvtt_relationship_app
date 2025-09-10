@@ -1,16 +1,18 @@
 import JournalEntryPageRelationshipGraphSheet from "../applications/JournalEntryPageRelationshipGraphSheet";
 import { RelationshipGraphModel } from "../models/RelationsShipGraphModel";
-import { ServiceFactory } from "./ServiceFactory";
 import { MODULE_ID, MODULE_METADATA_KEY } from "../constants";
-import type { ILogger } from "../core/interfaces/ILogger";
-import type { IErrorHandler } from "../core/interfaces/IErrorHandler";
-import type { IRegistrationService } from "../core/interfaces/IRegistrationService";
+import type { ILogger, IErrorHandler, IRegistrationService } from "../interfaces";
+// ✅ Services direkt importieren (zirkuläre Abhängigkeiten vermeiden)
+import { FoundryLogger } from "../core/services/FoundryLogger";
+import { ConsoleErrorHandler } from "../core/services/ConsoleErrorHandler";
 
 export class RegistrationService implements IRegistrationService {
   // ✅ Metadaten direkt in der Klasse
-  static readonly API_NAME = 'registrationService';
-  static readonly SERVICE_TYPE = 'singleton' as const;
-  
+  static readonly API_NAME = "registrationService";
+  static readonly SERVICE_TYPE = "singleton" as const;
+  static readonly CLASS_NAME = "RegistrationService";
+  static readonly DEPENDENCIES = [FoundryLogger, ConsoleErrorHandler]; // ✅ Dependencies explizit definiert // ✅ Klassename für Dependency Resolution
+
   constructor(
     private readonly logger: ILogger,
     private readonly errorHandler: IErrorHandler
@@ -67,12 +69,9 @@ export class RegistrationService implements IRegistrationService {
   }
 
   private async registerServices(): Promise<void> {
-    this.logger.info("🚀 Relationship App: Registering services in global API...");
-
-    // ServiceFactory registriert alle Services automatisch
-    const serviceFactory = ServiceFactory.getInstance();
-    serviceFactory.registerAllServicesInAPI();
-
-    this.logger.info("✅ Relationship App: All services registered successfully");
+    this.logger.info(
+      "🚀 Relationship App: Services will be registered in API after initialization..."
+    );
+    // API-Registrierung wird in init.ts gemacht, nachdem alle Services im ServiceManager registriert sind
   }
 }

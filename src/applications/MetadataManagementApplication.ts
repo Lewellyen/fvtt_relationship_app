@@ -1,9 +1,36 @@
-import { mount, unmount } from "svelte";
 import MetadataManagementView from "../svelte/MetadataManagementView.svelte";
+import type { ISvelteApplicationDependencies, INotificationApplicationDependencies } from "../interfaces";
+import { ApplicationDependencyResolver } from "../core/services/ApplicationDependencyResolver";
 
 export default class MetadataManagementApplication extends foundry.applications.api.HandlebarsApplicationMixin(
   foundry.applications.api.ApplicationV2
 ) {
+  // ✅ Echte Dependency Injection - explizite Dependencies
+  private svelteDependencies: ISvelteApplicationDependencies;
+  private notificationDependencies: INotificationApplicationDependencies;
+
+  constructor() {
+    super();
+    const resolver = new ApplicationDependencyResolver();
+    this.svelteDependencies = resolver.resolveSvelteApplicationDependencies();
+    this.notificationDependencies = resolver.resolveNotificationApplicationDependencies();
+  }
+
+  private get svelteManager() {
+    return this.svelteDependencies.svelteManager;
+  }
+  private get cssManager() {
+    return this.svelteDependencies.cssManager;
+  }
+  private get logger() {
+    return this.svelteDependencies.logger;
+  }
+  private get notificationService() {
+    return this.notificationDependencies.notificationService;
+  }
+  private get errorHandler() {
+    return this.notificationDependencies.errorHandler;
+  }
   /**
    * Merge the default parts, inserting our graph part between header and footer.
    */
@@ -46,62 +73,82 @@ export default class MetadataManagementApplication extends foundry.applications.
 
   async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
-    console.log("[MetadataManagementApplication] _prepareContext called with context:", context);
-    console.log("[MetadataManagementApplication] _prepareContext called with options:", options);
+    if (this.logger) {
+      this.logger.info(
+        "[MetadataManagementApplication] _prepareContext called with context:",
+        context
+      );
+      this.logger.info(
+        "[MetadataManagementApplication] _prepareContext called with options:",
+        options
+      );
+    } else {
+      console.log("[MetadataManagementApplication] _prepareContext called with context:", context);
+      console.log("[MetadataManagementApplication] _prepareContext called with options:", options);
+    }
     return context;
   }
 
   async _loadCSS() {
     const cssPath = "modules/relationship-app/styles/metadata-management-app.css";
-    if (document.querySelector(`link[href*="${cssPath}"]`)) {
-      return;
-    }
-    const link = document.createElement("link");
-    link.rel = "stylesheet";
-    link.type = "text/css";
-    link.href = cssPath;
-    document.head.appendChild(link);
-    console.log("[MetadataManagementApplication] CSS loaded: ", cssPath);
+    await this.cssManager.loadCSS(cssPath);
   }
 
   async _onRender(context: any, options: any) {
-    console.log("[MetadataManagementApplication] _onRender started", { context, options });
+    if (this.logger) {
+      this.logger.info("[MetadataManagementApplication] _onRender started", { context, options });
+    } else {
+      console.log("[MetadataManagementApplication] _onRender started", { context, options });
+    }
 
     await super._onRender(context, options);
     const target = this.element.querySelector("#metadata-management-svelte");
     if (!target) {
-      console.warn("[MetadataManagementApplication] Svelte mount point not found");
+      if (this.logger) {
+        this.logger.warn("[MetadataManagementApplication] Svelte mount point not found");
+      } else {
+        console.warn("[MetadataManagementApplication] Svelte mount point not found");
+      }
       return;
     }
 
-    console.log("[MetadataManagementApplication] Found target element:", target);
-
-    // Unmount existing instance
-    if (this.svelteApp) {
-      console.log("[MetadataManagementApplication] Unmounting existing Svelte app");
-      await unmount(this.svelteApp);
-      this.svelteApp = null;
+    if (this.logger) {
+      this.logger.info("[MetadataManagementApplication] Found target element:", target);
+    } else {
+      console.log("[MetadataManagementApplication] Found target element:", target);
     }
 
+    // ✅ Delegation an SvelteManager - Single Responsibility
+    await this.svelteManager.unmountApp(this.svelteApp);
+    this.svelteApp = null;
 
     await this._loadCSS();
-    // Mount the new MetadataManagementView component
-    this.svelteApp = mount(MetadataManagementView, {
-      target,
-      props: {},
-    });
+    // Mount the new MetadataManagementView component via SvelteManager
+    this.svelteApp = await this.svelteManager.mountComponent(
+      MetadataManagementView,
+      target as HTMLElement,
+      {}
+    );
 
-    console.log("[MetadataManagementApplication] MetadataManagementView mounted successfully");
+    if (this.logger) {
+      this.logger.info(
+        "[MetadataManagementApplication] MetadataManagementView mounted successfully"
+      );
+    } else {
+      console.log("[MetadataManagementApplication] MetadataManagementView mounted successfully");
+    }
   }
 
   /** @override */
   async _onClose(options: any) {
-    console.log("[MetadataManagementApplication] _onClose called with options:", options);
-    if (this.svelteApp) {
-      await unmount(this.svelteApp);
-      this.svelteApp = null;
+    if (this.logger) {
+      this.logger.info("[MetadataManagementApplication] _onClose called with options:", options);
     } else {
+      console.log("[MetadataManagementApplication] _onClose called with options:", options);
     }
+    // ✅ Delegation an SvelteManager - Single Responsibility
+    await this.svelteManager.unmountApp(this.svelteApp);
+    this.svelteApp = null;
     return super._onClose(options);
   }
 }

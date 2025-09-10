@@ -1,9 +1,6 @@
-import RelationshipGraphView from "../svelte/RelationshipGraphView.svelte";
-import RelationshipGraphEdit from "../svelte/RelationshipGraphEdit.svelte";
 import { RelationshipGraphDemoDataService } from "../services/RelationshipGraphDemoDataService";
-import { RelationshipGraphService } from "../services/RelationshipGraphService";
-import { RelationshipGraphPersistenceService } from "../services/RelationshipGraphPersistenceService";
-import { mount, unmount } from "svelte";
+import type { IServiceApplicationDependencies, ISvelteApplicationDependencies } from "../interfaces";
+import { ApplicationDependencyResolver } from "../core/services/ApplicationDependencyResolver";
 
 /**
  * V2 JournalEntryPageSheet subclass drawing a simple relationship graph.
@@ -11,6 +8,29 @@ import { mount, unmount } from "svelte";
  */
 export default class JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets
   .journal.JournalEntryPageHandlebarsSheet {
+  // ✅ Echte Dependency Injection - nur benötigte Dependencies
+  private serviceDependencies: IServiceApplicationDependencies;
+  private svelteDependencies: ISvelteApplicationDependencies;
+
+  constructor() {
+    super();
+    const resolver = new ApplicationDependencyResolver();
+    this.serviceDependencies = resolver.resolveServiceApplicationDependencies();
+    this.svelteDependencies = resolver.resolveSvelteApplicationDependencies();
+  }
+
+  private get serviceLocator() {
+    return this.serviceDependencies.serviceLocator;
+  }
+  private get logger() {
+    return this.serviceDependencies.logger;
+  }
+  private get foundryAdapter() {
+    return this.serviceDependencies.foundryAdapter;
+  }
+  private get svelteManager() {
+    return this.svelteDependencies.svelteManager;
+  }
   /**
    * Merge the default parts, inserting our graph part between header and footer.
    */
@@ -42,7 +62,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     };
   })();
 
-  svelteApp: any = null;
+  // ✅ Entfernt - Svelte Management wird an SvelteManager delegiert
 
   /** @override */
   static DEFAULT_OPTIONS = {
@@ -82,87 +102,97 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
 
   async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
-    console.log(
-      "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:",
-      context
-    );
+    if (this.logger) {
+      this.logger.info(
+        "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:",
+        context
+      );
+    } else {
+      console.log(
+        "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:",
+        context
+      );
+    }
     return context;
   }
 
   async _onRender(context: any, options: any) {
-    console.log("[JournalEntryPageRelationshipGraphSheet] _onRender started", { context, options });
+    if (this.logger) {
+      this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onRender started", {
+        context,
+        options,
+      });
+    } else {
+      console.log("[JournalEntryPageRelationshipGraphSheet] _onRender started", {
+        context,
+        options,
+      });
+    }
 
     await super._onRender(context, options);
-    const target = this.element.querySelector("#relationship-graph-svelte");
-    if (!target) {
-      console.warn("[JournalEntryPageRelationshipGraphSheet] Svelte mount point not found");
-      return;
-    }
 
-    console.log("[JournalEntryPageRelationshipGraphSheet] Found target element:", target);
-
-    // Unmount existing instance
-    if (this.svelteApp) {
-      console.log("[JournalEntryPageRelationshipGraphSheet] Unmounting existing Svelte app");
-      await unmount(this.svelteApp);
-      this.svelteApp = null;
-    }
-
-    // Get the journal entry page UUID - this.document is a JournalEntryPage with the system data
+    // ✅ Delegation an SvelteManager - Single Responsibility
     const journalEntryPage = (this as any).document;
-    const graphJournalUuid = journalEntryPage.uuid;
-    let system = (await foundry.utils.fromUuid(graphJournalUuid))?.system;
+    const isEditMode = !(this as any).isView;
 
-    console.log("[JournalEntryPageRelationshipGraphSheet] Journal Entry UUID:", graphJournalUuid);
-    console.log("[JournalEntryPageRelationshipGraphSheet] System:", system);
+    // Prüfe ob Demo-Daten geladen werden müssen
+    await this.ensureDemoDataLoaded(journalEntryPage);
 
-    const relationshipGraphPersistenceService = new RelationshipGraphPersistenceService();
-    const relationshipGraphService = new RelationshipGraphService(
-      journalEntryPage as any,
-      relationshipGraphPersistenceService
-    );
+    // Mounte Graph-Komponente über SvelteManager
+    await this.svelteManager.mountGraphComponent(this.element, journalEntryPage, isEditMode);
+
+    if (this.logger) {
+      this.logger.info(
+        "[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully"
+      );
+    } else {
+      console.log("[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully");
+    }
+  }
+
+  /**
+   * Stellt sicher, dass Demo-Daten geladen sind falls nötig
+   * @param journalEntryPage - Das Journal Entry Document
+   */
+  private async ensureDemoDataLoaded(journalEntryPage: any): Promise<void> {
+    const system = journalEntryPage.system;
 
     if (
       !system ||
-      !(system as any).elements ||
-      !(system as any).elements.nodes ||
-      !(system as any).elements.edges ||
-      (system as any).elements.nodes.length === 0 ||
-      (system as any).elements.edges.length === 0
+      !system.elements ||
+      !system.elements.nodes ||
+      !system.elements.edges ||
+      system.elements.nodes.length === 0 ||
+      system.elements.edges.length === 0
     ) {
-      const demoDataService = new RelationshipGraphDemoDataService();
-      await demoDataService.createDemoData(relationshipGraphService);
-      system = (await foundry.utils.fromUuid(graphJournalUuid))?.system;
+      if (this.logger) {
+        this.logger.info("[JournalEntryPageRelationshipGraphSheet] Loading demo data");
+      } else {
+        console.log("[JournalEntryPageRelationshipGraphSheet] Loading demo data");
+      }
+
+      // ✅ Service Resolution über ServiceLocator
+      const graphService = this.serviceLocator.getGraphService(journalEntryPage);
+      const demoDataService = new RelationshipGraphDemoDataService(this.foundryAdapter);
+
+      await demoDataService.createDemoData(graphService);
     }
-
-    const elements = (system as any).elements;
-
-    console.log("[JournalEntryPageRelationshipGraphSheet] Elements:", elements);
-
-    // Mount the new RelationshipGraphView component
-    this.svelteApp = mount((this as any).isView ? RelationshipGraphView : RelationshipGraphEdit, {
-      target,
-      props: {
-        elements: elements,
-        interactive: false,
-        onNodeClick: () => {},
-        onEdgeClick: () => {},
-      },
-    });
-
-    console.log(
-      "[JournalEntryPageRelationshipGraphSheet] RelationshipGraphView mounted successfully"
-    );
   }
 
   /** @override */
   async _onClose(options: any) {
-    console.log("[JournalEntryPageRelationshipGraphSheet] _onClose called with options:", options);
-    if (this.svelteApp) {
-      await unmount(this.svelteApp);
-      this.svelteApp = null;
+    if (this.logger) {
+      this.logger.info(
+        "[JournalEntryPageRelationshipGraphSheet] _onClose called with options:",
+        options
+      );
     } else {
+      console.log(
+        "[JournalEntryPageRelationshipGraphSheet] _onClose called with options:",
+        options
+      );
     }
+    // ✅ Svelte Cleanup wird von SvelteManager gehandhabt
     return super._onClose(options);
   }
 }

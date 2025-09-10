@@ -3,17 +3,17 @@ import { MODULE_ID } from "../../constants";
 
 /**
  * Foundry VTT API Adapter für Version 13
- * 
+ *
  * Zentralisiert alle Foundry-Aufrufe und abstrahiert die API.
  * Bei Foundry-Updates muss nur diese Klasse angepasst werden.
- * 
+ *
  * TODO: Bei Foundry v14+ Feature Detection implementieren:
- * 
+ *
  * ```typescript
  * private hasNewAPI(): boolean {
  *   return typeof foundry.utils.generateId === 'function';
  * }
- * 
+ *
  * generateId(): string {
  *   if (this.hasNewAPI()) {
  *     return foundry.utils.generateId(); // v14+
@@ -23,45 +23,45 @@ import { MODULE_ID } from "../../constants";
  * ```
  */
 export class FoundryAdapter implements IFoundryAdapter {
-
-  static readonly API_NAME = 'foundryAdapter';
-  static readonly SERVICE_TYPE = 'singleton' as const;
+  static readonly API_NAME = "foundryAdapter";
+  static readonly SERVICE_TYPE = "singleton" as const;
+  static readonly CLASS_NAME = "FoundryAdapter"; // ✅ Klassename für Dependency Resolution
 
   // Utils
   generateId(): string {
     return foundry.utils.randomID();
   }
-  
+
   async loadDocument(uuid: string): Promise<any> {
     return await foundry.utils.fromUuid(uuid as any);
   }
-  
+
   // UI Notifications
   showInfo(message: string): void {
     ui?.notifications?.info(message);
   }
-  
+
   showError(message: string): void {
     ui?.notifications?.error(message);
   }
-  
+
   showWarning(message: string): void {
     ui?.notifications?.warn(message);
   }
-  
+
   showSuccess(message: string): void {
     ui?.notifications?.info(`✅ ${message}`);
   }
-  
+
   // Hooks
   onInit(callback: () => void): void {
     Hooks.once("init", callback);
   }
-  
+
   onReady(callback: () => Promise<void>): void {
     Hooks.once("ready", callback);
   }
-  
+
   // Document Operations
   async updateDocument(document: any, data: any): Promise<any> {
     return await document.update(data);
@@ -69,10 +69,10 @@ export class FoundryAdapter implements IFoundryAdapter {
 
   /**
    * Update-Dokument mit automatischem Reload für Datenkonsistenz
-   * 
+   *
    * Lädt das Dokument vor dem Update neu, um sicherzustellen,
    * dass die neuesten Daten verwendet werden. Ideal für Multi-User-Szenarien.
-   * 
+   *
    * @param document - Das zu aktualisierende Dokument
    * @param data - Die zu speichernden Daten
    * @returns Promise mit dem aktualisierten Dokument
@@ -82,7 +82,7 @@ export class FoundryAdapter implements IFoundryAdapter {
       // Lade das Dokument neu für Datenkonsistenz
       const documentUuid = document.uuid;
       const freshDocument = await this.loadDocument(documentUuid);
-      
+
       if (freshDocument) {
         // ✅ Update mit frischen Daten
         return await freshDocument.update(data);
@@ -92,20 +92,25 @@ export class FoundryAdapter implements IFoundryAdapter {
       }
     } catch (error) {
       // ✅ Error Handling mit Fallback
-      console.warn("Failed to reload document, using direct update:", error);
+      const logger = (globalThis as any).relationshipApp?.logger;
+      if (logger) {
+        logger.warn("Failed to reload document, using direct update:", error);
+      } else {
+        console.warn("Failed to reload document, using direct update:", error);
+      }
       return await document.update(data);
     }
   }
-  
+
   // Settings Operations
   registerSetting(key: string, config: any): void {
     game?.settings?.register(MODULE_ID as any, key as any, config);
   }
-  
+
   getSetting(key: string): any {
     return game?.settings?.get(MODULE_ID as any, key as any);
   }
-  
+
   async setSetting(key: string, value: any): Promise<any> {
     return await game?.settings?.set(MODULE_ID as any, key as any, value);
   }

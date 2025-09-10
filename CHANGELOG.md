@@ -286,6 +286,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 - Keine besonderen Maßnahmen erforderlich
 
+## [0.15.0] - 2025-09-10
+### Hinzugefügt
+- Keine Einträge
+
+### Geändert
+- Bootprozess fertig gestellt.
+
+### Fehlerbehebungen
+- Keine Einträge
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.14.0] - 2025-09-07
 ### Hinzugefügt
 - Keine Einträge

@@ -1,2 +1,2 @@
 import "./polyfills/cytoscape-assign-fix";
-import "./core/init";
+import "./core/init-solid";

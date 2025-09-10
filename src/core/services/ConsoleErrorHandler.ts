@@ -1,11 +1,14 @@
-import type { IErrorHandler } from "../interfaces/IErrorHandler";
-import type { ILogger } from "../interfaces/ILogger";
+import type { IErrorHandler, ILogger } from "../../interfaces";
 import type { IFoundryAdapter } from "../adapters/IFoundryAdapter";
+import { FoundryLogger } from "./FoundryLogger";
+import { FoundryAdapter } from "../adapters/FoundryAdapter";
 
 export class ConsoleErrorHandler implements IErrorHandler {
   // ✅ Metadaten direkt in der Klasse
-  static readonly API_NAME = 'errorHandler';
-  static readonly SERVICE_TYPE = 'singleton' as const;
+  static readonly API_NAME = "errorHandler";
+  static readonly SERVICE_TYPE = "singleton" as const;
+  static readonly CLASS_NAME = "ConsoleErrorHandler"; // ✅ Klassename für Dependency Resolution
+  static readonly DEPENDENCIES = [FoundryLogger, FoundryAdapter]; // ✅ Dependencies explizit definiert
 
   constructor(
     private readonly logger: ILogger,
@@ -14,7 +17,7 @@ export class ConsoleErrorHandler implements IErrorHandler {
 
   handle(error: any, context: string): void {
     this.logger.error(`Error in ${context}: ${error.message || error}`, error);
-    
+
     // Show Foundry notification
     this.foundryAdapter.showError(`Relationship App: Error in ${context}`);
   }

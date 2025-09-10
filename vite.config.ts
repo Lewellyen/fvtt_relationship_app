@@ -24,7 +24,7 @@ export default defineConfig(() => {
       outDir: "dist",
       assetsDir: "assets",
       sourcemap: true,
-      minify: false,
+      minify: false, // Minification deaktiviert
       rollupOptions: {
         input: {
           main: resolve(__dirname, "src/index.ts"),
@@ -40,12 +40,21 @@ export default defineConfig(() => {
           format: "iife",
           name: "Relationship-App",
           extend: true,
+          // KRITISCH: Verhindert Name-Mangling komplett
+          generatedCode: {
+            constBindings: false,
+            objectShorthand: false
+          },
+          // Verhindert Verkürzung von Klassennamen
+          compact: false,
           globals: {
             jquery: "$",
             handlebars: "Handlebars",
           },
         } as any,
         external: ["jquery", "handlebars"],
+        // Verhindert alle Optimierungen die Namen verkürzen
+        treeshake: false, // Komplett deaktiviert
       },
     },
     server: {

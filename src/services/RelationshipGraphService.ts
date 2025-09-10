@@ -2,36 +2,56 @@ import type { RelationshipGraphData } from "../global";
 import type { IRelationshipGraphService } from "./IRelationshipGraphService";
 import type { IRelationshipGraphPersistenceService } from "./IRelationshipGraphPersistenceService";
 import type { IFoundryAdapter } from "../core/adapters/IFoundryAdapter";
+import type { IRelationshipGraphDataManager } from "../interfaces/services/IRelationshipGraphDataManager";
+import type { IRelationshipGraphCRUDService, IRelationshipGraphAnalysisService, IRelationshipGraphDemoService } from "../interfaces";
+// ✅ Services direkt importieren (zirkuläre Abhängigkeiten vermeiden)
+import { RelationshipGraphPersistenceService } from "./RelationshipGraphPersistenceService";
+import { FoundryAdapter } from "../core/adapters/FoundryAdapter";
+import { RelationshipGraphDataManager } from "../core/services/RelationshipGraphDataManager";
+import { RelationshipGraphCRUDService } from "../core/services/RelationshipGraphCRUDService";
+import { RelationshipGraphAnalysisService } from "../core/services/RelationshipGraphAnalysisService";
+import { RelationshipGraphDemoService } from "../core/services/RelationshipGraphDemoService";
+// Diese Interfaces werden nicht direkt verwendet, da sie über IRelationshipGraphService geerbt werden
 
 export class RelationshipGraphService implements IRelationshipGraphService {
   // ✅ Metadaten direkt in der Klasse
-  static readonly API_NAME = 'createGraphService';
-  static readonly SERVICE_TYPE = 'factory' as const;
-  private elements: any = { nodes: [], edges: [] };
+  static readonly API_NAME = "createGraphService";
+  static readonly SERVICE_TYPE = "factory" as const;
+  static readonly CLASS_NAME = "RelationshipGraphService";
+  static readonly DEPENDENCIES = [
+    RelationshipGraphPersistenceService,
+    FoundryAdapter,
+    RelationshipGraphDataManager,
+    RelationshipGraphCRUDService,
+    RelationshipGraphAnalysisService,
+    RelationshipGraphDemoService
+  ]; // ✅ Dependencies explizit definiert
   private style: any[] = [];
 
   constructor(
     private document: any,
     private persistence: IRelationshipGraphPersistenceService,
-    private foundryAdapter: IFoundryAdapter
+    private foundryAdapter: IFoundryAdapter,
+    private readonly dataManager: IRelationshipGraphDataManager,
+    private readonly crudService: IRelationshipGraphCRUDService,
+    private readonly analysisService: IRelationshipGraphAnalysisService,
+    private readonly demoService: IRelationshipGraphDemoService
   ) {
-    // Only load data if both document and persistence are available
-    if (this.document && this.persistence) {
-      this.loadData();
-    }
+    // Factory Service - data loading happens when document is provided
+    // loadData() will be called externally when needed
   }
 
-  // Neue Methoden für Cytoscape-kompatible Datenzugriffe
+  // ✅ Delegation an DataManager
   getElements(): any {
-    return this.elements;
+    return this.dataManager.getElements();
   }
 
   getNodes(): any[] {
-    return this.elements.nodes || [];
+    return this.dataManager.getNodes();
   }
 
   getEdges(): any[] {
-    return this.elements.edges || [];
+    return this.dataManager.getEdges();
   }
 
   // Document Access
@@ -39,26 +59,25 @@ export class RelationshipGraphService implements IRelationshipGraphService {
     return this.document;
   }
 
-  // Cytoscape-kompatible Suchmethoden
+  // ✅ Delegation an DataManager
   findNodeById(id: string): any {
-    return this.elements.nodes?.find((node: any) => node.data.id === id);
+    return this.dataManager.findNodeById(id);
   }
 
   findEdgesBySource(sourceId: string): any[] {
-    return this.elements.edges?.filter((edge: any) => edge.data.source === sourceId) || [];
+    return this.dataManager.findEdgesBySource(sourceId);
   }
 
   findEdgesByTarget(targetId: string): any[] {
-    return this.elements.edges?.filter((edge: any) => edge.data.target === targetId) || [];
+    return this.dataManager.findEdgesByTarget(targetId);
   }
 
-  // Filter-Methoden mit Cytoscape-Effizienz
   filterNodesByType(type: string): any[] {
-    return this.elements.nodes?.filter((node: any) => node.data.type === type) || [];
+    return this.dataManager.filterNodesByType(type);
   }
 
   filterEdgesByType(type: string): any[] {
-    return this.elements.edges?.filter((edge: any) => edge.data.type === type) || [];
+    return this.dataManager.filterEdgesByType(type);
   }
 
   getGraphData(): RelationshipGraphData {
@@ -67,7 +86,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
       version: "1.0.0",
       created: this.document?.created || Date.now(),
       modified: this.document?.modified || Date.now(),
-      elements: this.elements,
+      elements: this.dataManager.getElements(),
       style: this.style,
     };
   }
@@ -77,23 +96,7 @@ export class RelationshipGraphService implements IRelationshipGraphService {
   }
 
   getEdge(edgeId: string): any {
-    return this.elements.edges?.find((e: any) => e.data.id === edgeId);
-  }
-
-  getNodeByLabel(label: string): any {
-    return this.elements.nodes?.find((node: any) => node.data.label === label);
-  }
-
-  getEdgeByLabel(label: string): any {
-    return this.elements.edges?.find((edge: any) => edge.data.label === label);
-  }
-
-  getNodeByType(type: string): any {
-    return this.elements.nodes?.find((node: any) => node.data.type === type);
-  }
-
-  getEdgeByType(type: string): any {
-    return this.elements.edges?.find((edge: any) => edge.data.type === type);
+    return this.dataManager.getEdges().find((e: any) => e.data.id === edgeId);
   }
 
   getNodeById(id: string): any {
@@ -101,358 +104,158 @@ export class RelationshipGraphService implements IRelationshipGraphService {
   }
 
   getEdgeById(id: string): any {
-    return this.elements.edges?.find((e: any) => e.data.id === id);
+    return this.dataManager.getEdges().find((e: any) => e.data.id === id);
   }
 
-  /**
-   * Fügt einen neuen Node hinzu oder aktualisiert einen bestehenden
-   */
+  getNodeByLabel(label: string): any {
+    return this.dataManager.getNodes().find((n: any) => n.data.label === label);
+  }
+
+  getEdgeByLabel(label: string): any {
+    return this.dataManager.getEdges().find((e: any) => e.data.label === label);
+  }
+
+  getNodeByType(type: string): any {
+    return this.dataManager.getNodes().find((n: any) => n.data.type === type);
+  }
+
+  getEdgeByType(type: string): any {
+    return this.dataManager.getEdges().find((e: any) => e.data.type === type);
+  }
+
+  // ✅ Delegation an CRUDService
   async addNode(nodeData: any): Promise<void> {
-    const existingNode = this.findNodeById(nodeData.id);
-    if (existingNode) {
-      this.updateNode(nodeData.id, nodeData);
-    } else {
-      const newNode = {
-        data: {
-          id: nodeData.id,
-          label: nodeData.label || "",
-          type: nodeData.type || "",
-          x: nodeData.x,
-          y: nodeData.y,
-          permissions: nodeData.permissions || { defaultLevel: 0, users: [] },
-          descriptions: nodeData.descriptions,
-          playerRelationshipEffects: nodeData.playerRelationshipEffects,
-          image: nodeData.image,
-          zIndex: nodeData.zIndex,
-          ...nodeData.cytoScapeAttributes,
-        },
-        position: {
-          x: nodeData.x,
-          y: nodeData.y,
-        },
-      };
-      this.elements.nodes?.push(newNode);
-    }
+    await this.crudService.addNode(nodeData);
     await this.saveData();
   }
 
-  /**
-   * Fügt eine neue Edge hinzu oder aktualisiert eine bestehende
-   */
+  // ✅ Delegation an CRUDService
   async addEdge(edgeData: any): Promise<void> {
-    const defaultPermissions = { defaultLevel: 0, users: [] };
-    const newEdge = {
-      data: {
-        id: edgeData.id || this.foundryAdapter.generateId(),
-        source: edgeData.source,
-        target: edgeData.target,
-        label: edgeData.label || `${edgeData.source} → ${edgeData.target}`,
-        type: edgeData.type || "relation",
-        permissions: edgeData.permissions || defaultPermissions,
-        connectionCategory: edgeData.connectionCategory,
-        zIndex: edgeData.zIndex,
-        ...edgeData.cytoScapeAttributes,
-      },
-    };
-
-    if (!this.elements.edges) {
-      this.elements.edges = [];
-    }
-
-    const existingEdgeIndex = this.elements.edges.findIndex(
-      (e: any) => e.data.id === newEdge.data.id
-    );
-    if (existingEdgeIndex >= 0) {
-      this.elements.edges[existingEdgeIndex] = newEdge;
-    } else {
-      this.elements.edges.push(newEdge);
-    }
+    await this.crudService.addEdge(edgeData);
     await this.saveData();
   }
 
-  /**
-   * Aktualisiert einen bestehenden Node
-   */
   async updateNode(nodeId: string, updates: any): Promise<void> {
-    const node = this.findNodeById(nodeId);
-    if (node) {
-      const updatedNode = {
-        ...node,
-        data: {
-          ...node.data,
-          ...updates,
-        },
-      };
-      const index = this.elements.nodes?.findIndex((n: any) => n.data.id === nodeId);
-      if (index !== undefined && index >= 0 && this.elements.nodes) {
-        this.elements.nodes[index] = updatedNode;
-      }
-      await this.saveData();
-    }
+    await this.crudService.updateNode(nodeId, updates);
+    await this.saveData();
   }
 
-  /**
-   * Entfernt einen Node und alle verbundenen Edges
-   */
   async removeNode(nodeId: string): Promise<void> {
-    if (this.elements.nodes) {
-      this.elements.nodes = this.elements.nodes.filter((n: any) => n.data.id !== nodeId);
-    }
-    if (this.elements.edges) {
-      this.elements.edges = this.elements.edges.filter(
-        (e: any) => e.data.source !== nodeId && e.data.target !== nodeId
-      );
-    }
+    await this.crudService.removeNode(nodeId);
     await this.saveData();
   }
 
-  /**
-   * Aktualisiert eine bestehende Edge
-   */
   async updateEdge(edgeId: string, updates: any): Promise<void> {
-    const edge = this.elements.edges?.find((e: any) => e.data.id === edgeId);
-    if (edge) {
-      const updatedEdge = {
-        ...edge,
-        data: {
-          ...edge.data,
-          ...updates,
-        },
-      };
-      const index = this.elements.edges?.findIndex((e: any) => e.data.id === edgeId);
-      if (index !== undefined && index >= 0 && this.elements.edges) {
-        this.elements.edges[index] = updatedEdge;
-      }
-      await this.saveData();
-    }
-  }
-
-  /**
-   * Entfernt eine Edge
-   */
-  async removeEdge(edgeId: string): Promise<void> {
-    if (this.elements.edges) {
-      this.elements.edges = this.elements.edges.filter((e: any) => e.data.id !== edgeId);
-    }
+    await this.crudService.updateEdge(edgeId, updates);
     await this.saveData();
   }
 
-  // Graph Operations
-  async moveNode(nodeId: string, x: number, y: number): Promise<void> {
-    const node = this.findNodeById(nodeId);
-    if (node) {
-      node.position.x = x;
-      node.position.y = y;
-      await this.saveData();
-    }
+  async removeEdge(edgeId: string): Promise<void> {
+    await this.crudService.removeEdge(edgeId);
+    await this.saveData();
   }
 
-  /**
-   * Verbindet zwei Nodes mit einer Edge
-   */
+  async moveNode(nodeId: string, x: number, y: number): Promise<void> {
+    await this.crudService.moveNode(nodeId, x, y);
+    await this.saveData();
+  }
+
   async connectNodes(sourceId: string, targetId: string, edgeData?: any): Promise<void> {
-    const sourceNode = this.findNodeById(sourceId);
-    const targetNode = this.findNodeById(targetId);
-
-    if (!sourceNode || !targetNode) {
-      throw new Error("Source or target node not found");
-    }
-
-    const newEdge = {
-      data: {
-        id: this.foundryAdapter.generateId(),
-        source: sourceId,
-        target: targetId,
-        label: "Relationship",
-        type: "default",
-        cytoScapeAttributes: {
-          "line-color": "#000000",
-          width: 1,
-          "line-style": "solid",
-          "curve-style": "bezier",
-          "target-arrow-color": "#000000",
-          "target-arrow-shape": "triangle",
-          color: "#000000",
-        },
-        permissions: { defaultLevel: 0, users: [] },
-        ...edgeData,
-      },
-    };
-
-    await this.addEdge(newEdge.data);
+    await this.crudService.connectNodes(sourceId, targetId, edgeData);
+    await this.saveData();
   }
 
   async disconnectNodes(sourceId: string, targetId: string): Promise<void> {
-    this.elements.edges = this.elements.edges?.filter(
-      (e: any) => !(e.data.source === sourceId && e.data.target === targetId)
-    );
+    await this.crudService.disconnectNodes(sourceId, targetId);
     await this.saveData();
   }
 
-  // Search and Filter Operations
+  // ✅ Delegation an DataManager
   searchNodes(query: string): any[] {
-    const lowerQuery = query.toLowerCase();
-    return (
-      this.elements.nodes?.filter(
-        (node: any) =>
-          node.data.label?.toLowerCase().includes(lowerQuery) ||
-          node.data.type?.toLowerCase().includes(lowerQuery)
-      ) || []
-    );
+    return this.dataManager.searchNodes(query);
   }
 
   searchEdges(query: string): any[] {
-    const lowerQuery = query.toLowerCase();
-    return (
-      this.elements.edges?.filter(
-        (edge: any) =>
-          edge.data.label?.toLowerCase().includes(lowerQuery) ||
-          edge.data.type?.toLowerCase().includes(lowerQuery)
-      ) || []
-    );
+    return this.dataManager.searchEdges(query);
   }
 
-  // Graph Analysis
+  // ✅ Delegation an AnalysisService
   getConnectedNodes(nodeId: string): any[] {
-    const connectedNodeIds = new Set<string>();
-
-    this.elements.edges?.forEach((edge: any) => {
-      if (edge.data.source === nodeId) {
-        connectedNodeIds.add(edge.data.target);
-      } else if (edge.data.target === nodeId) {
-        connectedNodeIds.add(edge.data.source);
-      }
-    });
-
-    return this.elements.nodes?.filter((node: any) => connectedNodeIds.has(node.data.id)) || [];
+    return this.analysisService.getConnectedNodes(nodeId);
   }
 
   getNodeDegree(nodeId: string): number {
-    return (
-      this.elements.edges?.filter(
-        (edge: any) => edge.data.source === nodeId || edge.data.target === nodeId
-      ).length || 0
-    );
+    return this.analysisService.getNodeDegree(nodeId);
   }
 
   getGraphStats(): any {
-    const nodeCount = this.elements.nodes?.length || 0;
-    const edgeCount = this.elements.edges?.length || 0;
-    const averageConnections = nodeCount > 0 ? edgeCount / nodeCount : 0;
-    const isolatedNodes =
-      this.elements.nodes?.filter(
-        (n: any) =>
-          !this.elements.edges?.some(
-            (e: any) => e.data.source === n.data.id || e.data.target === n.data.id
-          )
-      ).length || 0;
-
-    const nodeDegrees =
-      this.elements.nodes?.map((node: any) => this.getNodeDegree(node.data.id)) || [];
-    const maxDegree = nodeDegrees.length > 0 ? Math.max(...nodeDegrees) : 0;
-    const minDegree = nodeDegrees.length > 0 ? Math.min(...nodeDegrees) : 0;
-
-    return {
-      nodeCount,
-      edgeCount,
-      averageConnections,
-      isolatedNodes,
-      maxDegree,
-      minDegree,
-      density: nodeCount > 1 ? (2 * edgeCount) / (nodeCount * (nodeCount - 1)) : 0,
-    };
+    return this.analysisService.getGraphStats();
   }
 
-  // Demo Data Management
+  // ✅ Weitere Analysis-Methoden
+  findShortestPath(sourceId: string, targetId: string): string[] {
+    return this.analysisService.findShortestPath(sourceId, targetId);
+  }
+
+  findCycles(): string[][] {
+    return this.analysisService.findCycles();
+  }
+
+  getIsolatedNodes(): any[] {
+    return this.analysisService.getIsolatedNodes();
+  }
+
+  getMostConnectedNodes(limit?: number): any[] {
+    return this.analysisService.getMostConnectedNodes(limit);
+  }
+
+  // ✅ Delegation an DemoService
   async loadDemoData(demoData: { nodes: any[]; edges: any[] }): Promise<void> {
     if (!this.persistence || !this.document) {
-      // Cannot load demo data - persistence or document not available
       return;
     }
 
     try {
-      // Konvertiere Demo-Daten zu Cytoscape-Format
-      this.elements.nodes = demoData.nodes.map((node) => ({
-        data: {
-          id: node.id,
-          label: node.label?.value || "",
-          type: node.type?.value || "",
-          x: node.x,
-          y: node.y,
-          permissions: node.globalPermissions,
-          descriptions: node.descriptions,
-          playerRelationshipEffects: node.playerRelationshipEffects,
-          image: node.image,
-          zIndex: node.zIndex,
-          ...node.cytoScapeAttributes,
-        },
-        position: {
-          x: node.x,
-          y: node.y,
-        },
-      }));
-      this.elements.edges = demoData.edges.map((edge) => ({
-        data: {
-          id: edge.id,
-          source: edge.source,
-          target: edge.target,
-          label: edge.label?.value || "",
-          type: edge.type,
-          permissions: edge.globalPermissions,
-          connectionCategory: edge.connectionCategory,
-          zIndex: edge.zIndex,
-          ...edge.cytoScapeAttributes,
-        },
-      }));
-
-      // Save demo data to document
+      await this.demoService.loadDemoData(demoData);
       await this.saveData();
-
-      // Demo data loaded successfully - logged via logger service
     } catch (error) {
-      // Error loading demo data - will be handled by error handler
       throw error;
     }
   }
 
   async loadData(): Promise<void> {
     if (!this.persistence || !this.document) {
-      // Cannot load data - persistence or document not available
       return;
     }
 
     try {
       const graph = await this.persistence.load(this.document);
-      this.elements = graph.elements || { nodes: [], edges: [] };
+      this.dataManager.setElements(graph.elements || { nodes: [], edges: [] });
       this.style = graph.style || [];
-    } catch (err) {
-      // Error loading data - will be handled by error handler
-      this.elements = { nodes: [], edges: [] };
+    } catch {
+      this.dataManager.setElements({ nodes: [], edges: [] });
       this.style = [];
     }
   }
 
   async saveData(): Promise<void> {
     if (!this.persistence || !this.document) {
-      // Cannot save data - persistence or document not available
       return;
     }
 
     try {
       await this.persistence.save(this.document, {
-        elements: this.elements,
+        elements: this.dataManager.getElements(),
         style: this.style || [],
       });
     } catch (error) {
-      // Error saving data - will be handled by error handler
       throw error;
     }
   }
 
   // Cleanup
   cleanup(): void {
-    this.elements.nodes = [];
-    this.elements.edges = [];
+    this.dataManager.setElements({ nodes: [], edges: [] });
     this.style = [];
   }
 }
