@@ -23,11 +23,3 @@ export { IDependencyMapper } from './IDependencyMapper';
 import { IRegistrationService } from './IRegistrationService';
 export { IRegistrationService } from './IRegistrationService';
 
-import { IAnalysisGraphService } from './IAnalysisGraphService';
-export { IAnalysisGraphService } from './IAnalysisGraphService';
-
-import { IEditableGraphService } from './IEditableGraphService';
-export { IEditableGraphService } from './IEditableGraphService';
-
-import { IReadOnlyGraphService } from './IReadOnlyGraphService';
-export { IReadOnlyGraphService } from './IReadOnlyGraphService';

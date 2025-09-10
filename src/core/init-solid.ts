@@ -54,7 +54,7 @@ foundryAdapter.onInit(async () => {
     
     // ServicePlanner erstellen
     const { ServicePlanner } = await import("../core/services/ServicePlanner");
-    const servicePlanner = ServicePlanner.getInstance(serviceRegistry, dependencyMapper);
+    const servicePlanner = ServicePlanner.getInstance(serviceRegistry, dependencyMapper, logger);
     
     // Service Baupläne erstellen
     logger.info(`[SOLID Boot] 📋 Creating service plans`);
@@ -62,7 +62,7 @@ foundryAdapter.onInit(async () => {
     
     // ServiceValidator erstellen
     const { ServiceValidator } = await import("../core/services/ServiceValidator");
-    const serviceValidator = ServiceValidator.getInstance();
+    const serviceValidator = ServiceValidator.getInstance(logger);
     
     // Dependencies und Pläne validieren
     logger.info(`[SOLID Boot] 🔍 Validating dependencies and plans`);
@@ -79,11 +79,11 @@ foundryAdapter.onInit(async () => {
     
     // ServiceContainer erstellen
     const { ServiceContainer } = await import("../services/ServiceContainer");
-    const serviceContainer = ServiceContainer.getInstance(servicePlans, serviceValidator);
+    const serviceContainer = ServiceContainer.getInstance(servicePlans, serviceValidator, logger);
     
     // ServiceRegistrar erstellen
     const { ServiceRegistrar } = await import("../core/services/ServiceRegistrar");
-    const serviceRegistrar = ServiceRegistrar.getInstance(serviceContainer);
+    const serviceRegistrar = ServiceRegistrar.getInstance(serviceContainer, logger);
     
     // Services registrieren
     logger.info(`[SOLID Boot] 📝 Registering services`);
@@ -92,7 +92,7 @@ foundryAdapter.onInit(async () => {
     
     // APIManager erstellen
     const { APIManager } = await import("../core/services/APIManager");
-    const apiManager = APIManager.getInstance(serviceContainer);
+    const apiManager = APIManager.getInstance(serviceContainer, logger);
     
     // Services in globaler API registrieren
     logger.info(`[SOLID Boot] 🌐 Registering services in global API`);

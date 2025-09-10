@@ -1,7 +1,8 @@
 import { mount, unmount } from "svelte";
 import RelationshipGraphView from "../../svelte/RelationshipGraphView.svelte";
 import RelationshipGraphEdit from "../../svelte/RelationshipGraphEdit.svelte";
-import type { ISvelteManager } from "../../interfaces";
+import type { ISvelteManager, ILogger } from "../../interfaces";
+import { FoundryLogger } from "./FoundryLogger";
 // IRelationshipGraphService wird nicht direkt verwendet, da SvelteManager nur für Component Management zuständig ist
 
 /**
@@ -13,28 +14,22 @@ export class SvelteManager implements ISvelteManager {
   static readonly API_NAME = "svelteManager";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "SvelteManager"; // ✅ Klassename für Dependency Resolution
+  static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies explizit definiert
+
+  constructor(private logger: ILogger) {}
 
   /**
    * Mountet eine Svelte-Komponente
    */
   async mountComponent<T>(component: any, target: HTMLElement, props: any): Promise<T> {
-    const logger = (globalThis as any).relationshipApp?.logger;
-    if (logger) {
-      logger.info(`[SvelteManager] Mounting component: ${component.name}`);
-    } else {
-      console.log("[SvelteManager] Mounting component:", component.name);
-    }
+    this.writeLog("info", `[SvelteManager] Mounting component: ${component.name}`);
 
     const app = mount(component, {
       target,
       props,
     });
 
-    if (logger) {
-      logger.info("[SvelteManager] Component mounted successfully");
-    } else {
-      console.log("[SvelteManager] Component mounted successfully");
-    }
+    this.writeLog("info", "[SvelteManager] Component mounted successfully");
     return app as T;
   }
 
@@ -43,18 +38,9 @@ export class SvelteManager implements ISvelteManager {
    */
   async unmountApp(app: any): Promise<void> {
     if (app) {
-      const logger = (globalThis as any).relationshipApp?.logger;
-      if (logger) {
-        logger.info("[SvelteManager] Unmounting app");
-      } else {
-        console.log("[SvelteManager] Unmounting app");
-      }
+      this.writeLog("info", "[SvelteManager] Unmounting app");
       await unmount(app);
-      if (logger) {
-        logger.info("[SvelteManager] App unmounted successfully");
-      } else {
-        console.log("[SvelteManager] App unmounted successfully");
-      }
+      this.writeLog("info", "[SvelteManager] App unmounted successfully");
     }
   }
 
@@ -66,12 +52,7 @@ export class SvelteManager implements ISvelteManager {
     document: any,
     isEditMode: boolean
   ): Promise<void> {
-    const logger = (globalThis as any).relationshipApp?.logger;
-    if (logger) {
-      logger.info(`[SvelteManager] Mounting graph component, edit mode: ${isEditMode}`);
-    } else {
-      console.log("[SvelteManager] Mounting graph component, edit mode:", isEditMode);
-    }
+    this.writeLog("info", `[SvelteManager] Mounting graph component, edit mode: ${isEditMode}`);
 
     const target = element.querySelector("#relationship-graph-svelte");
     if (!target) {
@@ -82,11 +63,7 @@ export class SvelteManager implements ISvelteManager {
     const system = document.system;
     const elements = system?.elements || { nodes: [], edges: [] };
 
-    if (logger) {
-      logger.info(`[SvelteManager] Graph elements: ${JSON.stringify(elements)}`);
-    } else {
-      console.log("[SvelteManager] Graph elements:", elements);
-    }
+    this.writeLog("info", `[SvelteManager] Graph elements: ${JSON.stringify(elements)}`);
 
     // Wähle die richtige Komponente basierend auf dem Modus
     const component = isEditMode ? RelationshipGraphEdit : RelationshipGraphView;
@@ -98,5 +75,13 @@ export class SvelteManager implements ISvelteManager {
       onNodeClick: () => {},
       onEdgeClick: () => {},
     });
+  }
+
+  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
+    if (this.logger) {
+      this.logger[modus](message, ...args);
+    } else {
+      console[modus](message, ...args);
+    }
   }
 }

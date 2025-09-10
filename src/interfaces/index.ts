@@ -10,8 +10,6 @@ export type { ISvelteManager } from './core/ISvelteManager';
 
 // Service Interfaces
 export type { INotificationService } from './services/INotificationService';
-export type { INotificationServiceProvider } from './services/INotificationServiceProvider';
-export type { IFoundryServiceProvider } from './services/IFoundryServiceProvider';
 
 // Application Interfaces
 export type { IApplicationDependencies } from './applications/IApplicationDependencies';
@@ -29,6 +27,3 @@ export type { IServiceValidator } from './infrastructure/IServiceValidator';
 export type { IAPIManager } from './infrastructure/IAPIManager';
 export type { IDependencyMapper } from './infrastructure/IDependencyMapper';
 export type { IRegistrationService } from './infrastructure/IRegistrationService';
-export type { IAnalysisGraphService } from './infrastructure/IAnalysisGraphService';
-export type { IEditableGraphService } from './infrastructure/IEditableGraphService';
-export type { IReadOnlyGraphService } from './infrastructure/IReadOnlyGraphService';

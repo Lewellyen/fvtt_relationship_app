@@ -1,19 +1,26 @@
 import MetadataManagementView from "../svelte/MetadataManagementView.svelte";
-import type { ISvelteApplicationDependencies, INotificationApplicationDependencies } from "../interfaces";
-import { ApplicationDependencyResolver } from "../core/services/ApplicationDependencyResolver";
+import type { ISvelteApplicationDependencies } from "../interfaces";
 
 export default class MetadataManagementApplication extends foundry.applications.api.HandlebarsApplicationMixin(
   foundry.applications.api.ApplicationV2
 ) {
   // ✅ Echte Dependency Injection - explizite Dependencies
   private svelteDependencies: ISvelteApplicationDependencies;
-  private notificationDependencies: INotificationApplicationDependencies;
 
   constructor() {
     super();
-    const resolver = new ApplicationDependencyResolver();
-    this.svelteDependencies = resolver.resolveSvelteApplicationDependencies();
-    this.notificationDependencies = resolver.resolveNotificationApplicationDependencies();
+    // Service Resolution über ServiceRegistrar
+    const serviceRegistrar = (globalThis as any).relationshipApp?.serviceRegistrar;
+    if (!serviceRegistrar) {
+      throw new Error("ServiceRegistrar not available! Make sure the module is properly initialized.");
+    }
+    
+    this.svelteDependencies = {
+      svelteManager: serviceRegistrar.getService('_SvelteManager'),
+      cssManager: serviceRegistrar.getService('_CSSManager'),
+      logger: serviceRegistrar.getService('_FoundryLogger')
+    };
+    
   }
 
   private get svelteManager() {
@@ -24,12 +31,6 @@ export default class MetadataManagementApplication extends foundry.applications.
   }
   private get logger() {
     return this.svelteDependencies.logger;
-  }
-  private get notificationService() {
-    return this.notificationDependencies.notificationService;
-  }
-  private get errorHandler() {
-    return this.notificationDependencies.errorHandler;
   }
   /**
    * Merge the default parts, inserting our graph part between header and footer.
@@ -72,22 +73,12 @@ export default class MetadataManagementApplication extends foundry.applications.
   }
 
   async _prepareContext(options: any) {
-    const context = await super._prepareContext(options);
-    if (this.logger) {
-      this.logger.info(
-        "[MetadataManagementApplication] _prepareContext called with context:",
-        context
-      );
-      this.logger.info(
-        "[MetadataManagementApplication] _prepareContext called with options:",
-        options
-      );
-    } else {
-      console.log("[MetadataManagementApplication] _prepareContext called with context:", context);
-      console.log("[MetadataManagementApplication] _prepareContext called with options:", options);
-    }
+    const context = await super._prepareContext(options);   
+    this.writeLog("info", "[MetadataManagementApplication] _prepareContext called with context:", context);
+    this.writeLog("info", "[MetadataManagementApplication] _prepareContext called with options:", options);
     return context;
   }
+   
 
   async _loadCSS() {
     const cssPath = "modules/relationship-app/styles/metadata-management-app.css";
@@ -95,28 +86,16 @@ export default class MetadataManagementApplication extends foundry.applications.
   }
 
   async _onRender(context: any, options: any) {
-    if (this.logger) {
-      this.logger.info("[MetadataManagementApplication] _onRender started", { context, options });
-    } else {
-      console.log("[MetadataManagementApplication] _onRender started", { context, options });
-    }
-
+    this.writeLog("info", "[MetadataManagementApplication] _onRender started", { context, options });
     await super._onRender(context, options);
+
     const target = this.element.querySelector("#metadata-management-svelte");
     if (!target) {
-      if (this.logger) {
-        this.logger.warn("[MetadataManagementApplication] Svelte mount point not found");
-      } else {
-        console.warn("[MetadataManagementApplication] Svelte mount point not found");
-      }
+      this.writeLog("warn", "[MetadataManagementApplication] Svelte mount point not found");
       return;
     }
 
-    if (this.logger) {
-      this.logger.info("[MetadataManagementApplication] Found target element:", target);
-    } else {
-      console.log("[MetadataManagementApplication] Found target element:", target);
-    }
+    this.writeLog("info", "[MetadataManagementApplication] Found target element:", target);
 
     // ✅ Delegation an SvelteManager - Single Responsibility
     await this.svelteManager.unmountApp(this.svelteApp);
@@ -130,25 +109,23 @@ export default class MetadataManagementApplication extends foundry.applications.
       {}
     );
 
-    if (this.logger) {
-      this.logger.info(
-        "[MetadataManagementApplication] MetadataManagementView mounted successfully"
-      );
-    } else {
-      console.log("[MetadataManagementApplication] MetadataManagementView mounted successfully");
-    }
+    this.writeLog("info", "[MetadataManagementApplication] MetadataManagementView mounted successfully");
   }
 
   /** @override */
   async _onClose(options: any) {
-    if (this.logger) {
-      this.logger.info("[MetadataManagementApplication] _onClose called with options:", options);
-    } else {
-      console.log("[MetadataManagementApplication] _onClose called with options:", options);
-    }
+    this.writeLog("info", "[MetadataManagementApplication] _onClose called with options:", options);
     // ✅ Delegation an SvelteManager - Single Responsibility
     await this.svelteManager.unmountApp(this.svelteApp);
     this.svelteApp = null;
     return super._onClose(options);
+  }
+
+  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
+    if (this.logger) {
+      this.logger[modus](message, ...args);
+    } else {
+      console[modus](message, ...args);
+    }
   }
 }

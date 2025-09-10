@@ -1,5 +1,6 @@
-import type { IServiceValidator } from "../../interfaces";
+import type { IServiceValidator, ILogger } from "../../interfaces";
 import type { ServicePlan, ValidationResult } from "./ServicePlanner";
+import { FoundryLogger } from "./FoundryLogger";
 
 /**
  * ServiceValidator - Service-Erstellung validieren
@@ -11,14 +12,15 @@ export class ServiceValidator implements IServiceValidator {
   static readonly API_NAME = "serviceValidator";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "ServiceValidator";
+  static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies explizit definiert
 
   private static instance: ServiceValidator;
 
-  private constructor() {}
+  private constructor(private logger: ILogger) {}
 
-  static getInstance(): ServiceValidator {
+  static getInstance(logger: ILogger): ServiceValidator {
     if (!ServiceValidator.instance) {
-      ServiceValidator.instance = new ServiceValidator();
+      ServiceValidator.instance = new ServiceValidator(logger);
     }
     return ServiceValidator.instance;
   }
@@ -27,7 +29,7 @@ export class ServiceValidator implements IServiceValidator {
    * Dependency Graph validieren
    */
   validateDependencyGraph(dependencyGraph: Map<any, any[]>): ValidationResult {
-    console.log(`[ServiceValidator] 🔍 Validating dependency graph with ${dependencyGraph.size} services`);
+    this.writeLog("info", `[ServiceValidator] 🔍 Validating dependency graph with ${dependencyGraph.size} services`);
     
     const result: ValidationResult = {
       isValid: true,
@@ -51,7 +53,7 @@ export class ServiceValidator implements IServiceValidator {
       }
     }
 
-    console.log(`[ServiceValidator] 🔍 Dependency graph validation result:`, {
+    this.writeLog("info", `[ServiceValidator] 🔍 Dependency graph validation result:`, {
       isValid: result.isValid,
       errors: result.errors.length,
       warnings: result.warnings.length
@@ -64,7 +66,7 @@ export class ServiceValidator implements IServiceValidator {
    * Service-Pläne validieren
    */
   validateServicePlans(servicePlans: Map<any, ServicePlan>): ValidationResult {
-    console.log(`[ServiceValidator] 🔍 Validating ${servicePlans.size} service plans`);
+    this.writeLog("info", `[ServiceValidator] 🔍 Validating ${servicePlans.size} service plans`);
     
     const result: ValidationResult = {
       isValid: true,
@@ -82,7 +84,7 @@ export class ServiceValidator implements IServiceValidator {
       result.warnings.push(...planValidation.warnings);
     }
 
-    console.log(`[ServiceValidator] 🔍 Service plans validation result:`, {
+    this.writeLog("info", `[ServiceValidator] 🔍 Service plans validation result:`, {
       isValid: result.isValid,
       errors: result.errors.length,
       warnings: result.warnings.length
@@ -136,19 +138,19 @@ export class ServiceValidator implements IServiceValidator {
    * Service-Erstellung validieren
    */
   validateServiceCreation(service: any, identifier: any): boolean {
-    console.log(`[ServiceValidator] 🔍 Validating service creation for: ${identifier.name || identifier}`);
+    this.writeLog("info", `[ServiceValidator] 🔍 Validating service creation for: ${identifier.name || identifier}`);
     
     if (!service) {
-      console.error(`[ServiceValidator] ❌ Service is null or undefined for ${identifier.name || identifier}`);
+      this.writeLog("error", `[ServiceValidator] ❌ Service is null or undefined for ${identifier.name || identifier}`);
       return false;
     }
 
     if (typeof service !== 'object') {
-      console.error(`[ServiceValidator] ❌ Service is not an object for ${identifier.name || identifier}`);
+      this.writeLog("error", `[ServiceValidator] ❌ Service is not an object for ${identifier.name || identifier}`);
       return false;
     }
 
-    console.log(`[ServiceValidator] ✅ Service creation valid for ${identifier.name || identifier}`);
+    this.writeLog("info", `[ServiceValidator] ✅ Service creation valid for ${identifier.name || identifier}`);
     return true;
   }
 
@@ -156,19 +158,19 @@ export class ServiceValidator implements IServiceValidator {
    * Zirkuläre Dependencies prüfen
    */
   checkCircularDependencies(dependencyGraph: Map<any, any[]>): boolean {
-    console.log(`[ServiceValidator] 🔍 Checking for circular dependencies`);
+    this.writeLog("info", `[ServiceValidator] 🔍 Checking for circular dependencies`);
     
     const visited = new Set<any>();
     const recursionStack = new Set<any>();
     
     for (const service of dependencyGraph.keys()) {
       if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
-        console.error(`[ServiceValidator] ❌ Circular dependency detected starting from ${service.name || service}`);
+        this.writeLog("error", `[ServiceValidator] ❌ Circular dependency detected starting from ${service.name || service}`);
         return true;
       }
     }
     
-    console.log(`[ServiceValidator] ✅ No circular dependencies found`);
+    this.writeLog("info", `[ServiceValidator] ✅ No circular dependencies found`);
     return false;
   }
 
@@ -179,7 +181,7 @@ export class ServiceValidator implements IServiceValidator {
     recursionStack: Set<any>
   ): boolean {
     if (recursionStack.has(service)) {
-      console.error(`[ServiceValidator] ❌ Circular dependency detected: ${service.name || service} is in recursion stack`);
+      this.writeLog("error", `[ServiceValidator] ❌ Circular dependency detected: ${service.name || service} is in recursion stack`);
       return true;
     }
     
@@ -205,7 +207,7 @@ export class ServiceValidator implements IServiceValidator {
    * Service-Container validieren
    */
   validateServiceContainer(serviceContainer: any): ValidationResult {
-    console.log(`[ServiceValidator] 🔍 Validating service container`);
+    this.writeLog("info", `[ServiceValidator] 🔍 Validating service container`);
     
     const result: ValidationResult = {
       isValid: true,
@@ -229,7 +231,7 @@ export class ServiceValidator implements IServiceValidator {
       result.errors.push("Service container missing createService method");
     }
 
-    console.log(`[ServiceValidator] 🔍 Service container validation result:`, {
+    this.writeLog("info", `[ServiceValidator] 🔍 Service container validation result:`, {
       isValid: result.isValid,
       errors: result.errors.length,
       warnings: result.warnings.length
@@ -242,12 +244,17 @@ export class ServiceValidator implements IServiceValidator {
    * Fehlerbehandlung für Service-Erstellung
    */
   handleServiceCreationError(error: Error, identifier: any): void {
-    console.error(`[ServiceValidator] ❌ Service creation error for ${identifier.name || identifier}:`, error);
+    this.writeLog("error", `[ServiceValidator] ❌ Service creation error for ${identifier.name || identifier}:`, error);
     
     // Hier könnte man Error Reporting, Logging, etc. hinzufügen
-    const logger = (globalThis as any).relationshipApp?.logger;
-    if (logger) {
-      logger.error(`Service creation failed for ${identifier.name || identifier}:`, error);
+    this.writeLog("error", `Service creation failed for ${identifier.name || identifier}:`, error);
+  }
+
+  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
+    if (this.logger) {
+      this.logger[modus](message, ...args);
+    } else {
+      console[modus](message, ...args);
     }
   }
 }

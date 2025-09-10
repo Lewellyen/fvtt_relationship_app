@@ -60,8 +60,6 @@ export { APIManager } from '../core/services/APIManager';
 
 
 // 🔧 Application Services (Anwendungslogik)
-import { ApplicationDependencyResolver } from '../core/services/ApplicationDependencyResolver';
-export { ApplicationDependencyResolver } from '../core/services/ApplicationDependencyResolver';
 
 
 // SERVICE_CONFIG - Array mit allen Service-Klassen
@@ -94,5 +92,4 @@ export const SERVICE_CONFIG = [
   
   
   // 🔧 Application Services (Anwendungslogik)
-  {name: ApplicationDependencyResolver,  class: ApplicationDependencyResolver},        // Application-Dependency-Auflösung
 ];

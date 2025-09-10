@@ -2,9 +2,9 @@ import type { IServiceRegistry, IDependencyMapper } from "../../interfaces";
 import { ServiceRegistry } from "../../services/ServiceRegistry";
 
 /**
- * DependencyMapper - Dependencies aus @Inject extrahieren und mappen
+ * DependencyMapper - Dependencies aus static readonly DEPENDENCIES extrahieren und mappen
  * 
- * Verantwortlichkeit: Dependencies aus @Inject Decorators extrahieren
+ * Verantwortlichkeit: Dependencies aus static readonly DEPENDENCIES Property extrahieren
  * Single Responsibility: Nur Dependency Mapping
  */
 export class DependencyMapper implements IDependencyMapper {
@@ -65,31 +65,40 @@ export class DependencyMapper implements IDependencyMapper {
   extractDependencies(serviceClass: any): any[] {
     console.log(`[DependencyMapper] 🔍 Extracting dependencies for: ${serviceClass.name || serviceClass}`);
     
-    // 1. Versuche @Inject Decorators zu extrahieren
-    const decoratorDependencies = this.extractDecoratorDependencies(serviceClass);
-    if (decoratorDependencies.length > 0) {
-      console.log(`[DependencyMapper] 🎭 Using decorator dependencies:`, decoratorDependencies.map(d => d.name || d));
-      return decoratorDependencies;
+    // 1. Versuche static readonly DEPENDENCIES zu extrahieren
+    const staticDependencies = this.extractStaticDependencies(serviceClass);
+    if (staticDependencies.length > 0) {
+      console.log(`[DependencyMapper] 📋 Using static dependencies:`, staticDependencies.map(d => d.name || d));
+      return staticDependencies;
     }
 
-    // 2. Fallback: Hardcoded Dependencies (nur für kritische Services ohne @Inject)
+    // 2. Fallback: Hardcoded Dependencies (nur für Services ohne static DEPENDENCIES)
     const hardcodedDeps = this.getHardcodedDependencies(serviceClass);
-    console.log(`[DependencyMapper] 🔧 Using hardcoded dependencies:`, hardcodedDeps.map(d => d.name || d));
+    
+    // ⚠️ WARNUNG: Service hat keine static readonly DEPENDENCIES!
+    if (hardcodedDeps.length > 0) {
+      console.warn(`[DependencyMapper] ⚠️ WARNING: Service '${serviceClass.name || serviceClass}' has no static readonly DEPENDENCIES! Using hardcoded fallback:`, hardcodedDeps.map(d => d.name || d));
+      console.warn(`[DependencyMapper] ⚠️ Consider adding: static readonly DEPENDENCIES = [${hardcodedDeps.map(d => d.name || d).join(', ')}];`);
+    } else {
+      // ✅ Service hat keine Dependencies - das ist völlig in Ordnung!
+      console.log(`[DependencyMapper] ✅ Service '${serviceClass.name || serviceClass}' has no dependencies - this is perfectly fine!`);
+    }
+    
     return hardcodedDeps;
   }
 
   /**
-   * Dependencies aus DEPENDENCIES static property extrahieren
+   * Dependencies aus static readonly DEPENDENCIES property extrahieren
    */
-  private extractDecoratorDependencies(serviceClass: any): any[] {
+  private extractStaticDependencies(serviceClass: any): any[] {
     const className = serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
-    console.log(`[DependencyMapper] 🎭 Checking dependencies for: ${className}`);
+    console.log(`[DependencyMapper] 📋 Checking static dependencies for: ${className}`);
     
     try {
-      // Prüfe explizite DEPENDENCIES Definition
+      // Prüfe explizite static readonly DEPENDENCIES Definition
       if (serviceClass.DEPENDENCIES && Array.isArray(serviceClass.DEPENDENCIES)) {
         const filteredDependencies = serviceClass.DEPENDENCIES.filter(Boolean);
-        console.log(`[DependencyMapper] 🎭 Found explicit dependencies for ${className}:`, {
+        console.log(`[DependencyMapper] 📋 Found static dependencies for ${className}:`, {
           original: serviceClass.DEPENDENCIES,
           filtered: filteredDependencies,
           count: filteredDependencies.length
@@ -97,16 +106,16 @@ export class DependencyMapper implements IDependencyMapper {
         return filteredDependencies;
       }
 
-      console.log(`[DependencyMapper] 🎭 No dependencies found for: ${className}`);
+      console.log(`[DependencyMapper] 📋 No static dependencies found for: ${className}`);
       return [];
     } catch (error) {
-      console.error(`[DependencyMapper] 🎭 Error extracting dependencies for ${className}:`, error);
+      console.error(`[DependencyMapper] 📋 Error extracting static dependencies for ${className}:`, error);
       return [];
     }
   }
 
   /**
-   * Hardcoded Dependencies als Fallback
+   * Hardcoded Dependencies als Fallback (nur für Services ohne static DEPENDENCIES)
    */
   private getHardcodedDependencies(serviceClass: any): any[] {
     // Versuche zuerst mit der aktuellen Klasse
@@ -146,7 +155,7 @@ export class DependencyMapper implements IDependencyMapper {
   }
 
   /**
-   * Hardcoded Dependencies initialisieren
+   * Hardcoded Dependencies initialisieren (nur für Services ohne static DEPENDENCIES)
    * TODO: Diese sollten aus einer Konfigurationsdatei kommen
    */
   private initializeHardcodedDependencies(): void {
@@ -154,7 +163,7 @@ export class DependencyMapper implements IDependencyMapper {
       return; // Bereits initialisiert
     }
     
-    console.log(`[DependencyMapper] 🔧 Initializing hardcoded dependencies`);
+    console.log(`[DependencyMapper] 🔧 Initializing hardcoded dependencies (fallback only)`);
     
     // Services aus dem Registry extrahieren (jetzt String-Namen)
     const FoundryLogger = this.serviceRegistry.getServiceConstructor('FoundryLogger');

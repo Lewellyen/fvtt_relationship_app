@@ -17,24 +17,6 @@ export const MODULE_VERSION = "0.10.0";
 // Modul-Metadata-Key
 export const MODULE_METADATA_KEY = "metadata";
 
-// Standard-Einstellungen
-export const DEFAULT_SETTINGS = {
-  // Standard-Farbe für Beziehungen
-  defaultRelationshipColor: "#ff6b6b",
-
-  // Standard-Breite für Beziehungslinien
-  defaultRelationshipWidth: 2,
-
-  // Standard-Transparenz für Beziehungen
-  defaultRelationshipOpacity: 0.8,
-
-  // Standard-Größe für Knoten
-  defaultNodeSize: 40,
-
-  // Standard-Farbe für Knoten
-  defaultNodeColor: "#4ecdc4",
-};
-
 // CSS-Klassen
 export const CSS_CLASSES = {
   // Haupt-Container

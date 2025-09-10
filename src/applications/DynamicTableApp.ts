@@ -1,7 +1,6 @@
 import DynamicTableSheet from "../svelte/DynamicTableSheet.svelte";
 import type { IDynamicTableConfig } from "../types/DynamicTableTypes";
 import type { ISvelteApplicationDependencies } from "../interfaces";
-import { ApplicationDependencyResolver } from "../core/services/ApplicationDependencyResolver";
 
 export default class DynamicTableApp extends foundry.applications.api.HandlebarsApplicationMixin(
   foundry.applications.api.ApplicationV2
@@ -11,8 +10,17 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
 
   constructor() {
     super();
-    this.svelteDependencies =
-      new ApplicationDependencyResolver().resolveSvelteApplicationDependencies();
+    // Service Resolution über ServiceRegistrar
+    const serviceRegistrar = (globalThis as any).relationshipApp?.serviceRegistrar;
+    if (!serviceRegistrar) {
+      throw new Error("ServiceRegistrar not available! Make sure the module is properly initialized.");
+    }
+    
+    this.svelteDependencies = {
+      svelteManager: serviceRegistrar.getService('_SvelteManager'),
+      cssManager: serviceRegistrar.getService('CSSManager'),
+      logger: serviceRegistrar.getService('FoundryLogger')
+    };
   }
 
   private get svelteManager() {
@@ -74,70 +82,31 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
 
   async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
-    if (this.logger) {
-      this.logger.info(`[${DynamicTableApp.appId}] _prepareContext called with context:`, context);
-      this.logger.info(`[${DynamicTableApp.appId}] _prepareContext called with options:`, options);
-    } else {
-      console.log(`[${DynamicTableApp.appId}] _prepareContext called with context:`, context);
-      console.log(`[${DynamicTableApp.appId}] _prepareContext called with options:`, options);
-    }
-    return context;
+    this.writeLog("info", `[${DynamicTableApp.appId}] _prepareContext called with context:`, context);
+    this.writeLog("info", `[${DynamicTableApp.appId}] _prepareContext called with options:`, options);
+    return context;    
   }
 
   async _prepareConfig(config: IDynamicTableConfig) {
     DynamicTableApp.config = config;
-    if (this.logger) {
-      this.logger.info(
-        `[${DynamicTableApp.appId}] _prepareConfig called with config:`,
-        DynamicTableApp.config
-      );
-    } else {
-      console.log(
-        `[${DynamicTableApp.appId}] _prepareConfig called with config:`,
-        DynamicTableApp.config
-      );
-    }
+    this.writeLog("info", `[${DynamicTableApp.appId}] _prepareConfig called with config:`, DynamicTableApp.config);
     return DynamicTableApp.config;
   }
 
   async _prepareOnSubmit(onSubmit: (data: any[]) => void) {
     DynamicTableApp.onSubmit = onSubmit;
-    if (this.logger) {
-      this.logger.info(
-        `[${DynamicTableApp.appId}] _prepareOnSubmit called with onSubmit:`,
-        DynamicTableApp.onSubmit
-      );
-    } else {
-      console.log(
-        `[${DynamicTableApp.appId}] _prepareOnSubmit called with onSubmit:`,
-        DynamicTableApp.onSubmit
-      );
-    }
+    this.writeLog("info", `[${DynamicTableApp.appId}] _prepareOnSubmit called with onSubmit:`, DynamicTableApp.onSubmit);
     return DynamicTableApp.onSubmit;
   }
 
   async _prepareOnCancel(onCancel: () => void) {
     DynamicTableApp.onCancel = onCancel;
-    if (this.logger) {
-      this.logger.info(
-        `[${DynamicTableApp.appId}] _prepareOnCancel called with onCancel:`,
-        DynamicTableApp.onCancel
-      );
-    } else {
-      console.log(
-        `[${DynamicTableApp.appId}] _prepareOnCancel called with onCancel:`,
-        DynamicTableApp.onCancel
-      );
-    }
+    this.writeLog("info", `[${DynamicTableApp.appId}] _prepareOnCancel called with onCancel:`, DynamicTableApp.onCancel);
     return DynamicTableApp.onCancel;
   }
 
   async _onRender(context: any, options: any) {
-    if (this.logger) {
-      this.logger.info(`[${DynamicTableApp.appId}] _onRender started`, { context, options });
-    } else {
-      console.log(`[${DynamicTableApp.appId}] _onRender started`, { context, options });
-    }
+    this.writeLog("info", `[${DynamicTableApp.appId}] _onRender started`, { context, options });    
 
     try {
       await super._onRender(context, options);
@@ -151,11 +120,7 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
         throw new Error("Svelte mount point '#dynamic-table-svelte' not found");
       }
 
-      if (this.logger) {
-        this.logger.info(`[${DynamicTableApp.appId}] Found target element:`, target);
-      } else {
-        console.log(`[${DynamicTableApp.appId}] Found target element:`, target);
-      }
+      this.writeLog("info", `[${DynamicTableApp.appId}] Found target element:`, target);      
 
       // ✅ Delegation an SvelteManager - Single Responsibility
       await this.svelteManager.unmountApp(this.svelteApp);
@@ -172,17 +137,9 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
         }
       );
 
-      if (this.logger) {
-        this.logger.info(`[${DynamicTableApp.appId}] DynamicTableSheet mounted successfully`);
-      } else {
-        console.log(`[${DynamicTableApp.appId}] DynamicTableSheet mounted successfully`);
-      }
+      this.writeLog("info", `[${DynamicTableApp.appId}] DynamicTableSheet mounted successfully`);      
     } catch (error) {
-      if (this.logger) {
-        this.logger.error(`[${DynamicTableApp.appId}] Error during render:`, error);
-      } else {
-        console.error(`[${DynamicTableApp.appId}] Error during render:`, error);
-      }
+      this.writeLog("error", `[${DynamicTableApp.appId}] Error during render:`, error);
       throw error;
     }
   }
@@ -197,11 +154,8 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
 
   /** @override */
   async _onClose(options: any) {
-    if (this.logger) {
-      this.logger.info(`[${DynamicTableApp.appId}] _onClose called with options:`, options);
-    } else {
-      console.log(`[${DynamicTableApp.appId}] _onClose called with options:`, options);
-    }
+    this.writeLog("info", `[${DynamicTableApp.appId}] _onClose called with options:`, options);
+    
     // ✅ Delegation an SvelteManager - Single Responsibility
     await this.svelteManager.unmountApp(this.svelteApp);
     this.svelteApp = null;
@@ -232,5 +186,13 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
       // Tabelle öffnen
       app.render({ force: true });
     });
+  }
+
+  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
+    if (this.logger) {
+      this.logger[modus](message, ...args);
+    } else {
+      console[modus](message, ...args);
+    }
   }
 }

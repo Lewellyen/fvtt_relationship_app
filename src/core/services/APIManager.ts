@@ -1,5 +1,6 @@
-import type { IAPIManager, IServiceContainer } from "../../interfaces";
+import type { IAPIManager, IServiceContainer, ILogger } from "../../interfaces";
 import { ServiceContainer } from "../../services/ServiceContainer";
+import { FoundryLogger } from "./FoundryLogger";
 
 /**
  * APIManager - Services in globaler API verfügbar machen
@@ -11,16 +12,19 @@ export class APIManager implements IAPIManager {
   static readonly API_NAME = "apiManager";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "APIManager"; // ✅ Klassename für Dependency Resolution
-  static readonly DEPENDENCIES = [ServiceContainer]; // ✅ Dependencies explizit definiert
+  static readonly DEPENDENCIES = [ServiceContainer, FoundryLogger]; // ✅ Dependencies explizit definiert
 
   private static instance: APIManager;
   private readonly registeredServices = new Map<string, any>();
 
-  constructor(private serviceContainer: IServiceContainer) {}
+  constructor(
+    private serviceContainer: IServiceContainer,
+    private logger: ILogger
+  ) {}
 
-  static getInstance(serviceContainer: IServiceContainer): APIManager {
+  static getInstance(serviceContainer: IServiceContainer, logger: ILogger): APIManager {
     if (!APIManager.instance) {
-      APIManager.instance = new APIManager(serviceContainer);
+      APIManager.instance = new APIManager(serviceContainer, logger);
     }
     return APIManager.instance;
   }
@@ -29,23 +33,23 @@ export class APIManager implements IAPIManager {
    * Services in globaler API registrieren
    */
   registerInGlobalAPI(): void {
-    console.log(`[APIManager] 🌐 Registering services in global API`);
+    this.writeLog("info", `[APIManager] 🌐 Registering services in global API`);
     
     const moduleApi = this.getModuleAPI();
     if (!moduleApi) {
-      console.error(`[APIManager] ❌ Module API not available`);
+      this.writeLog("error", `[APIManager] ❌ Module API not available`);
       return;
     }
     
     const servicePlans = this.serviceContainer.getAllServicePlans();
-    console.log(`[APIManager] 📋 Registering ${servicePlans.size} services in API`);
+    this.writeLog("info", `[APIManager] 📋 Registering ${servicePlans.size} services in API`);
     
     for (const [serviceClass, plan] of servicePlans) {
       this.registerServiceInAPI(serviceClass, plan, moduleApi);
     }
     
-    console.log(`[APIManager] ✅ All services registered in global API`);
-    console.log(`[APIManager] 📊 Final registered services count: ${this.registeredServices.size}`);
+    this.writeLog("info", `[APIManager] ✅ All services registered in global API`);
+    this.writeLog("info", `[APIManager] 📊 Final registered services count: ${this.registeredServices.size}`);
   }
 
 
@@ -56,14 +60,14 @@ export class APIManager implements IAPIManager {
     const apiName = plan.apiName;
     const serviceType = plan.serviceType;
     
-    console.log(`[APIManager] 🌐 Registering service in API:`, {
+    this.writeLog("info", `[APIManager] 🌐 Registering service in API:`, {
       service: serviceClass.name || serviceClass,
       apiName,
       serviceType
     });
     
     if (!apiName || !serviceType) {
-      console.warn(`[APIManager] ⚠️ Service ${serviceClass.name || serviceClass} missing API_NAME or SERVICE_TYPE`);
+      this.writeLog("warn", `[APIManager] ⚠️ Service ${serviceClass.name || serviceClass} missing API_NAME or SERVICE_TYPE`);
       return;
     }
     
@@ -74,29 +78,29 @@ export class APIManager implements IAPIManager {
         moduleApi[apiName] = serviceInstance;
         this.registeredServices.set(apiName, serviceInstance);
         
-        console.log(`[APIManager] ✅ Singleton service registered: ${apiName} -> ${serviceInstance.constructor.name}`);
-        console.log(`[APIManager] 📊 Registered services count: ${this.registeredServices.size}`);
+        this.writeLog("info", `[APIManager] ✅ Singleton service registered: ${apiName} -> ${(serviceInstance as any).constructor.name}`);
+        this.writeLog("info", `[APIManager] 📊 Registered services count: ${this.registeredServices.size}`);
       } else if (serviceType === "factory") {
         // Factory: Factory-Funktion registrieren
         moduleApi[apiName] = () => {
-          console.log(`[APIManager] 🏭 Factory called for: ${apiName}`);
+          this.writeLog("info", `[APIManager] 🏭 Factory called for: ${apiName}`);
           return this.serviceContainer.getService(serviceClass);
         };
         
-        console.log(`[APIManager] ✅ Factory service registered: ${apiName}`);
+        this.writeLog("info", `[APIManager] ✅ Factory service registered: ${apiName}`);
       } else if (serviceType === "transient") {
         // Transient: Factory-Funktion registrieren (jeder Aufruf erstellt neue Instanz)
         moduleApi[apiName] = () => {
-          console.log(`[APIManager] 🏭 Transient factory called for: ${apiName}`);
+          this.writeLog("info", `[APIManager] 🏭 Transient factory called for: ${apiName}`);
           return this.serviceContainer.createService(serviceClass);
         };
         
-        console.log(`[APIManager] ✅ Transient service registered: ${apiName}`);
+        this.writeLog("info", `[APIManager] ✅ Transient service registered: ${apiName}`);
       } else {
-        console.warn(`[APIManager] ⚠️ Unknown service type '${serviceType}' for ${apiName}`);
+        this.writeLog("warn", `[APIManager] ⚠️ Unknown service type '${serviceType}' for ${apiName}`);
       }
     } catch (error) {
-      console.error(`[APIManager] ❌ Failed to register service ${apiName}:`, error);
+      this.writeLog("error", `[APIManager] ❌ Failed to register service ${apiName}:`, error);
     }
   }
 
@@ -107,15 +111,15 @@ export class APIManager implements IAPIManager {
     let moduleApi = (globalThis as any).game?.modules?.get("relationship-app")?.api;
     
     if (!moduleApi) {
-      console.log(`[APIManager] 🔧 Module API not available, creating it`);
+      this.writeLog("info", `[APIManager] 🔧 Module API not available, creating it`);
       
       const module = (globalThis as any).game?.modules?.get("relationship-app");
       if (module) {
         module.api = {};
         moduleApi = module.api;
-        console.log(`[APIManager] ✅ Module API created`);
+        this.writeLog("info", `[APIManager] ✅ Module API created`);
       } else {
-        console.error(`[APIManager] ❌ Module 'relationship-app' not found`);
+        this.writeLog("error", `[APIManager] ❌ Module 'relationship-app' not found`);
         return null;
       }
     }
@@ -127,15 +131,15 @@ export class APIManager implements IAPIManager {
    * Service aus API entfernen
    */
   unregisterFromAPI(apiName: string): void {
-    console.log(`[APIManager] 🗑️ Unregistering service from API: ${apiName}`);
+    this.writeLog("info", `[APIManager] 🗑️ Unregistering service from API: ${apiName}`);
     
     const moduleApi = this.getModuleAPI();
     if (moduleApi && moduleApi[apiName]) {
       delete moduleApi[apiName];
       this.registeredServices.delete(apiName);
-      console.log(`[APIManager] ✅ Service unregistered from API: ${apiName}`);
+      this.writeLog("info", `[APIManager] ✅ Service unregistered from API: ${apiName}`);
     } else {
-      console.log(`[APIManager] ℹ️ Service not found in API: ${apiName}`);
+      this.writeLog("info", `[APIManager] ℹ️ Service not found in API: ${apiName}`);
     }
   }
 
@@ -143,7 +147,7 @@ export class APIManager implements IAPIManager {
    * Alle Services aus API entfernen
    */
   unregisterAllFromAPI(): void {
-    console.log(`[APIManager] 🗑️ Unregistering all services from API (${this.registeredServices.size} registered)`);
+    this.writeLog("info", `[APIManager] 🗑️ Unregistering all services from API (${this.registeredServices.size} registered)`);
     
     const moduleApi = this.getModuleAPI();
     if (moduleApi) {
@@ -153,14 +157,14 @@ export class APIManager implements IAPIManager {
     }
     
     this.registeredServices.clear();
-    console.log(`[APIManager] ✅ All services unregistered from API`);
+    this.writeLog("info", `[APIManager] ✅ All services unregistered from API`);
   }
 
   /**
    * API Metadaten generieren
    */
   generateAPIMetadata(): APIMetadata {
-    console.log(`[APIManager] 📊 Generating API metadata`);
+    this.writeLog("info", `[APIManager] 📊 Generating API metadata`);
     
     const metadata: APIMetadata = {
       moduleId: "relationship-app",
@@ -182,7 +186,7 @@ export class APIManager implements IAPIManager {
       });
     }
     
-    console.log(`[APIManager] 📊 API metadata generated:`, {
+    this.writeLog("info", `[APIManager] 📊 API metadata generated:`, {
       totalServices: metadata.totalServices,
       services: Array.from(metadata.services.keys())
     });
@@ -231,6 +235,14 @@ export class APIManager implements IAPIManager {
     }
     
     return services;
+  }
+
+  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
+    if (this.logger) {
+      this.logger[modus](message, ...args);
+    } else {
+      console[modus](message, ...args);
+    }
   }
 }
 

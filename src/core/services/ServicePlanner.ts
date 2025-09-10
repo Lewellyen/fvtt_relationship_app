@@ -1,6 +1,7 @@
-import type { IServiceRegistry, IDependencyMapper, IServicePlanner } from "../../interfaces";
+import type { IServiceRegistry, IDependencyMapper, IServicePlanner, ILogger } from "../../interfaces";
 import { ServiceRegistry } from "../../services/ServiceRegistry";
 import { DependencyMapper } from "./DependencyMapper";
+import { FoundryLogger } from "./FoundryLogger";
 
 /**
  * ServicePlanner - Service Baupläne mit Dependencies erstellen
@@ -12,18 +13,19 @@ export class ServicePlanner implements IServicePlanner {
   static readonly API_NAME = "servicePlanner";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "ServicePlanner";
-  static readonly DEPENDENCIES = [ServiceRegistry, DependencyMapper]; // ✅ Dependencies explizit definiert
+  static readonly DEPENDENCIES = [ServiceRegistry, DependencyMapper, FoundryLogger]; // ✅ Dependencies explizit definiert
 
   private static instance: ServicePlanner;
 
   constructor(
     private serviceRegistry: IServiceRegistry,
-    private dependencyMapper: IDependencyMapper
+    private dependencyMapper: IDependencyMapper,
+    private logger: ILogger
   ) {}
 
-  static getInstance(serviceRegistry: IServiceRegistry, dependencyMapper: IDependencyMapper): ServicePlanner {
+  static getInstance(serviceRegistry: IServiceRegistry, dependencyMapper: IDependencyMapper, logger: ILogger): ServicePlanner {
     if (!ServicePlanner.instance) {
-      ServicePlanner.instance = new ServicePlanner(serviceRegistry, dependencyMapper);
+      ServicePlanner.instance = new ServicePlanner(serviceRegistry, dependencyMapper, logger);
     }
     return ServicePlanner.instance;
   }
@@ -33,28 +35,28 @@ export class ServicePlanner implements IServicePlanner {
    * Single Source of Truth: Holt Services von ServiceRegistry
    */
   createServicePlans(): Map<any, ServicePlan> {
-    console.log(`[ServicePlanner] 📋 Creating service plans`);
+    this.writeLog("info", `[ServicePlanner] 📋 Creating service plans`);
     
     const plans = new Map();
     const allServices = this.serviceRegistry.getAllServices(); // ← Von ServiceRegistry
     const dependencyGraph = this.dependencyMapper.buildDependencyGraph();
     
-    console.log(`[ServicePlanner] 📋 Processing ${allServices.length} services from ServiceRegistry`);
+    this.writeLog("info", `[ServicePlanner] 📋 Processing ${allServices.length} services from ServiceRegistry`);
     
     for (const ServiceClass of allServices) {
-      console.log(`[ServicePlanner] 📝 Creating plan for: ${ServiceClass.name || ServiceClass}`);
+      this.writeLog("info", `[ServicePlanner] 📝 Creating plan for: ${ServiceClass.name || ServiceClass}`);
       
       const plan = this.createServicePlan(ServiceClass, dependencyGraph);
       plans.set(ServiceClass, plan);
       
-      console.log(`[ServicePlanner] 📋 Plan created for ${ServiceClass.name || ServiceClass}:`, {
+      this.writeLog("info", `[ServicePlanner] 📋 Plan created for ${ServiceClass.name || ServiceClass}:`, {
         dependencies: plan.dependencies.map(d => d.name || d),
         resolutionOrder: plan.resolutionOrder.map(d => d.name || d),
         isSingleton: plan.isSingleton
       });
     }
     
-    console.log(`[ServicePlanner] ✅ Created ${plans.size} service plans`);
+    this.writeLog("info", `[ServicePlanner] ✅ Created ${plans.size} service plans`);
     return plans;
   }
 
@@ -79,14 +81,14 @@ export class ServicePlanner implements IServicePlanner {
    * Resolution Order berechnen (Topological Sort)
    */
   private calculateResolutionOrder(serviceClass: any, dependencyGraph: Map<any, any[]>): any[] {
-    console.log(`[ServicePlanner] 🔄 Calculating resolution order for: ${serviceClass.name || serviceClass}`);
+    this.writeLog("info", `[ServicePlanner] 🔄 Calculating resolution order for: ${serviceClass.name || serviceClass}`);
     
     const visited = new Set<any>();
     const resolutionOrder: any[] = [];
     
     this.topologicalSort(serviceClass, dependencyGraph, visited, resolutionOrder);
     
-    console.log(`[ServicePlanner] 🔄 Resolution order for ${serviceClass.name || serviceClass}:`, 
+    this.writeLog("info", `[ServicePlanner] 🔄 Resolution order for ${serviceClass.name || serviceClass}:`, 
       resolutionOrder.map(s => s.name || s));
     
     return resolutionOrder;
@@ -145,7 +147,7 @@ export class ServicePlanner implements IServicePlanner {
    * Alle Service-Pläne validieren
    */
   validateServicePlans(plans: Map<any, ServicePlan>): ValidationResult {
-    console.log(`[ServicePlanner] 🔍 Validating ${plans.size} service plans`);
+    this.writeLog("info", `[ServicePlanner] 🔍 Validating ${plans.size} service plans`);
     
     const result: ValidationResult = {
       isValid: true,
@@ -168,13 +170,21 @@ export class ServicePlanner implements IServicePlanner {
       }
     }
     
-    console.log(`[ServicePlanner] 🔍 Validation result:`, {
+    this.writeLog("info", `[ServicePlanner] 🔍 Validation result:`, {
       isValid: result.isValid,
       errors: result.errors.length,
       warnings: result.warnings.length
     });
     
     return result;
+  }
+
+  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
+    if (this.logger) {
+      this.logger[modus](message, ...args);
+    } else {
+      console[modus](message, ...args);
+    }
   }
 }
 

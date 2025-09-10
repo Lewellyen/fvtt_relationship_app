@@ -1,5 +1,4 @@
-import type { IServiceApplicationDependencies, ISvelteApplicationDependencies } from "../interfaces";
-import { ApplicationDependencyResolver } from "../core/services/ApplicationDependencyResolver";
+import type { ISvelteApplicationDependencies } from "../interfaces";
 
 /**
  * V2 JournalEntryPageSheet subclass drawing a simple relationship graph.
@@ -8,27 +7,31 @@ import { ApplicationDependencyResolver } from "../core/services/ApplicationDepen
 export default class JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets
   .journal.JournalEntryPageHandlebarsSheet {
   // ✅ Echte Dependency Injection - nur benötigte Dependencies
-  private serviceDependencies: IServiceApplicationDependencies;
   private svelteDependencies: ISvelteApplicationDependencies;
 
   constructor() {
     super();
-    const resolver = new ApplicationDependencyResolver();
-    this.serviceDependencies = resolver.resolveServiceApplicationDependencies();
-    this.svelteDependencies = resolver.resolveSvelteApplicationDependencies();
+    // Service Resolution über ServiceRegistrar
+    const serviceRegistrar = (globalThis as any).relationshipApp?.serviceRegistrar;
+    if (!serviceRegistrar) {
+      throw new Error("ServiceRegistrar not available! Make sure the module is properly initialized.");
+    }
+    
+    this.svelteDependencies = {
+      svelteManager: serviceRegistrar.getService('_SvelteManager'),
+      cssManager: serviceRegistrar.getService('_CSSManager'),
+      logger: serviceRegistrar.getService('_FoundryLogger')
+    };
   }
 
-  private get serviceLocator() {
-    return this.serviceDependencies.serviceLocator;
-  }
   private get logger() {
-    return this.serviceDependencies.logger;
-  }
-  private get foundryAdapter() {
-    return this.serviceDependencies.foundryAdapter;
+    return this.svelteDependencies.logger;
   }
   private get svelteManager() {
     return this.svelteDependencies.svelteManager;
+  }
+  private get cssManager() {
+    return this.svelteDependencies.cssManager;
   }
   /**
    * Merge the default parts, inserting our graph part between header and footer.
@@ -105,6 +108,12 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     return context;
   }
 
+  async _loadCSS() {
+    const cssPath = "modules/relationship-app/styles/journal-entry-relationship-graph-sheet.css";
+    await this.cssManager.loadCSS(cssPath);
+  }
+
+
   async _onRender(context: any, options: any) {
     this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] _onRender started", {
         context,
@@ -116,6 +125,8 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     // ✅ Delegation an SvelteManager - Single Responsibility
     const journalEntryPage = (this as any).document;
     const isEditMode = !(this as any).isView;
+
+    await this._loadCSS();
 
     // Mounte Graph-Komponente über SvelteManager
     await this.svelteManager.mountGraphComponent(this.element, journalEntryPage, isEditMode);
