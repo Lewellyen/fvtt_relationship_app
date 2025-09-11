@@ -11,7 +11,7 @@ export class RegistrationService implements IRegistrationService {
   static readonly API_NAME = "registrationService";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "RegistrationService";
-  static readonly DEPENDENCIES = [FoundryLogger, ConsoleErrorHandler]; // ✅ Dependencies explizit definiert // ✅ Klassename für Dependency Resolution
+  static readonly DEPENDENCIES = [FoundryLogger, ConsoleErrorHandler]; // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
 
   constructor(
     private readonly logger: ILogger,

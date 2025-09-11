@@ -9,7 +9,7 @@ export class ModuleInitializer implements IModuleInitializer {
   static readonly API_NAME = "moduleInitializer";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "ModuleInitializer";
-  static readonly DEPENDENCIES = [FoundryLogger, ConsoleErrorHandler, RegistrationService]; // ✅ Dependencies explizit definiert // ✅ Klassename für Dependency Resolution
+  static readonly DEPENDENCIES = [FoundryLogger, ConsoleErrorHandler, RegistrationService]; // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
 
   constructor(
     private readonly logger: ILogger,

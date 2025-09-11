@@ -1,4 +1,4 @@
-import type { IServiceContainer } from "./IServiceContainer";
+import type { IServiceContainer } from "../interfaces/services/IServiceContainer";
 import type { ServicePlan } from "../core/services/ServicePlanner";
 import type { IServiceValidator, ILogger } from "../interfaces";
 import { ServicePlanner } from "../core/services/ServicePlanner";
@@ -15,7 +15,7 @@ export class ServiceContainer implements IServiceContainer {
   static readonly API_NAME = "serviceContainer";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "ServiceContainer"; // ✅ Klassename für Dependency Resolution
-  static readonly DEPENDENCIES = [ServicePlanner, ServiceValidator, FoundryLogger]; // ✅ Dependencies explizit definiert
+  static readonly DEPENDENCIES = [FoundryLogger, ServicePlanner, ServiceValidator]; // ✅ Dependencies explizit definiert
 
   private static instance: ServiceContainer;
   private readonly instances = new Map<any, any>(); // Lagerhaus für Singletons
@@ -23,15 +23,15 @@ export class ServiceContainer implements IServiceContainer {
   private readonly serviceValidator: IServiceValidator;
   private readonly logger: ILogger;
 
-  constructor(servicePlans: Map<any, ServicePlan>, serviceValidator: IServiceValidator, logger: ILogger) {
+  constructor(logger: ILogger, servicePlans: Map<any, ServicePlan>, serviceValidator: IServiceValidator) {
+    this.logger = logger;
     this.servicePlans = servicePlans;
     this.serviceValidator = serviceValidator;
-    this.logger = logger;
   }
 
-  static getInstance(servicePlans: Map<any, ServicePlan>, serviceValidator: IServiceValidator, logger: ILogger): ServiceContainer {
+  static getInstance(logger: ILogger, servicePlans: Map<any, ServicePlan>, serviceValidator: IServiceValidator): ServiceContainer {
     if (!ServiceContainer.instance) {
-      ServiceContainer.instance = new ServiceContainer(servicePlans, serviceValidator, logger);
+      ServiceContainer.instance = new ServiceContainer(logger, servicePlans, serviceValidator);
     }
     return ServiceContainer.instance;
   }
@@ -59,7 +59,7 @@ export class ServiceContainer implements IServiceContainer {
       this.instances.set(identifier, service);
     }
     
-    return service;
+    return service as T;
   }
 
   /**

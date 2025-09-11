@@ -12,7 +12,7 @@ export class ServiceValidator implements IServiceValidator {
   static readonly API_NAME = "serviceValidator";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "ServiceValidator";
-  static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies explizit definiert
+  static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
 
   private static instance: ServiceValidator;
 

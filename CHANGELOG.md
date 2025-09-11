@@ -286,6 +286,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 - Keine besonderen Maßnahmen erforderlich
 
+## [0.18.0] - 2025-09-11
+### Hinzugefügt
+- Keine Einträge
+
+### Geändert
+- Keine Einträge
+
+### Fehlerbehebungen
+- Keine Einträge
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.17.0] - 2025-09-10
 ### Hinzugefügt
 - Keine Einträge

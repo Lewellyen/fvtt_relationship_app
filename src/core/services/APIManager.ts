@@ -12,19 +12,19 @@ export class APIManager implements IAPIManager {
   static readonly API_NAME = "apiManager";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "APIManager"; // ✅ Klassename für Dependency Resolution
-  static readonly DEPENDENCIES = [ServiceContainer, FoundryLogger]; // ✅ Dependencies explizit definiert
+  static readonly DEPENDENCIES = [FoundryLogger, ServiceContainer]; // ✅ Dependencies explizit definiert
 
   private static instance: APIManager;
   private readonly registeredServices = new Map<string, any>();
 
   constructor(
-    private serviceContainer: IServiceContainer,
-    private logger: ILogger
+    private logger: ILogger,
+    private serviceContainer: IServiceContainer
   ) {}
 
-  static getInstance(serviceContainer: IServiceContainer, logger: ILogger): APIManager {
+  static getInstance(logger: ILogger, serviceContainer: IServiceContainer): APIManager {
     if (!APIManager.instance) {
-      APIManager.instance = new APIManager(serviceContainer, logger);
+      APIManager.instance = new APIManager(logger, serviceContainer);
     }
     return APIManager.instance;
   }

@@ -26,6 +26,7 @@ export class FoundryAdapter implements IFoundryAdapter {
   static readonly API_NAME = "foundryAdapter";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "FoundryAdapter"; // ✅ Klassename für Dependency Resolution
+  static readonly DEPENDENCIES = []; // ✅ Keine Dependencies erforderlich
 
   // Utils
   generateId(): string {

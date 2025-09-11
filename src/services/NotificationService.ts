@@ -1,4 +1,4 @@
-import type { INotificationService } from "./INotificationService";
+import type { INotificationService } from "../interfaces/services/INotificationService";
 import type { IFoundryAdapter } from "../core/adapters/IFoundryAdapter";
 import type { ILogger } from "../interfaces";
 import { FoundryAdapter } from "../core/adapters/FoundryAdapter";
@@ -9,11 +9,11 @@ export class NotificationService implements INotificationService {
   static readonly API_NAME = "notificationService";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "NotificationService"; // ✅ Klassename für Dependency Resolution
-  static readonly DEPENDENCIES = [FoundryAdapter, FoundryLogger]; // ✅ Dependencies explizit definiert
+  static readonly DEPENDENCIES = [FoundryLogger, FoundryAdapter]; // ✅ Dependencies explizit definiert
 
   constructor(
-    private readonly foundryAdapter: IFoundryAdapter,
-    private readonly logger: ILogger
+    private readonly logger: ILogger,
+    private readonly foundryAdapter: IFoundryAdapter
   ) {}
 
   showSuccess(message: string): void {

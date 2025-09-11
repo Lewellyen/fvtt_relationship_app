@@ -12,19 +12,19 @@ export class ServiceRegistrar implements IServiceRegistrar {
   static readonly API_NAME = "serviceRegistrar";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "ServiceRegistrar"; // ✅ Klassename für Dependency Resolution
-  static readonly DEPENDENCIES = [ServiceContainer, FoundryLogger]; // ✅ Dependencies explizit definiert
+  static readonly DEPENDENCIES = [FoundryLogger, ServiceContainer]; // ✅ Dependencies explizit definiert
 
   private static instance: ServiceRegistrar;
   private readonly serviceLocator = new Map<any, () => any>();
 
   constructor(
-    private serviceContainer: IServiceContainer,
-    private logger: ILogger
+    private logger: ILogger,
+    private serviceContainer: IServiceContainer
   ) {}
 
-  static getInstance(serviceContainer: IServiceContainer, logger: ILogger): ServiceRegistrar {
+  static getInstance(logger: ILogger, serviceContainer: IServiceContainer): ServiceRegistrar {
     if (!ServiceRegistrar.instance) {
-      ServiceRegistrar.instance = new ServiceRegistrar(serviceContainer, logger);
+      ServiceRegistrar.instance = new ServiceRegistrar(logger, serviceContainer);
     }
     return ServiceRegistrar.instance;
   }

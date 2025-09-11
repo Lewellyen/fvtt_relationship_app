@@ -13,7 +13,7 @@ export class CSSManager implements ICSSManager {
   static readonly API_NAME = "cssManager";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "CSSManager"; // ✅ Klassename für Dependency Resolution
-  static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies explizit definiert
+  static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
 
   private loadedCSS: Set<string> = new Set();
 
@@ -26,18 +26,18 @@ export class CSSManager implements ICSSManager {
    * Testet ob der FoundryLogger korrekt injiziert wurde und funktioniert
    */
   private testLoggerInjection(): void {
-    console.log(`[CSSManager] 🔍 Testing FoundryLogger injection...`);
+    this.writeLog("debug", `[CSSManager] 🔍 Testing FoundryLogger injection...`);
     
     // Test 1: Logger ist definiert
     if (this.logger) {
-      console.log(`[CSSManager] ✅ FoundryLogger injected successfully`);
+      this.writeLog("debug", `[CSSManager] ✅ FoundryLogger injected successfully`);
       
       // Test 2: Logger hat die erwarteten Methoden
       const hasInfo = typeof this.logger.info === 'function';
       const hasError = typeof this.logger.error === 'function';
       const hasWarn = typeof this.logger.warn === 'function';
       
-      console.log(`[CSSManager] 🔍 Logger methods check:`, {
+      this.writeLog("debug", `[CSSManager] 🔍 Logger methods check:`, {
         hasInfo,
         hasError, 
         hasWarn,
@@ -45,20 +45,20 @@ export class CSSManager implements ICSSManager {
       });
       
       if (hasInfo && hasError && hasWarn) {
-        console.log(`[CSSManager] ✅ FoundryLogger methods available`);
+        this.writeLog("debug", `[CSSManager] ✅ FoundryLogger methods available`);
         
         // Test 3: Logger funktioniert tatsächlich
         try {
           this.logger.info(`[CSSManager] 🎯 FoundryLogger test successful - injection working!`);
-          console.log(`[CSSManager] ✅ FoundryLogger functional test passed`);
+          this.writeLog("debug", `[CSSManager] ✅ FoundryLogger functional test passed`);
         } catch (error) {
-          console.error(`[CSSManager] ❌ FoundryLogger functional test failed:`, error);
+          this.writeLog("error", `[CSSManager] ❌ FoundryLogger functional test failed:`, error);
         }
       } else {
-        console.error(`[CSSManager] ❌ FoundryLogger missing required methods`);
+        this.writeLog("error", `[CSSManager] ❌ FoundryLogger missing required methods`);
       }
     } else {
-      console.error(`[CSSManager] ❌ FoundryLogger injection failed - logger is undefined`);
+      this.writeLog("error", `[CSSManager] ❌ FoundryLogger injection failed - logger is undefined`);
     }
   }
 
@@ -70,7 +70,7 @@ export class CSSManager implements ICSSManager {
       if (this.logger) {
         this.logger.info(`[CSSManager] CSS already loaded: ${cssPath}`);
       } else {
-        console.log(`[CSSManager] CSS already loaded: ${cssPath}`);
+        this.writeLog("debug", `[CSSManager] CSS already loaded: ${cssPath}`);
       }
       return;
     }
@@ -88,13 +88,13 @@ export class CSSManager implements ICSSManager {
       if (this.logger) {
         this.logger.info(`[CSSManager] CSS loaded successfully: ${cssPath}`);
       } else {
-        console.log(`[CSSManager] CSS loaded successfully: ${cssPath}`);
+        this.writeLog("info", `[CSSManager] CSS loaded successfully: ${cssPath}`);
       }
     } catch (error) {
       if (this.logger) {
         this.logger.error(`[CSSManager] Failed to load CSS: ${cssPath}`, error);
       } else {
-        console.error(`[CSSManager] Failed to load CSS: ${cssPath}`, error);
+        this.writeLog("error", `[CSSManager] Failed to load CSS: ${cssPath}`, error);
       }
       throw error;
     }
@@ -114,7 +114,7 @@ export class CSSManager implements ICSSManager {
       if (this.logger) {
         this.logger.info(`[CSSManager] CSS unloaded: ${cssPath}`);
       } else {
-        console.log(`[CSSManager] CSS unloaded: ${cssPath}`);
+        this.writeLog("info", `[CSSManager] CSS unloaded: ${cssPath}`);
       }
     }
   }
@@ -138,7 +138,15 @@ export class CSSManager implements ICSSManager {
     if (this.logger) {
       this.logger.info(`[CSSManager] Loaded ${cssPaths.length} CSS files`);
     } else {
-      console.log(`[CSSManager] Loaded ${cssPaths.length} CSS files`);
+      this.writeLog("info", `[CSSManager] Loaded ${cssPaths.length} CSS files`);
+    }
+  }
+
+  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
+    if (this.logger) {
+      this.logger[modus](message, ...args);
+    } else {
+      console[modus](message, ...args);
     }
   }
 }

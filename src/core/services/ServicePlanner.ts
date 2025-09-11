@@ -13,19 +13,19 @@ export class ServicePlanner implements IServicePlanner {
   static readonly API_NAME = "servicePlanner";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "ServicePlanner";
-  static readonly DEPENDENCIES = [ServiceRegistry, DependencyMapper, FoundryLogger]; // ✅ Dependencies explizit definiert
+  static readonly DEPENDENCIES = [FoundryLogger, ServiceRegistry, DependencyMapper]; // ✅ Dependencies explizit definiert
 
   private static instance: ServicePlanner;
 
   constructor(
+    private logger: ILogger,
     private serviceRegistry: IServiceRegistry,
-    private dependencyMapper: IDependencyMapper,
-    private logger: ILogger
+    private dependencyMapper: IDependencyMapper
   ) {}
 
-  static getInstance(serviceRegistry: IServiceRegistry, dependencyMapper: IDependencyMapper, logger: ILogger): ServicePlanner {
+  static getInstance(logger: ILogger, serviceRegistry: IServiceRegistry, dependencyMapper: IDependencyMapper): ServicePlanner {
     if (!ServicePlanner.instance) {
-      ServicePlanner.instance = new ServicePlanner(serviceRegistry, dependencyMapper, logger);
+      ServicePlanner.instance = new ServicePlanner(logger, serviceRegistry, dependencyMapper);
     }
     return ServicePlanner.instance;
   }

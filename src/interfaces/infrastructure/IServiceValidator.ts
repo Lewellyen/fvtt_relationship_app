@@ -1,4 +1,4 @@
-import type { ServicePlan, ValidationResult } from "./ServicePlanner";
+import type { ServicePlan, ValidationResult } from "../../core/services/ServicePlanner";
 
 /**
  * Interface für Service Validator

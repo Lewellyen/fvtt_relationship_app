@@ -1,4 +1,4 @@
-import type { APIMetadata, APIStatus, ServiceMetadata } from "./APIManager";
+import type { APIMetadata, APIStatus, ServiceMetadata } from "../../core/services/APIManager";
 
 /**
  * Interface für API Manager

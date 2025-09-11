@@ -1,4 +1,5 @@
-import type { IServiceRegistry } from "../interfaces/index";
+import type { IServiceRegistry, ILogger } from "../interfaces/index";
+import { FoundryLogger } from "../core/services/FoundryLogger";
 
 /**
  * ServiceRegistry - Reine Registry für Service-Klassen
@@ -10,15 +11,16 @@ export class ServiceRegistry implements IServiceRegistry {
   static readonly API_NAME = "serviceRegistry";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "ServiceRegistry"; // ✅ Klassename für Dependency Resolution
+  static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Keine Dependencies erforderlich
 
   private static instance: ServiceRegistry;
   private readonly serviceRegistry = new Map<any, any>();
 
-  private constructor() {}
+  private constructor(private logger: ILogger) {}
 
-  static getInstance(): ServiceRegistry {
+  static getInstance(logger: ILogger): ServiceRegistry {
     if (!ServiceRegistry.instance) {
-      ServiceRegistry.instance = new ServiceRegistry();
+      ServiceRegistry.instance = new ServiceRegistry(logger);
     }
     return ServiceRegistry.instance;
   }
@@ -28,32 +30,32 @@ export class ServiceRegistry implements IServiceRegistry {
    * Registriert alle Services aus einer Service-Quelle
    */
   registerAllServices(serviceSource: any[]): void {
-    console.log(`[ServiceRegistry] 📚 Registering ${serviceSource.length} services from source`);
+    this.writeLog("info", `[ServiceRegistry] 📚 Registering ${serviceSource.length} services from source`);
     
     for (const serviceConfig of serviceSource) {
-      const serviceName = serviceConfig.name;
+      const serviceName = serviceConfig.name.CLASS_NAME || serviceConfig.name.className || serviceConfig.name.name || serviceConfig.name;
       const serviceClass = serviceConfig.class;
-      console.log(`[ServiceRegistry] 📝 Registering service: ${serviceName}`);
+      this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
       this.registerService(serviceClass, serviceClass);
     }
     
-    console.log(`[ServiceRegistry] ✅ All services registered. Total: ${this.serviceRegistry.size}`);
+    this.writeLog("info", `[ServiceRegistry] ✅ All services registered. Total: ${this.serviceRegistry.size}`);
   }
 
   /**
    * Einzelnen Service registrieren
    */
   registerService(identifier: any, constructor: any): void {
-    console.log(`[ServiceRegistry] 🔍 Debug - identifier:`, identifier);
-    console.log(`[ServiceRegistry] 🔍 Debug - constructor:`, constructor);
+    this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - identifier:`, identifier);
+    this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - constructor:`, constructor);
     
     if (!identifier) {
-      console.error(`[ServiceRegistry] ❌ Identifier is undefined!`);
+      this.writeLog("error", `[ServiceRegistry] ❌ Identifier is undefined!`);
       return;
     }
     
     const serviceName = identifier.CLASS_NAME || identifier.className || identifier.name || identifier;
-    console.log(`[ServiceRegistry] 📝 Registering service: ${serviceName}`);
+    this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
     this.serviceRegistry.set(identifier, constructor);
   }
 
@@ -62,7 +64,7 @@ export class ServiceRegistry implements IServiceRegistry {
    */
   getServiceConstructor(identifier: any): any {
     const constructor = this.serviceRegistry.get(identifier);
-    console.log(`[ServiceRegistry] 🔍 Getting constructor for: ${identifier.name || identifier}`, {
+    this.writeLog("debug", `[ServiceRegistry] 🔍 Getting constructor for: ${identifier.name || identifier}`, {
       found: !!constructor,
       constructor: constructor?.name || constructor
     });
@@ -75,7 +77,7 @@ export class ServiceRegistry implements IServiceRegistry {
    */
   getAllServices(): any[] {
     const services = Array.from(this.serviceRegistry.keys());
-    console.log(`[ServiceRegistry] 📋 Providing ${services.length} services to other classes`);
+    this.writeLog("info", `[ServiceRegistry] 📋 Providing ${services.length} services to other classes`);
     return services;
   }
 
@@ -97,7 +99,15 @@ export class ServiceRegistry implements IServiceRegistry {
    * Registry leeren (für Tests)
    */
   clear(): void {
-    console.log(`[ServiceRegistry] 🗑️ Clearing registry (${this.serviceRegistry.size} services)`);
+    this.writeLog("info", `[ServiceRegistry] 🗑️ Clearing registry (${this.serviceRegistry.size} services)`);
     this.serviceRegistry.clear();
+  }
+
+  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
+    if (this.logger) {
+      this.logger[modus](message, ...args);
+    } else {
+      console[modus](message, ...args);
+    }
   }
 }

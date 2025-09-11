@@ -189,8 +189,51 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
     // Modals
     modals: 100
   };
+  const _FoundryLogger = class _FoundryLogger {
+    // ✅ Keine Dependencies erforderlich
+    // ✅ Getter für den echten Klassennamen (gegen Name Mangling)
+    static get className() {
+      return this.CLASS_NAME;
+    }
+    constructor() {
+    }
+    info(message, ...args) {
+      if (typeof message === "object" && message !== null) {
+        console.log(`${MODULE_ID_PREFIX} ℹ️`, message, ...args);
+      } else {
+        console.log(`${MODULE_ID_PREFIX} ℹ️ ${message}`, ...args);
+      }
+    }
+    warn(message, ...args) {
+      if (typeof message === "object" && message !== null) {
+        console.warn(`${MODULE_ID_PREFIX} ⚠️`, message, ...args);
+      } else {
+        console.warn(`${MODULE_ID_PREFIX} ⚠️ ${message}`, ...args);
+      }
+    }
+    error(message, ...args) {
+      if (typeof message === "object" && message !== null) {
+        console.error(`${MODULE_ID_PREFIX} ❌`, message, ...args);
+      } else {
+        console.error(`${MODULE_ID_PREFIX} ❌ ${message}`, ...args);
+      }
+    }
+    debug(message, ...args) {
+      return;
+      if (typeof message === "object" && message !== null) {
+        console.debug(`${MODULE_ID_PREFIX} 🐛`, message, ...args);
+      } else {
+        console.debug(`${MODULE_ID_PREFIX} 🐛 ${message}`, ...args);
+      }
+    }
+  };
+  _FoundryLogger.API_NAME = "logger";
+  _FoundryLogger.SERVICE_TYPE = "singleton";
+  _FoundryLogger.CLASS_NAME = "FoundryLogger";
+  _FoundryLogger.DEPENDENCIES = [];
+  let FoundryLogger = _FoundryLogger;
   const _FoundryAdapter = class _FoundryAdapter {
-    // ✅ Klassename für Dependency Resolution
+    // ✅ Keine Dependencies erforderlich
     // Utils
     generateId() {
       return foundry.utils.randomID();
@@ -265,54 +308,10 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   _FoundryAdapter.API_NAME = "foundryAdapter";
   _FoundryAdapter.SERVICE_TYPE = "singleton";
   _FoundryAdapter.CLASS_NAME = "FoundryAdapter";
+  _FoundryAdapter.DEPENDENCIES = [];
   let FoundryAdapter = _FoundryAdapter;
-  const _FoundryLogger = class _FoundryLogger {
-    constructor(foundryAdapter2) {
-      this.foundryAdapter = foundryAdapter2;
-    }
-    // ✅ Dependencies explizit definiert
-    // ✅ Getter für den echten Klassennamen (gegen Name Mangling)
-    static get className() {
-      return this.CLASS_NAME;
-    }
-    info(message, ...args) {
-      if (typeof message === "object" && message !== null) {
-        console.log(`${MODULE_ID_PREFIX} ℹ️`, message, ...args);
-      } else {
-        console.log(`${MODULE_ID_PREFIX} ℹ️ ${message}`, ...args);
-      }
-    }
-    warn(message, ...args) {
-      if (typeof message === "object" && message !== null) {
-        console.warn(`${MODULE_ID_PREFIX} ⚠️`, message, ...args);
-      } else {
-        console.warn(`${MODULE_ID_PREFIX} ⚠️ ${message}`, ...args);
-      }
-    }
-    error(message, ...args) {
-      if (typeof message === "object" && message !== null) {
-        console.error(`${MODULE_ID_PREFIX} ❌`, message, ...args);
-      } else {
-        console.error(`${MODULE_ID_PREFIX} ❌ ${message}`, ...args);
-      }
-    }
-    debug(message, ...args) {
-      if (this.foundryAdapter.getSetting("debug") === true) {
-        if (typeof message === "object" && message !== null) {
-          console.debug(`${MODULE_ID_PREFIX} 🐛`, message, ...args);
-        } else {
-          console.debug(`${MODULE_ID_PREFIX} 🐛 ${message}`, ...args);
-        }
-      }
-    }
-  };
-  _FoundryLogger.API_NAME = "logger";
-  _FoundryLogger.SERVICE_TYPE = "singleton";
-  _FoundryLogger.CLASS_NAME = "FoundryLogger";
-  _FoundryLogger.DEPENDENCIES = [FoundryAdapter];
-  let FoundryLogger = _FoundryLogger;
   const _ConsoleErrorHandler = class _ConsoleErrorHandler {
-    // ✅ Dependencies explizit definiert
+    // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
     constructor(logger2, foundryAdapter2) {
       this.logger = logger2;
       this.foundryAdapter = foundryAdapter2;
@@ -337,9 +336,9 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   let ConsoleErrorHandler = _ConsoleErrorHandler;
   const _NotificationService = class _NotificationService {
     // ✅ Dependencies explizit definiert
-    constructor(foundryAdapter2, logger2) {
-      this.foundryAdapter = foundryAdapter2;
+    constructor(logger2, foundryAdapter2) {
       this.logger = logger2;
+      this.foundryAdapter = foundryAdapter2;
     }
     showSuccess(message) {
       this.foundryAdapter.showSuccess(message);
@@ -361,7 +360,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   _NotificationService.API_NAME = "notificationService";
   _NotificationService.SERVICE_TYPE = "singleton";
   _NotificationService.CLASS_NAME = "NotificationService";
-  _NotificationService.DEPENDENCIES = [FoundryAdapter, FoundryLogger];
+  _NotificationService.DEPENDENCIES = [FoundryLogger, FoundryAdapter];
   let NotificationService = _NotificationService;
   const _JournalEntryPageRelationshipGraphSheet = class _JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet {
     constructor() {
@@ -501,7 +500,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
     }
   }
   const _RegistrationService = class _RegistrationService {
-    // ✅ Dependencies explizit definiert // ✅ Klassename für Dependency Resolution
+    // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
     constructor(logger2, errorHandler2) {
       this.logger = logger2;
       this.errorHandler = errorHandler2;
@@ -565,12 +564,13 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
     RegistrationService
   });
   const _ServiceRegistry = class _ServiceRegistry {
-    constructor() {
+    constructor(logger2) {
+      this.logger = logger2;
       this.serviceRegistry = /* @__PURE__ */ new Map();
     }
-    static getInstance() {
+    static getInstance(logger2) {
       if (!_ServiceRegistry.instance) {
-        _ServiceRegistry.instance = new _ServiceRegistry();
+        _ServiceRegistry.instance = new _ServiceRegistry(logger2);
       }
       return _ServiceRegistry.instance;
     }
@@ -579,27 +579,27 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      * Registriert alle Services aus einer Service-Quelle
      */
     registerAllServices(serviceSource) {
-      console.log(`[ServiceRegistry] 📚 Registering ${serviceSource.length} services from source`);
+      this.writeLog("info", `[ServiceRegistry] 📚 Registering ${serviceSource.length} services from source`);
       for (const serviceConfig of serviceSource) {
-        const serviceName = serviceConfig.name;
+        const serviceName = serviceConfig.name.CLASS_NAME || serviceConfig.name.className || serviceConfig.name.name || serviceConfig.name;
         const serviceClass = serviceConfig.class;
-        console.log(`[ServiceRegistry] 📝 Registering service: ${serviceName}`);
+        this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
         this.registerService(serviceClass, serviceClass);
       }
-      console.log(`[ServiceRegistry] ✅ All services registered. Total: ${this.serviceRegistry.size}`);
+      this.writeLog("info", `[ServiceRegistry] ✅ All services registered. Total: ${this.serviceRegistry.size}`);
     }
     /**
      * Einzelnen Service registrieren
      */
     registerService(identifier, constructor) {
-      console.log(`[ServiceRegistry] 🔍 Debug - identifier:`, identifier);
-      console.log(`[ServiceRegistry] 🔍 Debug - constructor:`, constructor);
+      this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - identifier:`, identifier);
+      this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - constructor:`, constructor);
       if (!identifier) {
-        console.error(`[ServiceRegistry] ❌ Identifier is undefined!`);
+        this.writeLog("error", `[ServiceRegistry] ❌ Identifier is undefined!`);
         return;
       }
       const serviceName = identifier.CLASS_NAME || identifier.className || identifier.name || identifier;
-      console.log(`[ServiceRegistry] 📝 Registering service: ${serviceName}`);
+      this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
       this.serviceRegistry.set(identifier, constructor);
     }
     /**
@@ -607,7 +607,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      */
     getServiceConstructor(identifier) {
       const constructor = this.serviceRegistry.get(identifier);
-      console.log(`[ServiceRegistry] 🔍 Getting constructor for: ${identifier.name || identifier}`, {
+      this.writeLog("debug", `[ServiceRegistry] 🔍 Getting constructor for: ${identifier.name || identifier}`, {
         found: !!constructor,
         constructor: constructor?.name || constructor
       });
@@ -619,7 +619,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      */
     getAllServices() {
       const services = Array.from(this.serviceRegistry.keys());
-      console.log(`[ServiceRegistry] 📋 Providing ${services.length} services to other classes`);
+      this.writeLog("info", `[ServiceRegistry] 📋 Providing ${services.length} services to other classes`);
       return services;
     }
     /**
@@ -638,27 +638,36 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      * Registry leeren (für Tests)
      */
     clear() {
-      console.log(`[ServiceRegistry] 🗑️ Clearing registry (${this.serviceRegistry.size} services)`);
+      this.writeLog("info", `[ServiceRegistry] 🗑️ Clearing registry (${this.serviceRegistry.size} services)`);
       this.serviceRegistry.clear();
+    }
+    writeLog(modus, message, ...args) {
+      if (this.logger) {
+        this.logger[modus](message, ...args);
+      } else {
+        console[modus](message, ...args);
+      }
     }
   };
   _ServiceRegistry.API_NAME = "serviceRegistry";
   _ServiceRegistry.SERVICE_TYPE = "singleton";
   _ServiceRegistry.CLASS_NAME = "ServiceRegistry";
+  _ServiceRegistry.DEPENDENCIES = [FoundryLogger];
   let ServiceRegistry = _ServiceRegistry;
   var ServiceRegistry$1 = /* @__PURE__ */ Object.freeze({
     __proto__: null,
     ServiceRegistry
   });
   const _DependencyMapper = class _DependencyMapper {
-    constructor(serviceRegistry) {
+    constructor(logger2, serviceRegistry) {
+      this.logger = logger2;
       this.serviceRegistry = serviceRegistry;
       this.hardcodedDependencies = /* @__PURE__ */ new Map();
       this.hardcodedDependenciesInitialized = false;
     }
-    static getInstance(serviceRegistry) {
+    static getInstance(logger2, serviceRegistry) {
       if (!_DependencyMapper.instance) {
-        _DependencyMapper.instance = new _DependencyMapper(serviceRegistry);
+        _DependencyMapper.instance = new _DependencyMapper(logger2, serviceRegistry);
       }
       return _DependencyMapper.instance;
     }
@@ -667,155 +676,72 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      * Single Source of Truth: Holt Services von ServiceRegistry
      */
     buildDependencyGraph() {
-      console.log(`[DependencyMapper] 🗺️ Building dependency graph`);
-      this.initializeHardcodedDependencies();
+      this.writeLog("info", `[DependencyMapper] 🗺️ Building dependency graph`);
       const graph = /* @__PURE__ */ new Map();
       const allServices = this.serviceRegistry.getAllServices();
-      console.log(`[DependencyMapper] 📋 Processing ${allServices.length} services from ServiceRegistry`);
+      this.writeLog("info", `[DependencyMapper] 📋 Processing ${allServices.length} services from ServiceRegistry`);
       for (const ServiceClass of allServices) {
-        console.log(`[DependencyMapper] 🔍 Analyzing dependencies for: ${ServiceClass.name || ServiceClass}`);
+        this.writeLog("debug", `[DependencyMapper] 🔍 Analyzing dependencies for: ${ServiceClass.name || ServiceClass}`);
         const dependencies = this.extractDependencies(ServiceClass);
         graph.set(ServiceClass, dependencies);
-        console.log(`[DependencyMapper] 🔗 Dependencies for ${ServiceClass.name || ServiceClass}:`, {
+        this.writeLog("debug", `[DependencyMapper] 🔗 Dependencies for ${ServiceClass.name || ServiceClass}:`, {
           count: dependencies.length,
           dependencies: dependencies.map((d) => d.name || d)
         });
       }
-      console.log(`[DependencyMapper] ✅ Dependency graph built with ${graph.size} services`);
+      this.writeLog("info", `[DependencyMapper] ✅ Dependency graph built with ${graph.size} services`);
       return graph;
     }
     /**
      * Dependencies für einen Service extrahieren
      */
     extractDependencies(serviceClass) {
-      console.log(`[DependencyMapper] 🔍 Extracting dependencies for: ${serviceClass.name || serviceClass}`);
+      this.writeLog("debug", `[DependencyMapper] 🔍 Extracting dependencies for: ${serviceClass.name || serviceClass}`);
       const staticDependencies = this.extractStaticDependencies(serviceClass);
-      if (staticDependencies.length > 0) {
-        console.log(`[DependencyMapper] 📋 Using static dependencies:`, staticDependencies.map((d) => d.name || d));
+      if (staticDependencies !== null) {
+        this.writeLog("debug", `[DependencyMapper] 📋 Using static dependencies:`, staticDependencies.map((d) => d.name || d));
         return staticDependencies;
-      }
-      const hardcodedDeps = this.getHardcodedDependencies(serviceClass);
-      if (hardcodedDeps.length > 0) {
-        console.warn(`[DependencyMapper] ⚠️ WARNING: Service '${serviceClass.name || serviceClass}' has no static readonly DEPENDENCIES! Using hardcoded fallback:`, hardcodedDeps.map((d) => d.name || d));
-        console.warn(`[DependencyMapper] ⚠️ Consider adding: static readonly DEPENDENCIES = [${hardcodedDeps.map((d) => d.name || d).join(", ")}];`);
       } else {
-        console.log(`[DependencyMapper] ✅ Service '${serviceClass.name || serviceClass}' has no dependencies - this is perfectly fine!`);
+        throw new Error(`[DependencyMapper] ❌ Service '${serviceClass.name || serviceClass}' has no static readonly DEPENDENCIES!`);
       }
-      return hardcodedDeps;
     }
     /**
      * Dependencies aus static readonly DEPENDENCIES property extrahieren
      */
     extractStaticDependencies(serviceClass) {
       const className = serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
-      console.log(`[DependencyMapper] 📋 Checking static dependencies for: ${className}`);
+      this.writeLog("debug", `[DependencyMapper] 📋 Checking static dependencies for: ${className}`);
       try {
         if (serviceClass.DEPENDENCIES && Array.isArray(serviceClass.DEPENDENCIES)) {
           const filteredDependencies = serviceClass.DEPENDENCIES.filter(Boolean);
-          console.log(`[DependencyMapper] 📋 Found static dependencies for ${className}:`, {
+          this.writeLog("debug", `[DependencyMapper] 📋 Found static dependencies for ${className}:`, {
             original: serviceClass.DEPENDENCIES,
             filtered: filteredDependencies,
             count: filteredDependencies.length
           });
           return filteredDependencies;
         }
-        console.log(`[DependencyMapper] 📋 No static dependencies found for: ${className}`);
+        this.writeLog("debug", `[DependencyMapper] 📋 No static dependencies found for: ${className}`);
         return [];
       } catch (error) {
-        console.error(`[DependencyMapper] 📋 Error extracting static dependencies for ${className}:`, error);
+        this.writeLog("error", `[DependencyMapper] 📋 Error extracting static dependencies for ${className}:`, error);
         return [];
       }
-    }
-    /**
-     * Hardcoded Dependencies als Fallback (nur für Services ohne static DEPENDENCIES)
-     */
-    getHardcodedDependencies(serviceClass) {
-      let dependencies = this.hardcodedDependencies.get(serviceClass) || [];
-      if (dependencies.length === 0) {
-        const serviceName = this.getServiceNameFromClass(serviceClass);
-        if (serviceName) {
-          const originalClass = this.serviceRegistry.getServiceConstructor(serviceName);
-          dependencies = this.hardcodedDependencies.get(originalClass) || [];
-        }
-      }
-      console.log(`[DependencyMapper] 🔧 Hardcoded dependencies for ${serviceClass.name || serviceClass}:`, {
-        found: dependencies.length > 0,
-        dependencies: dependencies.map((d) => d.name || d)
-      });
-      return dependencies;
-    }
-    /**
-     * Service-Name aus der Klasse ermitteln (für verkürzte Klassen)
-     */
-    getServiceNameFromClass(serviceClass) {
-      const allServices = this.serviceRegistry.getAllServices();
-      for (const serviceName of allServices) {
-        const originalClass = this.serviceRegistry.getServiceConstructor(serviceName);
-        if (originalClass === serviceClass) {
-          return serviceName;
-        }
-      }
-      return null;
-    }
-    /**
-     * Hardcoded Dependencies initialisieren (nur für Services ohne static DEPENDENCIES)
-     * TODO: Diese sollten aus einer Konfigurationsdatei kommen
-     */
-    initializeHardcodedDependencies() {
-      if (this.hardcodedDependenciesInitialized) {
-        return;
-      }
-      console.log(`[DependencyMapper] 🔧 Initializing hardcoded dependencies (fallback only)`);
-      const FoundryLogger2 = this.serviceRegistry.getServiceConstructor("FoundryLogger");
-      const ConsoleErrorHandler2 = this.serviceRegistry.getServiceConstructor("ConsoleErrorHandler");
-      const NotificationService2 = this.serviceRegistry.getServiceConstructor("NotificationService");
-      const FoundryAdapter2 = this.serviceRegistry.getServiceConstructor("FoundryAdapter");
-      const CSSManager2 = this.serviceRegistry.getServiceConstructor("CSSManager");
-      const SvelteManager2 = this.serviceRegistry.getServiceConstructor("SvelteManager");
-      const RegistrationService2 = this.serviceRegistry.getServiceConstructor("RegistrationService");
-      const ModuleInitializer2 = this.serviceRegistry.getServiceConstructor("ModuleInitializer");
-      const ServiceRegistrar2 = this.serviceRegistry.getServiceConstructor("ServiceRegistrar");
-      const APIManager2 = this.serviceRegistry.getServiceConstructor("APIManager");
-      const ServiceRegistry2 = this.serviceRegistry.getServiceConstructor("ServiceRegistry");
-      this.hardcodedDependencies.set(FoundryLogger2, [FoundryAdapter2]);
-      this.hardcodedDependencies.set(ConsoleErrorHandler2, [FoundryLogger2, FoundryAdapter2]);
-      this.hardcodedDependencies.set(NotificationService2, [FoundryAdapter2, FoundryLogger2]);
-      this.hardcodedDependencies.set(CSSManager2, [FoundryLogger2]);
-      this.hardcodedDependencies.set(SvelteManager2, [FoundryLogger2]);
-      this.hardcodedDependencies.set(CSSManager2, [FoundryLogger2]);
-      this.hardcodedDependencies.set(SvelteManager2, [FoundryLogger2]);
-      console.log(`[DependencyMapper] 🔧 Set hardcoded dependencies with original classes:`, {
-        CSSManager: this.hardcodedDependencies.has(CSSManager2),
-        SvelteManager: this.hardcodedDependencies.has(SvelteManager2)
-      });
-      console.log(`[DependencyMapper] 🔧 Set hardcoded dependencies:`, {
-        FoundryLogger: this.hardcodedDependencies.has(FoundryLogger2),
-        CSSManager: this.hardcodedDependencies.has(CSSManager2),
-        SvelteManager: this.hardcodedDependencies.has(SvelteManager2)
-      });
-      this.hardcodedDependencies.set(RegistrationService2, [FoundryLogger2, ConsoleErrorHandler2]);
-      this.hardcodedDependencies.set(ModuleInitializer2, [FoundryLogger2, ConsoleErrorHandler2, RegistrationService2]);
-      this.hardcodedDependencies.set(ServiceRegistrar2, [ServiceRegistry2]);
-      this.hardcodedDependencies.set(APIManager2, [
-        ServiceRegistry2
-      ]);
-      this.hardcodedDependenciesInitialized = true;
-      console.log(`[DependencyMapper] ✅ Initialized ${this.hardcodedDependencies.size} hardcoded dependencies`);
     }
     /**
      * Zirkuläre Dependencies prüfen
      */
     checkCircularDependencies(dependencyGraph) {
-      console.log(`[DependencyMapper] 🔍 Checking for circular dependencies`);
+      this.writeLog("info", `[DependencyMapper] 🔍 Checking for circular dependencies`);
       const visited = /* @__PURE__ */ new Set();
       const recursionStack = /* @__PURE__ */ new Set();
       for (const service of dependencyGraph.keys()) {
         if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
-          console.error(`[DependencyMapper] ❌ Circular dependency detected!`);
+          this.writeLog("error", `[DependencyMapper] ❌ Circular dependency detected!`);
           return true;
         }
       }
-      console.log(`[DependencyMapper] ✅ No circular dependencies found`);
+      this.writeLog("info", `[DependencyMapper] ✅ No circular dependencies found`);
       return false;
     }
     hasCircularDependency(service, graph, visited, recursionStack) {
@@ -836,25 +762,32 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
       recursionStack.delete(service);
       return false;
     }
+    writeLog(modus, message, ...args) {
+      if (this.logger) {
+        this.logger[modus](message, ...args);
+      } else {
+        console[modus](message, ...args);
+      }
+    }
   };
   _DependencyMapper.API_NAME = "dependencyMapper";
   _DependencyMapper.SERVICE_TYPE = "singleton";
   _DependencyMapper.CLASS_NAME = "DependencyMapper";
-  _DependencyMapper.DEPENDENCIES = [ServiceRegistry];
+  _DependencyMapper.DEPENDENCIES = [FoundryLogger, ServiceRegistry];
   let DependencyMapper = _DependencyMapper;
   var DependencyMapper$1 = /* @__PURE__ */ Object.freeze({
     __proto__: null,
     DependencyMapper
   });
   const _ServicePlanner = class _ServicePlanner {
-    constructor(serviceRegistry, dependencyMapper, logger2) {
+    constructor(logger2, serviceRegistry, dependencyMapper) {
+      this.logger = logger2;
       this.serviceRegistry = serviceRegistry;
       this.dependencyMapper = dependencyMapper;
-      this.logger = logger2;
     }
-    static getInstance(serviceRegistry, dependencyMapper, logger2) {
+    static getInstance(logger2, serviceRegistry, dependencyMapper) {
       if (!_ServicePlanner.instance) {
-        _ServicePlanner.instance = new _ServicePlanner(serviceRegistry, dependencyMapper, logger2);
+        _ServicePlanner.instance = new _ServicePlanner(logger2, serviceRegistry, dependencyMapper);
       }
       return _ServicePlanner.instance;
     }
@@ -986,7 +919,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   _ServicePlanner.API_NAME = "servicePlanner";
   _ServicePlanner.SERVICE_TYPE = "singleton";
   _ServicePlanner.CLASS_NAME = "ServicePlanner";
-  _ServicePlanner.DEPENDENCIES = [ServiceRegistry, DependencyMapper, FoundryLogger];
+  _ServicePlanner.DEPENDENCIES = [FoundryLogger, ServiceRegistry, DependencyMapper];
   let ServicePlanner = _ServicePlanner;
   var ServicePlanner$1 = /* @__PURE__ */ Object.freeze({
     __proto__: null,
@@ -1191,15 +1124,15 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
     ServiceValidator
   });
   const _ServiceContainer = class _ServiceContainer {
-    constructor(servicePlans, serviceValidator, logger2) {
+    constructor(logger2, servicePlans, serviceValidator) {
       this.instances = /* @__PURE__ */ new Map();
+      this.logger = logger2;
       this.servicePlans = servicePlans;
       this.serviceValidator = serviceValidator;
-      this.logger = logger2;
     }
-    static getInstance(servicePlans, serviceValidator, logger2) {
+    static getInstance(logger2, servicePlans, serviceValidator) {
       if (!_ServiceContainer.instance) {
-        _ServiceContainer.instance = new _ServiceContainer(servicePlans, serviceValidator, logger2);
+        _ServiceContainer.instance = new _ServiceContainer(logger2, servicePlans, serviceValidator);
       }
       return _ServiceContainer.instance;
     }
@@ -1374,14 +1307,14 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   _ServiceContainer.API_NAME = "serviceContainer";
   _ServiceContainer.SERVICE_TYPE = "singleton";
   _ServiceContainer.CLASS_NAME = "ServiceContainer";
-  _ServiceContainer.DEPENDENCIES = [ServicePlanner, ServiceValidator, FoundryLogger];
+  _ServiceContainer.DEPENDENCIES = [FoundryLogger, ServicePlanner, ServiceValidator];
   let ServiceContainer = _ServiceContainer;
   var ServiceContainer$1 = /* @__PURE__ */ Object.freeze({
     __proto__: null,
     ServiceContainer
   });
   const _ModuleInitializer = class _ModuleInitializer {
-    // ✅ Dependencies explizit definiert // ✅ Klassename für Dependency Resolution
+    // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
     constructor(logger2, errorHandler2, registrationService) {
       this.logger = logger2;
       this.errorHandler = errorHandler2;
@@ -1408,14 +1341,14 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
     ModuleInitializer
   });
   const _ServiceRegistrar = class _ServiceRegistrar {
-    constructor(serviceContainer, logger2) {
-      this.serviceContainer = serviceContainer;
+    constructor(logger2, serviceContainer) {
       this.logger = logger2;
+      this.serviceContainer = serviceContainer;
       this.serviceLocator = /* @__PURE__ */ new Map();
     }
-    static getInstance(serviceContainer, logger2) {
+    static getInstance(logger2, serviceContainer) {
       if (!_ServiceRegistrar.instance) {
-        _ServiceRegistrar.instance = new _ServiceRegistrar(serviceContainer, logger2);
+        _ServiceRegistrar.instance = new _ServiceRegistrar(logger2, serviceContainer);
       }
       return _ServiceRegistrar.instance;
     }
@@ -1536,7 +1469,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   _ServiceRegistrar.API_NAME = "serviceRegistrar";
   _ServiceRegistrar.SERVICE_TYPE = "singleton";
   _ServiceRegistrar.CLASS_NAME = "ServiceRegistrar";
-  _ServiceRegistrar.DEPENDENCIES = [ServiceContainer, FoundryLogger];
+  _ServiceRegistrar.DEPENDENCIES = [FoundryLogger, ServiceContainer];
   let ServiceRegistrar = _ServiceRegistrar;
   var ServiceRegistrar$1 = /* @__PURE__ */ Object.freeze({
     __proto__: null,
@@ -9660,7 +9593,7 @@ ${component_stack}
     append($$anchor, div);
   }
   const _SvelteManager = class _SvelteManager {
-    // ✅ Dependencies explizit definiert
+    // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
     constructor(logger2) {
       this.logger = logger2;
     }
@@ -9731,31 +9664,31 @@ ${component_stack}
      * Testet ob der FoundryLogger korrekt injiziert wurde und funktioniert
      */
     testLoggerInjection() {
-      console.log(`[CSSManager] 🔍 Testing FoundryLogger injection...`);
+      this.writeLog("debug", `[CSSManager] 🔍 Testing FoundryLogger injection...`);
       if (this.logger) {
-        console.log(`[CSSManager] ✅ FoundryLogger injected successfully`);
+        this.writeLog("debug", `[CSSManager] ✅ FoundryLogger injected successfully`);
         const hasInfo = typeof this.logger.info === "function";
         const hasError = typeof this.logger.error === "function";
         const hasWarn = typeof this.logger.warn === "function";
-        console.log(`[CSSManager] 🔍 Logger methods check:`, {
+        this.writeLog("debug", `[CSSManager] 🔍 Logger methods check:`, {
           hasInfo,
           hasError,
           hasWarn,
           loggerType: this.logger.constructor.name
         });
         if (hasInfo && hasError && hasWarn) {
-          console.log(`[CSSManager] ✅ FoundryLogger methods available`);
+          this.writeLog("debug", `[CSSManager] ✅ FoundryLogger methods available`);
           try {
             this.logger.info(`[CSSManager] 🎯 FoundryLogger test successful - injection working!`);
-            console.log(`[CSSManager] ✅ FoundryLogger functional test passed`);
+            this.writeLog("debug", `[CSSManager] ✅ FoundryLogger functional test passed`);
           } catch (error) {
-            console.error(`[CSSManager] ❌ FoundryLogger functional test failed:`, error);
+            this.writeLog("error", `[CSSManager] ❌ FoundryLogger functional test failed:`, error);
           }
         } else {
-          console.error(`[CSSManager] ❌ FoundryLogger missing required methods`);
+          this.writeLog("error", `[CSSManager] ❌ FoundryLogger missing required methods`);
         }
       } else {
-        console.error(`[CSSManager] ❌ FoundryLogger injection failed - logger is undefined`);
+        this.writeLog("error", `[CSSManager] ❌ FoundryLogger injection failed - logger is undefined`);
       }
     }
     /**
@@ -9766,7 +9699,7 @@ ${component_stack}
         if (this.logger) {
           this.logger.info(`[CSSManager] CSS already loaded: ${cssPath}`);
         } else {
-          console.log(`[CSSManager] CSS already loaded: ${cssPath}`);
+          this.writeLog("debug", `[CSSManager] CSS already loaded: ${cssPath}`);
         }
         return;
       }
@@ -9781,13 +9714,13 @@ ${component_stack}
         if (this.logger) {
           this.logger.info(`[CSSManager] CSS loaded successfully: ${cssPath}`);
         } else {
-          console.log(`[CSSManager] CSS loaded successfully: ${cssPath}`);
+          this.writeLog("info", `[CSSManager] CSS loaded successfully: ${cssPath}`);
         }
       } catch (error) {
         if (this.logger) {
           this.logger.error(`[CSSManager] Failed to load CSS: ${cssPath}`, error);
         } else {
-          console.error(`[CSSManager] Failed to load CSS: ${cssPath}`, error);
+          this.writeLog("error", `[CSSManager] Failed to load CSS: ${cssPath}`, error);
         }
         throw error;
       }
@@ -9804,7 +9737,7 @@ ${component_stack}
         if (this.logger) {
           this.logger.info(`[CSSManager] CSS unloaded: ${cssPath}`);
         } else {
-          console.log(`[CSSManager] CSS unloaded: ${cssPath}`);
+          this.writeLog("info", `[CSSManager] CSS unloaded: ${cssPath}`);
         }
       }
     }
@@ -9823,7 +9756,14 @@ ${component_stack}
       if (this.logger) {
         this.logger.info(`[CSSManager] Loaded ${cssPaths.length} CSS files`);
       } else {
-        console.log(`[CSSManager] Loaded ${cssPaths.length} CSS files`);
+        this.writeLog("info", `[CSSManager] Loaded ${cssPaths.length} CSS files`);
+      }
+    }
+    writeLog(modus, message, ...args) {
+      if (this.logger) {
+        this.logger[modus](message, ...args);
+      } else {
+        console[modus](message, ...args);
       }
     }
   };
@@ -9833,14 +9773,14 @@ ${component_stack}
   _CSSManager.DEPENDENCIES = [FoundryLogger];
   let CSSManager = _CSSManager;
   const _APIManager = class _APIManager {
-    constructor(serviceContainer, logger2) {
-      this.serviceContainer = serviceContainer;
+    constructor(logger2, serviceContainer) {
       this.logger = logger2;
+      this.serviceContainer = serviceContainer;
       this.registeredServices = /* @__PURE__ */ new Map();
     }
-    static getInstance(serviceContainer, logger2) {
+    static getInstance(logger2, serviceContainer) {
       if (!_APIManager.instance) {
-        _APIManager.instance = new _APIManager(serviceContainer, logger2);
+        _APIManager.instance = new _APIManager(logger2, serviceContainer);
       }
       return _APIManager.instance;
     }
@@ -10025,7 +9965,7 @@ ${component_stack}
   _APIManager.API_NAME = "apiManager";
   _APIManager.SERVICE_TYPE = "singleton";
   _APIManager.CLASS_NAME = "APIManager";
-  _APIManager.DEPENDENCIES = [ServiceContainer, FoundryLogger];
+  _APIManager.DEPENDENCIES = [FoundryLogger, ServiceContainer];
   let APIManager = _APIManager;
   var APIManager$1 = /* @__PURE__ */ Object.freeze({
     __proto__: null,
@@ -12052,9 +11992,9 @@ ${component_stack}
   };
   let MetadataManagementApplication = _MetadataManagementApplication;
   const foundryAdapter = new FoundryAdapter();
-  const logger = new FoundryLogger(foundryAdapter);
+  const logger = new FoundryLogger();
   const errorHandler = new ConsoleErrorHandler(logger, foundryAdapter);
-  const notificationService = new NotificationService(foundryAdapter, logger);
+  const notificationService = new NotificationService(logger, foundryAdapter);
   logger.info(`[SOLID Boot] 🚀 Phase 1: Early Bootstrap - Creating core services`);
   globalThis.relationshipApp = {
     foundryAdapter,
@@ -12073,7 +12013,7 @@ ${component_stack}
         });
         return { ServiceRegistry: ServiceRegistry3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceRegistry = ServiceRegistry2.getInstance();
+      const serviceRegistry = ServiceRegistry2.getInstance(logger2);
       logger2.info(`[SOLID Boot] 📚 Registering ${SERVICE_CONFIG.length} services from SERVICE_CONFIG`);
       serviceRegistry.registerAllServices([...SERVICE_CONFIG]);
       const { DependencyMapper: DependencyMapper2 } = await __vitePreload(async () => {
@@ -12082,7 +12022,7 @@ ${component_stack}
         });
         return { DependencyMapper: DependencyMapper3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const dependencyMapper = DependencyMapper2.getInstance(serviceRegistry);
+      const dependencyMapper = DependencyMapper2.getInstance(logger2, serviceRegistry);
       logger2.info(`[SOLID Boot] 🗺️ Building dependency graph`);
       const dependencyGraph = dependencyMapper.buildDependencyGraph();
       const { ServicePlanner: ServicePlanner2 } = await __vitePreload(async () => {
@@ -12091,7 +12031,7 @@ ${component_stack}
         });
         return { ServicePlanner: ServicePlanner3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const servicePlanner = ServicePlanner2.getInstance(serviceRegistry, dependencyMapper, logger2);
+      const servicePlanner = ServicePlanner2.getInstance(logger2, serviceRegistry, dependencyMapper);
       logger2.info(`[SOLID Boot] 📋 Creating service plans`);
       const servicePlans = servicePlanner.createServicePlans();
       const { ServiceValidator: ServiceValidator2 } = await __vitePreload(async () => {
@@ -12116,14 +12056,14 @@ ${component_stack}
         });
         return { ServiceContainer: ServiceContainer3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceContainer = ServiceContainer2.getInstance(servicePlans, serviceValidator, logger2);
+      const serviceContainer = ServiceContainer2.getInstance(logger2, servicePlans, serviceValidator);
       const { ServiceRegistrar: ServiceRegistrar2 } = await __vitePreload(async () => {
         const { ServiceRegistrar: ServiceRegistrar3 } = await Promise.resolve().then(function() {
           return ServiceRegistrar$1;
         });
         return { ServiceRegistrar: ServiceRegistrar3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceRegistrar = ServiceRegistrar2.getInstance(serviceContainer, logger2);
+      const serviceRegistrar = ServiceRegistrar2.getInstance(logger2, serviceContainer);
       logger2.info(`[SOLID Boot] 📝 Registering services`);
       serviceRegistrar.registerAllServices();
       serviceRegistrar.enableServiceDiscovery();
@@ -12133,7 +12073,7 @@ ${component_stack}
         });
         return { APIManager: APIManager3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const apiManager = APIManager2.getInstance(serviceContainer, logger2);
+      const apiManager = APIManager2.getInstance(logger2, serviceContainer);
       logger2.info(`[SOLID Boot] 🌐 Registering services in global API`);
       apiManager.registerInGlobalAPI();
       globalThis.relationshipApp = {
@@ -12200,7 +12140,7 @@ ${component_stack}
     logger2.info(`[SOLID Boot] ✅ Metadata Management Application rendered`);
     logger2.info(globalThis.game?.modules.get("relationship-app").api);
   });
-  const initialLogger = new FoundryLogger(new FoundryAdapter());
+  const initialLogger = new FoundryLogger();
   initialLogger.info(`[SOLID Boot] 🎯 SOLID Boot process initialized`);
 })();
 //# sourceMappingURL=relationship-app.js.map

@@ -8,7 +8,7 @@ export class ConsoleErrorHandler implements IErrorHandler {
   static readonly API_NAME = "errorHandler";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "ConsoleErrorHandler"; // ✅ Klassename für Dependency Resolution
-  static readonly DEPENDENCIES = [FoundryLogger, FoundryAdapter]; // ✅ Dependencies explizit definiert
+  static readonly DEPENDENCIES = [FoundryLogger, FoundryAdapter]; // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
 
   constructor(
     private readonly logger: ILogger,

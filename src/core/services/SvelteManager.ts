@@ -14,7 +14,7 @@ export class SvelteManager implements ISvelteManager {
   static readonly API_NAME = "svelteManager";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "SvelteManager"; // ✅ Klassename für Dependency Resolution
-  static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies explizit definiert
+  static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
 
   constructor(private logger: ILogger) {}
 

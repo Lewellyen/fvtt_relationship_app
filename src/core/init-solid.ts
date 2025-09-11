@@ -13,9 +13,9 @@ import MetadataManagementApplication from "../applications/MetadataManagementApp
 
 // Phase 1: Early Bootstrap - Core Services manuell erstellen
 const foundryAdapter = new FoundryAdapter();
-const logger = new FoundryLogger(foundryAdapter);
+const logger = new FoundryLogger();
 const errorHandler = new ConsoleErrorHandler(logger, foundryAdapter);
-const notificationService = new NotificationService(foundryAdapter, logger);
+const notificationService = new NotificationService(logger, foundryAdapter);
 
 logger.info(`[SOLID Boot] 🚀 Phase 1: Early Bootstrap - Creating core services`);
 
@@ -38,7 +38,7 @@ foundryAdapter.onInit(async () => {
   try {
     // ServiceRegistry erstellen (Single Source of Truth)
     const { ServiceRegistry } = await import("../services/ServiceRegistry");
-    const serviceRegistry = ServiceRegistry.getInstance();
+    const serviceRegistry = ServiceRegistry.getInstance(logger);
     
     // Alle Services aus SERVICE_CONFIG registrieren
     logger.info(`[SOLID Boot] 📚 Registering ${SERVICE_CONFIG.length} services from SERVICE_CONFIG`);
@@ -46,7 +46,7 @@ foundryAdapter.onInit(async () => {
     
     // DependencyMapper erstellen
     const { DependencyMapper } = await import("../core/services/DependencyMapper");
-    const dependencyMapper = DependencyMapper.getInstance(serviceRegistry);
+    const dependencyMapper = DependencyMapper.getInstance(logger, serviceRegistry);
     
     // Dependency Graph erstellen
     logger.info(`[SOLID Boot] 🗺️ Building dependency graph`);
@@ -54,7 +54,7 @@ foundryAdapter.onInit(async () => {
     
     // ServicePlanner erstellen
     const { ServicePlanner } = await import("../core/services/ServicePlanner");
-    const servicePlanner = ServicePlanner.getInstance(serviceRegistry, dependencyMapper, logger);
+    const servicePlanner = ServicePlanner.getInstance(logger, serviceRegistry, dependencyMapper);
     
     // Service Baupläne erstellen
     logger.info(`[SOLID Boot] 📋 Creating service plans`);
@@ -79,11 +79,11 @@ foundryAdapter.onInit(async () => {
     
     // ServiceContainer erstellen
     const { ServiceContainer } = await import("../services/ServiceContainer");
-    const serviceContainer = ServiceContainer.getInstance(servicePlans, serviceValidator, logger);
+    const serviceContainer = ServiceContainer.getInstance(logger, servicePlans, serviceValidator);
     
     // ServiceRegistrar erstellen
     const { ServiceRegistrar } = await import("../core/services/ServiceRegistrar");
-    const serviceRegistrar = ServiceRegistrar.getInstance(serviceContainer, logger);
+    const serviceRegistrar = ServiceRegistrar.getInstance(logger, serviceContainer);
     
     // Services registrieren
     logger.info(`[SOLID Boot] 📝 Registering services`);
@@ -92,7 +92,7 @@ foundryAdapter.onInit(async () => {
     
     // APIManager erstellen
     const { APIManager } = await import("../core/services/APIManager");
-    const apiManager = APIManager.getInstance(serviceContainer, logger);
+    const apiManager = APIManager.getInstance(logger, serviceContainer);
     
     // Services in globaler API registrieren
     logger.info(`[SOLID Boot] 🌐 Registering services in global API`);
@@ -179,5 +179,5 @@ foundryAdapter.onReady(async () => {
 });
 
 // Initialer Log nach Logger-Erstellung
-const initialLogger = new FoundryLogger(new FoundryAdapter());
+const initialLogger = new FoundryLogger();
 initialLogger.info(`[SOLID Boot] 🎯 SOLID Boot process initialized`);
