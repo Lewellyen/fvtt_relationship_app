@@ -1,106 +1,94 @@
 import type { IAPIManager, IServiceContainer, ILogger } from "../../interfaces";
-import { ServiceContainer } from "../../services/ServiceContainer";
-import { FoundryLogger } from "./FoundryLogger";
 
 /**
  * APIManager - Services in globaler API verfügbar machen
  * 
- * Verantwortlichkeit: Services in globaler API verfügbar machen
- * Single Responsibility: Nur API Registration
+ * Boot-Service: Wird nur während des Boot-Prozesses verwendet
+ * Lazy Service-Exposition mit Getter-Memoization
+ * Side-effect-freier Konstruktor
  */
 export class APIManager implements IAPIManager {
-  static readonly API_NAME = "apiManager";
-  static readonly SERVICE_TYPE = "singleton" as const;
-  static readonly CLASS_NAME = "APIManager"; // ✅ Klassename für Dependency Resolution
-  static readonly DEPENDENCIES = [FoundryLogger, ServiceContainer]; // ✅ Dependencies explizit definiert
-
-  private static instance: APIManager;
   private readonly registeredServices = new Map<string, any>();
 
   constructor(
     private logger: ILogger,
     private serviceContainer: IServiceContainer
-  ) {}
-
-  static getInstance(logger: ILogger, serviceContainer: IServiceContainer): APIManager {
-    if (!APIManager.instance) {
-      APIManager.instance = new APIManager(logger, serviceContainer);
-    }
-    return APIManager.instance;
+  ) {
+    // Side-effect-freier Konstruktor
   }
 
   /**
    * Services in globaler API registrieren
    */
   registerInGlobalAPI(): void {
-    this.writeLog("info", `[APIManager] 🌐 Registering services in global API`);
+    this.logger.info(`[APIManager] 🌐 Registering services in global API (lazy)`);
     
     const moduleApi = this.getModuleAPI();
     if (!moduleApi) {
-      this.writeLog("error", `[APIManager] ❌ Module API not available`);
+      this.logger.error(`[APIManager] ❌ Module API not available`);
       return;
     }
     
     const servicePlans = this.serviceContainer.getAllServicePlans();
-    this.writeLog("info", `[APIManager] 📋 Registering ${servicePlans.size} services in API`);
+    this.logger.info(`[APIManager] 📋 Registering ${servicePlans.size} services in API (lazy)`);
     
     for (const [serviceClass, plan] of servicePlans) {
       this.registerServiceInAPI(serviceClass, plan, moduleApi);
     }
     
-    this.writeLog("info", `[APIManager] ✅ All services registered in global API`);
-    this.writeLog("info", `[APIManager] 📊 Final registered services count: ${this.registeredServices.size}`);
+    this.logger.info(`[APIManager] ✅ All services registered in global API (lazy)`);
+    this.logger.info(`[APIManager] 📊 Final registered services count: ${this.registeredServices.size}`);
   }
 
 
   /**
-   * Einzelnen Service in API registrieren
+   * Service in API registrieren - LAZY mit Getter-Memoization
    */
   private registerServiceInAPI(serviceClass: any, plan: any, moduleApi: any): void {
-    const apiName = plan.apiName;
-    const serviceType = plan.serviceType;
+    const apiName = plan.apiName || serviceClass.API_NAME || serviceClass.name;
+    const serviceType = plan.serviceType || serviceClass.SERVICE_TYPE;
     
-    this.writeLog("info", `[APIManager] 🌐 Registering service in API:`, {
+    this.logger.info(`[APIManager] 🌐 Registering service in API:`, {
       service: serviceClass.name || serviceClass,
       apiName,
       serviceType
     });
     
-    if (!apiName || !serviceType) {
-      this.writeLog("warn", `[APIManager] ⚠️ Service ${serviceClass.name || serviceClass} missing API_NAME or SERVICE_TYPE`);
+    if (!apiName) {
+      this.logger.warn(`[APIManager] ⚠️ Service has no API name: ${serviceClass.name || serviceClass}`);
       return;
     }
-    
+
     try {
-      if (serviceType === "singleton") {
-        // Singleton: Sofort Service-Instanz registrieren
-        const serviceInstance = this.serviceContainer.getService(serviceClass);
-        moduleApi[apiName] = serviceInstance;
-        this.registeredServices.set(apiName, serviceInstance);
-        
-        this.writeLog("info", `[APIManager] ✅ Singleton service registered: ${apiName} -> ${(serviceInstance as any).constructor.name}`);
-        this.writeLog("info", `[APIManager] 📊 Registered services count: ${this.registeredServices.size}`);
-      } else if (serviceType === "factory") {
-        // Factory: Factory-Funktion registrieren
-        moduleApi[apiName] = () => {
-          this.writeLog("info", `[APIManager] 🏭 Factory called for: ${apiName}`);
-          return this.serviceContainer.getService(serviceClass);
+      // Lazy Getter mit Memoization für alle Service-Typen
+      Object.defineProperty(moduleApi, apiName, {
+        configurable: true,
+        enumerable: true,
+        get: () => {
+          // Service erst beim ersten Zugriff erstellen
+          const instance = this.serviceContainer.getService(serviceClass);
+          // Memoization: Getter durch Wert ersetzen
+          Object.defineProperty(moduleApi, apiName, { 
+            value: instance, 
+            enumerable: true, 
+            configurable: false 
+          });
+          return instance;
+        }
+      });
+
+      // Factory für Services mit create-Methode
+      if (typeof serviceClass.prototype.create === 'function') {
+        moduleApi[apiName] = (...args: unknown[]) => {
+          const service: any = this.serviceContainer.getService(serviceClass);
+          return service.create(...args);
         };
-        
-        this.writeLog("info", `[APIManager] ✅ Factory service registered: ${apiName}`);
-      } else if (serviceType === "transient") {
-        // Transient: Factory-Funktion registrieren (jeder Aufruf erstellt neue Instanz)
-        moduleApi[apiName] = () => {
-          this.writeLog("info", `[APIManager] 🏭 Transient factory called for: ${apiName}`);
-          return this.serviceContainer.createService(serviceClass);
-        };
-        
-        this.writeLog("info", `[APIManager] ✅ Transient service registered: ${apiName}`);
-      } else {
-        this.writeLog("warn", `[APIManager] ⚠️ Unknown service type '${serviceType}' for ${apiName}`);
       }
+
+      this.registeredServices.set(apiName, serviceClass);
+      this.logger.info(`[APIManager] ✅ Service registered in API (lazy): ${apiName}`);
     } catch (error) {
-      this.writeLog("error", `[APIManager] ❌ Failed to register service ${apiName}:`, error);
+      this.logger.error(`[APIManager] ❌ Failed to register service ${apiName}:`, error);
     }
   }
 
@@ -111,15 +99,15 @@ export class APIManager implements IAPIManager {
     let moduleApi = (globalThis as any).game?.modules?.get("relationship-app")?.api;
     
     if (!moduleApi) {
-      this.writeLog("info", `[APIManager] 🔧 Module API not available, creating it`);
+      this.logger.info( `[APIManager] 🔧 Module API not available, creating it`);
       
       const module = (globalThis as any).game?.modules?.get("relationship-app");
       if (module) {
         module.api = {};
         moduleApi = module.api;
-        this.writeLog("info", `[APIManager] ✅ Module API created`);
+        this.logger.info( `[APIManager] ✅ Module API created`);
       } else {
-        this.writeLog("error", `[APIManager] ❌ Module 'relationship-app' not found`);
+        this.logger.error( `[APIManager] ❌ Module 'relationship-app' not found`);
         return null;
       }
     }
@@ -131,15 +119,15 @@ export class APIManager implements IAPIManager {
    * Service aus API entfernen
    */
   unregisterFromAPI(apiName: string): void {
-    this.writeLog("info", `[APIManager] 🗑️ Unregistering service from API: ${apiName}`);
+    this.logger.info( `[APIManager] 🗑️ Unregistering service from API: ${apiName}`);
     
     const moduleApi = this.getModuleAPI();
     if (moduleApi && moduleApi[apiName]) {
       delete moduleApi[apiName];
       this.registeredServices.delete(apiName);
-      this.writeLog("info", `[APIManager] ✅ Service unregistered from API: ${apiName}`);
+      this.logger.info( `[APIManager] ✅ Service unregistered from API: ${apiName}`);
     } else {
-      this.writeLog("info", `[APIManager] ℹ️ Service not found in API: ${apiName}`);
+      this.logger.info( `[APIManager] ℹ️ Service not found in API: ${apiName}`);
     }
   }
 
@@ -147,7 +135,7 @@ export class APIManager implements IAPIManager {
    * Alle Services aus API entfernen
    */
   unregisterAllFromAPI(): void {
-    this.writeLog("info", `[APIManager] 🗑️ Unregistering all services from API (${this.registeredServices.size} registered)`);
+    this.logger.info( `[APIManager] 🗑️ Unregistering all services from API (${this.registeredServices.size} registered)`);
     
     const moduleApi = this.getModuleAPI();
     if (moduleApi) {
@@ -157,14 +145,14 @@ export class APIManager implements IAPIManager {
     }
     
     this.registeredServices.clear();
-    this.writeLog("info", `[APIManager] ✅ All services unregistered from API`);
+    this.logger.info( `[APIManager] ✅ All services unregistered from API`);
   }
 
   /**
    * API Metadaten generieren
    */
   generateAPIMetadata(): APIMetadata {
-    this.writeLog("info", `[APIManager] 📊 Generating API metadata`);
+    this.logger.info( `[APIManager] 📊 Generating API metadata`);
     
     const metadata: APIMetadata = {
       moduleId: "relationship-app",
@@ -186,7 +174,7 @@ export class APIManager implements IAPIManager {
       });
     }
     
-    this.writeLog("info", `[APIManager] 📊 API metadata generated:`, {
+    this.logger.info( `[APIManager] 📊 API metadata generated:`, {
       totalServices: metadata.totalServices,
       services: Array.from(metadata.services.keys())
     });
@@ -237,13 +225,6 @@ export class APIManager implements IAPIManager {
     return services;
   }
 
-  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
-    if (this.logger) {
-      this.logger[modus](message, ...args);
-    } else {
-      console[modus](message, ...args);
-    }
-  }
 }
 
 /**

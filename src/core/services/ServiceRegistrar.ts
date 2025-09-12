@@ -1,81 +1,66 @@
 import type { IServiceRegistrar, IServiceContainer, ILogger } from "../../interfaces";
-import { ServiceContainer } from "../../services/ServiceContainer";
-import { FoundryLogger } from "./FoundryLogger";
 
 /**
  * ServiceRegistrar - Services registrieren und verfügbar machen
  * 
- * Verantwortlichkeit: Services registrieren und verfügbar machen
- * Single Responsibility: Nur Service Registration
+ * Boot-Service: Wird nur während des Boot-Prozesses verwendet
+ * Registriert nur Factories, keine sofortige Auflösung
+ * Side-effect-freier Konstruktor
  */
 export class ServiceRegistrar implements IServiceRegistrar {
-  static readonly API_NAME = "serviceRegistrar";
-  static readonly SERVICE_TYPE = "singleton" as const;
-  static readonly CLASS_NAME = "ServiceRegistrar"; // ✅ Klassename für Dependency Resolution
-  static readonly DEPENDENCIES = [FoundryLogger, ServiceContainer]; // ✅ Dependencies explizit definiert
-
-  private static instance: ServiceRegistrar;
   private readonly serviceLocator = new Map<any, () => any>();
 
   constructor(
     private logger: ILogger,
     private serviceContainer: IServiceContainer
-  ) {}
-
-  static getInstance(logger: ILogger, serviceContainer: IServiceContainer): ServiceRegistrar {
-    if (!ServiceRegistrar.instance) {
-      ServiceRegistrar.instance = new ServiceRegistrar(logger, serviceContainer);
-    }
-    return ServiceRegistrar.instance;
+  ) {
+    // Side-effect-freier Konstruktor
   }
 
   /**
-   * Alle Services registrieren
+   * Alle Services registrieren - NUR FACTORIES
    */
   registerAllServices(): void {
-    this.writeLog("info", `[ServiceRegistrar] 📝 Registering all services`);
+    this.logger.info(`[ServiceRegistrar] 📝 Registering all services as factories`);
     
     const servicePlans = this.serviceContainer.getAllServicePlans();
-    this.writeLog("info", `[ServiceRegistrar] 📋 Registering ${servicePlans.size} services`);
+    this.logger.info(`[ServiceRegistrar] 📋 Registering ${servicePlans.size} services as factories`);
     
     for (const [serviceClass, plan] of servicePlans) {
       this.registerService(serviceClass, plan);
     }
     
-    this.writeLog("info", `[ServiceRegistrar] ✅ All services registered`);
+    this.logger.info(`[ServiceRegistrar] ✅ All services registered as factories`);
   }
 
   /**
    * Einzelnen Service registrieren
    */
   registerService(serviceClass: any, plan: any): void {
-    this.writeLog("info", `[ServiceRegistrar] 📝 Registering service: ${serviceClass.name || serviceClass}`);
+    const serviceName = serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
+    this.logger.info(`[ServiceRegistrar] 📝 Registering service factory: ${serviceName}`);
     
-    // Factory-Funktion erstellen, die Service aus Container holt
-    const serviceFactory = () => {
-      this.writeLog("info", `[ServiceRegistrar] 🏭 Factory called for: ${serviceClass.name || serviceClass}`);
-      return this.serviceContainer.getService(serviceClass);
-    };
+    // Factory registrieren - keine sofortige Auflösung
+    this.serviceLocator.set(serviceClass, () => this.serviceContainer.getService(serviceClass));
+    this.serviceLocator.set(serviceName, () => this.serviceContainer.getService(serviceClass));
     
-    // Service sowohl mit Klasse als auch mit String-Namen registrieren
-    this.serviceLocator.set(serviceClass, serviceFactory);
-    this.serviceLocator.set(serviceClass.name, serviceFactory);
-    this.writeLog("info", `[ServiceRegistrar] ✅ Service registered: ${serviceClass.name || serviceClass} (both class and string)`);
+    this.logger.info(`[ServiceRegistrar] ✅ Service factory registered: ${serviceName}`);
   }
 
   /**
-   * Service über ServiceContainer abrufen
+   * Service über Factory abrufen - On-Demand
    */
   getService<T>(identifier: any): T {
-    this.writeLog("info", `[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}`);
+    this.logger.info(`[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}`);
     
     const factory = this.serviceLocator.get(identifier);
     if (!factory) {
       throw new Error(`Service ${identifier.name || identifier} not registered`);
     }
     
+    // Factory aufrufen - Service wird erst hier erstellt
     const service = factory();
-    this.writeLog("info", `[ServiceRegistrar] ✅ Service retrieved: ${identifier.name || identifier}`);
+    this.logger.info(`[ServiceRegistrar] ✅ Service retrieved: ${identifier.name || identifier}`);
     return service;
   }
 
@@ -97,13 +82,13 @@ export class ServiceRegistrar implements IServiceRegistrar {
    * Service aus Registrierung entfernen
    */
   unregisterService(identifier: any): void {
-    this.writeLog("info", `[ServiceRegistrar] 🗑️ Unregistering service: ${identifier.name || identifier}`);
+    this.logger.info( `[ServiceRegistrar] 🗑️ Unregistering service: ${identifier.name || identifier}`);
     
     if (this.serviceLocator.has(identifier)) {
       this.serviceLocator.delete(identifier);
-      this.writeLog("info", `[ServiceRegistrar] ✅ Service unregistered: ${identifier.name || identifier}`);
+      this.logger.info( `[ServiceRegistrar] ✅ Service unregistered: ${identifier.name || identifier}`);
     } else {
-      this.writeLog("info", `[ServiceRegistrar] ℹ️ Service not registered: ${identifier.name || identifier}`);
+      this.logger.info( `[ServiceRegistrar] ℹ️ Service not registered: ${identifier.name || identifier}`);
     }
   }
 
@@ -111,23 +96,23 @@ export class ServiceRegistrar implements IServiceRegistrar {
    * Alle Services aus Registrierung entfernen
    */
   unregisterAll(): void {
-    this.writeLog("info", `[ServiceRegistrar] 🗑️ Unregistering all services (${this.serviceLocator.size} registered)`);
+    this.logger.info( `[ServiceRegistrar] 🗑️ Unregistering all services (${this.serviceLocator.size} registered)`);
     
     this.serviceLocator.clear();
-    this.writeLog("info", `[ServiceRegistrar] ✅ All services unregistered`);
+    this.logger.info( `[ServiceRegistrar] ✅ All services unregistered`);
   }
 
   /**
    * Service Discovery - Services auffindbar machen
    */
   enableServiceDiscovery(): void {
-    this.writeLog("info", `[ServiceRegistrar] 🔍 Enabling service discovery`);
+    this.logger.info( `[ServiceRegistrar] 🔍 Enabling service discovery`);
     
     // ServiceContainer in globalThis verfügbar machen
     (globalThis as any).relationshipApp = (globalThis as any).relationshipApp || {};
     (globalThis as any).relationshipApp.serviceLocator = this;
     
-    this.writeLog("info", `[ServiceRegistrar] ✅ Service discovery enabled`);
+    this.logger.info( `[ServiceRegistrar] ✅ Service discovery enabled`);
   }
 
   /**
@@ -162,11 +147,4 @@ export class ServiceRegistrar implements IServiceRegistrar {
     return metadata;
   }
 
-  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
-    if (this.logger) {
-      this.logger[modus](message, ...args);
-    } else {
-      console[modus](message, ...args);
-    }
-  }
 }

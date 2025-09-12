@@ -4,12 +4,13 @@ import { ConsoleErrorHandler } from "../core/services/ConsoleErrorHandler";
 import { FoundryAdapter } from "../core/adapters/FoundryAdapter";
 import { NotificationService } from "../services/NotificationService";
 import { SERVICE_CONFIG } from "../services/index";
-
-
-
+import { setContainer } from "../core/edge/appContext";
 import MetadataManagementApplication from "../applications/MetadataManagementApplication";
 
 // ✅ SOLID-konformer Bootablauf
+
+
+// ✅ SOLID-konformer Bootablauf - On-Demand-Architektur
 
 // Phase 1: Early Bootstrap - Core Services manuell erstellen
 const foundryAdapter = new FoundryAdapter();
@@ -36,33 +37,30 @@ foundryAdapter.onInit(async () => {
   logger.info(`[SOLID Boot] 🚀 Phase 2: Service Registry Setup`);
 
   try {
-    // ServiceRegistry erstellen (Single Source of Truth)
+    // Boot-Services direkt erstellen (nicht registrieren)
     const { ServiceRegistry } = await import("../services/ServiceRegistry");
-    const serviceRegistry = ServiceRegistry.getInstance(logger);
+    const serviceRegistry = new ServiceRegistry(logger); // ← Direkt erstellen
     
-    // Alle Services aus SERVICE_CONFIG registrieren
-    logger.info(`[SOLID Boot] 📚 Registering ${SERVICE_CONFIG.length} services from SERVICE_CONFIG`);
-    serviceRegistry.registerAllServices([...SERVICE_CONFIG]);
-    
-    // DependencyMapper erstellen
     const { DependencyMapper } = await import("../core/services/DependencyMapper");
-    const dependencyMapper = DependencyMapper.getInstance(logger, serviceRegistry);
+    const dependencyMapper = new DependencyMapper(logger, serviceRegistry); // ← Direkt erstellen
+    
+    const { ServicePlanner } = await import("../core/services/ServicePlanner");
+    const servicePlanner = new ServicePlanner(logger, serviceRegistry, dependencyMapper); // ← Direkt erstellen
+    
+    const { ServiceValidator } = await import("../core/services/ServiceValidator");
+    const serviceValidator = new ServiceValidator(logger); // ← Direkt erstellen
+    
+    // Runtime Services registrieren
+    logger.info(`[SOLID Boot] 📚 Registering ${SERVICE_CONFIG.length} runtime services`);
+    serviceRegistry.registerAllServices([...SERVICE_CONFIG]);
     
     // Dependency Graph erstellen
     logger.info(`[SOLID Boot] 🗺️ Building dependency graph`);
     const dependencyGraph = dependencyMapper.buildDependencyGraph();
     
-    // ServicePlanner erstellen
-    const { ServicePlanner } = await import("../core/services/ServicePlanner");
-    const servicePlanner = ServicePlanner.getInstance(logger, serviceRegistry, dependencyMapper);
-    
     // Service Baupläne erstellen
     logger.info(`[SOLID Boot] 📋 Creating service plans`);
     const servicePlans = servicePlanner.createServicePlans();
-    
-    // ServiceValidator erstellen
-    const { ServiceValidator } = await import("../core/services/ServiceValidator");
-    const serviceValidator = ServiceValidator.getInstance(logger);
     
     // Dependencies und Pläne validieren
     logger.info(`[SOLID Boot] 🔍 Validating dependencies and plans`);
@@ -77,40 +75,36 @@ foundryAdapter.onInit(async () => {
       throw new Error(`Plan validation failed: ${planValidation.errors.join(", ")}`);
     }
     
-    // ServiceContainer erstellen
+    // Runtime Services erstellen
     const { ServiceContainer } = await import("../services/ServiceContainer");
-    const serviceContainer = ServiceContainer.getInstance(logger, servicePlans, serviceValidator);
+    const serviceContainer = new ServiceContainer(logger, servicePlans, serviceValidator);
     
-    // ServiceRegistrar erstellen
     const { ServiceRegistrar } = await import("../core/services/ServiceRegistrar");
-    const serviceRegistrar = ServiceRegistrar.getInstance(logger, serviceContainer);
+    const serviceRegistrar = new ServiceRegistrar(logger, serviceContainer);
     
-    // Services registrieren
-    logger.info(`[SOLID Boot] 📝 Registering services`);
-    serviceRegistrar.registerAllServices();
-    serviceRegistrar.enableServiceDiscovery();
-    
-    // APIManager erstellen
     const { APIManager } = await import("../core/services/APIManager");
-    const apiManager = APIManager.getInstance(logger, serviceContainer);
+    const apiManager = new APIManager(logger, serviceContainer);
     
-    // Services in globaler API registrieren
-    logger.info(`[SOLID Boot] 🌐 Registering services in global API`);
+    // Services registrieren (nur Factories)
+    logger.info(`[SOLID Boot] 📝 Registering services as factories`);
+    serviceRegistrar.registerAllServices();
+    
+    // Services in globaler API registrieren (lazy)
+    logger.info(`[SOLID Boot] 🌐 Registering services in global API (lazy)`);
     apiManager.registerInGlobalAPI();
     
-    // Services global verfügbar machen
+    // Container für Edge-Adapter setzen
+    setContainer(serviceContainer); // ← WICHTIG: genau 1x setzen
+    
+    // Runtime Services global verfügbar machen
     (globalThis as any).relationshipApp = {
       ...(globalThis as any).relationshipApp,
-      serviceRegistry,
-      dependencyMapper,
-      servicePlanner,
-      serviceValidator,
-      serviceContainer,
-      serviceRegistrar,
-      apiManager,
+      serviceContainer,    // ← Für getService()
+      serviceRegistrar,   // ← Für getService()
+      apiManager,         // ← Für API-Zugriff
     };
     
-    logger.info(`[SOLID Boot] ✅ Phase 2 completed - All services registered and available`);
+    logger.info(`[SOLID Boot] ✅ Phase 2 completed - All services registered and available (on-demand)`);
     
   } catch (error) {
     logger.error(`[SOLID Boot] ❌ Phase 2 failed:`, error);
@@ -119,19 +113,15 @@ foundryAdapter.onInit(async () => {
   }
 });
 
-// Phase 3: Service Creation - Hooks.once("ready")
+// Phase 3: Module Initialization - Hooks.once("ready")
 foundryAdapter.onReady(async () => {
   const { logger, errorHandler, notificationService } = (globalThis as any).relationshipApp;
   
-  logger.info(`[SOLID Boot] 🚀 Phase 3: Service Creation`);
+  logger.info(`[SOLID Boot] 🚀 Phase 3: Module Initialization`);
   
   try {
-    // ServiceContainer aus globalem Scope holen
-    const { serviceContainer } = (globalThis as any).relationshipApp;
-    
-    // Alle Services erstellen
-    logger.info(`[SOLID Boot] 🏗️ Creating all services`);
-    serviceContainer.createAllServices();
+    // On-Demand: Services werden erst bei Bedarf erstellt
+    // Keine createAllServices() mehr nötig
     
     // RegistrationService manuell erstellen (für Foundry-Integration)
     const { RegistrationService } = await import("../services/RegistrationService");
@@ -145,39 +135,21 @@ foundryAdapter.onReady(async () => {
     logger.info(`[SOLID Boot] 🚀 Starting module initialization`);
     await moduleInitializer.initialize();
     
-    // API Status anzeigen
-    const { apiManager } = (globalThis as any).relationshipApp;
-    const apiStatus = apiManager.getAPIStatus();
-    const apiMetadata = apiManager.generateAPIMetadata();
-    
-    logger.info(`[SOLID Boot] 📊 API Status:`, {
-      isAvailable: apiStatus.isAvailable,
-      registeredServices: apiStatus.registeredServices,
-      serviceNames: apiStatus.serviceNames
-    });
-    
-    logger.info(`[SOLID Boot] 📊 API Metadata:`, {
-      totalServices: apiMetadata.totalServices,
-      services: Array.from(apiMetadata.services.keys())
-    });
-    
-    logger.info(`[SOLID Boot] ✅ Phase 3 completed - All services created and module initialized`);
+    logger.info(`[SOLID Boot] ✅ Phase 3 completed - Module initialized`);
     notificationService.showSuccess("SOLID Boot completed successfully!");
+
+
     
   } catch (error) {
     logger.error(`[SOLID Boot] ❌ Phase 3 failed:`, error);
     errorHandler.handle(error, "SOLID Boot Phase 3");
-    notificationService.showError("Service creation failed. Check console for details.");
+    notificationService.showError("Module initialization failed. Check console for details.");
   }
 
   // Metadata Management Application (noch nicht SOLID - wird später refactored)
-    const metadataManagementApplication = new MetadataManagementApplication();
-    await metadataManagementApplication.render({ force: true });
-    logger.info(`[SOLID Boot] ✅ Metadata Management Application rendered`);
+  const metadataManagementApplication = new MetadataManagementApplication();
+  await metadataManagementApplication.render({ force: true });
+  logger.info(`[SOLID Boot] Metadata Management Application rendered`);
 
-    logger.info((globalThis as any).game?.modules.get("relationship-app").api);
 });
 
-// Initialer Log nach Logger-Erstellung
-const initialLogger = new FoundryLogger();
-initialLogger.info(`[SOLID Boot] 🎯 SOLID Boot process initialized`);

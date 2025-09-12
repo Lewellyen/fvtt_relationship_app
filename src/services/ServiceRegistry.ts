@@ -16,7 +16,7 @@ export class ServiceRegistry implements IServiceRegistry {
   private static instance: ServiceRegistry;
   private readonly serviceRegistry = new Map<any, any>();
 
-  private constructor(private logger: ILogger) {}
+  constructor(private logger: ILogger) {}
 
   static getInstance(logger: ILogger): ServiceRegistry {
     if (!ServiceRegistry.instance) {

@@ -11,7 +11,7 @@ var __privateSet = (obj, member, value, setter) => (__accessCheck(obj, member, "
 var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "access private method"), method);
 (function() {
   "use strict";
-  var _listeners, _observer, _options, _ResizeObserverSingleton_instances, getObserver_fn, _anchor, _hydrate_open, _props, _children, _effect, _main_effect, _failed_effect, _is_creating_fallback, _Boundary_instances, run_fn, _events, _instance, _a;
+  var _listeners, _observer, _options, _ResizeObserverSingleton_instances, getObserver_fn, _anchor, _hydrate_open, _props, _children, _effect, _main_effect, _failed_effect, _is_creating_fallback, _Boundary_instances, run_fn, _events, _instance, _a, _logger, _svelte, _css;
   var __vite_style__ = document.createElement("style");
   __vite_style__.textContent = '\n  .relationship-graph-view.svelte-qaxdvx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n    height: 100vh;\n  }\n\n  .graph-container.svelte-qaxdvx {\n    flex: 1;\n    min-height: 0;\n  }\n\n  .info-container.svelte-qaxdvx {\n    height: 300px;\n    min-height: 300px;\n  }\n\n  .relationship-graph-view.svelte-i1dhkx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n  }\n\r\n  .form-field.svelte-1ykx1li {\r\n    margin-bottom: 1rem;\r\n  }\r\n  \r\n  .field-width-full.svelte-1ykx1li {\r\n    width: 100%;\r\n  }\r\n  \r\n  .field-width-half.svelte-1ykx1li {\r\n    width: calc(50% - 0.5rem);\r\n  }\r\n  \r\n  .field-width-third.svelte-1ykx1li {\r\n    width: calc(33.333% - 0.667rem);\r\n  }\r\n  \r\n  .field-label.svelte-1ykx1li {\r\n    display: block;\r\n    margin-bottom: 0.5rem;\r\n    font-weight: 500;\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li,\r\n  .field-textarea.svelte-1ykx1li,\r\n  .field-select.svelte-1ykx1li {\r\n    width: 100%;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    font-size: 0.9rem;\r\n    transition: border-color 0.2s, box-shadow 0.2s;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li:focus,\r\n  .field-textarea.svelte-1ykx1li:focus,\r\n  .field-select.svelte-1ykx1li:focus {\r\n    outline: none;\r\n    border-color: var(--color-primary);\r\n    box-shadow: 0 0 0 2px var(--color-primary-alpha);\r\n  }\r\n  \r\n  .field-textarea.svelte-1ykx1li {\r\n    min-height: 80px;\r\n    resize: vertical;\r\n    font-family: inherit;\r\n  }\r\n  \r\n  .field-select.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  /* Checkbox-Gruppe Styles */\r\n  .checkbox-group.svelte-1ykx1li {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 0.5rem;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    background: var(--color-background-primary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    cursor: pointer;\r\n    padding: 0.25rem;\r\n    border-radius: 4px;\r\n    transition: background-color 0.2s;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li:hover {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li input[type="checkbox"]:where(.svelte-1ykx1li) {\r\n    margin: 0;\r\n    accent-color: var(--color-primary);\r\n    width: 1.2rem;\r\n    height: 1.2rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li span:where(.svelte-1ykx1li) {\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-checkbox.svelte-1ykx1li {\r\n    margin-right: 0.5rem;\r\n    width: auto;\r\n  }\r\n  \r\n  .checkbox-label.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-text.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-container.svelte-1ykx1li {\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    align-items: center;\r\n  }\r\n  \r\n  .field-color.svelte-1ykx1li {\r\n    width: 3rem;\r\n    height: 2.5rem;\r\n    padding: 0;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-text.svelte-1ykx1li {\r\n    flex: 1;\r\n    font-family: monospace;\r\n  }\r\n  \r\n  .field-description.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .field-error.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    color: var(--color-error);\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    border-color: var(--color-error);\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li):focus {\r\n    border-color: var(--color-error);\r\n    box-shadow: 0 0 0 2px var(--color-error-alpha);\r\n  }\r\n  \r\n  .disabled.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-select:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-checkbox:where(.svelte-1ykx1li) {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .readonly.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    background-color: var(--color-background-secondary);\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  /* Responsive Design */\r\n  @media (max-width: 768px) {\r\n    .field-width-half.svelte-1ykx1li,\r\n    .field-width-third.svelte-1ykx1li {\r\n      width: 100%;\r\n    }\r\n  }\r\n\r\n  /* Foundry VTT CSS-Variablen verwenden */\r\n  .form-container.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    padding: 1rem;\r\n  }\r\n  \r\n  .form-header.svelte-1hegfbw {\r\n    border-bottom: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: var(--border-radius) var(--border-radius) 0 0;\r\n    margin: -1rem -1rem 1rem -1rem;\r\n  }\r\n  \r\n  .form-title.svelte-1hegfbw {\r\n    color: var(--color-text-primary);\r\n    margin: 0;\r\n    font-size: 1.2rem;\r\n    font-weight: 600;\r\n  }\r\n  \r\n  .form-description.svelte-1hegfbw {\r\n    color: var(--color-text-secondary);\r\n    margin: 0.5rem 0 0 0;\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n\r\n  \r\n  .field-container.svelte-1hegfbw {\r\n    margin-bottom: 1.5rem;\r\n    transition: all 0.3s ease;\r\n  }\r\n  \r\n  .field-container.svelte-1hegfbw:focus-within {\r\n    transform: translateY(-2px);\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\r\n    border-radius: var(--border-radius);\r\n    padding: 0.5rem;\r\n    margin: 0.5rem -0.5rem 1.5rem -0.5rem;\r\n  }\r\n  \r\n  .form-actions.svelte-1hegfbw {\r\n    border-top: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: 0 0 var(--border-radius) var(--border-radius);\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    justify-content: flex-end;\r\n    margin: 1rem -1rem -1rem -1rem;\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw {\r\n    padding: 0.5rem 1rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    cursor: pointer;\r\n    font-size: 0.9rem;\r\n    transition: all 0.2s;\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw {\r\n    background: var(--color-primary);\r\n    color: var(--color-text-primary);\r\n    border-color: var(--color-primary);\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-primary-hover);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw:disabled {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .spinner.svelte-1hegfbw {\r\n    display: inline-block;\r\n    width: 1rem;\r\n    height: 1rem;\r\n    border: 2px solid transparent;\r\n    border-top: 2px solid currentColor;\r\n    border-radius: 50%;\r\n    animation: svelte-1hegfbw-spin 1s linear infinite;\r\n  }\r\n  \r\n  @keyframes svelte-1hegfbw-spin {\r\n    0% { transform: rotate(0deg); }\r\n    100% { transform: rotate(360deg); }\r\n  }\r\n  \r\n  /* Scroll-Indikator für bessere UX */\r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar {\r\n    width: 12px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-track {\r\n    background: var(--color-background-secondary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb {\r\n    background: var(--color-border-primary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb:hover {\r\n    background: var(--color-primary);\r\n  }\r\n  \r\n  /* Fokus-Indikator für bessere Accessibility */\r\n  .field-container.svelte-1hegfbw:focus-within .field-label {\r\n    color: var(--color-primary);\r\n    font-weight: 600;\r\n  }\r\n  \r\n  /* Smooth Transitions für alle interaktiven Elemente */\r\n  .form-container.svelte-1hegfbw :where(.svelte-1hegfbw) {\r\n    transition: border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;\r\n  }\r\n\n  /* Gleiches Scrolling wie DynamicFormSheet */\n  .metadata-container.svelte-qx734j {\n    height: 100vh;\n    max-height: 100vh;\n    overflow-y: auto;\n    padding: 1rem;\n    box-sizing: border-box;\n  }\n\n  .metadata-header.svelte-qx734j {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 2rem;\n    padding-bottom: 1rem;\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .header-actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n    align-items: center;\n  }\n\n  .metadata-header.svelte-qx734j h1:where(.svelte-qx734j) {\n    margin: 0;\n    font-size: 1.5rem;\n    font-weight: 600;\n  }\n\n  .metadata-content.svelte-qx734j {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .schema-card.svelte-qx734j {\n    background: var(--color-background-secondary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 6px;\n    overflow: hidden;\n  }\n\n  .schema-card.selected.svelte-qx734j {\n    border-color: var(--color-primary);\n  }\n\n  .schema-header.svelte-qx734j {\n    padding: 1rem;\n    cursor: pointer;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    background: var(--color-background-primary);\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .schema-header.svelte-qx734j:hover {\n    background: var(--color-background-tertiary);\n  }\n\n  .schema-header.svelte-qx734j h3:where(.svelte-qx734j) {\n    margin: 0;\n    font-size: 1.1rem;\n    font-weight: 600;\n  }\n\n  .version.svelte-qx734j {\n    background: var(--color-info);\n    color: var(--color-text-primary);\n    padding: 0.2rem 0.5rem;\n    border-radius: 4px;\n    font-size: 0.8rem;\n  }\n\n  .schema-details.svelte-qx734j {\n    padding: 1rem;\n    background: var(--color-background-secondary);\n  }\n\n  .schema-details.svelte-qx734j p:where(.svelte-qx734j) {\n    margin: 0.5rem 0;\n    font-size: 0.9rem;\n  }\n\n  .actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n    margin: 1rem 0;\n    flex-wrap: wrap;\n  }\n\n  .rows-section.svelte-qx734j {\n    margin-top: 1.5rem;\n    padding-top: 1rem;\n    border-top: 1px solid var(--color-border-primary);\n  }\n\n  .rows-section.svelte-qx734j h4:where(.svelte-qx734j) {\n    margin: 0 0 1rem 0;\n    font-size: 1rem;\n    font-weight: 600;\n  }\n\n  .row-item.svelte-qx734j {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0.75rem;\n    background: var(--color-background-primary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 4px;\n    margin-bottom: 0.5rem;\n  }\n\n  .row-info.svelte-qx734j {\n    font-size: 0.9rem;\n  }\n\n  .row-actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n  }\n\n  .error-message.svelte-qx734j,\n  .success-message.svelte-qx734j {\n    padding: 1rem;\n    border-radius: 4px;\n    margin-bottom: 1rem;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n  }\n\n  .error-message.svelte-qx734j {\n    background: var(--color-error-background);\n    color: var(--color-error);\n    border: 1px solid var(--color-error-border);\n  }\n  \n  .success-message.svelte-qx734j {\n    background: var(--color-success-background);\n    color: var(--color-success);\n    border: 1px solid var(--color-success-border);\n  }\n\n  .close-btn.svelte-qx734j {\n    background: none;\n    border: none;\n    font-size: 1.2rem;\n    cursor: pointer;\n    color: inherit;\n    padding: 0;\n    margin-left: 1rem;\n  }\n\n  .close-btn.svelte-qx734j:hover {\n    opacity: 0.7;\n  }\n/*$vite$:1*/';
   document.head.appendChild(__vite_style__);
@@ -563,255 +563,33 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
     __proto__: null,
     RegistrationService
   });
-  const _ServiceRegistry = class _ServiceRegistry {
-    constructor(logger2) {
-      this.logger = logger2;
-      this.serviceRegistry = /* @__PURE__ */ new Map();
-    }
-    static getInstance(logger2) {
-      if (!_ServiceRegistry.instance) {
-        _ServiceRegistry.instance = new _ServiceRegistry(logger2);
-      }
-      return _ServiceRegistry.instance;
-    }
-    /**
-     * EINZIGER Eingangspunkt für Services
-     * Registriert alle Services aus einer Service-Quelle
-     */
-    registerAllServices(serviceSource) {
-      this.writeLog("info", `[ServiceRegistry] 📚 Registering ${serviceSource.length} services from source`);
-      for (const serviceConfig of serviceSource) {
-        const serviceName = serviceConfig.name.CLASS_NAME || serviceConfig.name.className || serviceConfig.name.name || serviceConfig.name;
-        const serviceClass = serviceConfig.class;
-        this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
-        this.registerService(serviceClass, serviceClass);
-      }
-      this.writeLog("info", `[ServiceRegistry] ✅ All services registered. Total: ${this.serviceRegistry.size}`);
-    }
-    /**
-     * Einzelnen Service registrieren
-     */
-    registerService(identifier, constructor) {
-      this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - identifier:`, identifier);
-      this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - constructor:`, constructor);
-      if (!identifier) {
-        this.writeLog("error", `[ServiceRegistry] ❌ Identifier is undefined!`);
-        return;
-      }
-      const serviceName = identifier.CLASS_NAME || identifier.className || identifier.name || identifier;
-      this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
-      this.serviceRegistry.set(identifier, constructor);
-    }
-    /**
-     * Service-Konstruktor abrufen
-     */
-    getServiceConstructor(identifier) {
-      const constructor = this.serviceRegistry.get(identifier);
-      this.writeLog("debug", `[ServiceRegistry] 🔍 Getting constructor for: ${identifier.name || identifier}`, {
-        found: !!constructor,
-        constructor: constructor?.name || constructor
-      });
-      return constructor;
-    }
-    /**
-     * Alle registrierten Services abrufen
-     * Wird von anderen Klassen verwendet (Single Source of Truth)
-     */
-    getAllServices() {
-      const services = Array.from(this.serviceRegistry.keys());
-      this.writeLog("info", `[ServiceRegistry] 📋 Providing ${services.length} services to other classes`);
-      return services;
-    }
-    /**
-     * Prüfen ob Service registriert ist
-     */
-    hasService(identifier) {
-      return this.serviceRegistry.has(identifier);
-    }
-    /**
-     * Anzahl registrierter Services
-     */
-    getServiceCount() {
-      return this.serviceRegistry.size;
-    }
-    /**
-     * Registry leeren (für Tests)
-     */
-    clear() {
-      this.writeLog("info", `[ServiceRegistry] 🗑️ Clearing registry (${this.serviceRegistry.size} services)`);
-      this.serviceRegistry.clear();
-    }
-    writeLog(modus, message, ...args) {
-      if (this.logger) {
-        this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
-      }
-    }
-  };
-  _ServiceRegistry.API_NAME = "serviceRegistry";
-  _ServiceRegistry.SERVICE_TYPE = "singleton";
-  _ServiceRegistry.CLASS_NAME = "ServiceRegistry";
-  _ServiceRegistry.DEPENDENCIES = [FoundryLogger];
-  let ServiceRegistry = _ServiceRegistry;
-  var ServiceRegistry$1 = /* @__PURE__ */ Object.freeze({
-    __proto__: null,
-    ServiceRegistry
-  });
-  const _DependencyMapper = class _DependencyMapper {
-    constructor(logger2, serviceRegistry) {
-      this.logger = logger2;
-      this.serviceRegistry = serviceRegistry;
-      this.hardcodedDependencies = /* @__PURE__ */ new Map();
-      this.hardcodedDependenciesInitialized = false;
-    }
-    static getInstance(logger2, serviceRegistry) {
-      if (!_DependencyMapper.instance) {
-        _DependencyMapper.instance = new _DependencyMapper(logger2, serviceRegistry);
-      }
-      return _DependencyMapper.instance;
-    }
-    /**
-     * Dependency Graph für alle Services erstellen
-     * Single Source of Truth: Holt Services von ServiceRegistry
-     */
-    buildDependencyGraph() {
-      this.writeLog("info", `[DependencyMapper] 🗺️ Building dependency graph`);
-      const graph = /* @__PURE__ */ new Map();
-      const allServices = this.serviceRegistry.getAllServices();
-      this.writeLog("info", `[DependencyMapper] 📋 Processing ${allServices.length} services from ServiceRegistry`);
-      for (const ServiceClass of allServices) {
-        this.writeLog("debug", `[DependencyMapper] 🔍 Analyzing dependencies for: ${ServiceClass.name || ServiceClass}`);
-        const dependencies = this.extractDependencies(ServiceClass);
-        graph.set(ServiceClass, dependencies);
-        this.writeLog("debug", `[DependencyMapper] 🔗 Dependencies for ${ServiceClass.name || ServiceClass}:`, {
-          count: dependencies.length,
-          dependencies: dependencies.map((d) => d.name || d)
-        });
-      }
-      this.writeLog("info", `[DependencyMapper] ✅ Dependency graph built with ${graph.size} services`);
-      return graph;
-    }
-    /**
-     * Dependencies für einen Service extrahieren
-     */
-    extractDependencies(serviceClass) {
-      this.writeLog("debug", `[DependencyMapper] 🔍 Extracting dependencies for: ${serviceClass.name || serviceClass}`);
-      const staticDependencies = this.extractStaticDependencies(serviceClass);
-      if (staticDependencies !== null) {
-        this.writeLog("debug", `[DependencyMapper] 📋 Using static dependencies:`, staticDependencies.map((d) => d.name || d));
-        return staticDependencies;
-      } else {
-        throw new Error(`[DependencyMapper] ❌ Service '${serviceClass.name || serviceClass}' has no static readonly DEPENDENCIES!`);
-      }
-    }
-    /**
-     * Dependencies aus static readonly DEPENDENCIES property extrahieren
-     */
-    extractStaticDependencies(serviceClass) {
-      const className = serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
-      this.writeLog("debug", `[DependencyMapper] 📋 Checking static dependencies for: ${className}`);
-      try {
-        if (serviceClass.DEPENDENCIES && Array.isArray(serviceClass.DEPENDENCIES)) {
-          const filteredDependencies = serviceClass.DEPENDENCIES.filter(Boolean);
-          this.writeLog("debug", `[DependencyMapper] 📋 Found static dependencies for ${className}:`, {
-            original: serviceClass.DEPENDENCIES,
-            filtered: filteredDependencies,
-            count: filteredDependencies.length
-          });
-          return filteredDependencies;
-        }
-        this.writeLog("debug", `[DependencyMapper] 📋 No static dependencies found for: ${className}`);
-        return [];
-      } catch (error) {
-        this.writeLog("error", `[DependencyMapper] 📋 Error extracting static dependencies for ${className}:`, error);
-        return [];
-      }
-    }
-    /**
-     * Zirkuläre Dependencies prüfen
-     */
-    checkCircularDependencies(dependencyGraph) {
-      this.writeLog("info", `[DependencyMapper] 🔍 Checking for circular dependencies`);
-      const visited = /* @__PURE__ */ new Set();
-      const recursionStack = /* @__PURE__ */ new Set();
-      for (const service of dependencyGraph.keys()) {
-        if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
-          this.writeLog("error", `[DependencyMapper] ❌ Circular dependency detected!`);
-          return true;
-        }
-      }
-      this.writeLog("info", `[DependencyMapper] ✅ No circular dependencies found`);
-      return false;
-    }
-    hasCircularDependency(service, graph, visited, recursionStack) {
-      if (recursionStack.has(service)) {
-        return true;
-      }
-      if (visited.has(service)) {
-        return false;
-      }
-      visited.add(service);
-      recursionStack.add(service);
-      const dependencies = graph.get(service) || [];
-      for (const dependency of dependencies) {
-        if (this.hasCircularDependency(dependency, graph, visited, recursionStack)) {
-          return true;
-        }
-      }
-      recursionStack.delete(service);
-      return false;
-    }
-    writeLog(modus, message, ...args) {
-      if (this.logger) {
-        this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
-      }
-    }
-  };
-  _DependencyMapper.API_NAME = "dependencyMapper";
-  _DependencyMapper.SERVICE_TYPE = "singleton";
-  _DependencyMapper.CLASS_NAME = "DependencyMapper";
-  _DependencyMapper.DEPENDENCIES = [FoundryLogger, ServiceRegistry];
-  let DependencyMapper = _DependencyMapper;
-  var DependencyMapper$1 = /* @__PURE__ */ Object.freeze({
-    __proto__: null,
-    DependencyMapper
-  });
-  const _ServicePlanner = class _ServicePlanner {
+  class ServicePlanner {
     constructor(logger2, serviceRegistry, dependencyMapper) {
       this.logger = logger2;
       this.serviceRegistry = serviceRegistry;
       this.dependencyMapper = dependencyMapper;
-    }
-    static getInstance(logger2, serviceRegistry, dependencyMapper) {
-      if (!_ServicePlanner.instance) {
-        _ServicePlanner.instance = new _ServicePlanner(logger2, serviceRegistry, dependencyMapper);
-      }
-      return _ServicePlanner.instance;
     }
     /**
      * Service Baupläne für alle Services erstellen
      * Single Source of Truth: Holt Services von ServiceRegistry
      */
     createServicePlans() {
-      this.writeLog("info", `[ServicePlanner] 📋 Creating service plans`);
+      this.logger.info(`[ServicePlanner] 📋 Creating service plans`);
       const plans = /* @__PURE__ */ new Map();
       const allServices = this.serviceRegistry.getAllServices();
       const dependencyGraph = this.dependencyMapper.buildDependencyGraph();
-      this.writeLog("info", `[ServicePlanner] 📋 Processing ${allServices.length} services from ServiceRegistry`);
+      this.logger.info(`[ServicePlanner] 📋 Processing ${allServices.length} services from ServiceRegistry`);
       for (const ServiceClass of allServices) {
-        this.writeLog("info", `[ServicePlanner] 📝 Creating plan for: ${ServiceClass.name || ServiceClass}`);
+        this.logger.info(`[ServicePlanner] 📝 Creating plan for: ${ServiceClass.name || ServiceClass}`);
         const plan = this.createServicePlan(ServiceClass, dependencyGraph);
         plans.set(ServiceClass, plan);
-        this.writeLog("info", `[ServicePlanner] 📋 Plan created for ${ServiceClass.name || ServiceClass}:`, {
+        this.logger.info(`[ServicePlanner] 📋 Plan created for ${ServiceClass.name || ServiceClass}:`, {
           dependencies: plan.dependencies.map((d) => d.name || d),
           resolutionOrder: plan.resolutionOrder.map((d) => d.name || d),
           isSingleton: plan.isSingleton
         });
       }
-      this.writeLog("info", `[ServicePlanner] ✅ Created ${plans.size} service plans`);
+      this.logger.info(`[ServicePlanner] ✅ Created ${plans.size} service plans`);
       return plans;
     }
     /**
@@ -833,12 +611,11 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      * Resolution Order berechnen (Topological Sort)
      */
     calculateResolutionOrder(serviceClass, dependencyGraph) {
-      this.writeLog("info", `[ServicePlanner] 🔄 Calculating resolution order for: ${serviceClass.name || serviceClass}`);
+      this.logger.info(`[ServicePlanner] 🔄 Calculating resolution order for: ${serviceClass.name || serviceClass}`);
       const visited = /* @__PURE__ */ new Set();
       const resolutionOrder = [];
       this.topologicalSort(serviceClass, dependencyGraph, visited, resolutionOrder);
-      this.writeLog(
-        "info",
+      this.logger.info(
         `[ServicePlanner] 🔄 Resolution order for ${serviceClass.name || serviceClass}:`,
         resolutionOrder.map((s) => s.name || s)
       );
@@ -884,7 +661,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      * Alle Service-Pläne validieren
      */
     validateServicePlans(plans) {
-      this.writeLog("info", `[ServicePlanner] 🔍 Validating ${plans.size} service plans`);
+      this.logger.info(`[ServicePlanner] 🔍 Validating ${plans.size} service plans`);
       const result = {
         isValid: true,
         errors: [],
@@ -901,45 +678,27 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
           result.warnings.push(`No API_NAME defined for service ${serviceClass.name || serviceClass}`);
         }
       }
-      this.writeLog("info", `[ServicePlanner] 🔍 Validation result:`, {
+      this.logger.info(`[ServicePlanner] 🔍 Validation result:`, {
         isValid: result.isValid,
         errors: result.errors.length,
         warnings: result.warnings.length
       });
       return result;
     }
-    writeLog(modus, message, ...args) {
-      if (this.logger) {
-        this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
-      }
-    }
-  };
-  _ServicePlanner.API_NAME = "servicePlanner";
-  _ServicePlanner.SERVICE_TYPE = "singleton";
-  _ServicePlanner.CLASS_NAME = "ServicePlanner";
-  _ServicePlanner.DEPENDENCIES = [FoundryLogger, ServiceRegistry, DependencyMapper];
-  let ServicePlanner = _ServicePlanner;
+  }
   var ServicePlanner$1 = /* @__PURE__ */ Object.freeze({
     __proto__: null,
     ServicePlanner
   });
-  const _ServiceValidator = class _ServiceValidator {
+  class ServiceValidator {
     constructor(logger2) {
       this.logger = logger2;
-    }
-    static getInstance(logger2) {
-      if (!_ServiceValidator.instance) {
-        _ServiceValidator.instance = new _ServiceValidator(logger2);
-      }
-      return _ServiceValidator.instance;
     }
     /**
      * Dependency Graph validieren
      */
     validateDependencyGraph(dependencyGraph) {
-      this.writeLog("info", `[ServiceValidator] 🔍 Validating dependency graph with ${dependencyGraph.size} services`);
+      this.logger.info(`[ServiceValidator] 🔍 Validating dependency graph with ${dependencyGraph.size} services`);
       const result = {
         isValid: true,
         errors: [],
@@ -957,7 +716,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
           }
         }
       }
-      this.writeLog("info", `[ServiceValidator] 🔍 Dependency graph validation result:`, {
+      this.logger.info(`[ServiceValidator] 🔍 Dependency graph validation result:`, {
         isValid: result.isValid,
         errors: result.errors.length,
         warnings: result.warnings.length
@@ -968,7 +727,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      * Service-Pläne validieren
      */
     validateServicePlans(servicePlans) {
-      this.writeLog("info", `[ServiceValidator] 🔍 Validating ${servicePlans.size} service plans`);
+      this.logger.info(`[ServiceValidator] 🔍 Validating ${servicePlans.size} service plans`);
       const result = {
         isValid: true,
         errors: [],
@@ -982,7 +741,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
         }
         result.warnings.push(...planValidation.warnings);
       }
-      this.writeLog("info", `[ServiceValidator] 🔍 Service plans validation result:`, {
+      this.logger.info(`[ServiceValidator] 🔍 Service plans validation result:`, {
         isValid: result.isValid,
         errors: result.errors.length,
         warnings: result.warnings.length
@@ -1022,37 +781,37 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      * Service-Erstellung validieren
      */
     validateServiceCreation(service, identifier) {
-      this.writeLog("info", `[ServiceValidator] 🔍 Validating service creation for: ${identifier.name || identifier}`);
+      this.logger.info(`[ServiceValidator] 🔍 Validating service creation for: ${identifier.name || identifier}`);
       if (!service) {
-        this.writeLog("error", `[ServiceValidator] ❌ Service is null or undefined for ${identifier.name || identifier}`);
+        this.logger.error(`[ServiceValidator] ❌ Service is null or undefined for ${identifier.name || identifier}`);
         return false;
       }
       if (typeof service !== "object") {
-        this.writeLog("error", `[ServiceValidator] ❌ Service is not an object for ${identifier.name || identifier}`);
+        this.logger.error(`[ServiceValidator] ❌ Service is not an object for ${identifier.name || identifier}`);
         return false;
       }
-      this.writeLog("info", `[ServiceValidator] ✅ Service creation valid for ${identifier.name || identifier}`);
+      this.logger.info(`[ServiceValidator] ✅ Service creation valid for ${identifier.name || identifier}`);
       return true;
     }
     /**
      * Zirkuläre Dependencies prüfen
      */
     checkCircularDependencies(dependencyGraph) {
-      this.writeLog("info", `[ServiceValidator] 🔍 Checking for circular dependencies`);
+      this.logger.info(`[ServiceValidator] 🔍 Checking for circular dependencies`);
       const visited = /* @__PURE__ */ new Set();
       const recursionStack = /* @__PURE__ */ new Set();
       for (const service of dependencyGraph.keys()) {
         if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
-          this.writeLog("error", `[ServiceValidator] ❌ Circular dependency detected starting from ${service.name || service}`);
+          this.logger.error(`[ServiceValidator] ❌ Circular dependency detected starting from ${service.name || service}`);
           return true;
         }
       }
-      this.writeLog("info", `[ServiceValidator] ✅ No circular dependencies found`);
+      this.logger.info(`[ServiceValidator] ✅ No circular dependencies found`);
       return false;
     }
     hasCircularDependency(service, graph, visited, recursionStack) {
       if (recursionStack.has(service)) {
-        this.writeLog("error", `[ServiceValidator] ❌ Circular dependency detected: ${service.name || service} is in recursion stack`);
+        this.logger.error(`[ServiceValidator] ❌ Circular dependency detected: ${service.name || service} is in recursion stack`);
         return true;
       }
       if (visited.has(service)) {
@@ -1073,7 +832,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      * Service-Container validieren
      */
     validateServiceContainer(serviceContainer) {
-      this.writeLog("info", `[ServiceValidator] 🔍 Validating service container`);
+      this.logger.info(`[ServiceValidator] 🔍 Validating service container`);
       const result = {
         isValid: true,
         errors: [],
@@ -1092,7 +851,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
         result.isValid = false;
         result.errors.push("Service container missing createService method");
       }
-      this.writeLog("info", `[ServiceValidator] 🔍 Service container validation result:`, {
+      this.logger.info(`[ServiceValidator] 🔍 Service container validation result:`, {
         isValid: result.isValid,
         errors: result.errors.length,
         warnings: result.warnings.length
@@ -1103,22 +862,10 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      * Fehlerbehandlung für Service-Erstellung
      */
     handleServiceCreationError(error, identifier) {
-      this.writeLog("error", `[ServiceValidator] ❌ Service creation error for ${identifier.name || identifier}:`, error);
-      this.writeLog("error", `Service creation failed for ${identifier.name || identifier}:`, error);
+      this.logger.error(`[ServiceValidator] ❌ Service creation error for ${identifier.name || identifier}:`, error);
+      this.logger.error(`Service creation failed for ${identifier.name || identifier}:`, error);
     }
-    writeLog(modus, message, ...args) {
-      if (this.logger) {
-        this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
-      }
-    }
-  };
-  _ServiceValidator.API_NAME = "serviceValidator";
-  _ServiceValidator.SERVICE_TYPE = "singleton";
-  _ServiceValidator.CLASS_NAME = "ServiceValidator";
-  _ServiceValidator.DEPENDENCIES = [FoundryLogger];
-  let ServiceValidator = _ServiceValidator;
+  }
   var ServiceValidator$1 = /* @__PURE__ */ Object.freeze({
     __proto__: null,
     ServiceValidator
@@ -1313,6 +1060,101 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
     __proto__: null,
     ServiceContainer
   });
+  const _ServiceRegistry = class _ServiceRegistry {
+    constructor(logger2) {
+      this.logger = logger2;
+      this.serviceRegistry = /* @__PURE__ */ new Map();
+    }
+    static getInstance(logger2) {
+      if (!_ServiceRegistry.instance) {
+        _ServiceRegistry.instance = new _ServiceRegistry(logger2);
+      }
+      return _ServiceRegistry.instance;
+    }
+    /**
+     * EINZIGER Eingangspunkt für Services
+     * Registriert alle Services aus einer Service-Quelle
+     */
+    registerAllServices(serviceSource) {
+      this.writeLog("info", `[ServiceRegistry] 📚 Registering ${serviceSource.length} services from source`);
+      for (const serviceConfig of serviceSource) {
+        const serviceName = serviceConfig.name.CLASS_NAME || serviceConfig.name.className || serviceConfig.name.name || serviceConfig.name;
+        const serviceClass = serviceConfig.class;
+        this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
+        this.registerService(serviceClass, serviceClass);
+      }
+      this.writeLog("info", `[ServiceRegistry] ✅ All services registered. Total: ${this.serviceRegistry.size}`);
+    }
+    /**
+     * Einzelnen Service registrieren
+     */
+    registerService(identifier, constructor) {
+      this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - identifier:`, identifier);
+      this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - constructor:`, constructor);
+      if (!identifier) {
+        this.writeLog("error", `[ServiceRegistry] ❌ Identifier is undefined!`);
+        return;
+      }
+      const serviceName = identifier.CLASS_NAME || identifier.className || identifier.name || identifier;
+      this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
+      this.serviceRegistry.set(identifier, constructor);
+    }
+    /**
+     * Service-Konstruktor abrufen
+     */
+    getServiceConstructor(identifier) {
+      const constructor = this.serviceRegistry.get(identifier);
+      this.writeLog("debug", `[ServiceRegistry] 🔍 Getting constructor for: ${identifier.name || identifier}`, {
+        found: !!constructor,
+        constructor: constructor?.name || constructor
+      });
+      return constructor;
+    }
+    /**
+     * Alle registrierten Services abrufen
+     * Wird von anderen Klassen verwendet (Single Source of Truth)
+     */
+    getAllServices() {
+      const services = Array.from(this.serviceRegistry.keys());
+      this.writeLog("info", `[ServiceRegistry] 📋 Providing ${services.length} services to other classes`);
+      return services;
+    }
+    /**
+     * Prüfen ob Service registriert ist
+     */
+    hasService(identifier) {
+      return this.serviceRegistry.has(identifier);
+    }
+    /**
+     * Anzahl registrierter Services
+     */
+    getServiceCount() {
+      return this.serviceRegistry.size;
+    }
+    /**
+     * Registry leeren (für Tests)
+     */
+    clear() {
+      this.writeLog("info", `[ServiceRegistry] 🗑️ Clearing registry (${this.serviceRegistry.size} services)`);
+      this.serviceRegistry.clear();
+    }
+    writeLog(modus, message, ...args) {
+      if (this.logger) {
+        this.logger[modus](message, ...args);
+      } else {
+        console[modus](message, ...args);
+      }
+    }
+  };
+  _ServiceRegistry.API_NAME = "serviceRegistry";
+  _ServiceRegistry.SERVICE_TYPE = "singleton";
+  _ServiceRegistry.CLASS_NAME = "ServiceRegistry";
+  _ServiceRegistry.DEPENDENCIES = [FoundryLogger];
+  let ServiceRegistry = _ServiceRegistry;
+  var ServiceRegistry$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    ServiceRegistry
+  });
   const _ModuleInitializer = class _ModuleInitializer {
     // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
     constructor(logger2, errorHandler2, registrationService) {
@@ -1340,54 +1182,45 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
     __proto__: null,
     ModuleInitializer
   });
-  const _ServiceRegistrar = class _ServiceRegistrar {
+  class ServiceRegistrar {
     constructor(logger2, serviceContainer) {
       this.logger = logger2;
       this.serviceContainer = serviceContainer;
       this.serviceLocator = /* @__PURE__ */ new Map();
     }
-    static getInstance(logger2, serviceContainer) {
-      if (!_ServiceRegistrar.instance) {
-        _ServiceRegistrar.instance = new _ServiceRegistrar(logger2, serviceContainer);
-      }
-      return _ServiceRegistrar.instance;
-    }
     /**
-     * Alle Services registrieren
+     * Alle Services registrieren - NUR FACTORIES
      */
     registerAllServices() {
-      this.writeLog("info", `[ServiceRegistrar] 📝 Registering all services`);
+      this.logger.info(`[ServiceRegistrar] 📝 Registering all services as factories`);
       const servicePlans = this.serviceContainer.getAllServicePlans();
-      this.writeLog("info", `[ServiceRegistrar] 📋 Registering ${servicePlans.size} services`);
+      this.logger.info(`[ServiceRegistrar] 📋 Registering ${servicePlans.size} services as factories`);
       for (const [serviceClass, plan] of servicePlans) {
         this.registerService(serviceClass, plan);
       }
-      this.writeLog("info", `[ServiceRegistrar] ✅ All services registered`);
+      this.logger.info(`[ServiceRegistrar] ✅ All services registered as factories`);
     }
     /**
      * Einzelnen Service registrieren
      */
     registerService(serviceClass, plan) {
-      this.writeLog("info", `[ServiceRegistrar] 📝 Registering service: ${serviceClass.name || serviceClass}`);
-      const serviceFactory = () => {
-        this.writeLog("info", `[ServiceRegistrar] 🏭 Factory called for: ${serviceClass.name || serviceClass}`);
-        return this.serviceContainer.getService(serviceClass);
-      };
-      this.serviceLocator.set(serviceClass, serviceFactory);
-      this.serviceLocator.set(serviceClass.name, serviceFactory);
-      this.writeLog("info", `[ServiceRegistrar] ✅ Service registered: ${serviceClass.name || serviceClass} (both class and string)`);
+      const serviceName = serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
+      this.logger.info(`[ServiceRegistrar] 📝 Registering service factory: ${serviceName}`);
+      this.serviceLocator.set(serviceClass, () => this.serviceContainer.getService(serviceClass));
+      this.serviceLocator.set(serviceName, () => this.serviceContainer.getService(serviceClass));
+      this.logger.info(`[ServiceRegistrar] ✅ Service factory registered: ${serviceName}`);
     }
     /**
-     * Service über ServiceContainer abrufen
+     * Service über Factory abrufen - On-Demand
      */
     getService(identifier) {
-      this.writeLog("info", `[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}`);
+      this.logger.info(`[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}`);
       const factory = this.serviceLocator.get(identifier);
       if (!factory) {
         throw new Error(`Service ${identifier.name || identifier} not registered`);
       }
       const service = factory();
-      this.writeLog("info", `[ServiceRegistrar] ✅ Service retrieved: ${identifier.name || identifier}`);
+      this.logger.info(`[ServiceRegistrar] ✅ Service retrieved: ${identifier.name || identifier}`);
       return service;
     }
     /**
@@ -1406,30 +1239,30 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
      * Service aus Registrierung entfernen
      */
     unregisterService(identifier) {
-      this.writeLog("info", `[ServiceRegistrar] 🗑️ Unregistering service: ${identifier.name || identifier}`);
+      this.logger.info(`[ServiceRegistrar] 🗑️ Unregistering service: ${identifier.name || identifier}`);
       if (this.serviceLocator.has(identifier)) {
         this.serviceLocator.delete(identifier);
-        this.writeLog("info", `[ServiceRegistrar] ✅ Service unregistered: ${identifier.name || identifier}`);
+        this.logger.info(`[ServiceRegistrar] ✅ Service unregistered: ${identifier.name || identifier}`);
       } else {
-        this.writeLog("info", `[ServiceRegistrar] ℹ️ Service not registered: ${identifier.name || identifier}`);
+        this.logger.info(`[ServiceRegistrar] ℹ️ Service not registered: ${identifier.name || identifier}`);
       }
     }
     /**
      * Alle Services aus Registrierung entfernen
      */
     unregisterAll() {
-      this.writeLog("info", `[ServiceRegistrar] 🗑️ Unregistering all services (${this.serviceLocator.size} registered)`);
+      this.logger.info(`[ServiceRegistrar] 🗑️ Unregistering all services (${this.serviceLocator.size} registered)`);
       this.serviceLocator.clear();
-      this.writeLog("info", `[ServiceRegistrar] ✅ All services unregistered`);
+      this.logger.info(`[ServiceRegistrar] ✅ All services unregistered`);
     }
     /**
      * Service Discovery - Services auffindbar machen
      */
     enableServiceDiscovery() {
-      this.writeLog("info", `[ServiceRegistrar] 🔍 Enabling service discovery`);
+      this.logger.info(`[ServiceRegistrar] 🔍 Enabling service discovery`);
       globalThis.relationshipApp = globalThis.relationshipApp || {};
       globalThis.relationshipApp.serviceLocator = this;
-      this.writeLog("info", `[ServiceRegistrar] ✅ Service discovery enabled`);
+      this.logger.info(`[ServiceRegistrar] ✅ Service discovery enabled`);
     }
     /**
      * Service Metadaten abrufen
@@ -1458,22 +1291,111 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
       }
       return metadata;
     }
-    writeLog(modus, message, ...args) {
-      if (this.logger) {
-        this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
-      }
-    }
-  };
-  _ServiceRegistrar.API_NAME = "serviceRegistrar";
-  _ServiceRegistrar.SERVICE_TYPE = "singleton";
-  _ServiceRegistrar.CLASS_NAME = "ServiceRegistrar";
-  _ServiceRegistrar.DEPENDENCIES = [FoundryLogger, ServiceContainer];
-  let ServiceRegistrar = _ServiceRegistrar;
+  }
   var ServiceRegistrar$1 = /* @__PURE__ */ Object.freeze({
     __proto__: null,
     ServiceRegistrar
+  });
+  class DependencyMapper {
+    constructor(logger2, serviceRegistry) {
+      this.logger = logger2;
+      this.serviceRegistry = serviceRegistry;
+    }
+    /**
+     * Dependency Graph für alle Services erstellen
+     * Single Source of Truth: Holt Services von ServiceRegistry
+     */
+    buildDependencyGraph() {
+      this.logger.info(`[DependencyMapper] 🗺️ Building dependency graph`);
+      const graph = /* @__PURE__ */ new Map();
+      const allServices = this.serviceRegistry.getAllServices();
+      this.logger.info(`[DependencyMapper] 📋 Processing ${allServices.length} services from ServiceRegistry`);
+      for (const ServiceClass of allServices) {
+        this.logger.debug(`[DependencyMapper] 🔍 Analyzing dependencies for: ${ServiceClass.name || ServiceClass}`);
+        const dependencies = this.extractDependencies(ServiceClass);
+        graph.set(ServiceClass, dependencies);
+        this.logger.debug(`[DependencyMapper] 🔗 Dependencies for ${ServiceClass.name || ServiceClass}:`, {
+          count: dependencies.length,
+          dependencies: dependencies.map((d) => d.name || d)
+        });
+      }
+      this.logger.info(`[DependencyMapper] ✅ Dependency graph built with ${graph.size} services`);
+      return graph;
+    }
+    /**
+     * Dependencies für einen Service extrahieren
+     */
+    extractDependencies(serviceClass) {
+      this.logger.debug(`[DependencyMapper] 🔍 Extracting dependencies for: ${serviceClass.name || serviceClass}`);
+      const staticDependencies = this.extractStaticDependencies(serviceClass);
+      if (staticDependencies !== null) {
+        this.logger.debug(`[DependencyMapper] 📋 Using static dependencies:`, staticDependencies.map((d) => d.name || d));
+        return staticDependencies;
+      } else {
+        throw new Error(`[DependencyMapper] ❌ Service '${serviceClass.name || serviceClass}' has no static readonly DEPENDENCIES!`);
+      }
+    }
+    /**
+     * Dependencies aus static readonly DEPENDENCIES property extrahieren
+     */
+    extractStaticDependencies(serviceClass) {
+      const className = serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
+      this.logger.debug(`[DependencyMapper] 📋 Checking static dependencies for: ${className}`);
+      try {
+        if (serviceClass.DEPENDENCIES && Array.isArray(serviceClass.DEPENDENCIES)) {
+          const filteredDependencies = serviceClass.DEPENDENCIES.filter(Boolean);
+          this.logger.debug(`[DependencyMapper] 📋 Found static dependencies for ${className}:`, {
+            original: serviceClass.DEPENDENCIES,
+            filtered: filteredDependencies,
+            count: filteredDependencies.length
+          });
+          return filteredDependencies;
+        }
+        this.logger.debug(`[DependencyMapper] 📋 No static dependencies found for: ${className}`);
+        return [];
+      } catch (error) {
+        this.logger.error(`[DependencyMapper] 📋 Error extracting static dependencies for ${className}:`, error);
+        return [];
+      }
+    }
+    /**
+     * Zirkuläre Dependencies prüfen
+     */
+    checkCircularDependencies(dependencyGraph) {
+      this.logger.info(`[DependencyMapper] 🔍 Checking for circular dependencies`);
+      const visited = /* @__PURE__ */ new Set();
+      const recursionStack = /* @__PURE__ */ new Set();
+      for (const service of dependencyGraph.keys()) {
+        if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
+          this.logger.error(`[DependencyMapper] ❌ Circular dependency detected!`);
+          return true;
+        }
+      }
+      this.logger.info(`[DependencyMapper] ✅ No circular dependencies found`);
+      return false;
+    }
+    hasCircularDependency(service, graph, visited, recursionStack) {
+      if (recursionStack.has(service)) {
+        return true;
+      }
+      if (visited.has(service)) {
+        return false;
+      }
+      visited.add(service);
+      recursionStack.add(service);
+      const dependencies = graph.get(service) || [];
+      for (const dependency of dependencies) {
+        if (this.hasCircularDependency(dependency, graph, visited, recursionStack)) {
+          return true;
+        }
+      }
+      recursionStack.delete(service);
+      return false;
+    }
+  }
+  var DependencyMapper$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    DependencyMapper
   });
   var BROWSER = true;
   var DEV = false;
@@ -9772,75 +9694,69 @@ ${component_stack}
   _CSSManager.CLASS_NAME = "CSSManager";
   _CSSManager.DEPENDENCIES = [FoundryLogger];
   let CSSManager = _CSSManager;
-  const _APIManager = class _APIManager {
+  class APIManager {
     constructor(logger2, serviceContainer) {
       this.logger = logger2;
       this.serviceContainer = serviceContainer;
       this.registeredServices = /* @__PURE__ */ new Map();
     }
-    static getInstance(logger2, serviceContainer) {
-      if (!_APIManager.instance) {
-        _APIManager.instance = new _APIManager(logger2, serviceContainer);
-      }
-      return _APIManager.instance;
-    }
     /**
      * Services in globaler API registrieren
      */
     registerInGlobalAPI() {
-      this.writeLog("info", `[APIManager] 🌐 Registering services in global API`);
+      this.logger.info(`[APIManager] 🌐 Registering services in global API (lazy)`);
       const moduleApi = this.getModuleAPI();
       if (!moduleApi) {
-        this.writeLog("error", `[APIManager] ❌ Module API not available`);
+        this.logger.error(`[APIManager] ❌ Module API not available`);
         return;
       }
       const servicePlans = this.serviceContainer.getAllServicePlans();
-      this.writeLog("info", `[APIManager] 📋 Registering ${servicePlans.size} services in API`);
+      this.logger.info(`[APIManager] 📋 Registering ${servicePlans.size} services in API (lazy)`);
       for (const [serviceClass, plan] of servicePlans) {
         this.registerServiceInAPI(serviceClass, plan, moduleApi);
       }
-      this.writeLog("info", `[APIManager] ✅ All services registered in global API`);
-      this.writeLog("info", `[APIManager] 📊 Final registered services count: ${this.registeredServices.size}`);
+      this.logger.info(`[APIManager] ✅ All services registered in global API (lazy)`);
+      this.logger.info(`[APIManager] 📊 Final registered services count: ${this.registeredServices.size}`);
     }
     /**
-     * Einzelnen Service in API registrieren
+     * Service in API registrieren - LAZY mit Getter-Memoization
      */
     registerServiceInAPI(serviceClass, plan, moduleApi) {
-      const apiName = plan.apiName;
-      const serviceType = plan.serviceType;
-      this.writeLog("info", `[APIManager] 🌐 Registering service in API:`, {
+      const apiName = plan.apiName || serviceClass.API_NAME || serviceClass.name;
+      const serviceType = plan.serviceType || serviceClass.SERVICE_TYPE;
+      this.logger.info(`[APIManager] 🌐 Registering service in API:`, {
         service: serviceClass.name || serviceClass,
         apiName,
         serviceType
       });
-      if (!apiName || !serviceType) {
-        this.writeLog("warn", `[APIManager] ⚠️ Service ${serviceClass.name || serviceClass} missing API_NAME or SERVICE_TYPE`);
+      if (!apiName) {
+        this.logger.warn(`[APIManager] ⚠️ Service has no API name: ${serviceClass.name || serviceClass}`);
         return;
       }
       try {
-        if (serviceType === "singleton") {
-          const serviceInstance = this.serviceContainer.getService(serviceClass);
-          moduleApi[apiName] = serviceInstance;
-          this.registeredServices.set(apiName, serviceInstance);
-          this.writeLog("info", `[APIManager] ✅ Singleton service registered: ${apiName} -> ${serviceInstance.constructor.name}`);
-          this.writeLog("info", `[APIManager] 📊 Registered services count: ${this.registeredServices.size}`);
-        } else if (serviceType === "factory") {
-          moduleApi[apiName] = () => {
-            this.writeLog("info", `[APIManager] 🏭 Factory called for: ${apiName}`);
-            return this.serviceContainer.getService(serviceClass);
+        Object.defineProperty(moduleApi, apiName, {
+          configurable: true,
+          enumerable: true,
+          get: () => {
+            const instance = this.serviceContainer.getService(serviceClass);
+            Object.defineProperty(moduleApi, apiName, {
+              value: instance,
+              enumerable: true,
+              configurable: false
+            });
+            return instance;
+          }
+        });
+        if (typeof serviceClass.prototype.create === "function") {
+          moduleApi[apiName] = (...args) => {
+            const service = this.serviceContainer.getService(serviceClass);
+            return service.create(...args);
           };
-          this.writeLog("info", `[APIManager] ✅ Factory service registered: ${apiName}`);
-        } else if (serviceType === "transient") {
-          moduleApi[apiName] = () => {
-            this.writeLog("info", `[APIManager] 🏭 Transient factory called for: ${apiName}`);
-            return this.serviceContainer.createService(serviceClass);
-          };
-          this.writeLog("info", `[APIManager] ✅ Transient service registered: ${apiName}`);
-        } else {
-          this.writeLog("warn", `[APIManager] ⚠️ Unknown service type '${serviceType}' for ${apiName}`);
         }
+        this.registeredServices.set(apiName, serviceClass);
+        this.logger.info(`[APIManager] ✅ Service registered in API (lazy): ${apiName}`);
       } catch (error) {
-        this.writeLog("error", `[APIManager] ❌ Failed to register service ${apiName}:`, error);
+        this.logger.error(`[APIManager] ❌ Failed to register service ${apiName}:`, error);
       }
     }
     /**
@@ -9849,14 +9765,14 @@ ${component_stack}
     getModuleAPI() {
       let moduleApi = globalThis.game?.modules?.get("relationship-app")?.api;
       if (!moduleApi) {
-        this.writeLog("info", `[APIManager] 🔧 Module API not available, creating it`);
+        this.logger.info(`[APIManager] 🔧 Module API not available, creating it`);
         const module = globalThis.game?.modules?.get("relationship-app");
         if (module) {
           module.api = {};
           moduleApi = module.api;
-          this.writeLog("info", `[APIManager] ✅ Module API created`);
+          this.logger.info(`[APIManager] ✅ Module API created`);
         } else {
-          this.writeLog("error", `[APIManager] ❌ Module 'relationship-app' not found`);
+          this.logger.error(`[APIManager] ❌ Module 'relationship-app' not found`);
           return null;
         }
       }
@@ -9866,21 +9782,21 @@ ${component_stack}
      * Service aus API entfernen
      */
     unregisterFromAPI(apiName) {
-      this.writeLog("info", `[APIManager] 🗑️ Unregistering service from API: ${apiName}`);
+      this.logger.info(`[APIManager] 🗑️ Unregistering service from API: ${apiName}`);
       const moduleApi = this.getModuleAPI();
       if (moduleApi && moduleApi[apiName]) {
         delete moduleApi[apiName];
         this.registeredServices.delete(apiName);
-        this.writeLog("info", `[APIManager] ✅ Service unregistered from API: ${apiName}`);
+        this.logger.info(`[APIManager] ✅ Service unregistered from API: ${apiName}`);
       } else {
-        this.writeLog("info", `[APIManager] ℹ️ Service not found in API: ${apiName}`);
+        this.logger.info(`[APIManager] ℹ️ Service not found in API: ${apiName}`);
       }
     }
     /**
      * Alle Services aus API entfernen
      */
     unregisterAllFromAPI() {
-      this.writeLog("info", `[APIManager] 🗑️ Unregistering all services from API (${this.registeredServices.size} registered)`);
+      this.logger.info(`[APIManager] 🗑️ Unregistering all services from API (${this.registeredServices.size} registered)`);
       const moduleApi = this.getModuleAPI();
       if (moduleApi) {
         for (const apiName of this.registeredServices.keys()) {
@@ -9888,13 +9804,13 @@ ${component_stack}
         }
       }
       this.registeredServices.clear();
-      this.writeLog("info", `[APIManager] ✅ All services unregistered from API`);
+      this.logger.info(`[APIManager] ✅ All services unregistered from API`);
     }
     /**
      * API Metadaten generieren
      */
     generateAPIMetadata() {
-      this.writeLog("info", `[APIManager] 📊 Generating API metadata`);
+      this.logger.info(`[APIManager] 📊 Generating API metadata`);
       const metadata = {
         moduleId: "relationship-app",
         version: "0.14.0",
@@ -9912,7 +9828,7 @@ ${component_stack}
           isRegistered: this.registeredServices.has(plan.apiName)
         });
       }
-      this.writeLog("info", `[APIManager] 📊 API metadata generated:`, {
+      this.logger.info(`[APIManager] 📊 API metadata generated:`, {
         totalServices: metadata.totalServices,
         services: Array.from(metadata.services.keys())
       });
@@ -9954,19 +9870,7 @@ ${component_stack}
       }
       return services;
     }
-    writeLog(modus, message, ...args) {
-      if (this.logger) {
-        this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
-      }
-    }
-  };
-  _APIManager.API_NAME = "apiManager";
-  _APIManager.SERVICE_TYPE = "singleton";
-  _APIManager.CLASS_NAME = "APIManager";
-  _APIManager.DEPENDENCIES = [FoundryLogger, ServiceContainer];
-  let APIManager = _APIManager;
+  }
   var APIManager$1 = /* @__PURE__ */ Object.freeze({
     __proto__: null,
     APIManager
@@ -9982,34 +9886,22 @@ ${component_stack}
     // Foundry VTT API
     { name: NotificationService, class: NotificationService },
     // Benachrichtigungen
-    // 🔧 Core Services (Hauptfunktionen)
-    // Diese Services sind das Herz des Systems
-    { name: RegistrationService, class: RegistrationService },
-    // Service-Registrierung
-    { name: ModuleInitializer, class: ModuleInitializer },
-    // Modul-Initialisierung  
-    { name: ServiceRegistry, class: ServiceRegistry },
-    // Service-Registrierung
-    { name: ServiceContainer, class: ServiceContainer },
-    // Service-Erstellung
-    { name: ServicePlanner, class: ServicePlanner },
-    // Service-Planung
-    { name: ServiceRegistrar, class: ServiceRegistrar },
-    // Service-Registrierung
-    { name: ServiceValidator, class: ServiceValidator },
-    // Service-Validierung
-    { name: DependencyMapper, class: DependencyMapper },
-    // Dependency-Mapping
     // 🎨 Svelte & UI Services (Benutzeroberfläche)
     { name: SvelteManager, class: SvelteManager },
     // Svelte-Komponenten
-    { name: CSSManager, class: CSSManager },
+    { name: CSSManager, class: CSSManager }
     // Styling
-    // 🌐 API & Registration Services (Externe Schnittstellen)
-    { name: APIManager, class: APIManager }
-    // API-Management
     // 🔧 Application Services (Anwendungslogik)
+    // Hier kommen später die Business-Services hin
   ];
+  let _container;
+  function setContainer(c) {
+    _container = c;
+  }
+  function use(tokenOrCtor) {
+    if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
+    return _container.getService(tokenOrCtor);
+  }
   function createElement(config) {
     return {
       id: config.field,
@@ -11899,25 +11791,20 @@ ${component_stack}
   ) {
     constructor() {
       super();
+      // Lazy-Memoized Getter – kein Service im Konstruktor auflösen!
+      __privateAdd(this, _logger);
+      __privateAdd(this, _svelte);
+      __privateAdd(this, _css);
       this.svelteApp = null;
-      const serviceRegistrar = globalThis.relationshipApp?.serviceRegistrar;
-      if (!serviceRegistrar) {
-        throw new Error("ServiceRegistrar not available! Make sure the module is properly initialized.");
-      }
-      this.svelteDependencies = {
-        svelteManager: serviceRegistrar.getService("_SvelteManager"),
-        cssManager: serviceRegistrar.getService("_CSSManager"),
-        logger: serviceRegistrar.getService("_FoundryLogger")
-      };
-    }
-    get svelteManager() {
-      return this.svelteDependencies.svelteManager;
-    }
-    get cssManager() {
-      return this.svelteDependencies.cssManager;
     }
     get logger() {
-      return this.svelteDependencies.logger;
+      return __privateGet(this, _logger) ?? __privateSet(this, _logger, use(FoundryLogger));
+    }
+    get svelte() {
+      return __privateGet(this, _svelte) ?? __privateSet(this, _svelte, use(SvelteManager));
+    }
+    get css() {
+      return __privateGet(this, _css) ?? __privateSet(this, _css, use(CSSManager));
     }
     /** @override */
     get title() {
@@ -11933,48 +11820,44 @@ ${component_stack}
     }
     async _prepareContext(options) {
       const context = await super._prepareContext(options);
-      this.writeLog("info", "[MetadataManagementApplication] _prepareContext called with context:", context);
-      this.writeLog("info", "[MetadataManagementApplication] _prepareContext called with options:", options);
+      this.logger.info("[MetadataManagementApplication] _prepareContext called with context:", context);
+      this.logger.info("[MetadataManagementApplication] _prepareContext called with options:", options);
       return context;
     }
     async _loadCSS() {
       const cssPath = "modules/relationship-app/styles/metadata-management-app.css";
-      await this.cssManager.loadCSS(cssPath);
+      await this.css.loadCSS(cssPath);
     }
     async _onRender(context, options) {
-      this.writeLog("info", "[MetadataManagementApplication] _onRender started", { context, options });
+      this.logger.info("[MetadataManagementApplication] _onRender started", { context, options });
       await super._onRender(context, options);
       const target = this.element.querySelector("#metadata-management-svelte");
       if (!target) {
-        this.writeLog("warn", "[MetadataManagementApplication] Svelte mount point not found");
+        this.logger.warn("[MetadataManagementApplication] Svelte mount point not found");
         return;
       }
-      this.writeLog("info", "[MetadataManagementApplication] Found target element:", target);
-      await this.svelteManager.unmountApp(this.svelteApp);
+      this.logger.info("[MetadataManagementApplication] Found target element:", target);
+      await this.svelte.unmountApp(this.svelteApp);
       this.svelteApp = null;
       await this._loadCSS();
-      this.svelteApp = await this.svelteManager.mountComponent(
+      this.svelteApp = await this.svelte.mountComponent(
         MetadataManagementView,
         target,
         {}
       );
-      this.writeLog("info", "[MetadataManagementApplication] MetadataManagementView mounted successfully");
+      this.logger.info("[MetadataManagementApplication] MetadataManagementView mounted successfully");
     }
     /** @override */
     async _onClose(options) {
-      this.writeLog("info", "[MetadataManagementApplication] _onClose called with options:", options);
-      await this.svelteManager.unmountApp(this.svelteApp);
+      this.logger.info("[MetadataManagementApplication] _onClose called with options:", options);
+      await this.svelte.unmountApp(this.svelteApp);
       this.svelteApp = null;
       return super._onClose(options);
     }
-    writeLog(modus, message, ...args) {
-      if (this.logger) {
-        this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
-      }
-    }
   };
+  _logger = new WeakMap();
+  _svelte = new WeakMap();
+  _css = new WeakMap();
   _MetadataManagementApplication.PARTS = {
     main: {
       template: "modules/relationship-app/templates/metadata-management-main.hbs"
@@ -12013,34 +11896,34 @@ ${component_stack}
         });
         return { ServiceRegistry: ServiceRegistry3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceRegistry = ServiceRegistry2.getInstance(logger2);
-      logger2.info(`[SOLID Boot] 📚 Registering ${SERVICE_CONFIG.length} services from SERVICE_CONFIG`);
-      serviceRegistry.registerAllServices([...SERVICE_CONFIG]);
+      const serviceRegistry = new ServiceRegistry2(logger2);
       const { DependencyMapper: DependencyMapper2 } = await __vitePreload(async () => {
         const { DependencyMapper: DependencyMapper3 } = await Promise.resolve().then(function() {
           return DependencyMapper$1;
         });
         return { DependencyMapper: DependencyMapper3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const dependencyMapper = DependencyMapper2.getInstance(logger2, serviceRegistry);
-      logger2.info(`[SOLID Boot] 🗺️ Building dependency graph`);
-      const dependencyGraph = dependencyMapper.buildDependencyGraph();
+      const dependencyMapper = new DependencyMapper2(logger2, serviceRegistry);
       const { ServicePlanner: ServicePlanner2 } = await __vitePreload(async () => {
         const { ServicePlanner: ServicePlanner3 } = await Promise.resolve().then(function() {
           return ServicePlanner$1;
         });
         return { ServicePlanner: ServicePlanner3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const servicePlanner = ServicePlanner2.getInstance(logger2, serviceRegistry, dependencyMapper);
-      logger2.info(`[SOLID Boot] 📋 Creating service plans`);
-      const servicePlans = servicePlanner.createServicePlans();
+      const servicePlanner = new ServicePlanner2(logger2, serviceRegistry, dependencyMapper);
       const { ServiceValidator: ServiceValidator2 } = await __vitePreload(async () => {
         const { ServiceValidator: ServiceValidator3 } = await Promise.resolve().then(function() {
           return ServiceValidator$1;
         });
         return { ServiceValidator: ServiceValidator3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceValidator = ServiceValidator2.getInstance(logger2);
+      const serviceValidator = new ServiceValidator2(logger2);
+      logger2.info(`[SOLID Boot] 📚 Registering ${SERVICE_CONFIG.length} runtime services`);
+      serviceRegistry.registerAllServices([...SERVICE_CONFIG]);
+      logger2.info(`[SOLID Boot] 🗺️ Building dependency graph`);
+      const dependencyGraph = dependencyMapper.buildDependencyGraph();
+      logger2.info(`[SOLID Boot] 📋 Creating service plans`);
+      const servicePlans = servicePlanner.createServicePlans();
       logger2.info(`[SOLID Boot] 🔍 Validating dependencies and plans`);
       const dependencyValidation = serviceValidator.validateDependencyGraph(dependencyGraph);
       const planValidation = serviceValidator.validateServicePlans(servicePlans);
@@ -12056,37 +11939,36 @@ ${component_stack}
         });
         return { ServiceContainer: ServiceContainer3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceContainer = ServiceContainer2.getInstance(logger2, servicePlans, serviceValidator);
+      const serviceContainer = new ServiceContainer2(logger2, servicePlans, serviceValidator);
       const { ServiceRegistrar: ServiceRegistrar2 } = await __vitePreload(async () => {
         const { ServiceRegistrar: ServiceRegistrar3 } = await Promise.resolve().then(function() {
           return ServiceRegistrar$1;
         });
         return { ServiceRegistrar: ServiceRegistrar3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceRegistrar = ServiceRegistrar2.getInstance(logger2, serviceContainer);
-      logger2.info(`[SOLID Boot] 📝 Registering services`);
-      serviceRegistrar.registerAllServices();
-      serviceRegistrar.enableServiceDiscovery();
+      const serviceRegistrar = new ServiceRegistrar2(logger2, serviceContainer);
       const { APIManager: APIManager2 } = await __vitePreload(async () => {
         const { APIManager: APIManager3 } = await Promise.resolve().then(function() {
           return APIManager$1;
         });
         return { APIManager: APIManager3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const apiManager = APIManager2.getInstance(logger2, serviceContainer);
-      logger2.info(`[SOLID Boot] 🌐 Registering services in global API`);
+      const apiManager = new APIManager2(logger2, serviceContainer);
+      logger2.info(`[SOLID Boot] 📝 Registering services as factories`);
+      serviceRegistrar.registerAllServices();
+      logger2.info(`[SOLID Boot] 🌐 Registering services in global API (lazy)`);
       apiManager.registerInGlobalAPI();
+      setContainer(serviceContainer);
       globalThis.relationshipApp = {
         ...globalThis.relationshipApp,
-        serviceRegistry,
-        dependencyMapper,
-        servicePlanner,
-        serviceValidator,
         serviceContainer,
+        // ← Für getService()
         serviceRegistrar,
+        // ← Für getService()
         apiManager
+        // ← Für API-Zugriff
       };
-      logger2.info(`[SOLID Boot] ✅ Phase 2 completed - All services registered and available`);
+      logger2.info(`[SOLID Boot] ✅ Phase 2 completed - All services registered and available (on-demand)`);
     } catch (error) {
       logger2.error(`[SOLID Boot] ❌ Phase 2 failed:`, error);
       errorHandler2.handle(error, "SOLID Boot Phase 2");
@@ -12095,11 +11977,8 @@ ${component_stack}
   });
   foundryAdapter.onReady(async () => {
     const { logger: logger2, errorHandler: errorHandler2, notificationService: notificationService2 } = globalThis.relationshipApp;
-    logger2.info(`[SOLID Boot] 🚀 Phase 3: Service Creation`);
+    logger2.info(`[SOLID Boot] 🚀 Phase 3: Module Initialization`);
     try {
-      const { serviceContainer } = globalThis.relationshipApp;
-      logger2.info(`[SOLID Boot] 🏗️ Creating all services`);
-      serviceContainer.createAllServices();
       const { RegistrationService: RegistrationService2 } = await __vitePreload(async () => {
         const { RegistrationService: RegistrationService3 } = await Promise.resolve().then(function() {
           return RegistrationService$1;
@@ -12116,31 +11995,16 @@ ${component_stack}
       const moduleInitializer = new ModuleInitializer2(logger2, errorHandler2, registrationService);
       logger2.info(`[SOLID Boot] 🚀 Starting module initialization`);
       await moduleInitializer.initialize();
-      const { apiManager } = globalThis.relationshipApp;
-      const apiStatus = apiManager.getAPIStatus();
-      const apiMetadata = apiManager.generateAPIMetadata();
-      logger2.info(`[SOLID Boot] 📊 API Status:`, {
-        isAvailable: apiStatus.isAvailable,
-        registeredServices: apiStatus.registeredServices,
-        serviceNames: apiStatus.serviceNames
-      });
-      logger2.info(`[SOLID Boot] 📊 API Metadata:`, {
-        totalServices: apiMetadata.totalServices,
-        services: Array.from(apiMetadata.services.keys())
-      });
-      logger2.info(`[SOLID Boot] ✅ Phase 3 completed - All services created and module initialized`);
+      logger2.info(`[SOLID Boot] ✅ Phase 3 completed - Module initialized`);
       notificationService2.showSuccess("SOLID Boot completed successfully!");
     } catch (error) {
       logger2.error(`[SOLID Boot] ❌ Phase 3 failed:`, error);
       errorHandler2.handle(error, "SOLID Boot Phase 3");
-      notificationService2.showError("Service creation failed. Check console for details.");
+      notificationService2.showError("Module initialization failed. Check console for details.");
     }
     const metadataManagementApplication = new MetadataManagementApplication();
     await metadataManagementApplication.render({ force: true });
-    logger2.info(`[SOLID Boot] ✅ Metadata Management Application rendered`);
-    logger2.info(globalThis.game?.modules.get("relationship-app").api);
+    logger2.info(`[SOLID Boot] Metadata Management Application rendered`);
   });
-  const initialLogger = new FoundryLogger();
-  initialLogger.info(`[SOLID Boot] 🎯 SOLID Boot process initialized`);
 })();
 //# sourceMappingURL=relationship-app.js.map

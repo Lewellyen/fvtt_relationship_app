@@ -62,8 +62,9 @@ export { APIManager } from '../core/services/APIManager';
 // 🔧 Application Services (Anwendungslogik)
 
 
-// SERVICE_CONFIG - Array mit allen Service-Klassen
-// ================================================
+// SERVICE_CONFIG - Array mit allen Runtime Service-Klassen
+// ========================================================
+// Nur Services die zur Laufzeit benötigt werden, nicht Boot-Services
 export const SERVICE_CONFIG = [
   // 🏗️ Cross-Cutting Concerns (Grundbausteine)
   // Diese Services werden überall gebraucht
@@ -72,24 +73,21 @@ export const SERVICE_CONFIG = [
   {name: FoundryAdapter,  class: FoundryAdapter},          // Foundry VTT API
   {name: NotificationService,  class: NotificationService},     // Benachrichtigungen
   
-  // 🔧 Core Services (Hauptfunktionen)
-  // Diese Services sind das Herz des Systems
-  {name: RegistrationService,  class: RegistrationService},     // Service-Registrierung
-  {name: ModuleInitializer,  class: ModuleInitializer},      // Modul-Initialisierung  
-  {name: ServiceRegistry,  class: ServiceRegistry},        // Service-Registrierung
-  {name: ServiceContainer,  class: ServiceContainer},       // Service-Erstellung
-  {name: ServicePlanner,  class: ServicePlanner},         // Service-Planung
-  {name: ServiceRegistrar,  class: ServiceRegistrar},       // Service-Registrierung
-  {name: ServiceValidator,  class: ServiceValidator},       // Service-Validierung
-  {name: DependencyMapper,  class: DependencyMapper},       // Dependency-Mapping
-  
   // 🎨 Svelte & UI Services (Benutzeroberfläche)
   {name: SvelteManager,  class: SvelteManager},          // Svelte-Komponenten
   {name: CSSManager,  class: CSSManager},             // Styling
   
-  // 🌐 API & Registration Services (Externe Schnittstellen)
-  {name: APIManager,  class: APIManager},             // API-Management
-  
-  
   // 🔧 Application Services (Anwendungslogik)
+  // Hier kommen später die Business-Services hin
 ];
+
+// ❌ ENTFERNT: Alle Boot-Services
+// - ServiceRegistry (Boot-Service)
+// - ServiceContainer (Boot-Service)  
+// - ServicePlanner (Boot-Service)
+// - ServiceRegistrar (Boot-Service)
+// - ServiceValidator (Boot-Service)
+// - DependencyMapper (Boot-Service)
+// - APIManager (Boot-Service)
+// - RegistrationService (Boot-Service)
+// - ModuleInitializer (Boot-Service)
