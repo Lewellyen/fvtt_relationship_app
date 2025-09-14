@@ -7,7 +7,7 @@ import { FoundryLogger } from "../core/services/FoundryLogger";
 
 /**
  * ServiceContainer - Services mit Dependencies erstellen und lagern
- * 
+ *
  * Verantwortlichkeit: Services mit Dependencies erstellen und lagern
  * Single Responsibility: Nur Service Creation und Caching
  */
@@ -23,13 +23,21 @@ export class ServiceContainer implements IServiceContainer {
   private readonly serviceValidator: IServiceValidator;
   private readonly logger: ILogger;
 
-  constructor(logger: ILogger, servicePlans: Map<any, ServicePlan>, serviceValidator: IServiceValidator) {
+  constructor(
+    logger: ILogger,
+    servicePlans: Map<any, ServicePlan>,
+    serviceValidator: IServiceValidator
+  ) {
     this.logger = logger;
     this.servicePlans = servicePlans;
     this.serviceValidator = serviceValidator;
   }
 
-  static getInstance(logger: ILogger, servicePlans: Map<any, ServicePlan>, serviceValidator: IServiceValidator): ServiceContainer {
+  static getInstance(
+    logger: ILogger,
+    servicePlans: Map<any, ServicePlan>,
+    serviceValidator: IServiceValidator
+  ): ServiceContainer {
     if (!ServiceContainer.instance) {
       ServiceContainer.instance = new ServiceContainer(logger, servicePlans, serviceValidator);
     }
@@ -40,25 +48,37 @@ export class ServiceContainer implements IServiceContainer {
    * Service aus Lagerhaus holen oder neu erstellen
    */
   getService<T>(identifier: any): T {
-    this.writeLog("info", `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}`);
-    
+    this.writeLog(
+      "info",
+      `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}`
+    );
+
     // Erst im Lagerhaus schauen (für Singletons)
     if (this.instances.has(identifier)) {
-      this.writeLog("info", `[ServiceContainer] ♻️ Returning cached singleton: ${identifier.name || identifier}`);
+      this.writeLog(
+        "info",
+        `[ServiceContainer] ♻️ Returning cached singleton: ${identifier.name || identifier}`
+      );
       return this.instances.get(identifier);
     }
-    
+
     // Nicht da? Dann neu erstellen
-    this.writeLog("info", `[ServiceContainer] 🏗️ Creating new service: ${identifier.name || identifier}`);
+    this.writeLog(
+      "info",
+      `[ServiceContainer] 🏗️ Creating new service: ${identifier.name || identifier}`
+    );
     const service = this.createService(identifier);
-    
+
     // Singleton? Dann ins Lagerhaus legen
     const plan = this.servicePlans.get(identifier);
     if (plan && plan.isSingleton) {
-      this.writeLog("info", `[ServiceContainer] 💾 Caching singleton: ${identifier.name || identifier}`);
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 💾 Caching singleton: ${identifier.name || identifier}`
+      );
       this.instances.set(identifier, service);
     }
-    
+
     return service as T;
   }
 
@@ -66,33 +86,55 @@ export class ServiceContainer implements IServiceContainer {
    * Service mit Dependencies erstellen
    */
   createService<T>(identifier: any): T {
-    this.writeLog("info", `[ServiceContainer] 🏗️ Creating service: ${identifier.name || identifier}`);
-    this.writeLog("info", `[ServiceContainer] 🔍 Available service plans:`, Array.from(this.servicePlans.keys()).map(k => k.name || k));
-    
+    this.writeLog(
+      "info",
+      `[ServiceContainer] 🏗️ Creating service: ${identifier.name || identifier}`
+    );
+    this.writeLog(
+      "info",
+      `[ServiceContainer] 🔍 Available service plans:`,
+      Array.from(this.servicePlans.keys()).map((k) => k.name || k)
+    );
+
     const plan = this.servicePlans.get(identifier);
     if (!plan) {
-      this.writeLog("error", `[ServiceContainer] ❌ No service plan found for ${identifier.name || identifier}`);
-      this.writeLog("error", `[ServiceContainer] 🔍 Available plans:`, Array.from(this.servicePlans.keys()).map(k => k.name || k));
+      this.writeLog(
+        "error",
+        `[ServiceContainer] ❌ No service plan found for ${identifier.name || identifier}`
+      );
+      this.writeLog(
+        "error",
+        `[ServiceContainer] 🔍 Available plans:`,
+        Array.from(this.servicePlans.keys()).map((k) => k.name || k)
+      );
       throw new Error(`No service plan found for ${identifier.name || identifier}`);
     }
-    
-    this.writeLog("info", `[ServiceContainer] 📋 Service plan for ${identifier.name || identifier}:`, {
-      dependencies: plan.dependencies.map(d => d.name || d),
-      isSingleton: plan.isSingleton,
-      serviceType: plan.serviceType
-    });
-    
+
+    this.writeLog(
+      "info",
+      `[ServiceContainer] 📋 Service plan for ${identifier.name || identifier}:`,
+      {
+        dependencies: plan.dependencies.map((d) => d.name || d),
+        isSingleton: plan.isSingleton,
+        serviceType: plan.serviceType,
+      }
+    );
+
     // Dependencies zuerst erstellen
     const dependencies = this.resolveDependencies(plan);
-    
-    this.writeLog("info", `[ServiceContainer] 🔗 Resolved dependencies for ${identifier.name || identifier}:`, {
-      count: dependencies.length,
-      dependencies: dependencies.map(d => d.constructor.name)
-    });
-    
+
+    this.writeLog(
+      "info",
+      `[ServiceContainer] 🔗 Resolved dependencies for ${identifier.name || identifier}:`,
+      {
+        count: dependencies.length,
+        dependencies: dependencies.map((d) => d.constructor.name),
+      }
+    );
+
     // Service mit Dependencies erstellen
     const service = new plan.constructor(...dependencies);
-    
+
     // Service-Erstellung validieren
     if (!this.serviceValidator.validateServiceCreation(service, identifier)) {
       this.serviceValidator.handleServiceCreationError(
@@ -101,8 +143,11 @@ export class ServiceContainer implements IServiceContainer {
       );
       throw new Error(`Service creation validation failed for ${identifier.name || identifier}`);
     }
-    
-    this.writeLog("info", `[ServiceContainer] ✅ Service created successfully: ${identifier.name || identifier}`);
+
+    this.writeLog(
+      "info",
+      `[ServiceContainer] ✅ Service created successfully: ${identifier.name || identifier}`
+    );
     return service as T;
   }
 
@@ -110,25 +155,38 @@ export class ServiceContainer implements IServiceContainer {
    * Dependencies rekursiv auflösen
    */
   private resolveDependencies(plan: ServicePlan): any[] {
-    this.writeLog("info", `[ServiceContainer] 🔗 Resolving dependencies for: ${plan.constructor.name || plan.constructor}`);
-    
+    this.writeLog(
+      "info",
+      `[ServiceContainer] 🔗 Resolving dependencies for: ${plan.constructor.name || plan.constructor}`
+    );
+
     const dependencies: any[] = [];
-    
+
     for (const dependency of plan.dependencies) {
-      this.writeLog("info", `[ServiceContainer] 🔍 Resolving dependency: ${dependency.name || dependency}`);
-      
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🔍 Resolving dependency: ${dependency.name || dependency}`
+      );
+
       try {
         const resolvedDependency = this.getService(dependency);
         dependencies.push(resolvedDependency);
-        
-        this.writeLog("info", `[ServiceContainer] ✅ Dependency resolved: ${dependency.name || dependency} -> ${(resolvedDependency as any).constructor.name}`);
+
+        this.writeLog(
+          "info",
+          `[ServiceContainer] ✅ Dependency resolved: ${dependency.name || dependency} -> ${(resolvedDependency as any).constructor.name}`
+        );
       } catch (error) {
-        this.writeLog("error", `[ServiceContainer] ❌ Failed to resolve dependency ${dependency.name || dependency}:`, error);
+        this.writeLog(
+          "error",
+          `[ServiceContainer] ❌ Failed to resolve dependency ${dependency.name || dependency}:`,
+          error
+        );
         this.serviceValidator.handleServiceCreationError(error as Error, dependency);
         throw error;
       }
     }
-    
+
     return dependencies;
   }
 
@@ -136,22 +194,35 @@ export class ServiceContainer implements IServiceContainer {
    * Alle Services erstellen
    */
   createAllServices(): void {
-    this.writeLog("info", `[ServiceContainer] 🏗️ Creating all services (${this.servicePlans.size} plans)`);
-    
+    this.writeLog(
+      "info",
+      `[ServiceContainer] 🏗️ Creating all services (${this.servicePlans.size} plans)`
+    );
+
     const creationOrder = this.calculateCreationOrder();
-    
+
     for (const serviceClass of creationOrder) {
       try {
-        this.writeLog("info", `[ServiceContainer] 🏗️ Creating service: ${serviceClass.name || serviceClass}`);
+        this.writeLog(
+          "info",
+          `[ServiceContainer] 🏗️ Creating service: ${serviceClass.name || serviceClass}`
+        );
         this.getService(serviceClass);
-        this.writeLog("info", `[ServiceContainer] ✅ Service created: ${serviceClass.name || serviceClass}`);
+        this.writeLog(
+          "info",
+          `[ServiceContainer] ✅ Service created: ${serviceClass.name || serviceClass}`
+        );
       } catch (error) {
-        this.writeLog("error", `[ServiceContainer] ❌ Failed to create service ${serviceClass.name || serviceClass}:`, error);
+        this.writeLog(
+          "error",
+          `[ServiceContainer] ❌ Failed to create service ${serviceClass.name || serviceClass}:`,
+          error
+        );
         this.serviceValidator.handleServiceCreationError(error as Error, serviceClass);
         throw error;
       }
     }
-    
+
     this.writeLog("info", `[ServiceContainer] ✅ All services created successfully`);
   }
 
@@ -160,15 +231,19 @@ export class ServiceContainer implements IServiceContainer {
    */
   private calculateCreationOrder(): any[] {
     this.writeLog("info", `[ServiceContainer] 🔄 Calculating creation order`);
-    
+
     const visited = new Set<any>();
     const result: any[] = [];
-    
+
     for (const serviceClass of this.servicePlans.keys()) {
       this.topologicalSort(serviceClass, visited, result);
     }
-    
-    this.writeLog("info", `[ServiceContainer] 🔄 Creation order:`, result.map(s => s.name || s));
+
+    this.writeLog(
+      "info",
+      `[ServiceContainer] 🔄 Creation order:`,
+      result.map((s) => s.name || s)
+    );
     return result;
   }
 
@@ -176,16 +251,16 @@ export class ServiceContainer implements IServiceContainer {
     if (visited.has(service)) {
       return;
     }
-    
+
     visited.add(service);
-    
+
     const plan = this.servicePlans.get(service);
     if (plan) {
       for (const dependency of plan.dependencies) {
         this.topologicalSort(dependency, visited, result);
       }
     }
-    
+
     result.push(service);
   }
 
@@ -193,13 +268,22 @@ export class ServiceContainer implements IServiceContainer {
    * Service aus Cache entfernen
    */
   disposeService(identifier: any): void {
-    this.writeLog("info", `[ServiceContainer] 🗑️ Disposing service: ${identifier.name || identifier}`);
-    
+    this.writeLog(
+      "info",
+      `[ServiceContainer] 🗑️ Disposing service: ${identifier.name || identifier}`
+    );
+
     if (this.instances.has(identifier)) {
       this.instances.delete(identifier);
-      this.writeLog("info", `[ServiceContainer] ✅ Service disposed: ${identifier.name || identifier}`);
+      this.writeLog(
+        "info",
+        `[ServiceContainer] ✅ Service disposed: ${identifier.name || identifier}`
+      );
     } else {
-      this.writeLog("info", `[ServiceContainer] ℹ️ Service not cached: ${identifier.name || identifier}`);
+      this.writeLog(
+        "info",
+        `[ServiceContainer] ℹ️ Service not cached: ${identifier.name || identifier}`
+      );
     }
   }
 
@@ -207,8 +291,11 @@ export class ServiceContainer implements IServiceContainer {
    * Alle Services aus Cache entfernen
    */
   disposeAll(): void {
-    this.writeLog("info", `[ServiceContainer] 🗑️ Disposing all services (${this.instances.size} cached)`);
-    
+    this.writeLog(
+      "info",
+      `[ServiceContainer] 🗑️ Disposing all services (${this.instances.size} cached)`
+    );
+
     this.instances.clear();
     this.writeLog("info", `[ServiceContainer] ✅ All services disposed`);
   }

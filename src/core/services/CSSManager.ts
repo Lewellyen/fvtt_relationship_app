@@ -27,26 +27,26 @@ export class CSSManager implements ICSSManager {
    */
   private testLoggerInjection(): void {
     this.writeLog("debug", `[CSSManager] 🔍 Testing FoundryLogger injection...`);
-    
+
     // Test 1: Logger ist definiert
     if (this.logger) {
       this.writeLog("debug", `[CSSManager] ✅ FoundryLogger injected successfully`);
-      
+
       // Test 2: Logger hat die erwarteten Methoden
-      const hasInfo = typeof this.logger.info === 'function';
-      const hasError = typeof this.logger.error === 'function';
-      const hasWarn = typeof this.logger.warn === 'function';
-      
+      const hasInfo = typeof this.logger.info === "function";
+      const hasError = typeof this.logger.error === "function";
+      const hasWarn = typeof this.logger.warn === "function";
+
       this.writeLog("debug", `[CSSManager] 🔍 Logger methods check:`, {
         hasInfo,
-        hasError, 
+        hasError,
         hasWarn,
-        loggerType: this.logger.constructor.name
+        loggerType: this.logger.constructor.name,
       });
-      
+
       if (hasInfo && hasError && hasWarn) {
         this.writeLog("debug", `[CSSManager] ✅ FoundryLogger methods available`);
-        
+
         // Test 3: Logger funktioniert tatsächlich
         try {
           this.logger.info(`[CSSManager] 🎯 FoundryLogger test successful - injection working!`);
@@ -58,7 +58,10 @@ export class CSSManager implements ICSSManager {
         this.writeLog("error", `[CSSManager] ❌ FoundryLogger missing required methods`);
       }
     } else {
-      this.writeLog("error", `[CSSManager] ❌ FoundryLogger injection failed - logger is undefined`);
+      this.writeLog(
+        "error",
+        `[CSSManager] ❌ FoundryLogger injection failed - logger is undefined`
+      );
     }
   }
 

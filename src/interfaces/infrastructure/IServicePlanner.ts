@@ -2,7 +2,7 @@ import type { ServicePlan, ValidationResult } from "../../core/services/ServiceP
 
 /**
  * Interface für Service Planner
- * 
+ *
  * Verantwortlichkeit: Service Baupläne mit Dependencies erstellen
  */
 export interface IServicePlanner {

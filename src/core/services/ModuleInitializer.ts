@@ -1,4 +1,9 @@
-import type { IModuleInitializer, IRegistrationService, ILogger, IErrorHandler } from "../../interfaces";
+import type {
+  IModuleInitializer,
+  IRegistrationService,
+  ILogger,
+  IErrorHandler,
+} from "../../interfaces";
 // ✅ Services direkt importieren (zirkuläre Abhängigkeiten vermeiden)
 import { FoundryLogger } from "./FoundryLogger";
 import { ConsoleErrorHandler } from "./ConsoleErrorHandler";

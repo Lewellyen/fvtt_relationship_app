@@ -7,7 +7,7 @@ export class FoundryLogger implements ILogger {
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "FoundryLogger"; // ✅ Klassename für Dependency Resolution
   static readonly DEPENDENCIES = []; // ✅ Keine Dependencies erforderlich
-  
+
   // ✅ Getter für den echten Klassennamen (gegen Name Mangling)
   static get className() {
     return this.CLASS_NAME;
@@ -16,7 +16,7 @@ export class FoundryLogger implements ILogger {
   constructor() {}
 
   info(message: any, ...args: any[]): void {
-    if (typeof message === 'object' && message !== null) {
+    if (typeof message === "object" && message !== null) {
       console.log(`${MODULE_ID_PREFIX} ℹ️`, message, ...args);
     } else {
       console.log(`${MODULE_ID_PREFIX} ℹ️ ${message}`, ...args);
@@ -24,7 +24,7 @@ export class FoundryLogger implements ILogger {
   }
 
   warn(message: any, ...args: any[]): void {
-    if (typeof message === 'object' && message !== null) {
+    if (typeof message === "object" && message !== null) {
       console.warn(`${MODULE_ID_PREFIX} ⚠️`, message, ...args);
     } else {
       console.warn(`${MODULE_ID_PREFIX} ⚠️ ${message}`, ...args);
@@ -32,7 +32,7 @@ export class FoundryLogger implements ILogger {
   }
 
   error(message: any, ...args: any[]): void {
-    if (typeof message === 'object' && message !== null) {
+    if (typeof message === "object" && message !== null) {
       console.error(`${MODULE_ID_PREFIX} ❌`, message, ...args);
     } else {
       console.error(`${MODULE_ID_PREFIX} ❌ ${message}`, ...args);
@@ -41,10 +41,10 @@ export class FoundryLogger implements ILogger {
 
   debug(message: any, ...args: any[]): void {
     return;
-    if (typeof message === 'object' && message !== null) {
+    if (typeof message === "object" && message !== null) {
       console.debug(`${MODULE_ID_PREFIX} 🐛`, message, ...args);
     } else {
       console.debug(`${MODULE_ID_PREFIX} 🐛 ${message}`, ...args);
-    }    
+    }
   }
 }

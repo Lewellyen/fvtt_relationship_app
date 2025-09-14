@@ -13,9 +13,15 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
   #svelte?: SvelteManager;
   #css?: CSSManager;
 
-  private get logger() { return (this.#logger ??= use(FoundryLogger)); }
-  private get svelteManager() { return (this.#svelte ??= use(SvelteManager)); }
-  private get cssManager() { return (this.#css ??= use(CSSManager)); }
+  private get logger() {
+    return (this.#logger ??= use(FoundryLogger));
+  }
+  private get svelteManager() {
+    return (this.#svelte ??= use(SvelteManager));
+  }
+  private get cssManager() {
+    return (this.#css ??= use(CSSManager));
+  }
 
   constructor() {
     super();
@@ -78,19 +84,28 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
 
   async _prepareConfig(config: IDynamicFormConfig) {
     DynamicDialogApp.config = config;
-    this.logger.info(`[${DynamicDialogApp.appId}] _prepareConfig called with config:`, DynamicDialogApp.config);
+    this.logger.info(
+      `[${DynamicDialogApp.appId}] _prepareConfig called with config:`,
+      DynamicDialogApp.config
+    );
     return DynamicDialogApp.config;
   }
 
   async _prepareOnSubmit(onSubmit: (values: Record<string, any>) => void) {
     DynamicDialogApp.onSubmit = onSubmit;
-    this.logger.info(`[${DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`, DynamicDialogApp.onSubmit);
+    this.logger.info(
+      `[${DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`,
+      DynamicDialogApp.onSubmit
+    );
     return DynamicDialogApp.onSubmit;
   }
 
   async _prepareOnCancel(onCancel: () => void) {
     DynamicDialogApp.onCancel = onCancel;
-    this.logger.info(`[${DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`, DynamicDialogApp.onCancel);
+    this.logger.info(
+      `[${DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`,
+      DynamicDialogApp.onCancel
+    );
     return DynamicDialogApp.onCancel;
   }
 
@@ -106,7 +121,9 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
       const target = this.element.querySelector("#dynamic-dialog-svelte");
 
       if (!target) {
-        this.logger.warn(`[${DynamicDialogApp.appId}] Svelte mount point '#dynamic-dialog-svelte' not found`);
+        this.logger.warn(
+          `[${DynamicDialogApp.appId}] Svelte mount point '#dynamic-dialog-svelte' not found`
+        );
         return;
       }
 
@@ -173,8 +190,7 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
       });
 
       // Dialog öffnen
-      app.render({force: true});
+      app.render({ force: true });
     });
   }
-
 }

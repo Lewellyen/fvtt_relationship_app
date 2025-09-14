@@ -1,6 +1,6 @@
 /**
  * Interface für Dependency Mapper
- * 
+ *
  * Verantwortlichkeit: Dependencies aus @Inject extrahieren und mappen
  */
 export interface IDependencyMapper {

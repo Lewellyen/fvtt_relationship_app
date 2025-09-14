@@ -3,31 +3,23 @@ const fields = foundry.data.fields;
 export class RelationshipGraphModel extends foundry.abstract.TypeDataModel<any, any, any, any> {
   static defineSchema() {
     return {
-      // GRAPH METADATA
-      // Beschreibung des Graphen
-      description: new fields.HTMLField({ required: false, blank: true }),
-      // Version des Graphen
-      version: new fields.StringField({ required: false, blank: true, initial: "1.0.0" }),
-      // Erstellungsdatum
-      created: new fields.NumberField({ required: false, blank: true }),
-      // Letzte Änderung
-      modified: new fields.NumberField({ required: false, blank: true }),
-
-      // CYTOGRAPHE ELEMENTS direkt als JSON
-      elements: new fields.ObjectField({
+      version: new fields.NumberField({
         required: true,
-        blank: true,
-        initial: {
-          nodes: [],
-          edges: [],
-        },
+        initial: 1,
+        min: 1,
+        integer: true,
       }),
-
-      // CYTOGRAPHE STYLE als JSON
-      style: new fields.ArrayField(new fields.ObjectField({ required: true }), {
+      nodes: new fields.ObjectField({
         required: true,
-        blank: true,
-        initial: [],
+        initial: {},
+      }),
+      edges: new fields.ObjectField({
+        required: true,
+        initial: {},
+      }),
+      policy: new fields.ObjectField({
+        required: true,
+        initial: {},
       }),
     };
   }

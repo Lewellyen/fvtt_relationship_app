@@ -13,9 +13,15 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
   #svelte?: SvelteManager;
   #css?: CSSManager;
 
-  private get logger() { return (this.#logger ??= use(FoundryLogger)); }
-  private get svelteManager() { return (this.#svelte ??= use(SvelteManager)); }
-  private get cssManager() { return (this.#css ??= use(CSSManager)); }
+  private get logger() {
+    return (this.#logger ??= use(FoundryLogger));
+  }
+  private get svelteManager() {
+    return (this.#svelte ??= use(SvelteManager));
+  }
+  private get cssManager() {
+    return (this.#css ??= use(CSSManager));
+  }
 
   constructor() {
     super();
@@ -73,29 +79,38 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
     const context = await super._prepareContext(options);
     this.logger.info(`[${DynamicTableApp.appId}] _prepareContext called with context:`, context);
     this.logger.info(`[${DynamicTableApp.appId}] _prepareContext called with options:`, options);
-    return context;    
+    return context;
   }
 
   async _prepareConfig(config: IDynamicTableConfig) {
     DynamicTableApp.config = config;
-    this.logger.info(`[${DynamicTableApp.appId}] _prepareConfig called with config:`, DynamicTableApp.config);
+    this.logger.info(
+      `[${DynamicTableApp.appId}] _prepareConfig called with config:`,
+      DynamicTableApp.config
+    );
     return DynamicTableApp.config;
   }
 
   async _prepareOnSubmit(onSubmit: (data: any[]) => void) {
     DynamicTableApp.onSubmit = onSubmit;
-    this.logger.info(`[${DynamicTableApp.appId}] _prepareOnSubmit called with onSubmit:`, DynamicTableApp.onSubmit);
+    this.logger.info(
+      `[${DynamicTableApp.appId}] _prepareOnSubmit called with onSubmit:`,
+      DynamicTableApp.onSubmit
+    );
     return DynamicTableApp.onSubmit;
   }
 
   async _prepareOnCancel(onCancel: () => void) {
     DynamicTableApp.onCancel = onCancel;
-    this.logger.info(`[${DynamicTableApp.appId}] _prepareOnCancel called with onCancel:`, DynamicTableApp.onCancel);
+    this.logger.info(
+      `[${DynamicTableApp.appId}] _prepareOnCancel called with onCancel:`,
+      DynamicTableApp.onCancel
+    );
     return DynamicTableApp.onCancel;
   }
 
   async _onRender(context: any, options: any) {
-    this.logger.info(`[${DynamicTableApp.appId}] _onRender started`, { context, options });    
+    this.logger.info(`[${DynamicTableApp.appId}] _onRender started`, { context, options });
 
     try {
       await super._onRender(context, options);
@@ -106,11 +121,13 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
       const target = this.element.querySelector("#dynamic-table-svelte");
 
       if (!target) {
-        this.logger.warn(`[${DynamicTableApp.appId}] Svelte mount point '#dynamic-table-svelte' not found`);
+        this.logger.warn(
+          `[${DynamicTableApp.appId}] Svelte mount point '#dynamic-table-svelte' not found`
+        );
         return;
       }
 
-      this.logger.info(`[${DynamicTableApp.appId}] Found target element:`, target);      
+      this.logger.info(`[${DynamicTableApp.appId}] Found target element:`, target);
 
       // ✅ Delegation an SvelteManager - Single Responsibility
       await this.svelteManager.unmountApp(this.svelteApp);
@@ -127,7 +144,7 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
         }
       );
 
-      this.logger.info(`[${DynamicTableApp.appId}] DynamicTableSheet mounted successfully`);      
+      this.logger.info(`[${DynamicTableApp.appId}] DynamicTableSheet mounted successfully`);
     } catch (error) {
       this.logger.error(`[${DynamicTableApp.appId}] Error during render:`, error);
       throw error;
@@ -145,7 +162,7 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
   /** @override */
   async _onClose(options: any) {
     this.logger.info(`[${DynamicTableApp.appId}] _onClose called with options:`, options);
-    
+
     // ✅ Delegation an SvelteManager - Single Responsibility
     await this.svelteManager.unmountApp(this.svelteApp);
     this.svelteApp = null;
@@ -177,5 +194,4 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
       app.render({ force: true });
     });
   }
-
 }

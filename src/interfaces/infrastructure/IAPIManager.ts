@@ -1,8 +1,8 @@
-import type { APIMetadata, APIStatus, ServiceMetadata } from "../../core/services/APIManager";
+import type { APIMetadata, APIStatus } from "../../core/services/APIManager";
 
 /**
  * Interface für API Manager
- * 
+ *
  * Verantwortlichkeit: Services in globaler API verfügbar machen
  */
 export interface IAPIManager {

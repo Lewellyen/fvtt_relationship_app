@@ -1,6 +1,6 @@
 /**
  * Interface für Service Registry
- * 
+ *
  * Verantwortlichkeit: Service-Klassen erfassen und registrieren
  */
 export interface IServiceRegistry {

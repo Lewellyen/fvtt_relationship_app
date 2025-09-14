@@ -2,7 +2,7 @@ import type { ServicePlan, ValidationResult } from "../../core/services/ServiceP
 
 /**
  * Interface für Service Validator
- * 
+ *
  * Verantwortlichkeit: Service-Erstellung validieren und Fehler prüfen
  */
 export interface IServiceValidator {

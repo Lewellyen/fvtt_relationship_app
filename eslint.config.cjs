@@ -23,6 +23,6 @@ module.exports = [
     }
   },
   {
-    ignores: ['node_modules/', 'dist/', 'packs/', 'assets/']
+    ignores: ['node_modules/', 'dist/', 'packs/', 'assets/', 'tailwind.config.js', 'postcss.config.js']
   }
 ]; 

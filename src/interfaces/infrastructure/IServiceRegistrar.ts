@@ -1,6 +1,6 @@
 /**
  * Interface für Service Registrar
- * 
+ *
  * Verantwortlichkeit: Services registrieren und verfügbar machen
  */
 export interface IServiceRegistrar {

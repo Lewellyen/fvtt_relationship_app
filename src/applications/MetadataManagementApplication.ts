@@ -12,9 +12,15 @@ export default class MetadataManagementApplication extends foundry.applications.
   #svelte?: SvelteManager;
   #css?: CSSManager;
 
-  private get logger() { return (this.#logger ??= use(FoundryLogger)); }
-  private get svelte() { return (this.#svelte ??= use(SvelteManager)); }
-  private get css() { return (this.#css ??= use(CSSManager)); }
+  private get logger() {
+    return (this.#logger ??= use(FoundryLogger));
+  }
+  private get svelte() {
+    return (this.#svelte ??= use(SvelteManager));
+  }
+  private get css() {
+    return (this.#css ??= use(CSSManager));
+  }
 
   constructor() {
     super();
@@ -62,12 +68,17 @@ export default class MetadataManagementApplication extends foundry.applications.
   }
 
   async _prepareContext(options: any) {
-    const context = await super._prepareContext(options);   
-    this.logger.info("[MetadataManagementApplication] _prepareContext called with context:", context);
-    this.logger.info("[MetadataManagementApplication] _prepareContext called with options:", options);
+    const context = await super._prepareContext(options);
+    this.logger.info(
+      "[MetadataManagementApplication] _prepareContext called with context:",
+      context
+    );
+    this.logger.info(
+      "[MetadataManagementApplication] _prepareContext called with options:",
+      options
+    );
     return context;
   }
-   
 
   async _loadCSS() {
     const cssPath = "modules/relationship-app/styles/metadata-management-app.css";
@@ -109,5 +120,4 @@ export default class MetadataManagementApplication extends foundry.applications.
     this.svelteApp = null;
     return super._onClose(options);
   }
-
 }

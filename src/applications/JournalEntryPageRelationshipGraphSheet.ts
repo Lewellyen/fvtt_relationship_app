@@ -14,9 +14,15 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
   #svelte?: SvelteManager;
   #css?: CSSManager;
 
-  private get logger() { return (this.#logger ??= use(FoundryLogger)); }
-  private get svelteManager() { return (this.#svelte ??= use(SvelteManager)); }
-  private get cssManager() { return (this.#css ??= use(CSSManager)); }
+  private get logger() {
+    return (this.#logger ??= use(FoundryLogger));
+  }
+  private get svelteManager() {
+    return (this.#svelte ??= use(SvelteManager));
+  }
+  private get cssManager() {
+    return (this.#css ??= use(CSSManager));
+  }
 
   constructor(...args: any[]) {
     super(...args);
@@ -93,8 +99,14 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
 
   async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
-    this.logger.info("[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:", context);
-    this.logger.info("[JournalEntryPageRelationshipGraphSheet] _prepareContext called with options:", options);
+    this.logger.info(
+      "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:",
+      context
+    );
+    this.logger.info(
+      "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with options:",
+      options
+    );
     return context;
   }
 
@@ -103,9 +115,11 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     await this.cssManager.loadCSS(cssPath);
   }
 
-
   async _onRender(context: any, options: any) {
-    this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onRender started", { context, options });
+    this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onRender started", {
+      context,
+      options,
+    });
     await super._onRender(context, options);
 
     // ✅ Delegation an SvelteManager - Single Responsibility
@@ -118,14 +132,23 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     await this._loadCSS();
 
     // Mounte Graph-Komponente über SvelteManager
-    this.svelteApp = await this.svelteManager.mountGraphComponent(this.element as HTMLElement, journalEntryPage, isEditMode);
+    this.svelteApp = await this.svelteManager.mountGraphComponent(
+      this.element as HTMLElement,
+      journalEntryPage,
+      isEditMode
+    );
 
-    this.logger.info("[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully");
+    this.logger.info(
+      "[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully"
+    );
   }
 
   /** @override */
   async _onClose(options: any) {
-    this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onClose called with options:", options);
+    this.logger.info(
+      "[JournalEntryPageRelationshipGraphSheet] _onClose called with options:",
+      options
+    );
     // ✅ Delegation an SvelteManager - Single Responsibility
     await this.svelteManager.unmountApp(this.svelteApp);
     this.svelteApp = null;

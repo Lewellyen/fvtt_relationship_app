@@ -2,7 +2,7 @@ import type { ServicePlan } from "../../core/services/ServicePlanner";
 
 /**
  * Interface für Service Container
- * 
+ *
  * Verantwortlichkeit: Services mit Dependencies erstellen und lagern
  */
 export interface IServiceContainer {
