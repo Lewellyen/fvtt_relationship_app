@@ -6,6 +6,7 @@ import { NotificationService } from "../services/NotificationService";
 import { SERVICE_CONFIG } from "../services/index";
 import { setContainer } from "../core/edge/appContext";
 import MetadataManagementApplication from "../applications/MetadataManagementApplication";
+import { GraphService } from "../services/GraphService";
 
 // ✅ SOLID-konformer Bootablauf
 
@@ -147,4 +148,11 @@ foundryAdapter.onReady(async () => {
   const metadataManagementApplication = new MetadataManagementApplication();
   await metadataManagementApplication.render({ force: true });
   logger.info(`[SOLID Boot] Metadata Management Application rendered`);
+
+  const container = (globalThis as any).relationshipApp.serviceContainer;
+  const graphService = container.getService(GraphService);
+  (globalThis as any).relationshipApp = {
+    ...(globalThis as any).relationshipApp,
+    graphService,
+  };
 });

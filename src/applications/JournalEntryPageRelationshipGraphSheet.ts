@@ -2,6 +2,8 @@ import { use } from "../core/edge/appContext";
 import { FoundryLogger } from "../core/services/FoundryLogger";
 import { SvelteManager } from "../core/services/SvelteManager";
 import { CSSManager } from "../core/services/CSSManager";
+import { bindFoundrySync } from "../utils/syncGraphWithFoundry";
+import { GraphService } from "../services/GraphService";
 
 /**
  * V2 JournalEntryPageSheet subclass drawing a simple relationship graph.
@@ -25,7 +27,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
   }
 
   constructor(...args: any[]) {
-    super(...args);
+    super(...args);    
     // Kein Service im Konstruktor holen (Foundry erzeugt die Klasse; Constructor-Zeitpunkt ist zu früh)
   }
   /**
@@ -120,6 +122,11 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
       context,
       options,
     });
+
+    const graphService: GraphService = use(GraphService);
+    await graphService.init(this.document);
+    bindFoundrySync(this.document, graphService);
+
     await super._onRender(context, options);
 
     // ✅ Delegation an SvelteManager - Single Responsibility

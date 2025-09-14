@@ -46,6 +46,9 @@ export { CSSManager } from "../core/services/CSSManager";
 // 🌐 API & Registration Services (Externe Schnittstellen)
 export { APIManager } from "../core/services/APIManager";
 
+export { GraphService } from "./GraphService";
+import { GraphService } from "./GraphService";
+
 // 🔧 Application Services (Anwendungslogik)
 
 // SERVICE_CONFIG - Array mit allen Runtime Service-Klassen
@@ -64,6 +67,7 @@ export const SERVICE_CONFIG = [
   { name: CSSManager, class: CSSManager }, // Styling
 
   // 🔧 Application Services (Anwendungslogik)
+  { name: GraphService, class: GraphService },
   // Hier kommen später die Business-Services hin
 ];
 

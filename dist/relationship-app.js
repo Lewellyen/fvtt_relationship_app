@@ -8583,7 +8583,10 @@ ${component_stack}
           this.writeLog("error", `[CSSManager] ❌ FoundryLogger missing required methods`);
         }
       } else {
-        this.writeLog("error", `[CSSManager] ❌ FoundryLogger injection failed - logger is undefined`);
+        this.writeLog(
+          "error",
+          `[CSSManager] ❌ FoundryLogger injection failed - logger is undefined`
+        );
       }
     }
     /**
@@ -8667,6 +8670,150 @@ ${component_stack}
   _CSSManager.CLASS_NAME = "CSSManager";
   _CSSManager.DEPENDENCIES = [FoundryLogger];
   let CSSManager = _CSSManager;
+  class GraphService {
+    constructor(page) {
+      this._page = page;
+      this._snapshot = null;
+      this._instanceId = foundry.utils.randomID();
+    }
+    // -- Public ----------------------------------------------------------------
+    async init(page) {
+      this._page = page;
+      this._snapshot = foundry.utils.deepClone(this._loadFromSystem());
+    }
+    get instanceId() {
+      return this._instanceId;
+    }
+    getSnapshot() {
+      if (!this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
+      return foundry.utils.deepClone(this._snapshot);
+    }
+    getNode(id) {
+      return this._snapshot?.nodes[id];
+    }
+    async addNode(node) {
+      const next2 = this._cloneCurrent();
+      next2.nodes[node.id] = foundry.utils.deepClone(node);
+      await this._write(next2);
+    }
+    async updateNode(id, patch) {
+      const next2 = this._cloneCurrent();
+      const base = next2.nodes[id] ?? { id };
+      next2.nodes[id] = { ...base, ...patch, id };
+      await this._write(next2);
+    }
+    async removeNode(id) {
+      const next2 = this._cloneCurrent();
+      delete next2.nodes[id];
+      for (const [eid, e] of Object.entries(next2.edges)) {
+        if (e.source === id || e.target === id) delete next2.edges[eid];
+      }
+      if (next2.policy) delete next2.policy[id];
+      await this._write(next2);
+    }
+    getEdge(id) {
+      return this._snapshot?.edges[id];
+    }
+    async addEdge(edge) {
+      const next2 = this._cloneCurrent();
+      this._assertEndpointsExist(next2, edge.source, edge.target);
+      next2.edges[edge.id] = foundry.utils.deepClone(edge);
+      await this._write(next2);
+    }
+    async updateEdge(id, patch) {
+      const next2 = this._cloneCurrent();
+      const base = next2.edges[id] ?? { id };
+      const newSource = patch.source ?? base.source;
+      const newTarget = patch.target ?? base.target;
+      if (newSource && newTarget) this._assertEndpointsExist(next2, newSource, newTarget);
+      next2.edges[id] = { ...base, ...patch, id };
+      await this._write(next2);
+    }
+    async removeEdge(id) {
+      const next2 = this._cloneCurrent();
+      delete next2.edges[id];
+      await this._write(next2);
+    }
+    async setPolicy(nodeId, policy) {
+      const next2 = this._cloneCurrent();
+      if (!next2.policy) next2.policy = {};
+      next2.policy[nodeId] = foundry.utils.deepClone(policy);
+      await this._write(next2);
+    }
+    getPolicy(nodeId) {
+      return this._snapshot?.policy?.[nodeId];
+    }
+    // -- Intern ----------------------------------------------------------------
+    _loadFromSystem() {
+      const sys = this._page.system;
+      return {
+        version: sys.version ?? 1,
+        nodes: foundry.utils.deepClone(sys.nodes ?? {}),
+        edges: foundry.utils.deepClone(sys.edges ?? {}),
+        policy: foundry.utils.deepClone(sys.policy ?? {})
+      };
+    }
+    _cloneCurrent() {
+      if (!this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
+      return foundry.utils.deepClone(this._snapshot);
+    }
+    async _write(next2) {
+      await this._writeToSystem(next2);
+      this._snapshot = foundry.utils.deepClone(next2);
+    }
+    async _writeToSystem(next2) {
+      if (!this._snapshot) throw new Error("init() first");
+      const prev = this._snapshot;
+      let patch = {};
+      if (next2.version !== prev.version) {
+        patch["system.version"] = next2.version;
+      }
+      patch = { ...patch, ...this._dictDiff("system.nodes", prev.nodes, next2.nodes) };
+      patch = { ...patch, ...this._dictDiff("system.edges", prev.edges, next2.edges) };
+      patch = { ...patch, ...this._dictDiff("system.policy", prev.policy ?? {}, next2.policy ?? {}) };
+      if (foundry.utils.isEmpty(patch)) return;
+      await this._page.update(patch, { _graphService: this._instanceId, render: false });
+    }
+    /**
+     * Patch für Dictionary-Felder (Record<string, any>) erzeugen:
+     * - Entfernte Keys -> `${basePath}.-=${key}`: null
+     * - Neu/Geändert   -> `${basePath}.${key}`: value   (robust: ganzen Eintrag setzen)
+     *   (Optional: granular pro Feld mit diffObject, siehe Kommentar)
+     */
+    _dictDiff(basePath, prev, next2) {
+      const patch = {};
+      for (const k of Object.keys(prev)) {
+        if (!(k in next2)) patch[`${basePath}.-=${k}`] = null;
+      }
+      for (const [k, newVal] of Object.entries(next2)) {
+        const oldVal = prev[k];
+        if (oldVal === void 0) {
+          patch[`${basePath}.${k}`] = newVal;
+        } else {
+          const d = foundry.utils.diffObject(oldVal, newVal);
+          if (!foundry.utils.isEmpty(d)) {
+            patch[`${basePath}.${k}`] = newVal;
+          }
+        }
+      }
+      return patch;
+    }
+    _assertEndpointsExist(g, source2, target) {
+      if (!g.nodes[source2]) throw new Error(`Edge source '${source2}' does not exist`);
+      if (!g.nodes[target]) throw new Error(`Edge target '${target}' does not exist`);
+    }
+  }
+  function bindFoundrySync(page, service) {
+    Hooks.on("updateJournalEntryPage", async (doc, changes, options, userId) => {
+      if (doc.id !== page.id) return;
+      void userId;
+      if (options?._graphService === service.instanceId) return;
+      const sys = changes.system ?? {};
+      const touched = "nodes" in sys || "edges" in sys || "policy" in sys || "version" in sys;
+      if (!touched) return;
+      await service.init(page);
+    });
+  }
   const _JournalEntryPageRelationshipGraphSheet = class _JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet {
     constructor(...args) {
       super(...args);
@@ -8703,8 +8850,14 @@ ${component_stack}
     }
     async _prepareContext(options) {
       const context = await super._prepareContext(options);
-      this.logger.info("[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:", context);
-      this.logger.info("[JournalEntryPageRelationshipGraphSheet] _prepareContext called with options:", options);
+      this.logger.info(
+        "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:",
+        context
+      );
+      this.logger.info(
+        "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with options:",
+        options
+      );
       return context;
     }
     async _loadCSS() {
@@ -8712,19 +8865,34 @@ ${component_stack}
       await this.cssManager.loadCSS(cssPath);
     }
     async _onRender(context, options) {
-      this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onRender started", { context, options });
+      this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onRender started", {
+        context,
+        options
+      });
+      const graphService = use(GraphService);
+      await graphService.init(this.document);
+      bindFoundrySync(this.document, graphService);
       await super._onRender(context, options);
       await this.svelteManager.unmountApp(this.svelteApp);
       this.svelteApp = null;
       const journalEntryPage = this.document;
       const isEditMode = !this.isView;
       await this._loadCSS();
-      this.svelteApp = await this.svelteManager.mountGraphComponent(this.element, journalEntryPage, isEditMode);
-      this.logger.info("[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully");
+      this.svelteApp = await this.svelteManager.mountGraphComponent(
+        this.element,
+        journalEntryPage,
+        isEditMode
+      );
+      this.logger.info(
+        "[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully"
+      );
     }
     /** @override */
     async _onClose(options) {
-      this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onClose called with options:", options);
+      this.logger.info(
+        "[JournalEntryPageRelationshipGraphSheet] _onClose called with options:",
+        options
+      );
       await this.svelteManager.unmountApp(this.svelteApp);
       this.svelteApp = null;
       return super._onClose(options);
@@ -8871,16 +9039,23 @@ ${component_stack}
       const plans = /* @__PURE__ */ new Map();
       const allServices = this.serviceRegistry.getAllServices();
       const dependencyGraph = this.dependencyMapper.buildDependencyGraph();
-      this.logger.info(`[ServicePlanner] 📋 Processing ${allServices.length} services from ServiceRegistry`);
+      this.logger.info(
+        `[ServicePlanner] 📋 Processing ${allServices.length} services from ServiceRegistry`
+      );
       for (const ServiceClass of allServices) {
-        this.logger.info(`[ServicePlanner] 📝 Creating plan for: ${ServiceClass.name || ServiceClass}`);
+        this.logger.info(
+          `[ServicePlanner] 📝 Creating plan for: ${ServiceClass.name || ServiceClass}`
+        );
         const plan = this.createServicePlan(ServiceClass, dependencyGraph);
         plans.set(ServiceClass, plan);
-        this.logger.info(`[ServicePlanner] 📋 Plan created for ${ServiceClass.name || ServiceClass}:`, {
-          dependencies: plan.dependencies.map((d) => d.name || d),
-          resolutionOrder: plan.resolutionOrder.map((d) => d.name || d),
-          isSingleton: plan.isSingleton
-        });
+        this.logger.info(
+          `[ServicePlanner] 📋 Plan created for ${ServiceClass.name || ServiceClass}:`,
+          {
+            dependencies: plan.dependencies.map((d) => d.name || d),
+            resolutionOrder: plan.resolutionOrder.map((d) => d.name || d),
+            isSingleton: plan.isSingleton
+          }
+        );
       }
       this.logger.info(`[ServicePlanner] ✅ Created ${plans.size} service plans`);
       return plans;
@@ -8904,7 +9079,9 @@ ${component_stack}
      * Resolution Order berechnen (Topological Sort)
      */
     calculateResolutionOrder(serviceClass, dependencyGraph) {
-      this.logger.info(`[ServicePlanner] 🔄 Calculating resolution order for: ${serviceClass.name || serviceClass}`);
+      this.logger.info(
+        `[ServicePlanner] 🔄 Calculating resolution order for: ${serviceClass.name || serviceClass}`
+      );
       const visited = /* @__PURE__ */ new Set();
       const resolutionOrder = [];
       this.topologicalSort(serviceClass, dependencyGraph, visited, resolutionOrder);
@@ -8964,11 +9141,15 @@ ${component_stack}
         for (const dependency of plan.dependencies) {
           if (!this.serviceRegistry.hasService(dependency)) {
             result.isValid = false;
-            result.errors.push(`Dependency ${dependency.name || dependency} not found for service ${serviceClass.name || serviceClass}`);
+            result.errors.push(
+              `Dependency ${dependency.name || dependency} not found for service ${serviceClass.name || serviceClass}`
+            );
           }
         }
         if (!plan.apiName) {
-          result.warnings.push(`No API_NAME defined for service ${serviceClass.name || serviceClass}`);
+          result.warnings.push(
+            `No API_NAME defined for service ${serviceClass.name || serviceClass}`
+          );
         }
       }
       this.logger.info(`[ServicePlanner] 🔍 Validation result:`, {
@@ -8991,7 +9172,9 @@ ${component_stack}
      * Dependency Graph validieren
      */
     validateDependencyGraph(dependencyGraph) {
-      this.logger.info(`[ServiceValidator] 🔍 Validating dependency graph with ${dependencyGraph.size} services`);
+      this.logger.info(
+        `[ServiceValidator] 🔍 Validating dependency graph with ${dependencyGraph.size} services`
+      );
       const result = {
         isValid: true,
         errors: [],
@@ -9005,7 +9188,9 @@ ${component_stack}
         for (const dependency of dependencies) {
           if (!dependencyGraph.has(dependency)) {
             result.isValid = false;
-            result.errors.push(`Service ${service.name || service} depends on unknown service ${dependency.name || dependency}`);
+            result.errors.push(
+              `Service ${service.name || service} depends on unknown service ${dependency.name || dependency}`
+            );
           }
         }
       }
@@ -9056,17 +9241,23 @@ ${component_stack}
       }
       if (!Array.isArray(plan.dependencies)) {
         result.isValid = false;
-        result.errors.push(`Dependencies must be an array for service ${serviceClass.name || serviceClass}`);
+        result.errors.push(
+          `Dependencies must be an array for service ${serviceClass.name || serviceClass}`
+        );
       }
       if (!Array.isArray(plan.resolutionOrder)) {
         result.isValid = false;
-        result.errors.push(`Resolution order must be an array for service ${serviceClass.name || serviceClass}`);
+        result.errors.push(
+          `Resolution order must be an array for service ${serviceClass.name || serviceClass}`
+        );
       }
       if (!plan.apiName || typeof plan.apiName !== "string") {
         result.warnings.push(`No valid API_NAME for service ${serviceClass.name || serviceClass}`);
       }
       if (!["singleton", "factory", "transient"].includes(plan.serviceType)) {
-        result.warnings.push(`Invalid service type '${plan.serviceType}' for service ${serviceClass.name || serviceClass}`);
+        result.warnings.push(
+          `Invalid service type '${plan.serviceType}' for service ${serviceClass.name || serviceClass}`
+        );
       }
       return result;
     }
@@ -9074,16 +9265,24 @@ ${component_stack}
      * Service-Erstellung validieren
      */
     validateServiceCreation(service, identifier) {
-      this.logger.info(`[ServiceValidator] 🔍 Validating service creation for: ${identifier.name || identifier}`);
+      this.logger.info(
+        `[ServiceValidator] 🔍 Validating service creation for: ${identifier.name || identifier}`
+      );
       if (!service) {
-        this.logger.error(`[ServiceValidator] ❌ Service is null or undefined for ${identifier.name || identifier}`);
+        this.logger.error(
+          `[ServiceValidator] ❌ Service is null or undefined for ${identifier.name || identifier}`
+        );
         return false;
       }
       if (typeof service !== "object") {
-        this.logger.error(`[ServiceValidator] ❌ Service is not an object for ${identifier.name || identifier}`);
+        this.logger.error(
+          `[ServiceValidator] ❌ Service is not an object for ${identifier.name || identifier}`
+        );
         return false;
       }
-      this.logger.info(`[ServiceValidator] ✅ Service creation valid for ${identifier.name || identifier}`);
+      this.logger.info(
+        `[ServiceValidator] ✅ Service creation valid for ${identifier.name || identifier}`
+      );
       return true;
     }
     /**
@@ -9095,7 +9294,9 @@ ${component_stack}
       const recursionStack = /* @__PURE__ */ new Set();
       for (const service of dependencyGraph.keys()) {
         if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
-          this.logger.error(`[ServiceValidator] ❌ Circular dependency detected starting from ${service.name || service}`);
+          this.logger.error(
+            `[ServiceValidator] ❌ Circular dependency detected starting from ${service.name || service}`
+          );
           return true;
         }
       }
@@ -9104,7 +9305,9 @@ ${component_stack}
     }
     hasCircularDependency(service, graph, visited, recursionStack) {
       if (recursionStack.has(service)) {
-        this.logger.error(`[ServiceValidator] ❌ Circular dependency detected: ${service.name || service} is in recursion stack`);
+        this.logger.error(
+          `[ServiceValidator] ❌ Circular dependency detected: ${service.name || service} is in recursion stack`
+        );
         return true;
       }
       if (visited.has(service)) {
@@ -9155,7 +9358,10 @@ ${component_stack}
      * Fehlerbehandlung für Service-Erstellung
      */
     handleServiceCreationError(error, identifier) {
-      this.logger.error(`[ServiceValidator] ❌ Service creation error for ${identifier.name || identifier}:`, error);
+      this.logger.error(
+        `[ServiceValidator] ❌ Service creation error for ${identifier.name || identifier}:`,
+        error
+      );
       this.logger.error(`Service creation failed for ${identifier.name || identifier}:`, error);
     }
   }
@@ -9180,16 +9386,28 @@ ${component_stack}
      * Service aus Lagerhaus holen oder neu erstellen
      */
     getService(identifier) {
-      this.writeLog("info", `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}`);
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}`
+      );
       if (this.instances.has(identifier)) {
-        this.writeLog("info", `[ServiceContainer] ♻️ Returning cached singleton: ${identifier.name || identifier}`);
+        this.writeLog(
+          "info",
+          `[ServiceContainer] ♻️ Returning cached singleton: ${identifier.name || identifier}`
+        );
         return this.instances.get(identifier);
       }
-      this.writeLog("info", `[ServiceContainer] 🏗️ Creating new service: ${identifier.name || identifier}`);
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🏗️ Creating new service: ${identifier.name || identifier}`
+      );
       const service = this.createService(identifier);
       const plan = this.servicePlans.get(identifier);
       if (plan && plan.isSingleton) {
-        this.writeLog("info", `[ServiceContainer] 💾 Caching singleton: ${identifier.name || identifier}`);
+        this.writeLog(
+          "info",
+          `[ServiceContainer] 💾 Caching singleton: ${identifier.name || identifier}`
+        );
         this.instances.set(identifier, service);
       }
       return service;
@@ -9198,24 +9416,46 @@ ${component_stack}
      * Service mit Dependencies erstellen
      */
     createService(identifier) {
-      this.writeLog("info", `[ServiceContainer] 🏗️ Creating service: ${identifier.name || identifier}`);
-      this.writeLog("info", `[ServiceContainer] 🔍 Available service plans:`, Array.from(this.servicePlans.keys()).map((k) => k.name || k));
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🏗️ Creating service: ${identifier.name || identifier}`
+      );
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🔍 Available service plans:`,
+        Array.from(this.servicePlans.keys()).map((k) => k.name || k)
+      );
       const plan = this.servicePlans.get(identifier);
       if (!plan) {
-        this.writeLog("error", `[ServiceContainer] ❌ No service plan found for ${identifier.name || identifier}`);
-        this.writeLog("error", `[ServiceContainer] 🔍 Available plans:`, Array.from(this.servicePlans.keys()).map((k) => k.name || k));
+        this.writeLog(
+          "error",
+          `[ServiceContainer] ❌ No service plan found for ${identifier.name || identifier}`
+        );
+        this.writeLog(
+          "error",
+          `[ServiceContainer] 🔍 Available plans:`,
+          Array.from(this.servicePlans.keys()).map((k) => k.name || k)
+        );
         throw new Error(`No service plan found for ${identifier.name || identifier}`);
       }
-      this.writeLog("info", `[ServiceContainer] 📋 Service plan for ${identifier.name || identifier}:`, {
-        dependencies: plan.dependencies.map((d) => d.name || d),
-        isSingleton: plan.isSingleton,
-        serviceType: plan.serviceType
-      });
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 📋 Service plan for ${identifier.name || identifier}:`,
+        {
+          dependencies: plan.dependencies.map((d) => d.name || d),
+          isSingleton: plan.isSingleton,
+          serviceType: plan.serviceType
+        }
+      );
       const dependencies = this.resolveDependencies(plan);
-      this.writeLog("info", `[ServiceContainer] 🔗 Resolved dependencies for ${identifier.name || identifier}:`, {
-        count: dependencies.length,
-        dependencies: dependencies.map((d) => d.constructor.name)
-      });
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🔗 Resolved dependencies for ${identifier.name || identifier}:`,
+        {
+          count: dependencies.length,
+          dependencies: dependencies.map((d) => d.constructor.name)
+        }
+      );
       const service = new plan.constructor(...dependencies);
       if (!this.serviceValidator.validateServiceCreation(service, identifier)) {
         this.serviceValidator.handleServiceCreationError(
@@ -9224,23 +9464,39 @@ ${component_stack}
         );
         throw new Error(`Service creation validation failed for ${identifier.name || identifier}`);
       }
-      this.writeLog("info", `[ServiceContainer] ✅ Service created successfully: ${identifier.name || identifier}`);
+      this.writeLog(
+        "info",
+        `[ServiceContainer] ✅ Service created successfully: ${identifier.name || identifier}`
+      );
       return service;
     }
     /**
      * Dependencies rekursiv auflösen
      */
     resolveDependencies(plan) {
-      this.writeLog("info", `[ServiceContainer] 🔗 Resolving dependencies for: ${plan.constructor.name || plan.constructor}`);
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🔗 Resolving dependencies for: ${plan.constructor.name || plan.constructor}`
+      );
       const dependencies = [];
       for (const dependency of plan.dependencies) {
-        this.writeLog("info", `[ServiceContainer] 🔍 Resolving dependency: ${dependency.name || dependency}`);
+        this.writeLog(
+          "info",
+          `[ServiceContainer] 🔍 Resolving dependency: ${dependency.name || dependency}`
+        );
         try {
           const resolvedDependency = this.getService(dependency);
           dependencies.push(resolvedDependency);
-          this.writeLog("info", `[ServiceContainer] ✅ Dependency resolved: ${dependency.name || dependency} -> ${resolvedDependency.constructor.name}`);
+          this.writeLog(
+            "info",
+            `[ServiceContainer] ✅ Dependency resolved: ${dependency.name || dependency} -> ${resolvedDependency.constructor.name}`
+          );
         } catch (error) {
-          this.writeLog("error", `[ServiceContainer] ❌ Failed to resolve dependency ${dependency.name || dependency}:`, error);
+          this.writeLog(
+            "error",
+            `[ServiceContainer] ❌ Failed to resolve dependency ${dependency.name || dependency}:`,
+            error
+          );
           this.serviceValidator.handleServiceCreationError(error, dependency);
           throw error;
         }
@@ -9251,15 +9507,28 @@ ${component_stack}
      * Alle Services erstellen
      */
     createAllServices() {
-      this.writeLog("info", `[ServiceContainer] 🏗️ Creating all services (${this.servicePlans.size} plans)`);
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🏗️ Creating all services (${this.servicePlans.size} plans)`
+      );
       const creationOrder = this.calculateCreationOrder();
       for (const serviceClass of creationOrder) {
         try {
-          this.writeLog("info", `[ServiceContainer] 🏗️ Creating service: ${serviceClass.name || serviceClass}`);
+          this.writeLog(
+            "info",
+            `[ServiceContainer] 🏗️ Creating service: ${serviceClass.name || serviceClass}`
+          );
           this.getService(serviceClass);
-          this.writeLog("info", `[ServiceContainer] ✅ Service created: ${serviceClass.name || serviceClass}`);
+          this.writeLog(
+            "info",
+            `[ServiceContainer] ✅ Service created: ${serviceClass.name || serviceClass}`
+          );
         } catch (error) {
-          this.writeLog("error", `[ServiceContainer] ❌ Failed to create service ${serviceClass.name || serviceClass}:`, error);
+          this.writeLog(
+            "error",
+            `[ServiceContainer] ❌ Failed to create service ${serviceClass.name || serviceClass}:`,
+            error
+          );
           this.serviceValidator.handleServiceCreationError(error, serviceClass);
           throw error;
         }
@@ -9276,7 +9545,11 @@ ${component_stack}
       for (const serviceClass of this.servicePlans.keys()) {
         this.topologicalSort(serviceClass, visited, result);
       }
-      this.writeLog("info", `[ServiceContainer] 🔄 Creation order:`, result.map((s) => s.name || s));
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🔄 Creation order:`,
+        result.map((s) => s.name || s)
+      );
       return result;
     }
     topologicalSort(service, visited, result) {
@@ -9296,19 +9569,31 @@ ${component_stack}
      * Service aus Cache entfernen
      */
     disposeService(identifier) {
-      this.writeLog("info", `[ServiceContainer] 🗑️ Disposing service: ${identifier.name || identifier}`);
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🗑️ Disposing service: ${identifier.name || identifier}`
+      );
       if (this.instances.has(identifier)) {
         this.instances.delete(identifier);
-        this.writeLog("info", `[ServiceContainer] ✅ Service disposed: ${identifier.name || identifier}`);
+        this.writeLog(
+          "info",
+          `[ServiceContainer] ✅ Service disposed: ${identifier.name || identifier}`
+        );
       } else {
-        this.writeLog("info", `[ServiceContainer] ℹ️ Service not cached: ${identifier.name || identifier}`);
+        this.writeLog(
+          "info",
+          `[ServiceContainer] ℹ️ Service not cached: ${identifier.name || identifier}`
+        );
       }
     }
     /**
      * Alle Services aus Cache entfernen
      */
     disposeAll() {
-      this.writeLog("info", `[ServiceContainer] 🗑️ Disposing all services (${this.instances.size} cached)`);
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🗑️ Disposing all services (${this.instances.size} cached)`
+      );
       this.instances.clear();
       this.writeLog("info", `[ServiceContainer] ✅ All services disposed`);
     }
@@ -9369,14 +9654,20 @@ ${component_stack}
      * Registriert alle Services aus einer Service-Quelle
      */
     registerAllServices(serviceSource) {
-      this.writeLog("info", `[ServiceRegistry] 📚 Registering ${serviceSource.length} services from source`);
+      this.writeLog(
+        "info",
+        `[ServiceRegistry] 📚 Registering ${serviceSource.length} services from source`
+      );
       for (const serviceConfig of serviceSource) {
         const serviceName = serviceConfig.name.CLASS_NAME || serviceConfig.name.className || serviceConfig.name.name || serviceConfig.name;
         const serviceClass = serviceConfig.class;
         this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
         this.registerService(serviceClass, serviceClass);
       }
-      this.writeLog("info", `[ServiceRegistry] ✅ All services registered. Total: ${this.serviceRegistry.size}`);
+      this.writeLog(
+        "info",
+        `[ServiceRegistry] ✅ All services registered. Total: ${this.serviceRegistry.size}`
+      );
     }
     /**
      * Einzelnen Service registrieren
@@ -9397,10 +9688,14 @@ ${component_stack}
      */
     getServiceConstructor(identifier) {
       const constructor = this.serviceRegistry.get(identifier);
-      this.writeLog("debug", `[ServiceRegistry] 🔍 Getting constructor for: ${identifier.name || identifier}`, {
-        found: !!constructor,
-        constructor: constructor?.name || constructor
-      });
+      this.writeLog(
+        "debug",
+        `[ServiceRegistry] 🔍 Getting constructor for: ${identifier.name || identifier}`,
+        {
+          found: !!constructor,
+          constructor: constructor?.name || constructor
+        }
+      );
       return constructor;
     }
     /**
@@ -9409,7 +9704,10 @@ ${component_stack}
      */
     getAllServices() {
       const services = Array.from(this.serviceRegistry.keys());
-      this.writeLog("info", `[ServiceRegistry] 📋 Providing ${services.length} services to other classes`);
+      this.writeLog(
+        "info",
+        `[ServiceRegistry] 📋 Providing ${services.length} services to other classes`
+      );
       return services;
     }
     /**
@@ -9428,7 +9726,10 @@ ${component_stack}
      * Registry leeren (für Tests)
      */
     clear() {
-      this.writeLog("info", `[ServiceRegistry] 🗑️ Clearing registry (${this.serviceRegistry.size} services)`);
+      this.writeLog(
+        "info",
+        `[ServiceRegistry] 🗑️ Clearing registry (${this.serviceRegistry.size} services)`
+      );
       this.serviceRegistry.clear();
     }
     writeLog(modus, message, ...args) {
@@ -9487,16 +9788,18 @@ ${component_stack}
     registerAllServices() {
       this.logger.info(`[ServiceRegistrar] 📝 Registering all services as factories`);
       const servicePlans = this.serviceContainer.getAllServicePlans();
-      this.logger.info(`[ServiceRegistrar] 📋 Registering ${servicePlans.size} services as factories`);
-      for (const [serviceClass, plan] of servicePlans) {
-        this.registerService(serviceClass, plan);
+      this.logger.info(
+        `[ServiceRegistrar] 📋 Registering ${servicePlans.size} services as factories`
+      );
+      for (const [serviceClass] of servicePlans) {
+        this.registerService(serviceClass);
       }
       this.logger.info(`[ServiceRegistrar] ✅ All services registered as factories`);
     }
     /**
      * Einzelnen Service registrieren
      */
-    registerService(serviceClass, plan) {
+    registerService(serviceClass) {
       const serviceName = serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
       this.logger.info(`[ServiceRegistrar] 📝 Registering service factory: ${serviceName}`);
       this.serviceLocator.set(serviceClass, () => this.serviceContainer.getService(serviceClass));
@@ -9532,19 +9835,27 @@ ${component_stack}
      * Service aus Registrierung entfernen
      */
     unregisterService(identifier) {
-      this.logger.info(`[ServiceRegistrar] 🗑️ Unregistering service: ${identifier.name || identifier}`);
+      this.logger.info(
+        `[ServiceRegistrar] 🗑️ Unregistering service: ${identifier.name || identifier}`
+      );
       if (this.serviceLocator.has(identifier)) {
         this.serviceLocator.delete(identifier);
-        this.logger.info(`[ServiceRegistrar] ✅ Service unregistered: ${identifier.name || identifier}`);
+        this.logger.info(
+          `[ServiceRegistrar] ✅ Service unregistered: ${identifier.name || identifier}`
+        );
       } else {
-        this.logger.info(`[ServiceRegistrar] ℹ️ Service not registered: ${identifier.name || identifier}`);
+        this.logger.info(
+          `[ServiceRegistrar] ℹ️ Service not registered: ${identifier.name || identifier}`
+        );
       }
     }
     /**
      * Alle Services aus Registrierung entfernen
      */
     unregisterAll() {
-      this.logger.info(`[ServiceRegistrar] 🗑️ Unregistering all services (${this.serviceLocator.size} registered)`);
+      this.logger.info(
+        `[ServiceRegistrar] 🗑️ Unregistering all services (${this.serviceLocator.size} registered)`
+      );
       this.serviceLocator.clear();
       this.logger.info(`[ServiceRegistrar] ✅ All services unregistered`);
     }
@@ -9579,7 +9890,7 @@ ${component_stack}
     getAllServiceMetadata() {
       const metadata = /* @__PURE__ */ new Map();
       const servicePlans = this.serviceContainer.getAllServicePlans();
-      for (const [serviceClass, plan] of servicePlans) {
+      for (const [serviceClass] of servicePlans) {
         metadata.set(serviceClass, this.getServiceMetadata(serviceClass));
       }
       return metadata;
@@ -9602,15 +9913,22 @@ ${component_stack}
       this.logger.info(`[DependencyMapper] 🗺️ Building dependency graph`);
       const graph = /* @__PURE__ */ new Map();
       const allServices = this.serviceRegistry.getAllServices();
-      this.logger.info(`[DependencyMapper] 📋 Processing ${allServices.length} services from ServiceRegistry`);
+      this.logger.info(
+        `[DependencyMapper] 📋 Processing ${allServices.length} services from ServiceRegistry`
+      );
       for (const ServiceClass of allServices) {
-        this.logger.debug(`[DependencyMapper] 🔍 Analyzing dependencies for: ${ServiceClass.name || ServiceClass}`);
+        this.logger.debug(
+          `[DependencyMapper] 🔍 Analyzing dependencies for: ${ServiceClass.name || ServiceClass}`
+        );
         const dependencies = this.extractDependencies(ServiceClass);
         graph.set(ServiceClass, dependencies);
-        this.logger.debug(`[DependencyMapper] 🔗 Dependencies for ${ServiceClass.name || ServiceClass}:`, {
-          count: dependencies.length,
-          dependencies: dependencies.map((d) => d.name || d)
-        });
+        this.logger.debug(
+          `[DependencyMapper] 🔗 Dependencies for ${ServiceClass.name || ServiceClass}:`,
+          {
+            count: dependencies.length,
+            dependencies: dependencies.map((d) => d.name || d)
+          }
+        );
       }
       this.logger.info(`[DependencyMapper] ✅ Dependency graph built with ${graph.size} services`);
       return graph;
@@ -9619,13 +9937,20 @@ ${component_stack}
      * Dependencies für einen Service extrahieren
      */
     extractDependencies(serviceClass) {
-      this.logger.debug(`[DependencyMapper] 🔍 Extracting dependencies for: ${serviceClass.name || serviceClass}`);
+      this.logger.debug(
+        `[DependencyMapper] 🔍 Extracting dependencies for: ${serviceClass.name || serviceClass}`
+      );
       const staticDependencies = this.extractStaticDependencies(serviceClass);
       if (staticDependencies !== null) {
-        this.logger.debug(`[DependencyMapper] 📋 Using static dependencies:`, staticDependencies.map((d) => d.name || d));
+        this.logger.debug(
+          `[DependencyMapper] 📋 Using static dependencies:`,
+          staticDependencies.map((d) => d.name || d)
+        );
         return staticDependencies;
       } else {
-        throw new Error(`[DependencyMapper] ❌ Service '${serviceClass.name || serviceClass}' has no static readonly DEPENDENCIES!`);
+        throw new Error(
+          `[DependencyMapper] ❌ Service '${serviceClass.name || serviceClass}' has no static readonly DEPENDENCIES!`
+        );
       }
     }
     /**
@@ -9647,7 +9972,10 @@ ${component_stack}
         this.logger.debug(`[DependencyMapper] 📋 No static dependencies found for: ${className}`);
         return [];
       } catch (error) {
-        this.logger.error(`[DependencyMapper] 📋 Error extracting static dependencies for ${className}:`, error);
+        this.logger.error(
+          `[DependencyMapper] 📋 Error extracting static dependencies for ${className}:`,
+          error
+        );
         return [];
       }
     }
@@ -9712,7 +10040,9 @@ ${component_stack}
         this.registerServiceInAPI(serviceClass, plan, moduleApi);
       }
       this.logger.info(`[APIManager] ✅ All services registered in global API (lazy)`);
-      this.logger.info(`[APIManager] 📊 Final registered services count: ${this.registeredServices.size}`);
+      this.logger.info(
+        `[APIManager] 📊 Final registered services count: ${this.registeredServices.size}`
+      );
     }
     /**
      * Service in API registrieren - LAZY mit Getter-Memoization
@@ -9726,7 +10056,9 @@ ${component_stack}
         serviceType
       });
       if (!apiName) {
-        this.logger.warn(`[APIManager] ⚠️ Service has no API name: ${serviceClass.name || serviceClass}`);
+        this.logger.warn(
+          `[APIManager] ⚠️ Service has no API name: ${serviceClass.name || serviceClass}`
+        );
         return;
       }
       try {
@@ -9792,7 +10124,9 @@ ${component_stack}
      * Alle Services aus API entfernen
      */
     unregisterAllFromAPI() {
-      this.logger.info(`[APIManager] 🗑️ Unregistering all services from API (${this.registeredServices.size} registered)`);
+      this.logger.info(
+        `[APIManager] 🗑️ Unregistering all services from API (${this.registeredServices.size} registered)`
+      );
       const moduleApi = this.getModuleAPI();
       if (moduleApi) {
         for (const apiName of this.registeredServices.keys()) {
@@ -9885,9 +10219,10 @@ ${component_stack}
     // 🎨 Svelte & UI Services (Benutzeroberfläche)
     { name: SvelteManager, class: SvelteManager },
     // Svelte-Komponenten
-    { name: CSSManager, class: CSSManager }
+    { name: CSSManager, class: CSSManager },
     // Styling
     // 🔧 Application Services (Anwendungslogik)
+    { name: GraphService, class: GraphService }
     // Hier kommen später die Business-Services hin
   ];
   function createElement(config) {
@@ -11009,17 +11344,26 @@ ${component_stack}
     }
     async _prepareConfig(config) {
       _DynamicDialogApp.config = config;
-      this.logger.info(`[${_DynamicDialogApp.appId}] _prepareConfig called with config:`, _DynamicDialogApp.config);
+      this.logger.info(
+        `[${_DynamicDialogApp.appId}] _prepareConfig called with config:`,
+        _DynamicDialogApp.config
+      );
       return _DynamicDialogApp.config;
     }
     async _prepareOnSubmit(onSubmit) {
       _DynamicDialogApp.onSubmit = onSubmit;
-      this.logger.info(`[${_DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`, _DynamicDialogApp.onSubmit);
+      this.logger.info(
+        `[${_DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`,
+        _DynamicDialogApp.onSubmit
+      );
       return _DynamicDialogApp.onSubmit;
     }
     async _prepareOnCancel(onCancel) {
       _DynamicDialogApp.onCancel = onCancel;
-      this.logger.info(`[${_DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`, _DynamicDialogApp.onCancel);
+      this.logger.info(
+        `[${_DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`,
+        _DynamicDialogApp.onCancel
+      );
       return _DynamicDialogApp.onCancel;
     }
     async _onRender(context, options) {
@@ -11029,7 +11373,9 @@ ${component_stack}
         await this._loadCSS();
         const target = this.element.querySelector("#dynamic-dialog-svelte");
         if (!target) {
-          this.logger.warn(`[${_DynamicDialogApp.appId}] Svelte mount point '#dynamic-dialog-svelte' not found`);
+          this.logger.warn(
+            `[${_DynamicDialogApp.appId}] Svelte mount point '#dynamic-dialog-svelte' not found`
+          );
           return;
         }
         this.logger.info(`[${_DynamicDialogApp.appId}] Found target element:`, target);
@@ -11801,8 +12147,14 @@ ${component_stack}
     }
     async _prepareContext(options) {
       const context = await super._prepareContext(options);
-      this.logger.info("[MetadataManagementApplication] _prepareContext called with context:", context);
-      this.logger.info("[MetadataManagementApplication] _prepareContext called with options:", options);
+      this.logger.info(
+        "[MetadataManagementApplication] _prepareContext called with context:",
+        context
+      );
+      this.logger.info(
+        "[MetadataManagementApplication] _prepareContext called with options:",
+        options
+      );
       return context;
     }
     async _loadCSS() {
@@ -11949,7 +12301,9 @@ ${component_stack}
         apiManager
         // ← Für API-Zugriff
       };
-      logger2.info(`[SOLID Boot] ✅ Phase 2 completed - All services registered and available (on-demand)`);
+      logger2.info(
+        `[SOLID Boot] ✅ Phase 2 completed - All services registered and available (on-demand)`
+      );
     } catch (error) {
       logger2.error(`[SOLID Boot] ❌ Phase 2 failed:`, error);
       errorHandler2.handle(error, "SOLID Boot Phase 2");
@@ -11986,6 +12340,12 @@ ${component_stack}
     const metadataManagementApplication = new MetadataManagementApplication();
     await metadataManagementApplication.render({ force: true });
     logger2.info(`[SOLID Boot] Metadata Management Application rendered`);
+    const container = globalThis.relationshipApp.serviceContainer;
+    const graphService = container.getService(GraphService);
+    globalThis.relationshipApp = {
+      ...globalThis.relationshipApp,
+      graphService
+    };
   });
 })();
 //# sourceMappingURL=relationship-app.js.map
