@@ -11,7 +11,7 @@ var __privateSet = (obj, member, value, setter) => (__accessCheck(obj, member, "
 var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "access private method"), method);
 (function() {
   "use strict";
-  var _listeners, _observer, _options, _ResizeObserverSingleton_instances, getObserver_fn, _anchor, _hydrate_open, _props, _children, _effect, _main_effect, _failed_effect, _is_creating_fallback, _Boundary_instances, run_fn, _events, _instance, _a, _logger, _svelte, _css;
+  var _listeners, _observer, _options, _ResizeObserverSingleton_instances, getObserver_fn, _anchor, _hydrate_open, _props, _children, _effect, _main_effect, _failed_effect, _is_creating_fallback, _Boundary_instances, run_fn, _events, _instance, _a, _logger, _svelte, _css, _logger2, _svelte2, _css2, _logger3, _svelte3, _css3;
   var __vite_style__ = document.createElement("style");
   __vite_style__.textContent = '\n  .relationship-graph-view.svelte-qaxdvx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n    height: 100vh;\n  }\n\n  .graph-container.svelte-qaxdvx {\n    flex: 1;\n    min-height: 0;\n  }\n\n  .info-container.svelte-qaxdvx {\n    height: 300px;\n    min-height: 300px;\n  }\n\n  .relationship-graph-view.svelte-i1dhkx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n  }\n\r\n  .form-field.svelte-1ykx1li {\r\n    margin-bottom: 1rem;\r\n  }\r\n  \r\n  .field-width-full.svelte-1ykx1li {\r\n    width: 100%;\r\n  }\r\n  \r\n  .field-width-half.svelte-1ykx1li {\r\n    width: calc(50% - 0.5rem);\r\n  }\r\n  \r\n  .field-width-third.svelte-1ykx1li {\r\n    width: calc(33.333% - 0.667rem);\r\n  }\r\n  \r\n  .field-label.svelte-1ykx1li {\r\n    display: block;\r\n    margin-bottom: 0.5rem;\r\n    font-weight: 500;\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li,\r\n  .field-textarea.svelte-1ykx1li,\r\n  .field-select.svelte-1ykx1li {\r\n    width: 100%;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    font-size: 0.9rem;\r\n    transition: border-color 0.2s, box-shadow 0.2s;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li:focus,\r\n  .field-textarea.svelte-1ykx1li:focus,\r\n  .field-select.svelte-1ykx1li:focus {\r\n    outline: none;\r\n    border-color: var(--color-primary);\r\n    box-shadow: 0 0 0 2px var(--color-primary-alpha);\r\n  }\r\n  \r\n  .field-textarea.svelte-1ykx1li {\r\n    min-height: 80px;\r\n    resize: vertical;\r\n    font-family: inherit;\r\n  }\r\n  \r\n  .field-select.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  /* Checkbox-Gruppe Styles */\r\n  .checkbox-group.svelte-1ykx1li {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 0.5rem;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    background: var(--color-background-primary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    cursor: pointer;\r\n    padding: 0.25rem;\r\n    border-radius: 4px;\r\n    transition: background-color 0.2s;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li:hover {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li input[type="checkbox"]:where(.svelte-1ykx1li) {\r\n    margin: 0;\r\n    accent-color: var(--color-primary);\r\n    width: 1.2rem;\r\n    height: 1.2rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li span:where(.svelte-1ykx1li) {\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-checkbox.svelte-1ykx1li {\r\n    margin-right: 0.5rem;\r\n    width: auto;\r\n  }\r\n  \r\n  .checkbox-label.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-text.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-container.svelte-1ykx1li {\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    align-items: center;\r\n  }\r\n  \r\n  .field-color.svelte-1ykx1li {\r\n    width: 3rem;\r\n    height: 2.5rem;\r\n    padding: 0;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-text.svelte-1ykx1li {\r\n    flex: 1;\r\n    font-family: monospace;\r\n  }\r\n  \r\n  .field-description.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .field-error.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    color: var(--color-error);\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    border-color: var(--color-error);\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li):focus {\r\n    border-color: var(--color-error);\r\n    box-shadow: 0 0 0 2px var(--color-error-alpha);\r\n  }\r\n  \r\n  .disabled.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-select:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-checkbox:where(.svelte-1ykx1li) {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .readonly.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    background-color: var(--color-background-secondary);\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  /* Responsive Design */\r\n  @media (max-width: 768px) {\r\n    .field-width-half.svelte-1ykx1li,\r\n    .field-width-third.svelte-1ykx1li {\r\n      width: 100%;\r\n    }\r\n  }\r\n\r\n  /* Foundry VTT CSS-Variablen verwenden */\r\n  .form-container.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    padding: 1rem;\r\n  }\r\n  \r\n  .form-header.svelte-1hegfbw {\r\n    border-bottom: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: var(--border-radius) var(--border-radius) 0 0;\r\n    margin: -1rem -1rem 1rem -1rem;\r\n  }\r\n  \r\n  .form-title.svelte-1hegfbw {\r\n    color: var(--color-text-primary);\r\n    margin: 0;\r\n    font-size: 1.2rem;\r\n    font-weight: 600;\r\n  }\r\n  \r\n  .form-description.svelte-1hegfbw {\r\n    color: var(--color-text-secondary);\r\n    margin: 0.5rem 0 0 0;\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n\r\n  \r\n  .field-container.svelte-1hegfbw {\r\n    margin-bottom: 1.5rem;\r\n    transition: all 0.3s ease;\r\n  }\r\n  \r\n  .field-container.svelte-1hegfbw:focus-within {\r\n    transform: translateY(-2px);\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\r\n    border-radius: var(--border-radius);\r\n    padding: 0.5rem;\r\n    margin: 0.5rem -0.5rem 1.5rem -0.5rem;\r\n  }\r\n  \r\n  .form-actions.svelte-1hegfbw {\r\n    border-top: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: 0 0 var(--border-radius) var(--border-radius);\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    justify-content: flex-end;\r\n    margin: 1rem -1rem -1rem -1rem;\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw {\r\n    padding: 0.5rem 1rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    cursor: pointer;\r\n    font-size: 0.9rem;\r\n    transition: all 0.2s;\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw {\r\n    background: var(--color-primary);\r\n    color: var(--color-text-primary);\r\n    border-color: var(--color-primary);\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-primary-hover);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw:disabled {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .spinner.svelte-1hegfbw {\r\n    display: inline-block;\r\n    width: 1rem;\r\n    height: 1rem;\r\n    border: 2px solid transparent;\r\n    border-top: 2px solid currentColor;\r\n    border-radius: 50%;\r\n    animation: svelte-1hegfbw-spin 1s linear infinite;\r\n  }\r\n  \r\n  @keyframes svelte-1hegfbw-spin {\r\n    0% { transform: rotate(0deg); }\r\n    100% { transform: rotate(360deg); }\r\n  }\r\n  \r\n  /* Scroll-Indikator für bessere UX */\r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar {\r\n    width: 12px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-track {\r\n    background: var(--color-background-secondary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb {\r\n    background: var(--color-border-primary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb:hover {\r\n    background: var(--color-primary);\r\n  }\r\n  \r\n  /* Fokus-Indikator für bessere Accessibility */\r\n  .field-container.svelte-1hegfbw:focus-within .field-label {\r\n    color: var(--color-primary);\r\n    font-weight: 600;\r\n  }\r\n  \r\n  /* Smooth Transitions für alle interaktiven Elemente */\r\n  .form-container.svelte-1hegfbw :where(.svelte-1hegfbw) {\r\n    transition: border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;\r\n  }\r\n\n  /* Gleiches Scrolling wie DynamicFormSheet */\n  .metadata-container.svelte-qx734j {\n    height: 100vh;\n    max-height: 100vh;\n    overflow-y: auto;\n    padding: 1rem;\n    box-sizing: border-box;\n  }\n\n  .metadata-header.svelte-qx734j {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 2rem;\n    padding-bottom: 1rem;\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .header-actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n    align-items: center;\n  }\n\n  .metadata-header.svelte-qx734j h1:where(.svelte-qx734j) {\n    margin: 0;\n    font-size: 1.5rem;\n    font-weight: 600;\n  }\n\n  .metadata-content.svelte-qx734j {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .schema-card.svelte-qx734j {\n    background: var(--color-background-secondary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 6px;\n    overflow: hidden;\n  }\n\n  .schema-card.selected.svelte-qx734j {\n    border-color: var(--color-primary);\n  }\n\n  .schema-header.svelte-qx734j {\n    padding: 1rem;\n    cursor: pointer;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    background: var(--color-background-primary);\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .schema-header.svelte-qx734j:hover {\n    background: var(--color-background-tertiary);\n  }\n\n  .schema-header.svelte-qx734j h3:where(.svelte-qx734j) {\n    margin: 0;\n    font-size: 1.1rem;\n    font-weight: 600;\n  }\n\n  .version.svelte-qx734j {\n    background: var(--color-info);\n    color: var(--color-text-primary);\n    padding: 0.2rem 0.5rem;\n    border-radius: 4px;\n    font-size: 0.8rem;\n  }\n\n  .schema-details.svelte-qx734j {\n    padding: 1rem;\n    background: var(--color-background-secondary);\n  }\n\n  .schema-details.svelte-qx734j p:where(.svelte-qx734j) {\n    margin: 0.5rem 0;\n    font-size: 0.9rem;\n  }\n\n  .actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n    margin: 1rem 0;\n    flex-wrap: wrap;\n  }\n\n  .rows-section.svelte-qx734j {\n    margin-top: 1.5rem;\n    padding-top: 1rem;\n    border-top: 1px solid var(--color-border-primary);\n  }\n\n  .rows-section.svelte-qx734j h4:where(.svelte-qx734j) {\n    margin: 0 0 1rem 0;\n    font-size: 1rem;\n    font-weight: 600;\n  }\n\n  .row-item.svelte-qx734j {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0.75rem;\n    background: var(--color-background-primary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 4px;\n    margin-bottom: 0.5rem;\n  }\n\n  .row-info.svelte-qx734j {\n    font-size: 0.9rem;\n  }\n\n  .row-actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n  }\n\n  .error-message.svelte-qx734j,\n  .success-message.svelte-qx734j {\n    padding: 1rem;\n    border-radius: 4px;\n    margin-bottom: 1rem;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n  }\n\n  .error-message.svelte-qx734j {\n    background: var(--color-error-background);\n    color: var(--color-error);\n    border: 1px solid var(--color-error-border);\n  }\n  \n  .success-message.svelte-qx734j {\n    background: var(--color-success-background);\n    color: var(--color-success);\n    border: 1px solid var(--color-success-border);\n  }\n\n  .close-btn.svelte-qx734j {\n    background: none;\n    border: none;\n    font-size: 1.2rem;\n    cursor: pointer;\n    color: inherit;\n    padding: 0;\n    margin-left: 1rem;\n  }\n\n  .close-btn.svelte-qx734j:hover {\n    opacity: 0.7;\n  }\n/*$vite$:1*/';
   document.head.appendChild(__vite_style__);
@@ -362,1041 +362,14 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   _NotificationService.CLASS_NAME = "NotificationService";
   _NotificationService.DEPENDENCIES = [FoundryLogger, FoundryAdapter];
   let NotificationService = _NotificationService;
-  const _JournalEntryPageRelationshipGraphSheet = class _JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet {
-    constructor() {
-      super();
-      const serviceRegistrar = globalThis.relationshipApp?.serviceRegistrar;
-      if (!serviceRegistrar) {
-        throw new Error("ServiceRegistrar not available! Make sure the module is properly initialized.");
-      }
-      this.svelteDependencies = {
-        svelteManager: serviceRegistrar.getService("_SvelteManager"),
-        cssManager: serviceRegistrar.getService("_CSSManager"),
-        logger: serviceRegistrar.getService("_FoundryLogger")
-      };
-    }
-    get logger() {
-      return this.svelteDependencies.logger;
-    }
-    get svelteManager() {
-      return this.svelteDependencies.svelteManager;
-    }
-    get cssManager() {
-      return this.svelteDependencies.cssManager;
-    }
-    /** @override */
-    get title() {
-      return this.options.window.title;
-    }
-    /** @override */
-    async _renderHTML(context, options) {
-      return await super._renderHTML(context, options);
-    }
-    /** @override */
-    _replaceHTML(html2, options, context) {
-      return super._replaceHTML(html2, options, context);
-    }
-    async _preparePartContext(partContext, part, options) {
-      const context = await super._preparePartContext(partContext, part, options);
-      return context;
-    }
-    async _prepareContext(options) {
-      const context = await super._prepareContext(options);
-      this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:", context);
-      return context;
-    }
-    async _loadCSS() {
-      const cssPath = "modules/relationship-app/styles/journal-entry-relationship-graph-sheet.css";
-      await this.cssManager.loadCSS(cssPath);
-    }
-    async _onRender(context, options) {
-      this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] _onRender started", {
-        context,
-        options
-      });
-      await super._onRender(context, options);
-      const journalEntryPage = this.document;
-      const isEditMode = !this.isView;
-      await this._loadCSS();
-      await this.svelteManager.mountGraphComponent(this.element, journalEntryPage, isEditMode);
-      this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully");
-    }
-    /** @override */
-    async _onClose(options) {
-      this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] _onClose called with options:", options);
-      return super._onClose(options);
-    }
-    writeLog(modus, message, ...args) {
-      if (this.logger) {
-        this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
-      }
-    }
-  };
-  _JournalEntryPageRelationshipGraphSheet.EDIT_PARTS = (() => {
-    const parts = foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet.EDIT_PARTS;
-    const { header, footer, ...rest } = parts;
-    return {
-      header,
-      content: {
-        template: "modules/relationship-app/templates/journal-entry-relationship-graph-edit-part.hbs"
-      },
-      ...rest,
-      footer
-    };
-  })();
-  _JournalEntryPageRelationshipGraphSheet.VIEW_PARTS = (() => {
-    const parts = foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet.VIEW_PARTS;
-    return {
-      ...parts,
-      content: {
-        template: "modules/relationship-app/templates/journal-entry-relationship-graph-view-part.hbs"
-      }
-    };
-  })();
-  _JournalEntryPageRelationshipGraphSheet.DEFAULT_OPTIONS = {
-    // Unique ID for the sheet
-    id: "journal-entry-relationship-graph",
-    // CSS classes to apply
-    classes: ["journal-entry-page", "relationship-graph"],
-    type: "relationship-app.relationship-graph",
-    // Window sizing and behavior
-    position: { width: 800, height: 600 },
-    window: { title: "Beziehungsgraph" },
-    resizable: true,
-    includeTOC: true
-  };
-  let JournalEntryPageRelationshipGraphSheet = _JournalEntryPageRelationshipGraphSheet;
-  const fields = foundry.data.fields;
-  class RelationshipGraphModel extends foundry.abstract.TypeDataModel {
-    static defineSchema() {
-      return {
-        // GRAPH METADATA
-        // Beschreibung des Graphen
-        description: new fields.HTMLField({ required: false, blank: true }),
-        // Version des Graphen
-        version: new fields.StringField({ required: false, blank: true, initial: "1.0.0" }),
-        // Erstellungsdatum
-        created: new fields.NumberField({ required: false, blank: true }),
-        // Letzte Änderung
-        modified: new fields.NumberField({ required: false, blank: true }),
-        // CYTOGRAPHE ELEMENTS direkt als JSON
-        elements: new fields.ObjectField({
-          required: true,
-          blank: true,
-          initial: {
-            nodes: [],
-            edges: []
-          }
-        }),
-        // CYTOGRAPHE STYLE als JSON
-        style: new fields.ArrayField(new fields.ObjectField({ required: true }), {
-          required: true,
-          blank: true,
-          initial: []
-        })
-      };
-    }
+  let _container;
+  function setContainer(c) {
+    _container = c;
   }
-  const _RegistrationService = class _RegistrationService {
-    // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
-    constructor(logger2, errorHandler2) {
-      this.logger = logger2;
-      this.errorHandler = errorHandler2;
-    }
-    async registerAll() {
-      try {
-        await this.registerSheet();
-        await this.registerModel();
-        await this.registerMetadata();
-        await this.registerServices();
-      } catch (error) {
-        this.errorHandler.handle(error, "RegistrationService.registerAll");
-        throw error;
-      }
-    }
-    async registerSheet() {
-      this.logger.info("🚀 Relationship App: Registering JournalEntryPageRelationshipGraphSheet...");
-      const DocumentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
-      DocumentSheetConfig.registerSheet(
-        JournalEntryPage,
-        "relationship-app",
-        JournalEntryPageRelationshipGraphSheet,
-        {
-          types: ["relationship-app.relationship-graph"],
-          makeDefault: true,
-          label: () => {
-            return game?.i18n?.format("TYPES.JournalEntryPage.relationship-graph", {
-              page: game?.i18n?.localize("TYPES.JournalEntryPage.relationship-graph")
-            }) || "Relationship Graph";
-          }
-        }
-      );
-    }
-    async registerModel() {
-      this.logger.info("🚀 Relationship App: Registering RelationshipGraphModel...");
-      CONFIG.JournalEntryPage.dataModels["relationship-app.relationship-graph"] = RelationshipGraphModel;
-    }
-    async registerMetadata() {
-      this.logger.info("🚀 Relationship App: Registering metadata...");
-      game?.settings?.register(MODULE_ID, MODULE_METADATA_KEY, {
-        name: "Relationship App Metadata",
-        hint: "Metadata for the Relationship App",
-        scope: "world",
-        config: false,
-        type: Object
-      });
-    }
-    async registerServices() {
-      this.logger.info(
-        "🚀 Relationship App: Services will be registered in API after initialization..."
-      );
-    }
-  };
-  _RegistrationService.API_NAME = "registrationService";
-  _RegistrationService.SERVICE_TYPE = "singleton";
-  _RegistrationService.CLASS_NAME = "RegistrationService";
-  _RegistrationService.DEPENDENCIES = [FoundryLogger, ConsoleErrorHandler];
-  let RegistrationService = _RegistrationService;
-  var RegistrationService$1 = /* @__PURE__ */ Object.freeze({
-    __proto__: null,
-    RegistrationService
-  });
-  class ServicePlanner {
-    constructor(logger2, serviceRegistry, dependencyMapper) {
-      this.logger = logger2;
-      this.serviceRegistry = serviceRegistry;
-      this.dependencyMapper = dependencyMapper;
-    }
-    /**
-     * Service Baupläne für alle Services erstellen
-     * Single Source of Truth: Holt Services von ServiceRegistry
-     */
-    createServicePlans() {
-      this.logger.info(`[ServicePlanner] 📋 Creating service plans`);
-      const plans = /* @__PURE__ */ new Map();
-      const allServices = this.serviceRegistry.getAllServices();
-      const dependencyGraph = this.dependencyMapper.buildDependencyGraph();
-      this.logger.info(`[ServicePlanner] 📋 Processing ${allServices.length} services from ServiceRegistry`);
-      for (const ServiceClass of allServices) {
-        this.logger.info(`[ServicePlanner] 📝 Creating plan for: ${ServiceClass.name || ServiceClass}`);
-        const plan = this.createServicePlan(ServiceClass, dependencyGraph);
-        plans.set(ServiceClass, plan);
-        this.logger.info(`[ServicePlanner] 📋 Plan created for ${ServiceClass.name || ServiceClass}:`, {
-          dependencies: plan.dependencies.map((d) => d.name || d),
-          resolutionOrder: plan.resolutionOrder.map((d) => d.name || d),
-          isSingleton: plan.isSingleton
-        });
-      }
-      this.logger.info(`[ServicePlanner] ✅ Created ${plans.size} service plans`);
-      return plans;
-    }
-    /**
-     * Einzelnen Service-Plan erstellen
-     */
-    createServicePlan(serviceClass, dependencyGraph) {
-      const dependencies = dependencyGraph.get(serviceClass) || [];
-      const resolutionOrder = this.calculateResolutionOrder(serviceClass, dependencyGraph);
-      return {
-        constructor: serviceClass,
-        dependencies,
-        resolutionOrder,
-        isSingleton: this.isSingleton(serviceClass),
-        apiName: this.getApiName(serviceClass),
-        serviceType: this.getServiceType(serviceClass)
-      };
-    }
-    /**
-     * Resolution Order berechnen (Topological Sort)
-     */
-    calculateResolutionOrder(serviceClass, dependencyGraph) {
-      this.logger.info(`[ServicePlanner] 🔄 Calculating resolution order for: ${serviceClass.name || serviceClass}`);
-      const visited = /* @__PURE__ */ new Set();
-      const resolutionOrder = [];
-      this.topologicalSort(serviceClass, dependencyGraph, visited, resolutionOrder);
-      this.logger.info(
-        `[ServicePlanner] 🔄 Resolution order for ${serviceClass.name || serviceClass}:`,
-        resolutionOrder.map((s) => s.name || s)
-      );
-      return resolutionOrder;
-    }
-    topologicalSort(service, graph, visited, result) {
-      if (visited.has(service)) {
-        return;
-      }
-      visited.add(service);
-      const dependencies = graph.get(service) || [];
-      for (const dependency of dependencies) {
-        this.topologicalSort(dependency, graph, visited, result);
-      }
-      result.push(service);
-    }
-    /**
-     * Prüfen ob Service ein Singleton ist
-     */
-    isSingleton(serviceClass) {
-      const serviceType = serviceClass.SERVICE_TYPE;
-      return serviceType === "singleton" || serviceType === void 0;
-    }
-    /**
-     * API Name aus Service-Klasse extrahieren
-     */
-    getApiName(serviceClass) {
-      return serviceClass.API_NAME || serviceClass.name || serviceClass.toString();
-    }
-    /**
-     * Service Type aus Service-Klasse extrahieren
-     */
-    getServiceType(serviceClass) {
-      return serviceClass.SERVICE_TYPE || "singleton";
-    }
-    /**
-     * Service-Plan für einen Service abrufen
-     */
-    getServicePlan(serviceClass, plans) {
-      return plans.get(serviceClass);
-    }
-    /**
-     * Alle Service-Pläne validieren
-     */
-    validateServicePlans(plans) {
-      this.logger.info(`[ServicePlanner] 🔍 Validating ${plans.size} service plans`);
-      const result = {
-        isValid: true,
-        errors: [],
-        warnings: []
-      };
-      for (const [serviceClass, plan] of plans) {
-        for (const dependency of plan.dependencies) {
-          if (!this.serviceRegistry.hasService(dependency)) {
-            result.isValid = false;
-            result.errors.push(`Dependency ${dependency.name || dependency} not found for service ${serviceClass.name || serviceClass}`);
-          }
-        }
-        if (!plan.apiName) {
-          result.warnings.push(`No API_NAME defined for service ${serviceClass.name || serviceClass}`);
-        }
-      }
-      this.logger.info(`[ServicePlanner] 🔍 Validation result:`, {
-        isValid: result.isValid,
-        errors: result.errors.length,
-        warnings: result.warnings.length
-      });
-      return result;
-    }
+  function use(tokenOrCtor) {
+    if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
+    return _container.getService(tokenOrCtor);
   }
-  var ServicePlanner$1 = /* @__PURE__ */ Object.freeze({
-    __proto__: null,
-    ServicePlanner
-  });
-  class ServiceValidator {
-    constructor(logger2) {
-      this.logger = logger2;
-    }
-    /**
-     * Dependency Graph validieren
-     */
-    validateDependencyGraph(dependencyGraph) {
-      this.logger.info(`[ServiceValidator] 🔍 Validating dependency graph with ${dependencyGraph.size} services`);
-      const result = {
-        isValid: true,
-        errors: [],
-        warnings: []
-      };
-      if (this.checkCircularDependencies(dependencyGraph)) {
-        result.isValid = false;
-        result.errors.push("Circular dependencies detected in dependency graph");
-      }
-      for (const [service, dependencies] of dependencyGraph) {
-        for (const dependency of dependencies) {
-          if (!dependencyGraph.has(dependency)) {
-            result.isValid = false;
-            result.errors.push(`Service ${service.name || service} depends on unknown service ${dependency.name || dependency}`);
-          }
-        }
-      }
-      this.logger.info(`[ServiceValidator] 🔍 Dependency graph validation result:`, {
-        isValid: result.isValid,
-        errors: result.errors.length,
-        warnings: result.warnings.length
-      });
-      return result;
-    }
-    /**
-     * Service-Pläne validieren
-     */
-    validateServicePlans(servicePlans) {
-      this.logger.info(`[ServiceValidator] 🔍 Validating ${servicePlans.size} service plans`);
-      const result = {
-        isValid: true,
-        errors: [],
-        warnings: []
-      };
-      for (const [serviceClass, plan] of servicePlans) {
-        const planValidation = this.validateServicePlan(serviceClass, plan);
-        if (!planValidation.isValid) {
-          result.isValid = false;
-          result.errors.push(...planValidation.errors);
-        }
-        result.warnings.push(...planValidation.warnings);
-      }
-      this.logger.info(`[ServiceValidator] 🔍 Service plans validation result:`, {
-        isValid: result.isValid,
-        errors: result.errors.length,
-        warnings: result.warnings.length
-      });
-      return result;
-    }
-    /**
-     * Einzelnen Service-Plan validieren
-     */
-    validateServicePlan(serviceClass, plan) {
-      const result = {
-        isValid: true,
-        errors: [],
-        warnings: []
-      };
-      if (!plan.constructor || typeof plan.constructor !== "function") {
-        result.isValid = false;
-        result.errors.push(`Invalid constructor for service ${serviceClass.name || serviceClass}`);
-      }
-      if (!Array.isArray(plan.dependencies)) {
-        result.isValid = false;
-        result.errors.push(`Dependencies must be an array for service ${serviceClass.name || serviceClass}`);
-      }
-      if (!Array.isArray(plan.resolutionOrder)) {
-        result.isValid = false;
-        result.errors.push(`Resolution order must be an array for service ${serviceClass.name || serviceClass}`);
-      }
-      if (!plan.apiName || typeof plan.apiName !== "string") {
-        result.warnings.push(`No valid API_NAME for service ${serviceClass.name || serviceClass}`);
-      }
-      if (!["singleton", "factory", "transient"].includes(plan.serviceType)) {
-        result.warnings.push(`Invalid service type '${plan.serviceType}' for service ${serviceClass.name || serviceClass}`);
-      }
-      return result;
-    }
-    /**
-     * Service-Erstellung validieren
-     */
-    validateServiceCreation(service, identifier) {
-      this.logger.info(`[ServiceValidator] 🔍 Validating service creation for: ${identifier.name || identifier}`);
-      if (!service) {
-        this.logger.error(`[ServiceValidator] ❌ Service is null or undefined for ${identifier.name || identifier}`);
-        return false;
-      }
-      if (typeof service !== "object") {
-        this.logger.error(`[ServiceValidator] ❌ Service is not an object for ${identifier.name || identifier}`);
-        return false;
-      }
-      this.logger.info(`[ServiceValidator] ✅ Service creation valid for ${identifier.name || identifier}`);
-      return true;
-    }
-    /**
-     * Zirkuläre Dependencies prüfen
-     */
-    checkCircularDependencies(dependencyGraph) {
-      this.logger.info(`[ServiceValidator] 🔍 Checking for circular dependencies`);
-      const visited = /* @__PURE__ */ new Set();
-      const recursionStack = /* @__PURE__ */ new Set();
-      for (const service of dependencyGraph.keys()) {
-        if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
-          this.logger.error(`[ServiceValidator] ❌ Circular dependency detected starting from ${service.name || service}`);
-          return true;
-        }
-      }
-      this.logger.info(`[ServiceValidator] ✅ No circular dependencies found`);
-      return false;
-    }
-    hasCircularDependency(service, graph, visited, recursionStack) {
-      if (recursionStack.has(service)) {
-        this.logger.error(`[ServiceValidator] ❌ Circular dependency detected: ${service.name || service} is in recursion stack`);
-        return true;
-      }
-      if (visited.has(service)) {
-        return false;
-      }
-      visited.add(service);
-      recursionStack.add(service);
-      const dependencies = graph.get(service) || [];
-      for (const dependency of dependencies) {
-        if (this.hasCircularDependency(dependency, graph, visited, recursionStack)) {
-          return true;
-        }
-      }
-      recursionStack.delete(service);
-      return false;
-    }
-    /**
-     * Service-Container validieren
-     */
-    validateServiceContainer(serviceContainer) {
-      this.logger.info(`[ServiceValidator] 🔍 Validating service container`);
-      const result = {
-        isValid: true,
-        errors: [],
-        warnings: []
-      };
-      if (!serviceContainer) {
-        result.isValid = false;
-        result.errors.push("Service container is null or undefined");
-        return result;
-      }
-      if (typeof serviceContainer.getService !== "function") {
-        result.isValid = false;
-        result.errors.push("Service container missing getService method");
-      }
-      if (typeof serviceContainer.createService !== "function") {
-        result.isValid = false;
-        result.errors.push("Service container missing createService method");
-      }
-      this.logger.info(`[ServiceValidator] 🔍 Service container validation result:`, {
-        isValid: result.isValid,
-        errors: result.errors.length,
-        warnings: result.warnings.length
-      });
-      return result;
-    }
-    /**
-     * Fehlerbehandlung für Service-Erstellung
-     */
-    handleServiceCreationError(error, identifier) {
-      this.logger.error(`[ServiceValidator] ❌ Service creation error for ${identifier.name || identifier}:`, error);
-      this.logger.error(`Service creation failed for ${identifier.name || identifier}:`, error);
-    }
-  }
-  var ServiceValidator$1 = /* @__PURE__ */ Object.freeze({
-    __proto__: null,
-    ServiceValidator
-  });
-  const _ServiceContainer = class _ServiceContainer {
-    constructor(logger2, servicePlans, serviceValidator) {
-      this.instances = /* @__PURE__ */ new Map();
-      this.logger = logger2;
-      this.servicePlans = servicePlans;
-      this.serviceValidator = serviceValidator;
-    }
-    static getInstance(logger2, servicePlans, serviceValidator) {
-      if (!_ServiceContainer.instance) {
-        _ServiceContainer.instance = new _ServiceContainer(logger2, servicePlans, serviceValidator);
-      }
-      return _ServiceContainer.instance;
-    }
-    /**
-     * Service aus Lagerhaus holen oder neu erstellen
-     */
-    getService(identifier) {
-      this.writeLog("info", `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}`);
-      if (this.instances.has(identifier)) {
-        this.writeLog("info", `[ServiceContainer] ♻️ Returning cached singleton: ${identifier.name || identifier}`);
-        return this.instances.get(identifier);
-      }
-      this.writeLog("info", `[ServiceContainer] 🏗️ Creating new service: ${identifier.name || identifier}`);
-      const service = this.createService(identifier);
-      const plan = this.servicePlans.get(identifier);
-      if (plan && plan.isSingleton) {
-        this.writeLog("info", `[ServiceContainer] 💾 Caching singleton: ${identifier.name || identifier}`);
-        this.instances.set(identifier, service);
-      }
-      return service;
-    }
-    /**
-     * Service mit Dependencies erstellen
-     */
-    createService(identifier) {
-      this.writeLog("info", `[ServiceContainer] 🏗️ Creating service: ${identifier.name || identifier}`);
-      this.writeLog("info", `[ServiceContainer] 🔍 Available service plans:`, Array.from(this.servicePlans.keys()).map((k) => k.name || k));
-      const plan = this.servicePlans.get(identifier);
-      if (!plan) {
-        this.writeLog("error", `[ServiceContainer] ❌ No service plan found for ${identifier.name || identifier}`);
-        this.writeLog("error", `[ServiceContainer] 🔍 Available plans:`, Array.from(this.servicePlans.keys()).map((k) => k.name || k));
-        throw new Error(`No service plan found for ${identifier.name || identifier}`);
-      }
-      this.writeLog("info", `[ServiceContainer] 📋 Service plan for ${identifier.name || identifier}:`, {
-        dependencies: plan.dependencies.map((d) => d.name || d),
-        isSingleton: plan.isSingleton,
-        serviceType: plan.serviceType
-      });
-      const dependencies = this.resolveDependencies(plan);
-      this.writeLog("info", `[ServiceContainer] 🔗 Resolved dependencies for ${identifier.name || identifier}:`, {
-        count: dependencies.length,
-        dependencies: dependencies.map((d) => d.constructor.name)
-      });
-      const service = new plan.constructor(...dependencies);
-      if (!this.serviceValidator.validateServiceCreation(service, identifier)) {
-        this.serviceValidator.handleServiceCreationError(
-          new Error(`Service creation validation failed for ${identifier.name || identifier}`),
-          identifier
-        );
-        throw new Error(`Service creation validation failed for ${identifier.name || identifier}`);
-      }
-      this.writeLog("info", `[ServiceContainer] ✅ Service created successfully: ${identifier.name || identifier}`);
-      return service;
-    }
-    /**
-     * Dependencies rekursiv auflösen
-     */
-    resolveDependencies(plan) {
-      this.writeLog("info", `[ServiceContainer] 🔗 Resolving dependencies for: ${plan.constructor.name || plan.constructor}`);
-      const dependencies = [];
-      for (const dependency of plan.dependencies) {
-        this.writeLog("info", `[ServiceContainer] 🔍 Resolving dependency: ${dependency.name || dependency}`);
-        try {
-          const resolvedDependency = this.getService(dependency);
-          dependencies.push(resolvedDependency);
-          this.writeLog("info", `[ServiceContainer] ✅ Dependency resolved: ${dependency.name || dependency} -> ${resolvedDependency.constructor.name}`);
-        } catch (error) {
-          this.writeLog("error", `[ServiceContainer] ❌ Failed to resolve dependency ${dependency.name || dependency}:`, error);
-          this.serviceValidator.handleServiceCreationError(error, dependency);
-          throw error;
-        }
-      }
-      return dependencies;
-    }
-    /**
-     * Alle Services erstellen
-     */
-    createAllServices() {
-      this.writeLog("info", `[ServiceContainer] 🏗️ Creating all services (${this.servicePlans.size} plans)`);
-      const creationOrder = this.calculateCreationOrder();
-      for (const serviceClass of creationOrder) {
-        try {
-          this.writeLog("info", `[ServiceContainer] 🏗️ Creating service: ${serviceClass.name || serviceClass}`);
-          this.getService(serviceClass);
-          this.writeLog("info", `[ServiceContainer] ✅ Service created: ${serviceClass.name || serviceClass}`);
-        } catch (error) {
-          this.writeLog("error", `[ServiceContainer] ❌ Failed to create service ${serviceClass.name || serviceClass}:`, error);
-          this.serviceValidator.handleServiceCreationError(error, serviceClass);
-          throw error;
-        }
-      }
-      this.writeLog("info", `[ServiceContainer] ✅ All services created successfully`);
-    }
-    /**
-     * Erstellungsreihenfolge berechnen (Topological Sort)
-     */
-    calculateCreationOrder() {
-      this.writeLog("info", `[ServiceContainer] 🔄 Calculating creation order`);
-      const visited = /* @__PURE__ */ new Set();
-      const result = [];
-      for (const serviceClass of this.servicePlans.keys()) {
-        this.topologicalSort(serviceClass, visited, result);
-      }
-      this.writeLog("info", `[ServiceContainer] 🔄 Creation order:`, result.map((s) => s.name || s));
-      return result;
-    }
-    topologicalSort(service, visited, result) {
-      if (visited.has(service)) {
-        return;
-      }
-      visited.add(service);
-      const plan = this.servicePlans.get(service);
-      if (plan) {
-        for (const dependency of plan.dependencies) {
-          this.topologicalSort(dependency, visited, result);
-        }
-      }
-      result.push(service);
-    }
-    /**
-     * Service aus Cache entfernen
-     */
-    disposeService(identifier) {
-      this.writeLog("info", `[ServiceContainer] 🗑️ Disposing service: ${identifier.name || identifier}`);
-      if (this.instances.has(identifier)) {
-        this.instances.delete(identifier);
-        this.writeLog("info", `[ServiceContainer] ✅ Service disposed: ${identifier.name || identifier}`);
-      } else {
-        this.writeLog("info", `[ServiceContainer] ℹ️ Service not cached: ${identifier.name || identifier}`);
-      }
-    }
-    /**
-     * Alle Services aus Cache entfernen
-     */
-    disposeAll() {
-      this.writeLog("info", `[ServiceContainer] 🗑️ Disposing all services (${this.instances.size} cached)`);
-      this.instances.clear();
-      this.writeLog("info", `[ServiceContainer] ✅ All services disposed`);
-    }
-    /**
-     * Prüfen ob Service im Cache ist
-     */
-    hasCachedService(identifier) {
-      return this.instances.has(identifier);
-    }
-    /**
-     * Anzahl gecachter Services
-     */
-    getCachedServiceCount() {
-      return this.instances.size;
-    }
-    /**
-     * Service-Plan abrufen
-     */
-    getServicePlan(identifier) {
-      return this.servicePlans.get(identifier);
-    }
-    /**
-     * Alle Service-Pläne abrufen
-     */
-    getAllServicePlans() {
-      return this.servicePlans;
-    }
-    writeLog(modus, message, ...args) {
-      if (this.logger) {
-        this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
-      }
-    }
-  };
-  _ServiceContainer.API_NAME = "serviceContainer";
-  _ServiceContainer.SERVICE_TYPE = "singleton";
-  _ServiceContainer.CLASS_NAME = "ServiceContainer";
-  _ServiceContainer.DEPENDENCIES = [FoundryLogger, ServicePlanner, ServiceValidator];
-  let ServiceContainer = _ServiceContainer;
-  var ServiceContainer$1 = /* @__PURE__ */ Object.freeze({
-    __proto__: null,
-    ServiceContainer
-  });
-  const _ServiceRegistry = class _ServiceRegistry {
-    constructor(logger2) {
-      this.logger = logger2;
-      this.serviceRegistry = /* @__PURE__ */ new Map();
-    }
-    static getInstance(logger2) {
-      if (!_ServiceRegistry.instance) {
-        _ServiceRegistry.instance = new _ServiceRegistry(logger2);
-      }
-      return _ServiceRegistry.instance;
-    }
-    /**
-     * EINZIGER Eingangspunkt für Services
-     * Registriert alle Services aus einer Service-Quelle
-     */
-    registerAllServices(serviceSource) {
-      this.writeLog("info", `[ServiceRegistry] 📚 Registering ${serviceSource.length} services from source`);
-      for (const serviceConfig of serviceSource) {
-        const serviceName = serviceConfig.name.CLASS_NAME || serviceConfig.name.className || serviceConfig.name.name || serviceConfig.name;
-        const serviceClass = serviceConfig.class;
-        this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
-        this.registerService(serviceClass, serviceClass);
-      }
-      this.writeLog("info", `[ServiceRegistry] ✅ All services registered. Total: ${this.serviceRegistry.size}`);
-    }
-    /**
-     * Einzelnen Service registrieren
-     */
-    registerService(identifier, constructor) {
-      this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - identifier:`, identifier);
-      this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - constructor:`, constructor);
-      if (!identifier) {
-        this.writeLog("error", `[ServiceRegistry] ❌ Identifier is undefined!`);
-        return;
-      }
-      const serviceName = identifier.CLASS_NAME || identifier.className || identifier.name || identifier;
-      this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
-      this.serviceRegistry.set(identifier, constructor);
-    }
-    /**
-     * Service-Konstruktor abrufen
-     */
-    getServiceConstructor(identifier) {
-      const constructor = this.serviceRegistry.get(identifier);
-      this.writeLog("debug", `[ServiceRegistry] 🔍 Getting constructor for: ${identifier.name || identifier}`, {
-        found: !!constructor,
-        constructor: constructor?.name || constructor
-      });
-      return constructor;
-    }
-    /**
-     * Alle registrierten Services abrufen
-     * Wird von anderen Klassen verwendet (Single Source of Truth)
-     */
-    getAllServices() {
-      const services = Array.from(this.serviceRegistry.keys());
-      this.writeLog("info", `[ServiceRegistry] 📋 Providing ${services.length} services to other classes`);
-      return services;
-    }
-    /**
-     * Prüfen ob Service registriert ist
-     */
-    hasService(identifier) {
-      return this.serviceRegistry.has(identifier);
-    }
-    /**
-     * Anzahl registrierter Services
-     */
-    getServiceCount() {
-      return this.serviceRegistry.size;
-    }
-    /**
-     * Registry leeren (für Tests)
-     */
-    clear() {
-      this.writeLog("info", `[ServiceRegistry] 🗑️ Clearing registry (${this.serviceRegistry.size} services)`);
-      this.serviceRegistry.clear();
-    }
-    writeLog(modus, message, ...args) {
-      if (this.logger) {
-        this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
-      }
-    }
-  };
-  _ServiceRegistry.API_NAME = "serviceRegistry";
-  _ServiceRegistry.SERVICE_TYPE = "singleton";
-  _ServiceRegistry.CLASS_NAME = "ServiceRegistry";
-  _ServiceRegistry.DEPENDENCIES = [FoundryLogger];
-  let ServiceRegistry = _ServiceRegistry;
-  var ServiceRegistry$1 = /* @__PURE__ */ Object.freeze({
-    __proto__: null,
-    ServiceRegistry
-  });
-  const _ModuleInitializer = class _ModuleInitializer {
-    // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
-    constructor(logger2, errorHandler2, registrationService) {
-      this.logger = logger2;
-      this.errorHandler = errorHandler2;
-      this.registrationService = registrationService;
-    }
-    async initialize() {
-      try {
-        this.logger.info("🚀 Relationship App: Starting initialization...");
-        await this.registrationService.registerAll();
-        this.logger.info("✅ Relationship App: Initialization completed!");
-      } catch (error) {
-        this.errorHandler.handle(error, "Module initialization");
-        throw error;
-      }
-    }
-  };
-  _ModuleInitializer.API_NAME = "moduleInitializer";
-  _ModuleInitializer.SERVICE_TYPE = "singleton";
-  _ModuleInitializer.CLASS_NAME = "ModuleInitializer";
-  _ModuleInitializer.DEPENDENCIES = [FoundryLogger, ConsoleErrorHandler, RegistrationService];
-  let ModuleInitializer = _ModuleInitializer;
-  var ModuleInitializer$1 = /* @__PURE__ */ Object.freeze({
-    __proto__: null,
-    ModuleInitializer
-  });
-  class ServiceRegistrar {
-    constructor(logger2, serviceContainer) {
-      this.logger = logger2;
-      this.serviceContainer = serviceContainer;
-      this.serviceLocator = /* @__PURE__ */ new Map();
-    }
-    /**
-     * Alle Services registrieren - NUR FACTORIES
-     */
-    registerAllServices() {
-      this.logger.info(`[ServiceRegistrar] 📝 Registering all services as factories`);
-      const servicePlans = this.serviceContainer.getAllServicePlans();
-      this.logger.info(`[ServiceRegistrar] 📋 Registering ${servicePlans.size} services as factories`);
-      for (const [serviceClass, plan] of servicePlans) {
-        this.registerService(serviceClass, plan);
-      }
-      this.logger.info(`[ServiceRegistrar] ✅ All services registered as factories`);
-    }
-    /**
-     * Einzelnen Service registrieren
-     */
-    registerService(serviceClass, plan) {
-      const serviceName = serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
-      this.logger.info(`[ServiceRegistrar] 📝 Registering service factory: ${serviceName}`);
-      this.serviceLocator.set(serviceClass, () => this.serviceContainer.getService(serviceClass));
-      this.serviceLocator.set(serviceName, () => this.serviceContainer.getService(serviceClass));
-      this.logger.info(`[ServiceRegistrar] ✅ Service factory registered: ${serviceName}`);
-    }
-    /**
-     * Service über Factory abrufen - On-Demand
-     */
-    getService(identifier) {
-      this.logger.info(`[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}`);
-      const factory = this.serviceLocator.get(identifier);
-      if (!factory) {
-        throw new Error(`Service ${identifier.name || identifier} not registered`);
-      }
-      const service = factory();
-      this.logger.info(`[ServiceRegistrar] ✅ Service retrieved: ${identifier.name || identifier}`);
-      return service;
-    }
-    /**
-     * Prüfen ob Service registriert ist
-     */
-    hasService(identifier) {
-      return this.serviceLocator.has(identifier);
-    }
-    /**
-     * Alle registrierten Services abrufen
-     */
-    getRegisteredServices() {
-      return Array.from(this.serviceLocator.keys());
-    }
-    /**
-     * Service aus Registrierung entfernen
-     */
-    unregisterService(identifier) {
-      this.logger.info(`[ServiceRegistrar] 🗑️ Unregistering service: ${identifier.name || identifier}`);
-      if (this.serviceLocator.has(identifier)) {
-        this.serviceLocator.delete(identifier);
-        this.logger.info(`[ServiceRegistrar] ✅ Service unregistered: ${identifier.name || identifier}`);
-      } else {
-        this.logger.info(`[ServiceRegistrar] ℹ️ Service not registered: ${identifier.name || identifier}`);
-      }
-    }
-    /**
-     * Alle Services aus Registrierung entfernen
-     */
-    unregisterAll() {
-      this.logger.info(`[ServiceRegistrar] 🗑️ Unregistering all services (${this.serviceLocator.size} registered)`);
-      this.serviceLocator.clear();
-      this.logger.info(`[ServiceRegistrar] ✅ All services unregistered`);
-    }
-    /**
-     * Service Discovery - Services auffindbar machen
-     */
-    enableServiceDiscovery() {
-      this.logger.info(`[ServiceRegistrar] 🔍 Enabling service discovery`);
-      globalThis.relationshipApp = globalThis.relationshipApp || {};
-      globalThis.relationshipApp.serviceLocator = this;
-      this.logger.info(`[ServiceRegistrar] ✅ Service discovery enabled`);
-    }
-    /**
-     * Service Metadaten abrufen
-     */
-    getServiceMetadata(identifier) {
-      const plan = this.serviceContainer.getServicePlan(identifier);
-      if (!plan) {
-        return null;
-      }
-      return {
-        apiName: plan.apiName,
-        serviceType: plan.serviceType,
-        isSingleton: plan.isSingleton,
-        dependencies: plan.dependencies.map((d) => d.name || d),
-        isRegistered: this.hasService(identifier)
-      };
-    }
-    /**
-     * Alle Service Metadaten abrufen
-     */
-    getAllServiceMetadata() {
-      const metadata = /* @__PURE__ */ new Map();
-      const servicePlans = this.serviceContainer.getAllServicePlans();
-      for (const [serviceClass, plan] of servicePlans) {
-        metadata.set(serviceClass, this.getServiceMetadata(serviceClass));
-      }
-      return metadata;
-    }
-  }
-  var ServiceRegistrar$1 = /* @__PURE__ */ Object.freeze({
-    __proto__: null,
-    ServiceRegistrar
-  });
-  class DependencyMapper {
-    constructor(logger2, serviceRegistry) {
-      this.logger = logger2;
-      this.serviceRegistry = serviceRegistry;
-    }
-    /**
-     * Dependency Graph für alle Services erstellen
-     * Single Source of Truth: Holt Services von ServiceRegistry
-     */
-    buildDependencyGraph() {
-      this.logger.info(`[DependencyMapper] 🗺️ Building dependency graph`);
-      const graph = /* @__PURE__ */ new Map();
-      const allServices = this.serviceRegistry.getAllServices();
-      this.logger.info(`[DependencyMapper] 📋 Processing ${allServices.length} services from ServiceRegistry`);
-      for (const ServiceClass of allServices) {
-        this.logger.debug(`[DependencyMapper] 🔍 Analyzing dependencies for: ${ServiceClass.name || ServiceClass}`);
-        const dependencies = this.extractDependencies(ServiceClass);
-        graph.set(ServiceClass, dependencies);
-        this.logger.debug(`[DependencyMapper] 🔗 Dependencies for ${ServiceClass.name || ServiceClass}:`, {
-          count: dependencies.length,
-          dependencies: dependencies.map((d) => d.name || d)
-        });
-      }
-      this.logger.info(`[DependencyMapper] ✅ Dependency graph built with ${graph.size} services`);
-      return graph;
-    }
-    /**
-     * Dependencies für einen Service extrahieren
-     */
-    extractDependencies(serviceClass) {
-      this.logger.debug(`[DependencyMapper] 🔍 Extracting dependencies for: ${serviceClass.name || serviceClass}`);
-      const staticDependencies = this.extractStaticDependencies(serviceClass);
-      if (staticDependencies !== null) {
-        this.logger.debug(`[DependencyMapper] 📋 Using static dependencies:`, staticDependencies.map((d) => d.name || d));
-        return staticDependencies;
-      } else {
-        throw new Error(`[DependencyMapper] ❌ Service '${serviceClass.name || serviceClass}' has no static readonly DEPENDENCIES!`);
-      }
-    }
-    /**
-     * Dependencies aus static readonly DEPENDENCIES property extrahieren
-     */
-    extractStaticDependencies(serviceClass) {
-      const className = serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
-      this.logger.debug(`[DependencyMapper] 📋 Checking static dependencies for: ${className}`);
-      try {
-        if (serviceClass.DEPENDENCIES && Array.isArray(serviceClass.DEPENDENCIES)) {
-          const filteredDependencies = serviceClass.DEPENDENCIES.filter(Boolean);
-          this.logger.debug(`[DependencyMapper] 📋 Found static dependencies for ${className}:`, {
-            original: serviceClass.DEPENDENCIES,
-            filtered: filteredDependencies,
-            count: filteredDependencies.length
-          });
-          return filteredDependencies;
-        }
-        this.logger.debug(`[DependencyMapper] 📋 No static dependencies found for: ${className}`);
-        return [];
-      } catch (error) {
-        this.logger.error(`[DependencyMapper] 📋 Error extracting static dependencies for ${className}:`, error);
-        return [];
-      }
-    }
-    /**
-     * Zirkuläre Dependencies prüfen
-     */
-    checkCircularDependencies(dependencyGraph) {
-      this.logger.info(`[DependencyMapper] 🔍 Checking for circular dependencies`);
-      const visited = /* @__PURE__ */ new Set();
-      const recursionStack = /* @__PURE__ */ new Set();
-      for (const service of dependencyGraph.keys()) {
-        if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
-          this.logger.error(`[DependencyMapper] ❌ Circular dependency detected!`);
-          return true;
-        }
-      }
-      this.logger.info(`[DependencyMapper] ✅ No circular dependencies found`);
-      return false;
-    }
-    hasCircularDependency(service, graph, visited, recursionStack) {
-      if (recursionStack.has(service)) {
-        return true;
-      }
-      if (visited.has(service)) {
-        return false;
-      }
-      visited.add(service);
-      recursionStack.add(service);
-      const dependencies = graph.get(service) || [];
-      for (const dependency of dependencies) {
-        if (this.hasCircularDependency(dependency, graph, visited, recursionStack)) {
-          return true;
-        }
-      }
-      recursionStack.delete(service);
-      return false;
-    }
-  }
-  var DependencyMapper$1 = /* @__PURE__ */ Object.freeze({
-    __proto__: null,
-    DependencyMapper
-  });
   var BROWSER = true;
   var DEV = false;
   var is_array = Array.isArray;
@@ -9694,6 +8667,1041 @@ ${component_stack}
   _CSSManager.CLASS_NAME = "CSSManager";
   _CSSManager.DEPENDENCIES = [FoundryLogger];
   let CSSManager = _CSSManager;
+  const _JournalEntryPageRelationshipGraphSheet = class _JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet {
+    constructor(...args) {
+      super(...args);
+      // Lazy-Memoized Getter – kein Service im Konstruktor auflösen!
+      __privateAdd(this, _logger);
+      __privateAdd(this, _svelte);
+      __privateAdd(this, _css);
+      this.svelteApp = null;
+    }
+    get logger() {
+      return __privateGet(this, _logger) ?? __privateSet(this, _logger, use(FoundryLogger));
+    }
+    get svelteManager() {
+      return __privateGet(this, _svelte) ?? __privateSet(this, _svelte, use(SvelteManager));
+    }
+    get cssManager() {
+      return __privateGet(this, _css) ?? __privateSet(this, _css, use(CSSManager));
+    }
+    /** @override */
+    get title() {
+      return this.options.window.title;
+    }
+    /** @override */
+    async _renderHTML(context, options) {
+      return await super._renderHTML(context, options);
+    }
+    /** @override */
+    _replaceHTML(html2, options, context) {
+      return super._replaceHTML(html2, options, context);
+    }
+    async _preparePartContext(partContext, part, options) {
+      const context = await super._preparePartContext(partContext, part, options);
+      return context;
+    }
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      this.logger.info("[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:", context);
+      this.logger.info("[JournalEntryPageRelationshipGraphSheet] _prepareContext called with options:", options);
+      return context;
+    }
+    async _loadCSS() {
+      const cssPath = "modules/relationship-app/styles/journal-entry-relationship-graph-sheet.css";
+      await this.cssManager.loadCSS(cssPath);
+    }
+    async _onRender(context, options) {
+      this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onRender started", { context, options });
+      await super._onRender(context, options);
+      const target = this.element.querySelector("#relationship-graph-svelte");
+      if (!target) {
+        this.logger.warn("[JournalEntryPageRelationshipGraphSheet] Svelte mount point '#relationship-graph-svelte' not found");
+        return;
+      }
+      this.logger.info("[JournalEntryPageRelationshipGraphSheet] Found target element:", target);
+      await this.svelteManager.unmountApp(this.svelteApp);
+      this.svelteApp = null;
+      const journalEntryPage = this.document;
+      const isEditMode = !this.isView;
+      await this._loadCSS();
+      this.svelteApp = await this.svelteManager.mountGraphComponent(this.element, journalEntryPage, isEditMode);
+      this.logger.info("[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully");
+    }
+    /** @override */
+    async _onClose(options) {
+      this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onClose called with options:", options);
+      await this.svelteManager.unmountApp(this.svelteApp);
+      this.svelteApp = null;
+      return super._onClose(options);
+    }
+  };
+  _logger = new WeakMap();
+  _svelte = new WeakMap();
+  _css = new WeakMap();
+  _JournalEntryPageRelationshipGraphSheet.EDIT_PARTS = (() => {
+    const parts = foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet.EDIT_PARTS;
+    const { header, footer, ...rest } = parts;
+    return {
+      header,
+      content: {
+        template: "modules/relationship-app/templates/journal-entry-relationship-graph-edit-part.hbs"
+      },
+      ...rest,
+      footer
+    };
+  })();
+  _JournalEntryPageRelationshipGraphSheet.VIEW_PARTS = (() => {
+    const parts = foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet.VIEW_PARTS;
+    return {
+      ...parts,
+      content: {
+        template: "modules/relationship-app/templates/journal-entry-relationship-graph-view-part.hbs"
+      }
+    };
+  })();
+  _JournalEntryPageRelationshipGraphSheet.DEFAULT_OPTIONS = {
+    // Unique ID for the sheet
+    id: "journal-entry-relationship-graph",
+    // CSS classes to apply
+    classes: ["journal-entry-page", "relationship-graph"],
+    type: "relationship-app.relationship-graph",
+    // Window sizing and behavior
+    position: { width: 800, height: 600 },
+    window: { title: "Beziehungsgraph" },
+    resizable: true,
+    includeTOC: true
+  };
+  let JournalEntryPageRelationshipGraphSheet = _JournalEntryPageRelationshipGraphSheet;
+  const fields = foundry.data.fields;
+  class RelationshipGraphModel extends foundry.abstract.TypeDataModel {
+    static defineSchema() {
+      return {
+        // GRAPH METADATA
+        // Beschreibung des Graphen
+        description: new fields.HTMLField({ required: false, blank: true }),
+        // Version des Graphen
+        version: new fields.StringField({ required: false, blank: true, initial: "1.0.0" }),
+        // Erstellungsdatum
+        created: new fields.NumberField({ required: false, blank: true }),
+        // Letzte Änderung
+        modified: new fields.NumberField({ required: false, blank: true }),
+        // CYTOGRAPHE ELEMENTS direkt als JSON
+        elements: new fields.ObjectField({
+          required: true,
+          blank: true,
+          initial: {
+            nodes: [],
+            edges: []
+          }
+        }),
+        // CYTOGRAPHE STYLE als JSON
+        style: new fields.ArrayField(new fields.ObjectField({ required: true }), {
+          required: true,
+          blank: true,
+          initial: []
+        })
+      };
+    }
+  }
+  const _RegistrationService = class _RegistrationService {
+    // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
+    constructor(logger2, errorHandler2) {
+      this.logger = logger2;
+      this.errorHandler = errorHandler2;
+    }
+    async registerAll() {
+      try {
+        await this.registerSheet();
+        await this.registerModel();
+        await this.registerMetadata();
+        await this.registerServices();
+      } catch (error) {
+        this.errorHandler.handle(error, "RegistrationService.registerAll");
+        throw error;
+      }
+    }
+    async registerSheet() {
+      this.logger.info("🚀 Relationship App: Registering JournalEntryPageRelationshipGraphSheet...");
+      const DocumentSheetConfig = foundry.applications.apps.DocumentSheetConfig;
+      DocumentSheetConfig.registerSheet(
+        JournalEntryPage,
+        "relationship-app",
+        JournalEntryPageRelationshipGraphSheet,
+        {
+          types: ["relationship-app.relationship-graph"],
+          makeDefault: true,
+          label: () => {
+            return game?.i18n?.format("TYPES.JournalEntryPage.relationship-graph", {
+              page: game?.i18n?.localize("TYPES.JournalEntryPage.relationship-graph")
+            }) || "Relationship Graph";
+          }
+        }
+      );
+    }
+    async registerModel() {
+      this.logger.info("🚀 Relationship App: Registering RelationshipGraphModel...");
+      CONFIG.JournalEntryPage.dataModels["relationship-app.relationship-graph"] = RelationshipGraphModel;
+    }
+    async registerMetadata() {
+      this.logger.info("🚀 Relationship App: Registering metadata...");
+      game?.settings?.register(MODULE_ID, MODULE_METADATA_KEY, {
+        name: "Relationship App Metadata",
+        hint: "Metadata for the Relationship App",
+        scope: "world",
+        config: false,
+        type: Object
+      });
+    }
+    async registerServices() {
+      this.logger.info(
+        "🚀 Relationship App: Services will be registered in API after initialization..."
+      );
+    }
+  };
+  _RegistrationService.API_NAME = "registrationService";
+  _RegistrationService.SERVICE_TYPE = "singleton";
+  _RegistrationService.CLASS_NAME = "RegistrationService";
+  _RegistrationService.DEPENDENCIES = [FoundryLogger, ConsoleErrorHandler];
+  let RegistrationService = _RegistrationService;
+  var RegistrationService$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    RegistrationService
+  });
+  class ServicePlanner {
+    constructor(logger2, serviceRegistry, dependencyMapper) {
+      this.logger = logger2;
+      this.serviceRegistry = serviceRegistry;
+      this.dependencyMapper = dependencyMapper;
+    }
+    /**
+     * Service Baupläne für alle Services erstellen
+     * Single Source of Truth: Holt Services von ServiceRegistry
+     */
+    createServicePlans() {
+      this.logger.info(`[ServicePlanner] 📋 Creating service plans`);
+      const plans = /* @__PURE__ */ new Map();
+      const allServices = this.serviceRegistry.getAllServices();
+      const dependencyGraph = this.dependencyMapper.buildDependencyGraph();
+      this.logger.info(`[ServicePlanner] 📋 Processing ${allServices.length} services from ServiceRegistry`);
+      for (const ServiceClass of allServices) {
+        this.logger.info(`[ServicePlanner] 📝 Creating plan for: ${ServiceClass.name || ServiceClass}`);
+        const plan = this.createServicePlan(ServiceClass, dependencyGraph);
+        plans.set(ServiceClass, plan);
+        this.logger.info(`[ServicePlanner] 📋 Plan created for ${ServiceClass.name || ServiceClass}:`, {
+          dependencies: plan.dependencies.map((d) => d.name || d),
+          resolutionOrder: plan.resolutionOrder.map((d) => d.name || d),
+          isSingleton: plan.isSingleton
+        });
+      }
+      this.logger.info(`[ServicePlanner] ✅ Created ${plans.size} service plans`);
+      return plans;
+    }
+    /**
+     * Einzelnen Service-Plan erstellen
+     */
+    createServicePlan(serviceClass, dependencyGraph) {
+      const dependencies = dependencyGraph.get(serviceClass) || [];
+      const resolutionOrder = this.calculateResolutionOrder(serviceClass, dependencyGraph);
+      return {
+        constructor: serviceClass,
+        dependencies,
+        resolutionOrder,
+        isSingleton: this.isSingleton(serviceClass),
+        apiName: this.getApiName(serviceClass),
+        serviceType: this.getServiceType(serviceClass)
+      };
+    }
+    /**
+     * Resolution Order berechnen (Topological Sort)
+     */
+    calculateResolutionOrder(serviceClass, dependencyGraph) {
+      this.logger.info(`[ServicePlanner] 🔄 Calculating resolution order for: ${serviceClass.name || serviceClass}`);
+      const visited = /* @__PURE__ */ new Set();
+      const resolutionOrder = [];
+      this.topologicalSort(serviceClass, dependencyGraph, visited, resolutionOrder);
+      this.logger.info(
+        `[ServicePlanner] 🔄 Resolution order for ${serviceClass.name || serviceClass}:`,
+        resolutionOrder.map((s) => s.name || s)
+      );
+      return resolutionOrder;
+    }
+    topologicalSort(service, graph, visited, result) {
+      if (visited.has(service)) {
+        return;
+      }
+      visited.add(service);
+      const dependencies = graph.get(service) || [];
+      for (const dependency of dependencies) {
+        this.topologicalSort(dependency, graph, visited, result);
+      }
+      result.push(service);
+    }
+    /**
+     * Prüfen ob Service ein Singleton ist
+     */
+    isSingleton(serviceClass) {
+      const serviceType = serviceClass.SERVICE_TYPE;
+      return serviceType === "singleton" || serviceType === void 0;
+    }
+    /**
+     * API Name aus Service-Klasse extrahieren
+     */
+    getApiName(serviceClass) {
+      return serviceClass.API_NAME || serviceClass.name || serviceClass.toString();
+    }
+    /**
+     * Service Type aus Service-Klasse extrahieren
+     */
+    getServiceType(serviceClass) {
+      return serviceClass.SERVICE_TYPE || "singleton";
+    }
+    /**
+     * Service-Plan für einen Service abrufen
+     */
+    getServicePlan(serviceClass, plans) {
+      return plans.get(serviceClass);
+    }
+    /**
+     * Alle Service-Pläne validieren
+     */
+    validateServicePlans(plans) {
+      this.logger.info(`[ServicePlanner] 🔍 Validating ${plans.size} service plans`);
+      const result = {
+        isValid: true,
+        errors: [],
+        warnings: []
+      };
+      for (const [serviceClass, plan] of plans) {
+        for (const dependency of plan.dependencies) {
+          if (!this.serviceRegistry.hasService(dependency)) {
+            result.isValid = false;
+            result.errors.push(`Dependency ${dependency.name || dependency} not found for service ${serviceClass.name || serviceClass}`);
+          }
+        }
+        if (!plan.apiName) {
+          result.warnings.push(`No API_NAME defined for service ${serviceClass.name || serviceClass}`);
+        }
+      }
+      this.logger.info(`[ServicePlanner] 🔍 Validation result:`, {
+        isValid: result.isValid,
+        errors: result.errors.length,
+        warnings: result.warnings.length
+      });
+      return result;
+    }
+  }
+  var ServicePlanner$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    ServicePlanner
+  });
+  class ServiceValidator {
+    constructor(logger2) {
+      this.logger = logger2;
+    }
+    /**
+     * Dependency Graph validieren
+     */
+    validateDependencyGraph(dependencyGraph) {
+      this.logger.info(`[ServiceValidator] 🔍 Validating dependency graph with ${dependencyGraph.size} services`);
+      const result = {
+        isValid: true,
+        errors: [],
+        warnings: []
+      };
+      if (this.checkCircularDependencies(dependencyGraph)) {
+        result.isValid = false;
+        result.errors.push("Circular dependencies detected in dependency graph");
+      }
+      for (const [service, dependencies] of dependencyGraph) {
+        for (const dependency of dependencies) {
+          if (!dependencyGraph.has(dependency)) {
+            result.isValid = false;
+            result.errors.push(`Service ${service.name || service} depends on unknown service ${dependency.name || dependency}`);
+          }
+        }
+      }
+      this.logger.info(`[ServiceValidator] 🔍 Dependency graph validation result:`, {
+        isValid: result.isValid,
+        errors: result.errors.length,
+        warnings: result.warnings.length
+      });
+      return result;
+    }
+    /**
+     * Service-Pläne validieren
+     */
+    validateServicePlans(servicePlans) {
+      this.logger.info(`[ServiceValidator] 🔍 Validating ${servicePlans.size} service plans`);
+      const result = {
+        isValid: true,
+        errors: [],
+        warnings: []
+      };
+      for (const [serviceClass, plan] of servicePlans) {
+        const planValidation = this.validateServicePlan(serviceClass, plan);
+        if (!planValidation.isValid) {
+          result.isValid = false;
+          result.errors.push(...planValidation.errors);
+        }
+        result.warnings.push(...planValidation.warnings);
+      }
+      this.logger.info(`[ServiceValidator] 🔍 Service plans validation result:`, {
+        isValid: result.isValid,
+        errors: result.errors.length,
+        warnings: result.warnings.length
+      });
+      return result;
+    }
+    /**
+     * Einzelnen Service-Plan validieren
+     */
+    validateServicePlan(serviceClass, plan) {
+      const result = {
+        isValid: true,
+        errors: [],
+        warnings: []
+      };
+      if (!plan.constructor || typeof plan.constructor !== "function") {
+        result.isValid = false;
+        result.errors.push(`Invalid constructor for service ${serviceClass.name || serviceClass}`);
+      }
+      if (!Array.isArray(plan.dependencies)) {
+        result.isValid = false;
+        result.errors.push(`Dependencies must be an array for service ${serviceClass.name || serviceClass}`);
+      }
+      if (!Array.isArray(plan.resolutionOrder)) {
+        result.isValid = false;
+        result.errors.push(`Resolution order must be an array for service ${serviceClass.name || serviceClass}`);
+      }
+      if (!plan.apiName || typeof plan.apiName !== "string") {
+        result.warnings.push(`No valid API_NAME for service ${serviceClass.name || serviceClass}`);
+      }
+      if (!["singleton", "factory", "transient"].includes(plan.serviceType)) {
+        result.warnings.push(`Invalid service type '${plan.serviceType}' for service ${serviceClass.name || serviceClass}`);
+      }
+      return result;
+    }
+    /**
+     * Service-Erstellung validieren
+     */
+    validateServiceCreation(service, identifier) {
+      this.logger.info(`[ServiceValidator] 🔍 Validating service creation for: ${identifier.name || identifier}`);
+      if (!service) {
+        this.logger.error(`[ServiceValidator] ❌ Service is null or undefined for ${identifier.name || identifier}`);
+        return false;
+      }
+      if (typeof service !== "object") {
+        this.logger.error(`[ServiceValidator] ❌ Service is not an object for ${identifier.name || identifier}`);
+        return false;
+      }
+      this.logger.info(`[ServiceValidator] ✅ Service creation valid for ${identifier.name || identifier}`);
+      return true;
+    }
+    /**
+     * Zirkuläre Dependencies prüfen
+     */
+    checkCircularDependencies(dependencyGraph) {
+      this.logger.info(`[ServiceValidator] 🔍 Checking for circular dependencies`);
+      const visited = /* @__PURE__ */ new Set();
+      const recursionStack = /* @__PURE__ */ new Set();
+      for (const service of dependencyGraph.keys()) {
+        if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
+          this.logger.error(`[ServiceValidator] ❌ Circular dependency detected starting from ${service.name || service}`);
+          return true;
+        }
+      }
+      this.logger.info(`[ServiceValidator] ✅ No circular dependencies found`);
+      return false;
+    }
+    hasCircularDependency(service, graph, visited, recursionStack) {
+      if (recursionStack.has(service)) {
+        this.logger.error(`[ServiceValidator] ❌ Circular dependency detected: ${service.name || service} is in recursion stack`);
+        return true;
+      }
+      if (visited.has(service)) {
+        return false;
+      }
+      visited.add(service);
+      recursionStack.add(service);
+      const dependencies = graph.get(service) || [];
+      for (const dependency of dependencies) {
+        if (this.hasCircularDependency(dependency, graph, visited, recursionStack)) {
+          return true;
+        }
+      }
+      recursionStack.delete(service);
+      return false;
+    }
+    /**
+     * Service-Container validieren
+     */
+    validateServiceContainer(serviceContainer) {
+      this.logger.info(`[ServiceValidator] 🔍 Validating service container`);
+      const result = {
+        isValid: true,
+        errors: [],
+        warnings: []
+      };
+      if (!serviceContainer) {
+        result.isValid = false;
+        result.errors.push("Service container is null or undefined");
+        return result;
+      }
+      if (typeof serviceContainer.getService !== "function") {
+        result.isValid = false;
+        result.errors.push("Service container missing getService method");
+      }
+      if (typeof serviceContainer.createService !== "function") {
+        result.isValid = false;
+        result.errors.push("Service container missing createService method");
+      }
+      this.logger.info(`[ServiceValidator] 🔍 Service container validation result:`, {
+        isValid: result.isValid,
+        errors: result.errors.length,
+        warnings: result.warnings.length
+      });
+      return result;
+    }
+    /**
+     * Fehlerbehandlung für Service-Erstellung
+     */
+    handleServiceCreationError(error, identifier) {
+      this.logger.error(`[ServiceValidator] ❌ Service creation error for ${identifier.name || identifier}:`, error);
+      this.logger.error(`Service creation failed for ${identifier.name || identifier}:`, error);
+    }
+  }
+  var ServiceValidator$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    ServiceValidator
+  });
+  const _ServiceContainer = class _ServiceContainer {
+    constructor(logger2, servicePlans, serviceValidator) {
+      this.instances = /* @__PURE__ */ new Map();
+      this.logger = logger2;
+      this.servicePlans = servicePlans;
+      this.serviceValidator = serviceValidator;
+    }
+    static getInstance(logger2, servicePlans, serviceValidator) {
+      if (!_ServiceContainer.instance) {
+        _ServiceContainer.instance = new _ServiceContainer(logger2, servicePlans, serviceValidator);
+      }
+      return _ServiceContainer.instance;
+    }
+    /**
+     * Service aus Lagerhaus holen oder neu erstellen
+     */
+    getService(identifier) {
+      this.writeLog("info", `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}`);
+      if (this.instances.has(identifier)) {
+        this.writeLog("info", `[ServiceContainer] ♻️ Returning cached singleton: ${identifier.name || identifier}`);
+        return this.instances.get(identifier);
+      }
+      this.writeLog("info", `[ServiceContainer] 🏗️ Creating new service: ${identifier.name || identifier}`);
+      const service = this.createService(identifier);
+      const plan = this.servicePlans.get(identifier);
+      if (plan && plan.isSingleton) {
+        this.writeLog("info", `[ServiceContainer] 💾 Caching singleton: ${identifier.name || identifier}`);
+        this.instances.set(identifier, service);
+      }
+      return service;
+    }
+    /**
+     * Service mit Dependencies erstellen
+     */
+    createService(identifier) {
+      this.writeLog("info", `[ServiceContainer] 🏗️ Creating service: ${identifier.name || identifier}`);
+      this.writeLog("info", `[ServiceContainer] 🔍 Available service plans:`, Array.from(this.servicePlans.keys()).map((k) => k.name || k));
+      const plan = this.servicePlans.get(identifier);
+      if (!plan) {
+        this.writeLog("error", `[ServiceContainer] ❌ No service plan found for ${identifier.name || identifier}`);
+        this.writeLog("error", `[ServiceContainer] 🔍 Available plans:`, Array.from(this.servicePlans.keys()).map((k) => k.name || k));
+        throw new Error(`No service plan found for ${identifier.name || identifier}`);
+      }
+      this.writeLog("info", `[ServiceContainer] 📋 Service plan for ${identifier.name || identifier}:`, {
+        dependencies: plan.dependencies.map((d) => d.name || d),
+        isSingleton: plan.isSingleton,
+        serviceType: plan.serviceType
+      });
+      const dependencies = this.resolveDependencies(plan);
+      this.writeLog("info", `[ServiceContainer] 🔗 Resolved dependencies for ${identifier.name || identifier}:`, {
+        count: dependencies.length,
+        dependencies: dependencies.map((d) => d.constructor.name)
+      });
+      const service = new plan.constructor(...dependencies);
+      if (!this.serviceValidator.validateServiceCreation(service, identifier)) {
+        this.serviceValidator.handleServiceCreationError(
+          new Error(`Service creation validation failed for ${identifier.name || identifier}`),
+          identifier
+        );
+        throw new Error(`Service creation validation failed for ${identifier.name || identifier}`);
+      }
+      this.writeLog("info", `[ServiceContainer] ✅ Service created successfully: ${identifier.name || identifier}`);
+      return service;
+    }
+    /**
+     * Dependencies rekursiv auflösen
+     */
+    resolveDependencies(plan) {
+      this.writeLog("info", `[ServiceContainer] 🔗 Resolving dependencies for: ${plan.constructor.name || plan.constructor}`);
+      const dependencies = [];
+      for (const dependency of plan.dependencies) {
+        this.writeLog("info", `[ServiceContainer] 🔍 Resolving dependency: ${dependency.name || dependency}`);
+        try {
+          const resolvedDependency = this.getService(dependency);
+          dependencies.push(resolvedDependency);
+          this.writeLog("info", `[ServiceContainer] ✅ Dependency resolved: ${dependency.name || dependency} -> ${resolvedDependency.constructor.name}`);
+        } catch (error) {
+          this.writeLog("error", `[ServiceContainer] ❌ Failed to resolve dependency ${dependency.name || dependency}:`, error);
+          this.serviceValidator.handleServiceCreationError(error, dependency);
+          throw error;
+        }
+      }
+      return dependencies;
+    }
+    /**
+     * Alle Services erstellen
+     */
+    createAllServices() {
+      this.writeLog("info", `[ServiceContainer] 🏗️ Creating all services (${this.servicePlans.size} plans)`);
+      const creationOrder = this.calculateCreationOrder();
+      for (const serviceClass of creationOrder) {
+        try {
+          this.writeLog("info", `[ServiceContainer] 🏗️ Creating service: ${serviceClass.name || serviceClass}`);
+          this.getService(serviceClass);
+          this.writeLog("info", `[ServiceContainer] ✅ Service created: ${serviceClass.name || serviceClass}`);
+        } catch (error) {
+          this.writeLog("error", `[ServiceContainer] ❌ Failed to create service ${serviceClass.name || serviceClass}:`, error);
+          this.serviceValidator.handleServiceCreationError(error, serviceClass);
+          throw error;
+        }
+      }
+      this.writeLog("info", `[ServiceContainer] ✅ All services created successfully`);
+    }
+    /**
+     * Erstellungsreihenfolge berechnen (Topological Sort)
+     */
+    calculateCreationOrder() {
+      this.writeLog("info", `[ServiceContainer] 🔄 Calculating creation order`);
+      const visited = /* @__PURE__ */ new Set();
+      const result = [];
+      for (const serviceClass of this.servicePlans.keys()) {
+        this.topologicalSort(serviceClass, visited, result);
+      }
+      this.writeLog("info", `[ServiceContainer] 🔄 Creation order:`, result.map((s) => s.name || s));
+      return result;
+    }
+    topologicalSort(service, visited, result) {
+      if (visited.has(service)) {
+        return;
+      }
+      visited.add(service);
+      const plan = this.servicePlans.get(service);
+      if (plan) {
+        for (const dependency of plan.dependencies) {
+          this.topologicalSort(dependency, visited, result);
+        }
+      }
+      result.push(service);
+    }
+    /**
+     * Service aus Cache entfernen
+     */
+    disposeService(identifier) {
+      this.writeLog("info", `[ServiceContainer] 🗑️ Disposing service: ${identifier.name || identifier}`);
+      if (this.instances.has(identifier)) {
+        this.instances.delete(identifier);
+        this.writeLog("info", `[ServiceContainer] ✅ Service disposed: ${identifier.name || identifier}`);
+      } else {
+        this.writeLog("info", `[ServiceContainer] ℹ️ Service not cached: ${identifier.name || identifier}`);
+      }
+    }
+    /**
+     * Alle Services aus Cache entfernen
+     */
+    disposeAll() {
+      this.writeLog("info", `[ServiceContainer] 🗑️ Disposing all services (${this.instances.size} cached)`);
+      this.instances.clear();
+      this.writeLog("info", `[ServiceContainer] ✅ All services disposed`);
+    }
+    /**
+     * Prüfen ob Service im Cache ist
+     */
+    hasCachedService(identifier) {
+      return this.instances.has(identifier);
+    }
+    /**
+     * Anzahl gecachter Services
+     */
+    getCachedServiceCount() {
+      return this.instances.size;
+    }
+    /**
+     * Service-Plan abrufen
+     */
+    getServicePlan(identifier) {
+      return this.servicePlans.get(identifier);
+    }
+    /**
+     * Alle Service-Pläne abrufen
+     */
+    getAllServicePlans() {
+      return this.servicePlans;
+    }
+    writeLog(modus, message, ...args) {
+      if (this.logger) {
+        this.logger[modus](message, ...args);
+      } else {
+        console[modus](message, ...args);
+      }
+    }
+  };
+  _ServiceContainer.API_NAME = "serviceContainer";
+  _ServiceContainer.SERVICE_TYPE = "singleton";
+  _ServiceContainer.CLASS_NAME = "ServiceContainer";
+  _ServiceContainer.DEPENDENCIES = [FoundryLogger, ServicePlanner, ServiceValidator];
+  let ServiceContainer = _ServiceContainer;
+  var ServiceContainer$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    ServiceContainer
+  });
+  const _ServiceRegistry = class _ServiceRegistry {
+    constructor(logger2) {
+      this.logger = logger2;
+      this.serviceRegistry = /* @__PURE__ */ new Map();
+    }
+    static getInstance(logger2) {
+      if (!_ServiceRegistry.instance) {
+        _ServiceRegistry.instance = new _ServiceRegistry(logger2);
+      }
+      return _ServiceRegistry.instance;
+    }
+    /**
+     * EINZIGER Eingangspunkt für Services
+     * Registriert alle Services aus einer Service-Quelle
+     */
+    registerAllServices(serviceSource) {
+      this.writeLog("info", `[ServiceRegistry] 📚 Registering ${serviceSource.length} services from source`);
+      for (const serviceConfig of serviceSource) {
+        const serviceName = serviceConfig.name.CLASS_NAME || serviceConfig.name.className || serviceConfig.name.name || serviceConfig.name;
+        const serviceClass = serviceConfig.class;
+        this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
+        this.registerService(serviceClass, serviceClass);
+      }
+      this.writeLog("info", `[ServiceRegistry] ✅ All services registered. Total: ${this.serviceRegistry.size}`);
+    }
+    /**
+     * Einzelnen Service registrieren
+     */
+    registerService(identifier, constructor) {
+      this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - identifier:`, identifier);
+      this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - constructor:`, constructor);
+      if (!identifier) {
+        this.writeLog("error", `[ServiceRegistry] ❌ Identifier is undefined!`);
+        return;
+      }
+      const serviceName = identifier.CLASS_NAME || identifier.className || identifier.name || identifier;
+      this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
+      this.serviceRegistry.set(identifier, constructor);
+    }
+    /**
+     * Service-Konstruktor abrufen
+     */
+    getServiceConstructor(identifier) {
+      const constructor = this.serviceRegistry.get(identifier);
+      this.writeLog("debug", `[ServiceRegistry] 🔍 Getting constructor for: ${identifier.name || identifier}`, {
+        found: !!constructor,
+        constructor: constructor?.name || constructor
+      });
+      return constructor;
+    }
+    /**
+     * Alle registrierten Services abrufen
+     * Wird von anderen Klassen verwendet (Single Source of Truth)
+     */
+    getAllServices() {
+      const services = Array.from(this.serviceRegistry.keys());
+      this.writeLog("info", `[ServiceRegistry] 📋 Providing ${services.length} services to other classes`);
+      return services;
+    }
+    /**
+     * Prüfen ob Service registriert ist
+     */
+    hasService(identifier) {
+      return this.serviceRegistry.has(identifier);
+    }
+    /**
+     * Anzahl registrierter Services
+     */
+    getServiceCount() {
+      return this.serviceRegistry.size;
+    }
+    /**
+     * Registry leeren (für Tests)
+     */
+    clear() {
+      this.writeLog("info", `[ServiceRegistry] 🗑️ Clearing registry (${this.serviceRegistry.size} services)`);
+      this.serviceRegistry.clear();
+    }
+    writeLog(modus, message, ...args) {
+      if (this.logger) {
+        this.logger[modus](message, ...args);
+      } else {
+        console[modus](message, ...args);
+      }
+    }
+  };
+  _ServiceRegistry.API_NAME = "serviceRegistry";
+  _ServiceRegistry.SERVICE_TYPE = "singleton";
+  _ServiceRegistry.CLASS_NAME = "ServiceRegistry";
+  _ServiceRegistry.DEPENDENCIES = [FoundryLogger];
+  let ServiceRegistry = _ServiceRegistry;
+  var ServiceRegistry$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    ServiceRegistry
+  });
+  const _ModuleInitializer = class _ModuleInitializer {
+    // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
+    constructor(logger2, errorHandler2, registrationService) {
+      this.logger = logger2;
+      this.errorHandler = errorHandler2;
+      this.registrationService = registrationService;
+    }
+    async initialize() {
+      try {
+        this.logger.info("🚀 Relationship App: Starting initialization...");
+        await this.registrationService.registerAll();
+        this.logger.info("✅ Relationship App: Initialization completed!");
+      } catch (error) {
+        this.errorHandler.handle(error, "Module initialization");
+        throw error;
+      }
+    }
+  };
+  _ModuleInitializer.API_NAME = "moduleInitializer";
+  _ModuleInitializer.SERVICE_TYPE = "singleton";
+  _ModuleInitializer.CLASS_NAME = "ModuleInitializer";
+  _ModuleInitializer.DEPENDENCIES = [FoundryLogger, ConsoleErrorHandler, RegistrationService];
+  let ModuleInitializer = _ModuleInitializer;
+  var ModuleInitializer$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    ModuleInitializer
+  });
+  class ServiceRegistrar {
+    constructor(logger2, serviceContainer) {
+      this.logger = logger2;
+      this.serviceContainer = serviceContainer;
+      this.serviceLocator = /* @__PURE__ */ new Map();
+    }
+    /**
+     * Alle Services registrieren - NUR FACTORIES
+     */
+    registerAllServices() {
+      this.logger.info(`[ServiceRegistrar] 📝 Registering all services as factories`);
+      const servicePlans = this.serviceContainer.getAllServicePlans();
+      this.logger.info(`[ServiceRegistrar] 📋 Registering ${servicePlans.size} services as factories`);
+      for (const [serviceClass, plan] of servicePlans) {
+        this.registerService(serviceClass, plan);
+      }
+      this.logger.info(`[ServiceRegistrar] ✅ All services registered as factories`);
+    }
+    /**
+     * Einzelnen Service registrieren
+     */
+    registerService(serviceClass, plan) {
+      const serviceName = serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
+      this.logger.info(`[ServiceRegistrar] 📝 Registering service factory: ${serviceName}`);
+      this.serviceLocator.set(serviceClass, () => this.serviceContainer.getService(serviceClass));
+      this.serviceLocator.set(serviceName, () => this.serviceContainer.getService(serviceClass));
+      this.logger.info(`[ServiceRegistrar] ✅ Service factory registered: ${serviceName}`);
+    }
+    /**
+     * Service über Factory abrufen - On-Demand
+     */
+    getService(identifier) {
+      this.logger.info(`[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}`);
+      const factory = this.serviceLocator.get(identifier);
+      if (!factory) {
+        throw new Error(`Service ${identifier.name || identifier} not registered`);
+      }
+      const service = factory();
+      this.logger.info(`[ServiceRegistrar] ✅ Service retrieved: ${identifier.name || identifier}`);
+      return service;
+    }
+    /**
+     * Prüfen ob Service registriert ist
+     */
+    hasService(identifier) {
+      return this.serviceLocator.has(identifier);
+    }
+    /**
+     * Alle registrierten Services abrufen
+     */
+    getRegisteredServices() {
+      return Array.from(this.serviceLocator.keys());
+    }
+    /**
+     * Service aus Registrierung entfernen
+     */
+    unregisterService(identifier) {
+      this.logger.info(`[ServiceRegistrar] 🗑️ Unregistering service: ${identifier.name || identifier}`);
+      if (this.serviceLocator.has(identifier)) {
+        this.serviceLocator.delete(identifier);
+        this.logger.info(`[ServiceRegistrar] ✅ Service unregistered: ${identifier.name || identifier}`);
+      } else {
+        this.logger.info(`[ServiceRegistrar] ℹ️ Service not registered: ${identifier.name || identifier}`);
+      }
+    }
+    /**
+     * Alle Services aus Registrierung entfernen
+     */
+    unregisterAll() {
+      this.logger.info(`[ServiceRegistrar] 🗑️ Unregistering all services (${this.serviceLocator.size} registered)`);
+      this.serviceLocator.clear();
+      this.logger.info(`[ServiceRegistrar] ✅ All services unregistered`);
+    }
+    /**
+     * Service Discovery - Services auffindbar machen
+     */
+    enableServiceDiscovery() {
+      this.logger.info(`[ServiceRegistrar] 🔍 Enabling service discovery`);
+      globalThis.relationshipApp = globalThis.relationshipApp || {};
+      globalThis.relationshipApp.serviceLocator = this;
+      this.logger.info(`[ServiceRegistrar] ✅ Service discovery enabled`);
+    }
+    /**
+     * Service Metadaten abrufen
+     */
+    getServiceMetadata(identifier) {
+      const plan = this.serviceContainer.getServicePlan(identifier);
+      if (!plan) {
+        return null;
+      }
+      return {
+        apiName: plan.apiName,
+        serviceType: plan.serviceType,
+        isSingleton: plan.isSingleton,
+        dependencies: plan.dependencies.map((d) => d.name || d),
+        isRegistered: this.hasService(identifier)
+      };
+    }
+    /**
+     * Alle Service Metadaten abrufen
+     */
+    getAllServiceMetadata() {
+      const metadata = /* @__PURE__ */ new Map();
+      const servicePlans = this.serviceContainer.getAllServicePlans();
+      for (const [serviceClass, plan] of servicePlans) {
+        metadata.set(serviceClass, this.getServiceMetadata(serviceClass));
+      }
+      return metadata;
+    }
+  }
+  var ServiceRegistrar$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    ServiceRegistrar
+  });
+  class DependencyMapper {
+    constructor(logger2, serviceRegistry) {
+      this.logger = logger2;
+      this.serviceRegistry = serviceRegistry;
+    }
+    /**
+     * Dependency Graph für alle Services erstellen
+     * Single Source of Truth: Holt Services von ServiceRegistry
+     */
+    buildDependencyGraph() {
+      this.logger.info(`[DependencyMapper] 🗺️ Building dependency graph`);
+      const graph = /* @__PURE__ */ new Map();
+      const allServices = this.serviceRegistry.getAllServices();
+      this.logger.info(`[DependencyMapper] 📋 Processing ${allServices.length} services from ServiceRegistry`);
+      for (const ServiceClass of allServices) {
+        this.logger.debug(`[DependencyMapper] 🔍 Analyzing dependencies for: ${ServiceClass.name || ServiceClass}`);
+        const dependencies = this.extractDependencies(ServiceClass);
+        graph.set(ServiceClass, dependencies);
+        this.logger.debug(`[DependencyMapper] 🔗 Dependencies for ${ServiceClass.name || ServiceClass}:`, {
+          count: dependencies.length,
+          dependencies: dependencies.map((d) => d.name || d)
+        });
+      }
+      this.logger.info(`[DependencyMapper] ✅ Dependency graph built with ${graph.size} services`);
+      return graph;
+    }
+    /**
+     * Dependencies für einen Service extrahieren
+     */
+    extractDependencies(serviceClass) {
+      this.logger.debug(`[DependencyMapper] 🔍 Extracting dependencies for: ${serviceClass.name || serviceClass}`);
+      const staticDependencies = this.extractStaticDependencies(serviceClass);
+      if (staticDependencies !== null) {
+        this.logger.debug(`[DependencyMapper] 📋 Using static dependencies:`, staticDependencies.map((d) => d.name || d));
+        return staticDependencies;
+      } else {
+        throw new Error(`[DependencyMapper] ❌ Service '${serviceClass.name || serviceClass}' has no static readonly DEPENDENCIES!`);
+      }
+    }
+    /**
+     * Dependencies aus static readonly DEPENDENCIES property extrahieren
+     */
+    extractStaticDependencies(serviceClass) {
+      const className = serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
+      this.logger.debug(`[DependencyMapper] 📋 Checking static dependencies for: ${className}`);
+      try {
+        if (serviceClass.DEPENDENCIES && Array.isArray(serviceClass.DEPENDENCIES)) {
+          const filteredDependencies = serviceClass.DEPENDENCIES.filter(Boolean);
+          this.logger.debug(`[DependencyMapper] 📋 Found static dependencies for ${className}:`, {
+            original: serviceClass.DEPENDENCIES,
+            filtered: filteredDependencies,
+            count: filteredDependencies.length
+          });
+          return filteredDependencies;
+        }
+        this.logger.debug(`[DependencyMapper] 📋 No static dependencies found for: ${className}`);
+        return [];
+      } catch (error) {
+        this.logger.error(`[DependencyMapper] 📋 Error extracting static dependencies for ${className}:`, error);
+        return [];
+      }
+    }
+    /**
+     * Zirkuläre Dependencies prüfen
+     */
+    checkCircularDependencies(dependencyGraph) {
+      this.logger.info(`[DependencyMapper] 🔍 Checking for circular dependencies`);
+      const visited = /* @__PURE__ */ new Set();
+      const recursionStack = /* @__PURE__ */ new Set();
+      for (const service of dependencyGraph.keys()) {
+        if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
+          this.logger.error(`[DependencyMapper] ❌ Circular dependency detected!`);
+          return true;
+        }
+      }
+      this.logger.info(`[DependencyMapper] ✅ No circular dependencies found`);
+      return false;
+    }
+    hasCircularDependency(service, graph, visited, recursionStack) {
+      if (recursionStack.has(service)) {
+        return true;
+      }
+      if (visited.has(service)) {
+        return false;
+      }
+      visited.add(service);
+      recursionStack.add(service);
+      const dependencies = graph.get(service) || [];
+      for (const dependency of dependencies) {
+        if (this.hasCircularDependency(dependency, graph, visited, recursionStack)) {
+          return true;
+        }
+      }
+      recursionStack.delete(service);
+      return false;
+    }
+  }
+  var DependencyMapper$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    DependencyMapper
+  });
   class APIManager {
     constructor(logger2, serviceContainer) {
       this.logger = logger2;
@@ -9894,14 +9902,6 @@ ${component_stack}
     // 🔧 Application Services (Anwendungslogik)
     // Hier kommen später die Business-Services hin
   ];
-  let _container;
-  function setContainer(c) {
-    _container = c;
-  }
-  function use(tokenOrCtor) {
-    if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
-    return _container.getService(tokenOrCtor);
-  }
   function createElement(config) {
     return {
       id: config.field,
@@ -10861,9 +10861,10 @@ ${component_stack}
     function closeModal() {
       if ($$props.config.onCancel) {
         $$props.config.onCancel();
-      }
-      if ($$props.onCancel) {
+      } else if ($$props.onCancel) {
         $$props.onCancel();
+      } else {
+        console.log("Modal geschlossen");
       }
     }
     function handleKeydown(e) {
@@ -10985,25 +10986,20 @@ ${component_stack}
   ) {
     constructor() {
       super();
+      // Lazy-Memoized Getter – kein Service im Konstruktor auflösen!
+      __privateAdd(this, _logger2);
+      __privateAdd(this, _svelte2);
+      __privateAdd(this, _css2);
       this.svelteApp = null;
-      const serviceRegistrar = globalThis.relationshipApp?.serviceRegistrar;
-      if (!serviceRegistrar) {
-        throw new Error("ServiceRegistrar not available! Make sure the module is properly initialized.");
-      }
-      this.svelteDependencies = {
-        svelteManager: serviceRegistrar.getService("_SvelteManager"),
-        cssManager: serviceRegistrar.getService("_CSSManager"),
-        logger: serviceRegistrar.getService("_FoundryLogger")
-      };
-    }
-    get svelteManager() {
-      return this.svelteDependencies.svelteManager;
-    }
-    get cssManager() {
-      return this.svelteDependencies.cssManager;
     }
     get logger() {
-      return this.svelteDependencies.logger;
+      return __privateGet(this, _logger2) ?? __privateSet(this, _logger2, use(FoundryLogger));
+    }
+    get svelteManager() {
+      return __privateGet(this, _svelte2) ?? __privateSet(this, _svelte2, use(SvelteManager));
+    }
+    get cssManager() {
+      return __privateGet(this, _css2) ?? __privateSet(this, _css2, use(CSSManager));
     }
     /** @override */
     get title() {
@@ -11019,35 +11015,36 @@ ${component_stack}
     }
     async _prepareContext(options) {
       const context = await super._prepareContext(options);
-      this.writeLog("info", `[${_DynamicDialogApp.appId}] _prepareContext called with context:`, context);
-      this.writeLog("info", `[${_DynamicDialogApp.appId}] _prepareContext called with options:`, options);
+      this.logger.info(`[${_DynamicDialogApp.appId}] _prepareContext called with context:`, context);
+      this.logger.info(`[${_DynamicDialogApp.appId}] _prepareContext called with options:`, options);
       return context;
     }
     async _prepareConfig(config) {
       _DynamicDialogApp.config = config;
-      this.writeLog("info", `[${_DynamicDialogApp.appId}] _prepareConfig called with config:`, _DynamicDialogApp.config);
+      this.logger.info(`[${_DynamicDialogApp.appId}] _prepareConfig called with config:`, _DynamicDialogApp.config);
       return _DynamicDialogApp.config;
     }
     async _prepareOnSubmit(onSubmit) {
       _DynamicDialogApp.onSubmit = onSubmit;
-      this.writeLog("info", `[${_DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`, _DynamicDialogApp.onSubmit);
+      this.logger.info(`[${_DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`, _DynamicDialogApp.onSubmit);
       return _DynamicDialogApp.onSubmit;
     }
     async _prepareOnCancel(onCancel) {
       _DynamicDialogApp.onCancel = onCancel;
-      this.writeLog("info", `[${_DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`, _DynamicDialogApp.onCancel);
+      this.logger.info(`[${_DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`, _DynamicDialogApp.onCancel);
       return _DynamicDialogApp.onCancel;
     }
     async _onRender(context, options) {
-      this.writeLog("info", `[${_DynamicDialogApp.appId}] _onRender started`, { context, options });
+      this.logger.info(`[${_DynamicDialogApp.appId}] _onRender started`, { context, options });
       try {
         await super._onRender(context, options);
         await this._loadCSS();
         const target = this.element.querySelector("#dynamic-dialog-svelte");
         if (!target) {
-          throw new Error("Svelte mount point '#dynamic-dialog-svelte' not found");
+          this.logger.warn(`[${_DynamicDialogApp.appId}] Svelte mount point '#dynamic-dialog-svelte' not found`);
+          return;
         }
-        this.writeLog("info", `[${_DynamicDialogApp.appId}] Found target element:`, target);
+        this.logger.info(`[${_DynamicDialogApp.appId}] Found target element:`, target);
         await this.svelteManager.unmountApp(this.svelteApp);
         this.svelteApp = null;
         this.svelteApp = await this.svelteManager.mountComponent(
@@ -11059,9 +11056,9 @@ ${component_stack}
             onCancel: _DynamicDialogApp.onCancel
           }
         );
-        this.writeLog("info", `[${_DynamicDialogApp.appId}] DynamicFormSheet mounted successfully`);
+        this.logger.info(`[${_DynamicDialogApp.appId}] DynamicFormSheet mounted successfully`);
       } catch (error) {
-        this.writeLog("error", `[${_DynamicDialogApp.appId}] Error during render:`, error);
+        this.logger.error(`[${_DynamicDialogApp.appId}] Error during render:`, error);
         throw error;
       }
     }
@@ -11074,7 +11071,7 @@ ${component_stack}
     }
     /** @override */
     async _onClose(options) {
-      this.writeLog("info", `[${_DynamicDialogApp.appId}] _onClose called with options:`, options);
+      this.logger.info(`[${_DynamicDialogApp.appId}] _onClose called with options:`, options);
       await this.svelteManager.unmountApp(this.svelteApp);
       this.svelteApp = null;
       return super._onClose(options);
@@ -11094,17 +11091,13 @@ ${component_stack}
           app.close();
           resolve(null);
         });
-        app.render(true);
+        app.render({ force: true });
       });
     }
-    writeLog(modus, message, ...args) {
-      if (this.logger) {
-        this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
-      }
-    }
   };
+  _logger2 = new WeakMap();
+  _svelte2 = new WeakMap();
+  _css2 = new WeakMap();
   _DynamicDialogApp.PARTS = {
     main: {
       template: "modules/relationship-app/templates/DynamicFormApp.hbs"
@@ -11792,19 +11785,19 @@ ${component_stack}
     constructor() {
       super();
       // Lazy-Memoized Getter – kein Service im Konstruktor auflösen!
-      __privateAdd(this, _logger);
-      __privateAdd(this, _svelte);
-      __privateAdd(this, _css);
+      __privateAdd(this, _logger3);
+      __privateAdd(this, _svelte3);
+      __privateAdd(this, _css3);
       this.svelteApp = null;
     }
     get logger() {
-      return __privateGet(this, _logger) ?? __privateSet(this, _logger, use(FoundryLogger));
+      return __privateGet(this, _logger3) ?? __privateSet(this, _logger3, use(FoundryLogger));
     }
     get svelte() {
-      return __privateGet(this, _svelte) ?? __privateSet(this, _svelte, use(SvelteManager));
+      return __privateGet(this, _svelte3) ?? __privateSet(this, _svelte3, use(SvelteManager));
     }
     get css() {
-      return __privateGet(this, _css) ?? __privateSet(this, _css, use(CSSManager));
+      return __privateGet(this, _css3) ?? __privateSet(this, _css3, use(CSSManager));
     }
     /** @override */
     get title() {
@@ -11855,9 +11848,9 @@ ${component_stack}
       return super._onClose(options);
     }
   };
-  _logger = new WeakMap();
-  _svelte = new WeakMap();
-  _css = new WeakMap();
+  _logger3 = new WeakMap();
+  _svelte3 = new WeakMap();
+  _css3 = new WeakMap();
   _MetadataManagementApplication.PARTS = {
     main: {
       template: "modules/relationship-app/templates/metadata-management-main.hbs"

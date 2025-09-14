@@ -1,36 +1,25 @@
 import DynamicFormSheet from "../svelte/DynamicFormSheet.svelte";
 import type { IDynamicFormConfig } from "../types/DynamicFormTypes";
-import type { ISvelteApplicationDependencies } from "../interfaces";
+import { use } from "../core/edge/appContext";
+import { FoundryLogger } from "../core/services/FoundryLogger";
+import { SvelteManager } from "../core/services/SvelteManager";
+import { CSSManager } from "../core/services/CSSManager";
 
 export default class DynamicDialogApp extends foundry.applications.api.HandlebarsApplicationMixin(
   foundry.applications.api.ApplicationV2
 ) {
-  // ✅ Echte Dependency Injection - nur benötigte Dependencies
-  private svelteDependencies: ISvelteApplicationDependencies;
+  // Lazy-Memoized Getter – kein Service im Konstruktor auflösen!
+  #logger?: FoundryLogger;
+  #svelte?: SvelteManager;
+  #css?: CSSManager;
+
+  private get logger() { return (this.#logger ??= use(FoundryLogger)); }
+  private get svelteManager() { return (this.#svelte ??= use(SvelteManager)); }
+  private get cssManager() { return (this.#css ??= use(CSSManager)); }
 
   constructor() {
     super();
-    // Service Resolution über ServiceRegistrar
-    const serviceRegistrar = (globalThis as any).relationshipApp?.serviceRegistrar;
-    if (!serviceRegistrar) {
-      throw new Error("ServiceRegistrar not available! Make sure the module is properly initialized.");
-    }
-    
-    this.svelteDependencies = {
-      svelteManager: serviceRegistrar.getService('_SvelteManager'),
-      cssManager: serviceRegistrar.getService('_CSSManager'),
-      logger: serviceRegistrar.getService('_FoundryLogger')
-    };
-  }
-
-  private get svelteManager() {
-    return this.svelteDependencies.svelteManager;
-  }
-  private get cssManager() {
-    return this.svelteDependencies.cssManager;
-  }
-  private get logger() {
-    return this.svelteDependencies.logger;
+    // Kein Service im Konstruktor holen (Foundry erzeugt die Klasse; Constructor-Zeitpunkt ist zu früh)
   }
   /**
    * Merge the default parts, inserting our graph part between header and footer.
@@ -82,31 +71,31 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
 
   async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
-    this.writeLog("info", `[${DynamicDialogApp.appId}] _prepareContext called with context:`, context);
-    this.writeLog("info", `[${DynamicDialogApp.appId}] _prepareContext called with options:`, options);
+    this.logger.info(`[${DynamicDialogApp.appId}] _prepareContext called with context:`, context);
+    this.logger.info(`[${DynamicDialogApp.appId}] _prepareContext called with options:`, options);
     return context;
   }
 
   async _prepareConfig(config: IDynamicFormConfig) {
     DynamicDialogApp.config = config;
-    this.writeLog("info", `[${DynamicDialogApp.appId}] _prepareConfig called with config:`, DynamicDialogApp.config);
+    this.logger.info(`[${DynamicDialogApp.appId}] _prepareConfig called with config:`, DynamicDialogApp.config);
     return DynamicDialogApp.config;
   }
 
   async _prepareOnSubmit(onSubmit: (values: Record<string, any>) => void) {
     DynamicDialogApp.onSubmit = onSubmit;
-    this.writeLog("info", `[${DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`, DynamicDialogApp.onSubmit);
+    this.logger.info(`[${DynamicDialogApp.appId}] _prepareOnSubmit called with onSubmit:`, DynamicDialogApp.onSubmit);
     return DynamicDialogApp.onSubmit;
   }
 
   async _prepareOnCancel(onCancel: () => void) {
     DynamicDialogApp.onCancel = onCancel;
-    this.writeLog("info", `[${DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`, DynamicDialogApp.onCancel);
+    this.logger.info(`[${DynamicDialogApp.appId}] _prepareOnCancel called with onCancel:`, DynamicDialogApp.onCancel);
     return DynamicDialogApp.onCancel;
   }
 
   async _onRender(context: any, options: any) {
-    this.writeLog("info", `[${DynamicDialogApp.appId}] _onRender started`, { context, options });
+    this.logger.info(`[${DynamicDialogApp.appId}] _onRender started`, { context, options });
 
     try {
       await super._onRender(context, options);
@@ -117,10 +106,11 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
       const target = this.element.querySelector("#dynamic-dialog-svelte");
 
       if (!target) {
-        throw new Error("Svelte mount point '#dynamic-dialog-svelte' not found");
+        this.logger.warn(`[${DynamicDialogApp.appId}] Svelte mount point '#dynamic-dialog-svelte' not found`);
+        return;
       }
 
-      this.writeLog("info", `[${DynamicDialogApp.appId}] Found target element:`, target);
+      this.logger.info(`[${DynamicDialogApp.appId}] Found target element:`, target);
 
       // ✅ Delegation an SvelteManager - Single Responsibility
       await this.svelteManager.unmountApp(this.svelteApp);
@@ -137,9 +127,9 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
         }
       );
 
-      this.writeLog("info", `[${DynamicDialogApp.appId}] DynamicFormSheet mounted successfully`);
+      this.logger.info(`[${DynamicDialogApp.appId}] DynamicFormSheet mounted successfully`);
     } catch (error) {
-      this.writeLog("error", `[${DynamicDialogApp.appId}] Error during render:`, error);
+      this.logger.error(`[${DynamicDialogApp.appId}] Error during render:`, error);
       throw error;
     }
   }
@@ -154,7 +144,7 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
 
   /** @override */
   async _onClose(options: any) {
-    this.writeLog("info", `[${DynamicDialogApp.appId}] _onClose called with options:`, options);
+    this.logger.info(`[${DynamicDialogApp.appId}] _onClose called with options:`, options);
     // ✅ Delegation an SvelteManager - Single Responsibility
     await this.svelteManager.unmountApp(this.svelteApp);
     this.svelteApp = null;
@@ -183,15 +173,8 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
       });
 
       // Dialog öffnen
-      app.render(true);
+      app.render({force: true});
     });
   }
 
-  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
-    if (this.logger) {
-      this.logger[modus](message, ...args);
-    } else {
-      console[modus](message, ...args);
-    }
-  }
 }

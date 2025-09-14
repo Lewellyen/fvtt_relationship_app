@@ -1,4 +1,7 @@
-import type { ISvelteApplicationDependencies } from "../interfaces";
+import { use } from "../core/edge/appContext";
+import { FoundryLogger } from "../core/services/FoundryLogger";
+import { SvelteManager } from "../core/services/SvelteManager";
+import { CSSManager } from "../core/services/CSSManager";
 
 /**
  * V2 JournalEntryPageSheet subclass drawing a simple relationship graph.
@@ -6,32 +9,18 @@ import type { ISvelteApplicationDependencies } from "../interfaces";
  */
 export default class JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets
   .journal.JournalEntryPageHandlebarsSheet {
-  // ✅ Echte Dependency Injection - nur benötigte Dependencies
-  private svelteDependencies: ISvelteApplicationDependencies;
+  // Lazy-Memoized Getter – kein Service im Konstruktor auflösen!
+  #logger?: FoundryLogger;
+  #svelte?: SvelteManager;
+  #css?: CSSManager;
 
-  constructor() {
-    super();
-    // Service Resolution über ServiceRegistrar
-    const serviceRegistrar = (globalThis as any).relationshipApp?.serviceRegistrar;
-    if (!serviceRegistrar) {
-      throw new Error("ServiceRegistrar not available! Make sure the module is properly initialized.");
-    }
-    
-    this.svelteDependencies = {
-      svelteManager: serviceRegistrar.getService('_SvelteManager'),
-      cssManager: serviceRegistrar.getService('_CSSManager'),
-      logger: serviceRegistrar.getService('_FoundryLogger')
-    };
-  }
+  private get logger() { return (this.#logger ??= use(FoundryLogger)); }
+  private get svelteManager() { return (this.#svelte ??= use(SvelteManager)); }
+  private get cssManager() { return (this.#css ??= use(CSSManager)); }
 
-  private get logger() {
-    return this.svelteDependencies.logger;
-  }
-  private get svelteManager() {
-    return this.svelteDependencies.svelteManager;
-  }
-  private get cssManager() {
-    return this.svelteDependencies.cssManager;
+  constructor(...args: any[]) {
+    super(...args);
+    // Kein Service im Konstruktor holen (Foundry erzeugt die Klasse; Constructor-Zeitpunkt ist zu früh)
   }
   /**
    * Merge the default parts, inserting our graph part between header and footer.
@@ -64,7 +53,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     };
   })();
 
-  // ✅ Entfernt - Svelte Management wird an SvelteManager delegiert
+  svelteApp: any = null;
 
   /** @override */
   static DEFAULT_OPTIONS = {
@@ -104,7 +93,8 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
 
   async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
-    this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:", context);
+    this.logger.info("[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:", context);
+    this.logger.info("[JournalEntryPageRelationshipGraphSheet] _prepareContext called with options:", options);
     return context;
   }
 
@@ -115,37 +105,30 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
 
 
   async _onRender(context: any, options: any) {
-    this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] _onRender started", {
-        context,
-        options,
-      });
-
+    this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onRender started", { context, options });
     await super._onRender(context, options);
 
     // ✅ Delegation an SvelteManager - Single Responsibility
+    await this.svelteManager.unmountApp(this.svelteApp);
+    this.svelteApp = null;
+
     const journalEntryPage = (this as any).document;
     const isEditMode = !(this as any).isView;
 
     await this._loadCSS();
 
     // Mounte Graph-Komponente über SvelteManager
-    await this.svelteManager.mountGraphComponent(this.element, journalEntryPage, isEditMode);
+    this.svelteApp = await this.svelteManager.mountGraphComponent(this.element as HTMLElement, journalEntryPage, isEditMode);
 
-    this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully");
+    this.logger.info("[JournalEntryPageRelationshipGraphSheet] Graph component mounted successfully");
   }
 
   /** @override */
   async _onClose(options: any) {
-    this.writeLog("info", "[JournalEntryPageRelationshipGraphSheet] _onClose called with options:", options);
-    // ✅ Svelte Cleanup wird von SvelteManager gehandhabt
+    this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onClose called with options:", options);
+    // ✅ Delegation an SvelteManager - Single Responsibility
+    await this.svelteManager.unmountApp(this.svelteApp);
+    this.svelteApp = null;
     return super._onClose(options);
-  }
-
-  private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
-    if (this.logger) {
-      this.logger[modus](message, ...args);
-    } else {
-      console[modus](message, ...args);
-    }
   }
 }

@@ -207,9 +207,10 @@
   function closeModal() {
     if (config.onCancel) {
       config.onCancel();
-    }
-    if (onCancel) {
+    } else if (onCancel) {
       onCancel();
+    } else {
+      console.log('Modal geschlossen');
     }
   }
   

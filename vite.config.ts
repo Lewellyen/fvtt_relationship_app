@@ -17,7 +17,8 @@ export default defineConfig(() => {
         cytoscape: "cytoscape/dist/cytoscape.umd.js",
         "@": resolve(__dirname, "src"),
       },
-      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.svelte', '.svelte.ts']
+      extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.svelte', '.svelte.ts'],
+      dedupe: ['svelte']
     },
     build: {
       target: "es2020",
