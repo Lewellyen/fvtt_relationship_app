@@ -76,9 +76,13 @@ export interface EdgeData {
 }
 
 /** Policy pro Node: Feldpfad → Sichtbarkeit (Spieler) */
+// Ergänzung in NodePolicy
 export interface NodePolicy {
-  visibility: Record<FieldPath, boolean>;
+  /** Sichtbarkeit des ganzen Knotens für Spieler (GM sieht immer alles). Default: false */
+  visible?: boolean;
+  visibility: Partial<Record<FieldPath, boolean>>;
 }
+
 
 /** Gesamte Policy: NodeId → NodePolicy */
 export type PolicyModel = Record<NodeId, NodePolicy>;

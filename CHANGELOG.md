@@ -265,6 +265,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 - Keine besonderen Maßnahmen erforderlich
 
+## [0.23.0] - 2025-09-16
+### Hinzugefügt
+- Keine Einträge
+
+### Geändert
+- Ausbau GraphService
+
+### Fehlerbehebungen
+- Keine Einträge
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.22.0] - 2025-09-14
 ### Hinzugefügt
 - Keine Einträge

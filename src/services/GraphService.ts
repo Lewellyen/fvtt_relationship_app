@@ -1,4 +1,4 @@
-import type { GraphModel, NodeData, EdgeData, NodePolicy } from "../types/RelationshipGraphTypes";
+import type { GraphModel, NodeData, EdgeData, NodePolicy, FieldPath } from "../types/RelationshipGraphTypes";
 
 export class GraphService {
   private _page: JournalEntryPage;
@@ -81,7 +81,11 @@ export class GraphService {
     await this._write(next);
   }
 
+  // --- Policy API ------------------------------------------------------------
+
+  /** GM-only: komplette Policy eines Nodes setzen/überschreiben */
   async setPolicy(nodeId: string, policy: NodePolicy): Promise<void> {
+    if (!(game.user?.isGM)) throw new Error("Only GM can modify policies.");
     const next = this._cloneCurrent();
     if (!next.policy) next.policy = {};
     next.policy[nodeId] = foundry.utils.deepClone(policy);
@@ -90,6 +94,59 @@ export class GraphService {
 
   getPolicy(nodeId: string): NodePolicy | undefined {
     return this._snapshot?.policy?.[nodeId];
+  }
+
+  /** GM-only: Node-Sichtbarkeit (für Spieler) setzen */
+  async setNodeVisible(nodeId: string, visible: boolean): Promise<void> {
+    if (!(game.user?.isGM)) throw new Error("Only GM can modify node visibility.");
+    const next = this._cloneCurrent();
+    if (!next.policy) next.policy = {};
+    const np: NodePolicy = next.policy[nodeId] ?? { visibility: {} };
+    np.visible = visible;
+    next.policy[nodeId] = np;
+    await this._write(next);
+  }
+
+  /** Sichtbarkeitsstatus eines Nodes lesen (Default: false) */
+  isNodeVisible(nodeId: string): boolean {
+    const p = this._snapshot?.policy?.[nodeId];
+    return p?.visible === true;
+  }
+
+  /** GM-only: komplette Policy eines Nodes entfernen */
+  async removePolicy(nodeId: string): Promise<void> {
+    if (!(game.user?.isGM)) throw new Error("Only GM can remove policies.");
+    const next = this._cloneCurrent();
+    if (!next.policy || !(nodeId in next.policy)) return;
+    delete next.policy[nodeId];
+    await this._write(next);
+  }
+
+  /** GM-only: nur Node-Visibility zurücksetzen (Policy-Eintrag bleibt sonst erhalten) */
+  async clearNodeVisible(nodeId: string): Promise<void> {
+    if (!(game.user?.isGM)) throw new Error("Only GM can modify visibility.");
+    const next = this._cloneCurrent();
+    const p = next.policy?.[nodeId];
+    if (!p) return;
+    delete p.visible;
+    next.policy![nodeId] = p;
+    await this._write(next);
+  }
+
+  /** GM-only: Feld-Visibilities zurücksetzen (alle oder ausgewählte Pfade) */
+  async clearFieldVisibility(nodeId: string, paths?: FieldPath[]): Promise<void> {
+    if (!(game.user?.isGM)) throw new Error("Only GM can modify field policies.");
+    const next = this._cloneCurrent();
+    const p = next.policy?.[nodeId];
+    if (!p) return;
+
+    if (!paths || paths.length === 0) {
+      p.visibility = {};
+    } else {
+      for (const fp of paths) delete p.visibility[fp];
+    }
+    next.policy![nodeId] = p;
+    await this._write(next);
   }
 
   // -- Intern ----------------------------------------------------------------
@@ -138,8 +195,7 @@ export class GraphService {
   /**
    * Patch für Dictionary-Felder (Record<string, any>) erzeugen:
    * - Entfernte Keys -> `${basePath}.-=${key}`: null
-   * - Neu/Geändert   -> `${basePath}.${key}`: value   (robust: ganzen Eintrag setzen)
-   *   (Optional: granular pro Feld mit diffObject, siehe Kommentar)
+   * - Neu/Geändert   -> `${basePath}.${key}`: value   (ganzen Eintrag setzen)
    */
   private _dictDiff(
     basePath: string,
@@ -148,27 +204,19 @@ export class GraphService {
   ): Record<string, unknown> {
     const patch: Record<string, unknown> = {};
 
-    // 1) Deletions
+    // 1) Deletions (Top-Level)
     for (const k of Object.keys(prev)) {
       if (!(k in next)) patch[`${basePath}.-=${k}`] = null;
     }
 
-    // 2) Inserts/Updates
+    // 2) Inserts/Updates (ganzer Eintrag, robust & simpel)
     for (const [k, newVal] of Object.entries(next)) {
       const oldVal = prev[k];
       if (oldVal === undefined) {
         patch[`${basePath}.${k}`] = newVal;
       } else {
         const d = foundry.utils.diffObject(oldVal, newVal);
-        if (!foundry.utils.isEmpty(d)) {
-          // a) robust & simpel: kompletten Eintrag setzen
-          patch[`${basePath}.${k}`] = newVal;
-
-          // b) granular (optional): nur geänderte Felder
-          // for (const [p, v] of Object.entries(d)) {
-          //   patch[`${basePath}.${k}.${p}`] = v;
-          // }
-        }
+        if (!foundry.utils.isEmpty(d)) patch[`${basePath}.${k}`] = newVal;
       }
     }
 
