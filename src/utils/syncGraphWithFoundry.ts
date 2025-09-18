@@ -13,6 +13,6 @@ export function bindFoundrySync(page: JournalEntryPage, service: GraphService) {
     const touched = "nodes" in sys || "edges" in sys || "policy" in sys || "version" in sys;
     if (!touched) return;
 
-    await service.init(page);  // Snapshot neu laden
+    await service.init(page); // Snapshot neu laden
   });
 }

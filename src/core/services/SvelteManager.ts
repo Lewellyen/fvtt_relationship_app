@@ -12,7 +12,7 @@ import { FoundryLogger } from "./FoundryLogger";
 export class SvelteManager implements ISvelteManager {
   // ✅ Metadaten für Service Registration
   static readonly API_NAME = "svelteManager";
-  static readonly SERVICE_TYPE = "singleton" as const;
+  static readonly SERVICE_TYPE = "scoped" as const;
   static readonly CLASS_NAME = "SvelteManager"; // ✅ Klassename für Dependency Resolution
   static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
 

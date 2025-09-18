@@ -1,6 +1,17 @@
-import type { GraphModel, NodeData, EdgeData, NodePolicy, FieldPath } from "../types/RelationshipGraphTypes";
+import type {
+  GraphModel,
+  NodeData,
+  EdgeData,
+  NodePolicy,
+  FieldPath,
+} from "../types/RelationshipGraphTypes";
 
 export class GraphService {
+  // ✅ Metadaten für Service Registration
+  static readonly API_NAME = "graphService";
+  static readonly SERVICE_TYPE = "scoped" as const;
+  static readonly CLASS_NAME = "GraphService";
+  static readonly DEPENDENCIES = []; // ✅ Keine Dependencies erforderlich
   private _page: JournalEntryPage;
   private _snapshot: GraphModel | null;
   private _instanceId: string;
@@ -85,7 +96,7 @@ export class GraphService {
 
   /** GM-only: komplette Policy eines Nodes setzen/überschreiben */
   async setPolicy(nodeId: string, policy: NodePolicy): Promise<void> {
-    if (!(game.user?.isGM)) throw new Error("Only GM can modify policies.");
+    if (!game.user?.isGM) throw new Error("Only GM can modify policies.");
     const next = this._cloneCurrent();
     if (!next.policy) next.policy = {};
     next.policy[nodeId] = foundry.utils.deepClone(policy);
@@ -98,7 +109,7 @@ export class GraphService {
 
   /** GM-only: Node-Sichtbarkeit (für Spieler) setzen */
   async setNodeVisible(nodeId: string, visible: boolean): Promise<void> {
-    if (!(game.user?.isGM)) throw new Error("Only GM can modify node visibility.");
+    if (!game.user?.isGM) throw new Error("Only GM can modify node visibility.");
     const next = this._cloneCurrent();
     if (!next.policy) next.policy = {};
     const np: NodePolicy = next.policy[nodeId] ?? { visibility: {} };
@@ -115,7 +126,7 @@ export class GraphService {
 
   /** GM-only: komplette Policy eines Nodes entfernen */
   async removePolicy(nodeId: string): Promise<void> {
-    if (!(game.user?.isGM)) throw new Error("Only GM can remove policies.");
+    if (!game.user?.isGM) throw new Error("Only GM can remove policies.");
     const next = this._cloneCurrent();
     if (!next.policy || !(nodeId in next.policy)) return;
     delete next.policy[nodeId];
@@ -124,7 +135,7 @@ export class GraphService {
 
   /** GM-only: nur Node-Visibility zurücksetzen (Policy-Eintrag bleibt sonst erhalten) */
   async clearNodeVisible(nodeId: string): Promise<void> {
-    if (!(game.user?.isGM)) throw new Error("Only GM can modify visibility.");
+    if (!game.user?.isGM) throw new Error("Only GM can modify visibility.");
     const next = this._cloneCurrent();
     const p = next.policy?.[nodeId];
     if (!p) return;
@@ -135,7 +146,7 @@ export class GraphService {
 
   /** GM-only: Feld-Visibilities zurücksetzen (alle oder ausgewählte Pfade) */
   async clearFieldVisibility(nodeId: string, paths?: FieldPath[]): Promise<void> {
-    if (!(game.user?.isGM)) throw new Error("Only GM can modify field policies.");
+    if (!game.user?.isGM) throw new Error("Only GM can modify field policies.");
     const next = this._cloneCurrent();
     const p = next.policy?.[nodeId];
     if (!p) return;
@@ -157,7 +168,7 @@ export class GraphService {
       version: sys.version ?? 1,
       nodes: foundry.utils.deepClone(sys.nodes ?? {}),
       edges: foundry.utils.deepClone(sys.edges ?? {}),
-      policy: foundry.utils.deepClone(sys.policy ?? {})
+      policy: foundry.utils.deepClone(sys.policy ?? {}),
     } as GraphModel;
   }
 

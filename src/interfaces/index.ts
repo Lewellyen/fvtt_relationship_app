@@ -21,6 +21,10 @@ export type { ISvelteApplicationDependencies } from "./applications/ISvelteAppli
 // Infrastructure Interfaces
 export type { IServiceContainer } from "./services/IServiceContainer";
 export type { IServiceRegistry } from "./services/IServiceRegistry";
+export type { IServiceFactory } from "./services/IServiceFactory";
+export type { IServiceCache } from "./services/IServiceCache";
+export type { IScopeManager } from "./services/IScopeManager";
+export type { IScopeChain } from "./services/IScopeChain";
 export type { IServicePlanner } from "./infrastructure/IServicePlanner";
 export type { IServiceRegistrar } from "./infrastructure/IServiceRegistrar";
 export type { IServiceValidator } from "./infrastructure/IServiceValidator";

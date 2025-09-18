@@ -1,15 +1,19 @@
 import type { IServiceContainer } from "../interfaces/services/IServiceContainer";
+import type { IScopeChain } from "../interfaces/services/IScopeChain";
 import type { ServicePlan } from "../core/services/ServicePlanner";
 import type { IServiceValidator, ILogger } from "../interfaces";
 import { ServicePlanner } from "../core/services/ServicePlanner";
 import { ServiceValidator } from "../core/services/ServiceValidator";
 import { FoundryLogger } from "../core/services/FoundryLogger";
+import { ServiceFactory } from "../core/services/ServiceFactory";
+import { ServiceCache } from "../core/services/ServiceCache";
+import { ScopeManager } from "../core/services/ScopeManager";
 
 /**
- * ServiceContainer - Services mit Dependencies erstellen und lagern
+ * ServiceContainer - Orchestriert ServiceFactory, ServiceCache und ScopeManager
  *
- * Verantwortlichkeit: Services mit Dependencies erstellen und lagern
- * Single Responsibility: Nur Service Creation und Caching
+ * Verantwortlichkeit: Orchestrierung der spezialisierten Services
+ * Single Responsibility: Nur Orchestrierung und Delegation
  */
 export class ServiceContainer implements IServiceContainer {
   static readonly API_NAME = "serviceContainer";
@@ -18,10 +22,14 @@ export class ServiceContainer implements IServiceContainer {
   static readonly DEPENDENCIES = [FoundryLogger, ServicePlanner, ServiceValidator]; // ✅ Dependencies explizit definiert
 
   private static instance: ServiceContainer;
-  private readonly instances = new Map<any, any>(); // Lagerhaus für Singletons
   private readonly servicePlans: Map<any, ServicePlan>;
   private readonly serviceValidator: IServiceValidator;
   private readonly logger: ILogger;
+
+  // Spezialisierte Services (werden nachträglich injiziert)
+  private serviceFactory?: ServiceFactory;
+  private serviceCache?: ServiceCache;
+  private scopeManager?: ScopeManager;
 
   constructor(
     logger: ILogger,
@@ -31,6 +39,30 @@ export class ServiceContainer implements IServiceContainer {
     this.logger = logger;
     this.servicePlans = servicePlans;
     this.serviceValidator = serviceValidator;
+  }
+
+  /**
+   * ServiceFactory nachträglich injizieren
+   */
+  setServiceFactory(factory: ServiceFactory): void {
+    this.serviceFactory = factory;
+    this.writeLog("info", `[ServiceContainer] ✅ ServiceFactory injected`);
+  }
+
+  /**
+   * ServiceCache nachträglich injizieren
+   */
+  setServiceCache(cache: ServiceCache): void {
+    this.serviceCache = cache;
+    this.writeLog("info", `[ServiceContainer] ✅ ServiceCache injected`);
+  }
+
+  /**
+   * ScopeManager nachträglich injizieren
+   */
+  setScopeManager(scopeManager: ScopeManager): void {
+    this.scopeManager = scopeManager;
+    this.writeLog("info", `[ServiceContainer] ✅ ScopeManager injected`);
   }
 
   static getInstance(
@@ -45,55 +77,12 @@ export class ServiceContainer implements IServiceContainer {
   }
 
   /**
-   * Service aus Lagerhaus holen oder neu erstellen
+   * Service über spezialisierte Services abrufen oder erstellen
    */
-  getService<T>(identifier: any): T {
+  getService<T>(identifier: any, scope?: string): T {
     this.writeLog(
       "info",
-      `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}`
-    );
-
-    // Erst im Lagerhaus schauen (für Singletons)
-    if (this.instances.has(identifier)) {
-      this.writeLog(
-        "info",
-        `[ServiceContainer] ♻️ Returning cached singleton: ${identifier.name || identifier}`
-      );
-      return this.instances.get(identifier);
-    }
-
-    // Nicht da? Dann neu erstellen
-    this.writeLog(
-      "info",
-      `[ServiceContainer] 🏗️ Creating new service: ${identifier.name || identifier}`
-    );
-    const service = this.createService(identifier);
-
-    // Singleton? Dann ins Lagerhaus legen
-    const plan = this.servicePlans.get(identifier);
-    if (plan && plan.isSingleton) {
-      this.writeLog(
-        "info",
-        `[ServiceContainer] 💾 Caching singleton: ${identifier.name || identifier}`
-      );
-      this.instances.set(identifier, service);
-    }
-
-    return service as T;
-  }
-
-  /**
-   * Service mit Dependencies erstellen
-   */
-  createService<T>(identifier: any): T {
-    this.writeLog(
-      "info",
-      `[ServiceContainer] 🏗️ Creating service: ${identifier.name || identifier}`
-    );
-    this.writeLog(
-      "info",
-      `[ServiceContainer] 🔍 Available service plans:`,
-      Array.from(this.servicePlans.keys()).map((k) => k.name || k)
+      `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}${scope ? ` (scope: ${scope})` : ""}`
     );
 
     const plan = this.servicePlans.get(identifier);
@@ -102,96 +91,67 @@ export class ServiceContainer implements IServiceContainer {
         "error",
         `[ServiceContainer] ❌ No service plan found for ${identifier.name || identifier}`
       );
-      this.writeLog(
-        "error",
-        `[ServiceContainer] 🔍 Available plans:`,
-        Array.from(this.servicePlans.keys()).map((k) => k.name || k)
-      );
       throw new Error(`No service plan found for ${identifier.name || identifier}`);
     }
 
-    this.writeLog(
-      "info",
-      `[ServiceContainer] 📋 Service plan for ${identifier.name || identifier}:`,
-      {
-        dependencies: plan.dependencies.map((d) => d.name || d),
-        isSingleton: plan.isSingleton,
-        serviceType: plan.serviceType,
-      }
-    );
-
-    // Dependencies zuerst erstellen
-    const dependencies = this.resolveDependencies(plan);
-
-    this.writeLog(
-      "info",
-      `[ServiceContainer] 🔗 Resolved dependencies for ${identifier.name || identifier}:`,
-      {
-        count: dependencies.length,
-        dependencies: dependencies.map((d) => d.constructor.name),
-      }
-    );
-
-    // Service mit Dependencies erstellen
-    const service = new plan.constructor(...dependencies);
-
-    // Service-Erstellung validieren
-    if (!this.serviceValidator.validateServiceCreation(service, identifier)) {
-      this.serviceValidator.handleServiceCreationError(
-        new Error(`Service creation validation failed for ${identifier.name || identifier}`),
-        identifier
+    // Prüfen ob spezialisierte Services injiziert wurden
+    if (!this.serviceFactory || !this.serviceCache || !this.scopeManager) {
+      throw new Error(
+        "ServiceContainer not properly initialized. Missing ServiceFactory, ServiceCache, or ScopeManager."
       );
-      throw new Error(`Service creation validation failed for ${identifier.name || identifier}`);
     }
 
-    this.writeLog(
-      "info",
-      `[ServiceContainer] ✅ Service created successfully: ${identifier.name || identifier}`
-    );
-    return service as T;
-  }
+    // Factory-Funktion für Service-Erstellung
+    const factory = () => this.serviceFactory!.createService(identifier);
 
-  /**
-   * Dependencies rekursiv auflösen
-   */
-  private resolveDependencies(plan: ServicePlan): any[] {
-    this.writeLog(
-      "info",
-      `[ServiceContainer] 🔗 Resolving dependencies for: ${plan.constructor.name || plan.constructor}`
-    );
-
-    const dependencies: any[] = [];
-
-    for (const dependency of plan.dependencies) {
+    // Transient: Immer neu erstellen (kein Caching)
+    if (plan.isTransient) {
       this.writeLog(
         "info",
-        `[ServiceContainer] 🔍 Resolving dependency: ${dependency.name || dependency}`
+        `[ServiceContainer] 🔄 Creating transient service: ${identifier.name || identifier}`
       );
-
-      try {
-        const resolvedDependency = this.getService(dependency);
-        dependencies.push(resolvedDependency);
-
-        this.writeLog(
-          "info",
-          `[ServiceContainer] ✅ Dependency resolved: ${dependency.name || dependency} -> ${(resolvedDependency as any).constructor.name}`
-        );
-      } catch (error) {
-        this.writeLog(
-          "error",
-          `[ServiceContainer] ❌ Failed to resolve dependency ${dependency.name || dependency}:`,
-          error
-        );
-        this.serviceValidator.handleServiceCreationError(error as Error, dependency);
-        throw error;
-      }
+      return this.serviceCache.getTransient(identifier, factory) as T;
     }
 
-    return dependencies;
+    // Scoped: Scope-basierte Instanzen
+    if (plan.isScoped) {
+      const scopeKey = scope || this.scopeManager.getCurrentScope() || "default";
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🎯 Getting scoped service: ${identifier.name || identifier} (scope: ${scopeKey})`
+      );
+      return this.serviceCache.getScoped(identifier, scopeKey, factory) as T;
+    }
+
+    // Singleton: Cached Instanzen
+    if (plan.isSingleton) {
+      this.writeLog(
+        "info",
+        `[ServiceContainer] ♻️ Getting singleton service: ${identifier.name || identifier}`
+      );
+      return this.serviceCache.getSingleton(identifier, factory) as T;
+    }
+
+    // Fallback: Als Singleton behandeln
+    this.writeLog(
+      "warn",
+      `[ServiceContainer] ⚠️ Unknown service type for ${identifier.name || identifier}, treating as singleton`
+    );
+    return this.serviceCache.getSingleton(identifier, factory) as T;
   }
 
   /**
-   * Alle Services erstellen
+   * Service mit Dependencies erstellen (delegiert an ServiceFactory)
+   */
+  createService<T>(identifier: any): T {
+    if (!this.serviceFactory) {
+      throw new Error("ServiceFactory not injected. Call setServiceFactory() first.");
+    }
+    return this.serviceFactory.createService(identifier);
+  }
+
+  /**
+   * Alle Services erstellen (delegiert an ServiceFactory)
    */
   createAllServices(): void {
     this.writeLog(
@@ -265,53 +225,43 @@ export class ServiceContainer implements IServiceContainer {
   }
 
   /**
-   * Service aus Cache entfernen
+   * Service aus Cache entfernen (delegiert an ServiceCache)
    */
   disposeService(identifier: any): void {
-    this.writeLog(
-      "info",
-      `[ServiceContainer] 🗑️ Disposing service: ${identifier.name || identifier}`
-    );
-
-    if (this.instances.has(identifier)) {
-      this.instances.delete(identifier);
-      this.writeLog(
-        "info",
-        `[ServiceContainer] ✅ Service disposed: ${identifier.name || identifier}`
-      );
-    } else {
-      this.writeLog(
-        "info",
-        `[ServiceContainer] ℹ️ Service not cached: ${identifier.name || identifier}`
-      );
+    if (!this.serviceCache) {
+      throw new Error("ServiceCache not injected. Call setServiceCache() first.");
     }
+    this.serviceCache.disposeSingleton(identifier);
   }
 
   /**
-   * Alle Services aus Cache entfernen
+   * Alle Services aus Cache entfernen (delegiert an ServiceCache)
    */
   disposeAll(): void {
-    this.writeLog(
-      "info",
-      `[ServiceContainer] 🗑️ Disposing all services (${this.instances.size} cached)`
-    );
-
-    this.instances.clear();
-    this.writeLog("info", `[ServiceContainer] ✅ All services disposed`);
+    if (!this.serviceCache) {
+      throw new Error("ServiceCache not injected. Call setServiceCache() first.");
+    }
+    this.serviceCache.disposeAll();
   }
 
   /**
-   * Prüfen ob Service im Cache ist
+   * Prüfen ob Service im Cache ist (delegiert an ServiceCache)
    */
   hasCachedService(identifier: any): boolean {
-    return this.instances.has(identifier);
+    if (!this.serviceCache) {
+      return false;
+    }
+    return this.serviceCache.hasSingleton(identifier);
   }
 
   /**
-   * Anzahl gecachter Services
+   * Anzahl gecachter Services (delegiert an ServiceCache)
    */
   getCachedServiceCount(): number {
-    return this.instances.size;
+    if (!this.serviceCache) {
+      return 0;
+    }
+    return this.serviceCache.getSingletonCount();
   }
 
   /**
@@ -328,11 +278,95 @@ export class ServiceContainer implements IServiceContainer {
     return this.servicePlans;
   }
 
+  /**
+   * Aktuellen Scope setzen (delegiert an ScopeManager)
+   */
+  setCurrentScope(scope: string): void {
+    if (!this.scopeManager) {
+      throw new Error("ScopeManager not injected. Call setScopeManager() first.");
+    }
+    this.scopeManager.setCurrentScope(scope);
+  }
+
+  /**
+   * Scope leeren (delegiert an ScopeManager)
+   */
+  clearScope(scope: string): void {
+    if (!this.scopeManager) {
+      throw new Error("ScopeManager not injected. Call setScopeManager() first.");
+    }
+    this.scopeManager.clearScope(scope);
+  }
+
+  /**
+   * Scoped Services eines Scopes entsorgen (delegiert an ServiceCache)
+   */
+  disposeScopedServices(scope: string): void {
+    if (!this.serviceCache) {
+      throw new Error("ServiceCache not injected. Call setServiceCache() first.");
+    }
+    this.serviceCache.disposeScopedServices(scope);
+  }
+
+  /**
+   * Anzahl Scoped Services in einem Scope (delegiert an ServiceCache)
+   */
+  getScopedServiceCount(scope: string): number {
+    if (!this.serviceCache) {
+      return 0;
+    }
+    return this.serviceCache.getScopedServiceCount(scope);
+  }
+
   private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
     if (this.logger) {
       this.logger[modus](message, ...args);
     } else {
       console[modus](message, ...args);
     }
+  }
+
+  // Scope Chain Management (delegiert an ScopeManager)
+
+  createScopeChain(parentScope: string): IScopeChain {
+    if (!this.scopeManager) {
+      throw new Error("ScopeManager not injected. Call setScopeManager() first.");
+    }
+    return this.scopeManager.createScopeChain(parentScope);
+  }
+
+  addChildScope(parentScope: string, childScope: string): void {
+    if (!this.scopeManager) {
+      throw new Error("ScopeManager not injected. Call setScopeManager() first.");
+    }
+    this.scopeManager.addChildScope(parentScope, childScope);
+  }
+
+  removeChildScope(parentScope: string, childScope: string): void {
+    if (!this.scopeManager) {
+      throw new Error("ScopeManager not injected. Call setScopeManager() first.");
+    }
+    this.scopeManager.removeChildScope(parentScope, childScope);
+  }
+
+  disposeScopeChain(parentScope: string): void {
+    if (!this.scopeManager || !this.serviceCache) {
+      throw new Error(
+        "ScopeManager or ServiceCache not injected. Call setScopeManager() and setServiceCache() first."
+      );
+    }
+
+    // Scope Chain über ScopeManager entsorgen
+    this.scopeManager.disposeScopeChain(parentScope);
+
+    // Scoped Services über ServiceCache entsorgen
+    this.serviceCache.disposeScopedServices(parentScope);
+  }
+
+  getScopeChain(parentScope: string): IScopeChain | undefined {
+    if (!this.scopeManager) {
+      return undefined;
+    }
+    return this.scopeManager.getScopeChain(parentScope);
   }
 }

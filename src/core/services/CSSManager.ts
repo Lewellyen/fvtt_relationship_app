@@ -11,7 +11,7 @@ import { FoundryLogger } from "./FoundryLogger";
 export class CSSManager implements ICSSManager {
   // ✅ Metadaten für API-Registrierung
   static readonly API_NAME = "cssManager";
-  static readonly SERVICE_TYPE = "singleton" as const;
+  static readonly SERVICE_TYPE = "scoped" as const;
   static readonly CLASS_NAME = "CSSManager"; // ✅ Klassename für Dependency Resolution
   static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
 

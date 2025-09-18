@@ -83,7 +83,6 @@ export interface NodePolicy {
   visibility: Partial<Record<FieldPath, boolean>>;
 }
 
-
 /** Gesamte Policy: NodeId → NodePolicy */
 export type PolicyModel = Record<NodeId, NodePolicy>;
 

@@ -70,6 +70,8 @@ export class ServicePlanner implements IServicePlanner {
       dependencies: dependencies,
       resolutionOrder: resolutionOrder,
       isSingleton: this.isSingleton(serviceClass),
+      isTransient: this.isTransient(serviceClass),
+      isScoped: this.isScoped(serviceClass),
       apiName: this.getApiName(serviceClass),
       serviceType: this.getServiceType(serviceClass),
     };
@@ -122,6 +124,22 @@ export class ServicePlanner implements IServicePlanner {
   private isSingleton(serviceClass: any): boolean {
     const serviceType = serviceClass.SERVICE_TYPE;
     return serviceType === "singleton" || serviceType === undefined;
+  }
+
+  /**
+   * Prüfen ob Service ein Transient ist
+   */
+  private isTransient(serviceClass: any): boolean {
+    const serviceType = serviceClass.SERVICE_TYPE;
+    return serviceType === "transient";
+  }
+
+  /**
+   * Prüfen ob Service ein Scoped ist
+   */
+  private isScoped(serviceClass: any): boolean {
+    const serviceType = serviceClass.SERVICE_TYPE;
+    return serviceType === "scoped";
   }
 
   /**
@@ -194,6 +212,8 @@ export interface ServicePlan {
   dependencies: any[];
   resolutionOrder: any[];
   isSingleton: boolean;
+  isTransient: boolean;
+  isScoped: boolean;
   apiName: string;
   serviceType: string;
 }

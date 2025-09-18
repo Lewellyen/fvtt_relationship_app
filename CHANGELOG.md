@@ -265,6 +265,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 - Keine besonderen Maßnahmen erforderlich
 
+## [0.24.0] - 2025-09-19
+### Hinzugefügt
+- Keine Einträge
+
+### Geändert
+- Container-Service aufgeteilt
+
+### Fehlerbehebungen
+- Keine Einträge
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.23.0] - 2025-09-16
 ### Hinzugefügt
 - Keine Einträge

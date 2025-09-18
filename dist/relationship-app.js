@@ -11,7 +11,7 @@ var __privateSet = (obj, member, value, setter) => (__accessCheck(obj, member, "
 var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "access private method"), method);
 (function() {
   "use strict";
-  var _listeners, _observer, _options, _ResizeObserverSingleton_instances, getObserver_fn, _anchor, _hydrate_open, _props, _children, _effect, _main_effect, _failed_effect, _is_creating_fallback, _Boundary_instances, run_fn, _events, _instance, _a, _logger, _svelte, _css, _logger2, _svelte2, _css2, _logger3, _svelte3, _css3;
+  var _listeners, _observer, _options, _ResizeObserverSingleton_instances, getObserver_fn, _anchor, _hydrate_open, _props, _children, _effect, _main_effect, _failed_effect, _is_creating_fallback, _Boundary_instances, run_fn, _events, _instance, _a, _logger, _svelte, _css, _graphService, _logger2, _svelte2, _css2, _logger3, _svelte3, _css3, _logger4, _svelte4, _css4;
   var __vite_style__ = document.createElement("style");
   __vite_style__.textContent = '\n  .relationship-graph-view.svelte-qaxdvx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n    height: 100vh;\n  }\n\n  .graph-container.svelte-qaxdvx {\n    flex: 1;\n    min-height: 0;\n  }\n\n  .info-container.svelte-qaxdvx {\n    height: 300px;\n    min-height: 300px;\n  }\n\n  .relationship-graph-view.svelte-i1dhkx {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n    padding: 1rem;\n  }\n\r\n  .form-field.svelte-1ykx1li {\r\n    margin-bottom: 1rem;\r\n  }\r\n  \r\n  .field-width-full.svelte-1ykx1li {\r\n    width: 100%;\r\n  }\r\n  \r\n  .field-width-half.svelte-1ykx1li {\r\n    width: calc(50% - 0.5rem);\r\n  }\r\n  \r\n  .field-width-third.svelte-1ykx1li {\r\n    width: calc(33.333% - 0.667rem);\r\n  }\r\n  \r\n  .field-label.svelte-1ykx1li {\r\n    display: block;\r\n    margin-bottom: 0.5rem;\r\n    font-weight: 500;\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li,\r\n  .field-textarea.svelte-1ykx1li,\r\n  .field-select.svelte-1ykx1li {\r\n    width: 100%;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    font-size: 0.9rem;\r\n    transition: border-color 0.2s, box-shadow 0.2s;\r\n  }\r\n  \r\n  .field-input.svelte-1ykx1li:focus,\r\n  .field-textarea.svelte-1ykx1li:focus,\r\n  .field-select.svelte-1ykx1li:focus {\r\n    outline: none;\r\n    border-color: var(--color-primary);\r\n    box-shadow: 0 0 0 2px var(--color-primary-alpha);\r\n  }\r\n  \r\n  .field-textarea.svelte-1ykx1li {\r\n    min-height: 80px;\r\n    resize: vertical;\r\n    font-family: inherit;\r\n  }\r\n  \r\n  .field-select.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  /* Checkbox-Gruppe Styles */\r\n  .checkbox-group.svelte-1ykx1li {\r\n    display: flex;\r\n    flex-direction: column;\r\n    gap: 0.5rem;\r\n    padding: 0.5rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    background: var(--color-background-primary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n    cursor: pointer;\r\n    padding: 0.25rem;\r\n    border-radius: 4px;\r\n    transition: background-color 0.2s;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li:hover {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li input[type="checkbox"]:where(.svelte-1ykx1li) {\r\n    margin: 0;\r\n    accent-color: var(--color-primary);\r\n    width: 1.2rem;\r\n    height: 1.2rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-option.svelte-1ykx1li span:where(.svelte-1ykx1li) {\r\n    color: var(--color-text-primary);\r\n    font-size: 0.9rem;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-checkbox.svelte-1ykx1li {\r\n    margin-right: 0.5rem;\r\n    width: auto;\r\n  }\r\n  \r\n  .checkbox-label.svelte-1ykx1li {\r\n    display: flex;\r\n    align-items: center;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .checkbox-text.svelte-1ykx1li {\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-container.svelte-1ykx1li {\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    align-items: center;\r\n  }\r\n  \r\n  .field-color.svelte-1ykx1li {\r\n    width: 3rem;\r\n    height: 2.5rem;\r\n    padding: 0;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: 4px;\r\n    cursor: pointer;\r\n  }\r\n  \r\n  .field-color-text.svelte-1ykx1li {\r\n    flex: 1;\r\n    font-family: monospace;\r\n  }\r\n  \r\n  .field-description.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .field-error.svelte-1ykx1li {\r\n    display: block;\r\n    margin-top: 0.25rem;\r\n    color: var(--color-error);\r\n    font-size: 0.8rem;\r\n    line-height: 1.4;\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    border-color: var(--color-error);\r\n  }\r\n  \r\n  .has-error.svelte-1ykx1li .field-input:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li):focus,\r\n  .has-error.svelte-1ykx1li .field-select:where(.svelte-1ykx1li):focus {\r\n    border-color: var(--color-error);\r\n    box-shadow: 0 0 0 2px var(--color-error-alpha);\r\n  }\r\n  \r\n  .disabled.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-select:where(.svelte-1ykx1li),\r\n  .disabled.svelte-1ykx1li .field-checkbox:where(.svelte-1ykx1li) {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .readonly.svelte-1ykx1li .field-input:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-textarea:where(.svelte-1ykx1li),\r\n  .readonly.svelte-1ykx1li .field-select:where(.svelte-1ykx1li) {\r\n    background-color: var(--color-background-secondary);\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  /* Responsive Design */\r\n  @media (max-width: 768px) {\r\n    .field-width-half.svelte-1ykx1li,\r\n    .field-width-third.svelte-1ykx1li {\r\n      width: 100%;\r\n    }\r\n  }\r\n\r\n  /* Foundry VTT CSS-Variablen verwenden */\r\n  .form-container.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    padding: 1rem;\r\n  }\r\n  \r\n  .form-header.svelte-1hegfbw {\r\n    border-bottom: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: var(--border-radius) var(--border-radius) 0 0;\r\n    margin: -1rem -1rem 1rem -1rem;\r\n  }\r\n  \r\n  .form-title.svelte-1hegfbw {\r\n    color: var(--color-text-primary);\r\n    margin: 0;\r\n    font-size: 1.2rem;\r\n    font-weight: 600;\r\n  }\r\n  \r\n  .form-description.svelte-1hegfbw {\r\n    color: var(--color-text-secondary);\r\n    margin: 0.5rem 0 0 0;\r\n    font-size: 0.9rem;\r\n  }\r\n  \r\n\r\n  \r\n  .field-container.svelte-1hegfbw {\r\n    margin-bottom: 1.5rem;\r\n    transition: all 0.3s ease;\r\n  }\r\n  \r\n  .field-container.svelte-1hegfbw:focus-within {\r\n    transform: translateY(-2px);\r\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);\r\n    border-radius: var(--border-radius);\r\n    padding: 0.5rem;\r\n    margin: 0.5rem -0.5rem 1.5rem -0.5rem;\r\n  }\r\n  \r\n  .form-actions.svelte-1hegfbw {\r\n    border-top: 1px solid var(--color-border-primary);\r\n    padding: 1rem;\r\n    background: var(--color-background-secondary);\r\n    border-radius: 0 0 var(--border-radius) var(--border-radius);\r\n    display: flex;\r\n    gap: 0.5rem;\r\n    justify-content: flex-end;\r\n    margin: 1rem -1rem -1rem -1rem;\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw {\r\n    padding: 0.5rem 1rem;\r\n    border: 1px solid var(--color-border-primary);\r\n    border-radius: var(--border-radius);\r\n    cursor: pointer;\r\n    font-size: 0.9rem;\r\n    transition: all 0.2s;\r\n    display: flex;\r\n    align-items: center;\r\n    gap: 0.5rem;\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw {\r\n    background: var(--color-primary);\r\n    color: var(--color-text-primary);\r\n    border-color: var(--color-primary);\r\n  }\r\n  \r\n  .btn-primary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-primary-hover);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw {\r\n    background: var(--color-background-primary);\r\n    color: var(--color-text-primary);\r\n  }\r\n  \r\n  .btn-secondary.svelte-1hegfbw:hover:not(:disabled) {\r\n    background: var(--color-background-secondary);\r\n  }\r\n  \r\n  .btn.svelte-1hegfbw:disabled {\r\n    opacity: 0.6;\r\n    cursor: not-allowed;\r\n  }\r\n  \r\n  .spinner.svelte-1hegfbw {\r\n    display: inline-block;\r\n    width: 1rem;\r\n    height: 1rem;\r\n    border: 2px solid transparent;\r\n    border-top: 2px solid currentColor;\r\n    border-radius: 50%;\r\n    animation: svelte-1hegfbw-spin 1s linear infinite;\r\n  }\r\n  \r\n  @keyframes svelte-1hegfbw-spin {\r\n    0% { transform: rotate(0deg); }\r\n    100% { transform: rotate(360deg); }\r\n  }\r\n  \r\n  /* Scroll-Indikator für bessere UX */\r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar {\r\n    width: 12px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-track {\r\n    background: var(--color-background-secondary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb {\r\n    background: var(--color-border-primary);\r\n    border-radius: 6px;\r\n  }\r\n  \r\n  .dynamic-dialog-app.svelte-1hegfbw::-webkit-scrollbar-thumb:hover {\r\n    background: var(--color-primary);\r\n  }\r\n  \r\n  /* Fokus-Indikator für bessere Accessibility */\r\n  .field-container.svelte-1hegfbw:focus-within .field-label {\r\n    color: var(--color-primary);\r\n    font-weight: 600;\r\n  }\r\n  \r\n  /* Smooth Transitions für alle interaktiven Elemente */\r\n  .form-container.svelte-1hegfbw :where(.svelte-1hegfbw) {\r\n    transition: border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;\r\n  }\r\n\n  /* Gleiches Scrolling wie DynamicFormSheet */\n  .metadata-container.svelte-qx734j {\n    height: 100vh;\n    max-height: 100vh;\n    overflow-y: auto;\n    padding: 1rem;\n    box-sizing: border-box;\n  }\n\n  .metadata-header.svelte-qx734j {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    margin-bottom: 2rem;\n    padding-bottom: 1rem;\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .header-actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n    align-items: center;\n  }\n\n  .metadata-header.svelte-qx734j h1:where(.svelte-qx734j) {\n    margin: 0;\n    font-size: 1.5rem;\n    font-weight: 600;\n  }\n\n  .metadata-content.svelte-qx734j {\n    display: flex;\n    flex-direction: column;\n    gap: 1rem;\n  }\n\n  .schema-card.svelte-qx734j {\n    background: var(--color-background-secondary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 6px;\n    overflow: hidden;\n  }\n\n  .schema-card.selected.svelte-qx734j {\n    border-color: var(--color-primary);\n  }\n\n  .schema-header.svelte-qx734j {\n    padding: 1rem;\n    cursor: pointer;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    background: var(--color-background-primary);\n    border-bottom: 1px solid var(--color-border-primary);\n  }\n\n  .schema-header.svelte-qx734j:hover {\n    background: var(--color-background-tertiary);\n  }\n\n  .schema-header.svelte-qx734j h3:where(.svelte-qx734j) {\n    margin: 0;\n    font-size: 1.1rem;\n    font-weight: 600;\n  }\n\n  .version.svelte-qx734j {\n    background: var(--color-info);\n    color: var(--color-text-primary);\n    padding: 0.2rem 0.5rem;\n    border-radius: 4px;\n    font-size: 0.8rem;\n  }\n\n  .schema-details.svelte-qx734j {\n    padding: 1rem;\n    background: var(--color-background-secondary);\n  }\n\n  .schema-details.svelte-qx734j p:where(.svelte-qx734j) {\n    margin: 0.5rem 0;\n    font-size: 0.9rem;\n  }\n\n  .actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n    margin: 1rem 0;\n    flex-wrap: wrap;\n  }\n\n  .rows-section.svelte-qx734j {\n    margin-top: 1.5rem;\n    padding-top: 1rem;\n    border-top: 1px solid var(--color-border-primary);\n  }\n\n  .rows-section.svelte-qx734j h4:where(.svelte-qx734j) {\n    margin: 0 0 1rem 0;\n    font-size: 1rem;\n    font-weight: 600;\n  }\n\n  .row-item.svelte-qx734j {\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n    padding: 0.75rem;\n    background: var(--color-background-primary);\n    border: 1px solid var(--color-border-primary);\n    border-radius: 4px;\n    margin-bottom: 0.5rem;\n  }\n\n  .row-info.svelte-qx734j {\n    font-size: 0.9rem;\n  }\n\n  .row-actions.svelte-qx734j {\n    display: flex;\n    gap: 0.5rem;\n  }\n\n  .error-message.svelte-qx734j,\n  .success-message.svelte-qx734j {\n    padding: 1rem;\n    border-radius: 4px;\n    margin-bottom: 1rem;\n    display: flex;\n    justify-content: space-between;\n    align-items: center;\n  }\n\n  .error-message.svelte-qx734j {\n    background: var(--color-error-background);\n    color: var(--color-error);\n    border: 1px solid var(--color-error-border);\n  }\n  \n  .success-message.svelte-qx734j {\n    background: var(--color-success-background);\n    color: var(--color-success);\n    border: 1px solid var(--color-success-border);\n  }\n\n  .close-btn.svelte-qx734j {\n    background: none;\n    border: none;\n    font-size: 1.2rem;\n    cursor: pointer;\n    color: inherit;\n    padding: 0;\n    margin-left: 1rem;\n  }\n\n  .close-btn.svelte-qx734j:hover {\n    opacity: 0.7;\n  }\n/* this gets exported as style.css and can be used for the default theming */\n/* these are the necessary styles for React/Svelte Flow, they get used by base.css and style.css */\n.svelte-flow {\n  direction: ltr;\n\n  --xy-edge-stroke-default: #b1b1b7;\n  --xy-edge-stroke-width-default: 1;\n  --xy-edge-stroke-selected-default: #555;\n\n  --xy-connectionline-stroke-default: #b1b1b7;\n  --xy-connectionline-stroke-width-default: 1;\n\n  --xy-attribution-background-color-default: rgba(255, 255, 255, 0.5);\n\n  --xy-minimap-background-color-default: #fff;\n  --xy-minimap-mask-background-color-default: rgba(240, 240, 240, 0.6);\n  --xy-minimap-mask-stroke-color-default: transparent;\n  --xy-minimap-mask-stroke-width-default: 1;\n  --xy-minimap-node-background-color-default: #e2e2e2;\n  --xy-minimap-node-stroke-color-default: transparent;\n  --xy-minimap-node-stroke-width-default: 2;\n\n  --xy-background-color-default: transparent;\n  --xy-background-pattern-dots-color-default: #91919a;\n  --xy-background-pattern-lines-color-default: #eee;\n  --xy-background-pattern-cross-color-default: #e2e2e2;\n  background-color: var(--xy-background-color, var(--xy-background-color-default));\n  --xy-node-color-default: inherit;\n  --xy-node-border-default: 1px solid #1a192b;\n  --xy-node-background-color-default: #fff;\n  --xy-node-group-background-color-default: rgba(240, 240, 240, 0.25);\n  --xy-node-boxshadow-hover-default: 0 1px 4px 1px rgba(0, 0, 0, 0.08);\n  --xy-node-boxshadow-selected-default: 0 0 0 0.5px #1a192b;\n  --xy-node-border-radius-default: 3px;\n\n  --xy-handle-background-color-default: #1a192b;\n  --xy-handle-border-color-default: #fff;\n\n  --xy-selection-background-color-default: rgba(0, 89, 220, 0.08);\n  --xy-selection-border-default: 1px dotted rgba(0, 89, 220, 0.8);\n\n  --xy-controls-button-background-color-default: #fefefe;\n  --xy-controls-button-background-color-hover-default: #f4f4f4;\n  --xy-controls-button-color-default: inherit;\n  --xy-controls-button-color-hover-default: inherit;\n  --xy-controls-button-border-color-default: #eee;\n  --xy-controls-box-shadow-default: 0 0 2px 1px rgba(0, 0, 0, 0.08);\n\n  --xy-edge-label-background-color-default: #ffffff;\n  --xy-edge-label-color-default: inherit;\n  --xy-resize-background-color-default: #3367d9;\n}\n.svelte-flow.dark {\n  --xy-edge-stroke-default: #3e3e3e;\n  --xy-edge-stroke-width-default: 1;\n  --xy-edge-stroke-selected-default: #727272;\n\n  --xy-connectionline-stroke-default: #b1b1b7;\n  --xy-connectionline-stroke-width-default: 1;\n\n  --xy-attribution-background-color-default: rgba(150, 150, 150, 0.25);\n\n  --xy-minimap-background-color-default: #141414;\n  --xy-minimap-mask-background-color-default: rgba(60, 60, 60, 0.6);\n  --xy-minimap-mask-stroke-color-default: transparent;\n  --xy-minimap-mask-stroke-width-default: 1;\n  --xy-minimap-node-background-color-default: #2b2b2b;\n  --xy-minimap-node-stroke-color-default: transparent;\n  --xy-minimap-node-stroke-width-default: 2;\n\n  --xy-background-color-default: #141414;\n  --xy-background-pattern-dots-color-default: #777;\n  --xy-background-pattern-lines-color-default: #777;\n  --xy-background-pattern-cross-color-default: #777;\n  --xy-node-color-default: #f8f8f8;\n  --xy-node-border-default: 1px solid #3c3c3c;\n  --xy-node-background-color-default: #1e1e1e;\n  --xy-node-group-background-color-default: rgba(240, 240, 240, 0.25);\n  --xy-node-boxshadow-hover-default: 0 1px 4px 1px rgba(255, 255, 255, 0.08);\n  --xy-node-boxshadow-selected-default: 0 0 0 0.5px #999;\n\n  --xy-handle-background-color-default: #bebebe;\n  --xy-handle-border-color-default: #1e1e1e;\n\n  --xy-selection-background-color-default: rgba(200, 200, 220, 0.08);\n  --xy-selection-border-default: 1px dotted rgba(200, 200, 220, 0.8);\n\n  --xy-controls-button-background-color-default: #2b2b2b;\n  --xy-controls-button-background-color-hover-default: #3e3e3e;\n  --xy-controls-button-color-default: #f8f8f8;\n  --xy-controls-button-color-hover-default: #fff;\n  --xy-controls-button-border-color-default: #5b5b5b;\n  --xy-controls-box-shadow-default: 0 0 2px 1px rgba(0, 0, 0, 0.08);\n\n  --xy-edge-label-background-color-default: #141414;\n  --xy-edge-label-color-default: #f8f8f8;\n}\n.svelte-flow__background {\n  background-color: var(--xy-background-color-props, var(--xy-background-color, var(--xy-background-color-default)));\n  pointer-events: none;\n  z-index: -1;\n}\n.svelte-flow__container {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  left: 0;\n}\n.svelte-flow__pane {\n  z-index: 1;\n}\n.svelte-flow__pane.draggable {\n    cursor: grab;\n  }\n.svelte-flow__pane.dragging {\n    cursor: grabbing;\n  }\n.svelte-flow__pane.selection {\n    cursor: pointer;\n  }\n.svelte-flow__viewport {\n  transform-origin: 0 0;\n  z-index: 2;\n  pointer-events: none;\n}\n.svelte-flow__renderer {\n  z-index: 4;\n}\n.svelte-flow__selection {\n  z-index: 6;\n}\n.svelte-flow__nodesselection-rect:focus,\n.svelte-flow__nodesselection-rect:focus-visible {\n  outline: none;\n}\n.svelte-flow__edge-path {\n  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));\n  stroke-width: var(--xy-edge-stroke-width, var(--xy-edge-stroke-width-default));\n  fill: none;\n}\n.svelte-flow__connection-path {\n  stroke: var(--xy-connectionline-stroke, var(--xy-connectionline-stroke-default));\n  stroke-width: var(--xy-connectionline-stroke-width, var(--xy-connectionline-stroke-width-default));\n  fill: none;\n}\n.svelte-flow .svelte-flow__edges {\n  position: absolute;\n}\n.svelte-flow .svelte-flow__edges svg {\n    overflow: visible;\n    position: absolute;\n    pointer-events: none;\n  }\n.svelte-flow__edge {\n  pointer-events: visibleStroke;\n}\n.svelte-flow__edge.selectable {\n    cursor: pointer;\n  }\n.svelte-flow__edge.animated path {\n    stroke-dasharray: 5;\n    animation: dashdraw 0.5s linear infinite;\n  }\n.svelte-flow__edge.animated path.svelte-flow__edge-interaction {\n    stroke-dasharray: none;\n    animation: none;\n  }\n.svelte-flow__edge.inactive {\n    pointer-events: none;\n  }\n.svelte-flow__edge.selected,\n  .svelte-flow__edge:focus,\n  .svelte-flow__edge:focus-visible {\n    outline: none;\n  }\n.svelte-flow__edge.selected .svelte-flow__edge-path,\n  .svelte-flow__edge.selectable:focus .svelte-flow__edge-path,\n  .svelte-flow__edge.selectable:focus-visible .svelte-flow__edge-path {\n    stroke: var(--xy-edge-stroke-selected, var(--xy-edge-stroke-selected-default));\n  }\n.svelte-flow__edge-textwrapper {\n    pointer-events: all;\n  }\n.svelte-flow__edge .svelte-flow__edge-text {\n    pointer-events: none;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n            user-select: none;\n  }\n/* Arrowhead marker styles - use CSS custom properties as default */\n.svelte-flow__arrowhead polyline {\n  stroke: var(--xy-edge-stroke, var(--xy-edge-stroke-default));\n}\n.svelte-flow__arrowhead polyline.arrowclosed {\n  fill: var(--xy-edge-stroke, var(--xy-edge-stroke-default));\n}\n.svelte-flow__connection {\n  pointer-events: none;\n}\n.svelte-flow__connection .animated {\n    stroke-dasharray: 5;\n    animation: dashdraw 0.5s linear infinite;\n  }\nsvg.svelte-flow__connectionline {\n  z-index: 1001;\n  overflow: visible;\n  position: absolute;\n}\n.svelte-flow__nodes {\n  pointer-events: none;\n  transform-origin: 0 0;\n}\n.svelte-flow__node {\n  position: absolute;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n          user-select: none;\n  pointer-events: all;\n  transform-origin: 0 0;\n  box-sizing: border-box;\n  cursor: default;\n}\n.svelte-flow__node.selectable {\n    cursor: pointer;\n  }\n.svelte-flow__node.draggable {\n    cursor: grab;\n    pointer-events: all;\n  }\n.svelte-flow__node.draggable.dragging {\n      cursor: grabbing;\n    }\n.svelte-flow__nodesselection {\n  z-index: 3;\n  transform-origin: left top;\n  pointer-events: none;\n}\n.svelte-flow__nodesselection-rect {\n    position: absolute;\n    pointer-events: all;\n    cursor: grab;\n  }\n.svelte-flow__handle {\n  position: absolute;\n  pointer-events: none;\n  min-width: 5px;\n  min-height: 5px;\n  width: 6px;\n  height: 6px;\n  background-color: var(--xy-handle-background-color, var(--xy-handle-background-color-default));\n  border: 1px solid var(--xy-handle-border-color, var(--xy-handle-border-color-default));\n  border-radius: 100%;\n}\n.svelte-flow__handle.connectingfrom {\n    pointer-events: all;\n  }\n.svelte-flow__handle.connectionindicator {\n    pointer-events: all;\n    cursor: crosshair;\n  }\n.svelte-flow__handle-bottom {\n    top: auto;\n    left: 50%;\n    bottom: 0;\n    transform: translate(-50%, 50%);\n  }\n.svelte-flow__handle-top {\n    top: 0;\n    left: 50%;\n    transform: translate(-50%, -50%);\n  }\n.svelte-flow__handle-left {\n    top: 50%;\n    left: 0;\n    transform: translate(-50%, -50%);\n  }\n.svelte-flow__handle-right {\n    top: 50%;\n    right: 0;\n    transform: translate(50%, -50%);\n  }\n.svelte-flow__edgeupdater {\n  cursor: move;\n  pointer-events: all;\n}\n.svelte-flow__pane.selection .svelte-flow__panel {\n  pointer-events: none;\n}\n.svelte-flow__panel {\n  position: absolute;\n  z-index: 5;\n  margin: 15px;\n}\n.svelte-flow__panel.top {\n    top: 0;\n  }\n.svelte-flow__panel.bottom {\n    bottom: 0;\n  }\n.svelte-flow__panel.top.center, .svelte-flow__panel.bottom.center {\n      left: 50%;\n      transform: translateX(-15px) translateX(-50%);\n    }\n.svelte-flow__panel.left {\n    left: 0;\n  }\n.svelte-flow__panel.right {\n    right: 0;\n  }\n.svelte-flow__panel.left.center, .svelte-flow__panel.right.center {\n      top: 50%;\n      transform: translateY(-15px) translateY(-50%);\n    }\n.svelte-flow__attribution {\n  font-size: 10px;\n  background: var(--xy-attribution-background-color, var(--xy-attribution-background-color-default));\n  padding: 2px 3px;\n  margin: 0;\n}\n.svelte-flow__attribution a {\n    text-decoration: none;\n    color: #999;\n  }\n@keyframes dashdraw {\n  from {\n    stroke-dashoffset: 10;\n  }\n}\n.svelte-flow__edgelabel-renderer {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  pointer-events: none;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n          user-select: none;\n  left: 0;\n  top: 0;\n}\n.svelte-flow__viewport-portal {\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  left: 0;\n  top: 0;\n  -webkit-user-select: none;\n     -moz-user-select: none;\n          user-select: none;\n}\n.svelte-flow__minimap {\n  background: var(\n    --xy-minimap-background-color-props,\n    var(--xy-minimap-background-color, var(--xy-minimap-background-color-default))\n  );\n}\n.svelte-flow__minimap-svg {\n    display: block;\n  }\n.svelte-flow__minimap-mask {\n    fill: var(\n      --xy-minimap-mask-background-color-props,\n      var(--xy-minimap-mask-background-color, var(--xy-minimap-mask-background-color-default))\n    );\n    stroke: var(\n      --xy-minimap-mask-stroke-color-props,\n      var(--xy-minimap-mask-stroke-color, var(--xy-minimap-mask-stroke-color-default))\n    );\n    stroke-width: var(\n      --xy-minimap-mask-stroke-width-props,\n      var(--xy-minimap-mask-stroke-width, var(--xy-minimap-mask-stroke-width-default))\n    );\n  }\n.svelte-flow__minimap-node {\n    fill: var(\n      --xy-minimap-node-background-color-props,\n      var(--xy-minimap-node-background-color, var(--xy-minimap-node-background-color-default))\n    );\n    stroke: var(\n      --xy-minimap-node-stroke-color-props,\n      var(--xy-minimap-node-stroke-color, var(--xy-minimap-node-stroke-color-default))\n    );\n    stroke-width: var(\n      --xy-minimap-node-stroke-width-props,\n      var(--xy-minimap-node-stroke-width, var(--xy-minimap-node-stroke-width-default))\n    );\n  }\n.svelte-flow__background-pattern.dots {\n    fill: var(\n      --xy-background-pattern-color-props,\n      var(--xy-background-pattern-color, var(--xy-background-pattern-dots-color-default))\n    );\n  }\n.svelte-flow__background-pattern.lines {\n    stroke: var(\n      --xy-background-pattern-color-props,\n      var(--xy-background-pattern-color, var(--xy-background-pattern-lines-color-default))\n    );\n  }\n.svelte-flow__background-pattern.cross {\n    stroke: var(\n      --xy-background-pattern-color-props,\n      var(--xy-background-pattern-color, var(--xy-background-pattern-cross-color-default))\n    );\n  }\n.svelte-flow__controls {\n  display: flex;\n  flex-direction: column;\n  box-shadow: var(--xy-controls-box-shadow, var(--xy-controls-box-shadow-default));\n}\n.svelte-flow__controls.horizontal {\n    flex-direction: row;\n  }\n.svelte-flow__controls-button {\n    display: flex;\n    justify-content: center;\n    align-items: center;\n    height: 26px;\n    width: 26px;\n    padding: 4px;\n    border: none;\n    background: var(--xy-controls-button-background-color, var(--xy-controls-button-background-color-default));\n    border-bottom: 1px solid\n      var(\n        --xy-controls-button-border-color-props,\n        var(--xy-controls-button-border-color, var(--xy-controls-button-border-color-default))\n      );\n    color: var(\n      --xy-controls-button-color-props,\n      var(--xy-controls-button-color, var(--xy-controls-button-color-default))\n    );\n    cursor: pointer;\n    -webkit-user-select: none;\n       -moz-user-select: none;\n            user-select: none;\n  }\n.svelte-flow__controls-button svg {\n      width: 100%;\n      max-width: 12px;\n      max-height: 12px;\n      fill: currentColor;\n    }\n.svelte-flow__edge.updating .svelte-flow__edge-path {\n      stroke: #777;\n    }\n.svelte-flow__edge-text {\n    font-size: 10px;\n  }\n.svelte-flow__node.selectable:focus,\n  .svelte-flow__node.selectable:focus-visible {\n    outline: none;\n  }\n.svelte-flow__node-input,\n.svelte-flow__node-default,\n.svelte-flow__node-output,\n.svelte-flow__node-group {\n  padding: 10px;\n  border-radius: var(--xy-node-border-radius, var(--xy-node-border-radius-default));\n  width: 150px;\n  font-size: 12px;\n  color: var(--xy-node-color, var(--xy-node-color-default));\n  text-align: center;\n  border: var(--xy-node-border, var(--xy-node-border-default));\n  background-color: var(--xy-node-background-color, var(--xy-node-background-color-default));\n}\n.svelte-flow__node-input.selectable:hover, .svelte-flow__node-default.selectable:hover, .svelte-flow__node-output.selectable:hover, .svelte-flow__node-group.selectable:hover {\n      box-shadow: var(--xy-node-boxshadow-hover, var(--xy-node-boxshadow-hover-default));\n    }\n.svelte-flow__node-input.selectable.selected,\n    .svelte-flow__node-input.selectable:focus,\n    .svelte-flow__node-input.selectable:focus-visible,\n    .svelte-flow__node-default.selectable.selected,\n    .svelte-flow__node-default.selectable:focus,\n    .svelte-flow__node-default.selectable:focus-visible,\n    .svelte-flow__node-output.selectable.selected,\n    .svelte-flow__node-output.selectable:focus,\n    .svelte-flow__node-output.selectable:focus-visible,\n    .svelte-flow__node-group.selectable.selected,\n    .svelte-flow__node-group.selectable:focus,\n    .svelte-flow__node-group.selectable:focus-visible {\n      box-shadow: var(--xy-node-boxshadow-selected, var(--xy-node-boxshadow-selected-default));\n    }\n.svelte-flow__node-group {\n  background-color: var(--xy-node-group-background-color, var(--xy-node-group-background-color-default));\n}\n.svelte-flow__nodesselection-rect,\n.svelte-flow__selection {\n  background: var(--xy-selection-background-color, var(--xy-selection-background-color-default));\n  border: var(--xy-selection-border, var(--xy-selection-border-default));\n}\n.svelte-flow__nodesselection-rect:focus,\n  .svelte-flow__nodesselection-rect:focus-visible,\n  .svelte-flow__selection:focus,\n  .svelte-flow__selection:focus-visible {\n    outline: none;\n  }\n.svelte-flow__controls-button:hover {\n      background: var(\n        --xy-controls-button-background-color-hover-props,\n        var(--xy-controls-button-background-color-hover, var(--xy-controls-button-background-color-hover-default))\n      );\n      color: var(\n        --xy-controls-button-color-hover-props,\n        var(--xy-controls-button-color-hover, var(--xy-controls-button-color-hover-default))\n      );\n    }\n.svelte-flow__controls-button:disabled {\n      pointer-events: none;\n    }\n.svelte-flow__controls-button:disabled svg {\n        fill-opacity: 0.4;\n      }\n.svelte-flow__controls-button:last-child {\n    border-bottom: none;\n  }\n.svelte-flow__controls.horizontal .svelte-flow__controls-button {\n    border-bottom: none;\n    border-right: 1px solid\n      var(\n        --xy-controls-button-border-color-props,\n        var(--xy-controls-button-border-color, var(--xy-controls-button-border-color-default))\n      );\n  }\n.svelte-flow__controls.horizontal .svelte-flow__controls-button:last-child {\n    border-right: none;\n  }\n.svelte-flow__resize-control {\n  position: absolute;\n}\n.svelte-flow__resize-control.left,\n.svelte-flow__resize-control.right {\n  cursor: ew-resize;\n}\n.svelte-flow__resize-control.top,\n.svelte-flow__resize-control.bottom {\n  cursor: ns-resize;\n}\n.svelte-flow__resize-control.top.left,\n.svelte-flow__resize-control.bottom.right {\n  cursor: nwse-resize;\n}\n.svelte-flow__resize-control.bottom.left,\n.svelte-flow__resize-control.top.right {\n  cursor: nesw-resize;\n}\n/* handle styles */\n.svelte-flow__resize-control.handle {\n  width: 5px;\n  height: 5px;\n  border: 1px solid #fff;\n  border-radius: 1px;\n  background-color: var(--xy-resize-background-color, var(--xy-resize-background-color-default));\n  translate: -50% -50%;\n}\n.svelte-flow__resize-control.handle.left {\n  left: 0;\n  top: 50%;\n}\n.svelte-flow__resize-control.handle.right {\n  left: 100%;\n  top: 50%;\n}\n.svelte-flow__resize-control.handle.top {\n  left: 50%;\n  top: 0;\n}\n.svelte-flow__resize-control.handle.bottom {\n  left: 50%;\n  top: 100%;\n}\n.svelte-flow__resize-control.handle.top.left {\n  left: 0;\n}\n.svelte-flow__resize-control.handle.bottom.left {\n  left: 0;\n}\n.svelte-flow__resize-control.handle.top.right {\n  left: 100%;\n}\n.svelte-flow__resize-control.handle.bottom.right {\n  left: 100%;\n}\n/* line styles */\n.svelte-flow__resize-control.line {\n  border-color: var(--xy-resize-background-color, var(--xy-resize-background-color-default));\n  border-width: 0;\n  border-style: solid;\n}\n.svelte-flow__resize-control.line.left,\n.svelte-flow__resize-control.line.right {\n  width: 1px;\n  transform: translate(-50%, 0);\n  top: 0;\n  height: 100%;\n}\n.svelte-flow__resize-control.line.left {\n  left: 0;\n  border-left-width: 1px;\n}\n.svelte-flow__resize-control.line.right {\n  left: 100%;\n  border-right-width: 1px;\n}\n.svelte-flow__resize-control.line.top,\n.svelte-flow__resize-control.line.bottom {\n  height: 1px;\n  transform: translate(0, -50%);\n  left: 0;\n  width: 100%;\n}\n.svelte-flow__resize-control.line.top {\n  top: 0;\n  border-top-width: 1px;\n}\n.svelte-flow__resize-control.line.bottom {\n  border-bottom-width: 1px;\n  top: 100%;\n}\n.svelte-flow__edge-label {\n  text-align: center;\n  position: absolute;\n  padding: 2px;\n  font-size: 10px;\n  color: var(--xy-edge-label-color, var(--xy-edge-label-color-default));\n  background: var(--xy-edge-label-background-color, var(--xy-edge-label-background-color-default));\n}\n.svelte-flow__container {\n  -webkit-user-select: none;\n     -moz-user-select: none;\n          user-select: none;\n}\n/*! tailwindcss v4.1.13 | MIT License | https://tailwindcss.com */\n@layer properties{@supports ((-webkit-hyphens:none) and (not (margin-trim:inline))) or ((-moz-orient:inline) and (not (color:rgb(from red r g b)))){*,:before,:after,::backdrop{--tw-rotate-x:initial;--tw-rotate-y:initial;--tw-rotate-z:initial;--tw-skew-x:initial;--tw-skew-y:initial;--tw-border-style:solid;--tw-outline-style:solid;--tw-blur:initial;--tw-brightness:initial;--tw-contrast:initial;--tw-grayscale:initial;--tw-hue-rotate:initial;--tw-invert:initial;--tw-opacity:initial;--tw-saturate:initial;--tw-sepia:initial;--tw-drop-shadow:initial;--tw-drop-shadow-color:initial;--tw-drop-shadow-alpha:100%;--tw-drop-shadow-size:initial}}}.visible{visibility:visible}.absolute{position:absolute}.fixed{position:fixed}.relative{position:relative}.static{position:static}.container{width:100%}.\\!block{display:block!important}.block{display:block}.contents{display:contents}.flex{display:flex}.grid{display:grid}.hidden{display:none}.inline{display:inline}.table{display:table}.transform{transform:var(--tw-rotate-x,)var(--tw-rotate-y,)var(--tw-rotate-z,)var(--tw-skew-x,)var(--tw-skew-y,)}.resize{resize:both}.flex-wrap{flex-wrap:wrap}.border{border-style:var(--tw-border-style);border-width:1px}.outline{outline-style:var(--tw-outline-style);outline-width:1px}.filter{filter:var(--tw-blur,)var(--tw-brightness,)var(--tw-contrast,)var(--tw-grayscale,)var(--tw-hue-rotate,)var(--tw-invert,)var(--tw-saturate,)var(--tw-sepia,)var(--tw-drop-shadow,)}.transition{transition-property:color,background-color,border-color,outline-color,text-decoration-color,fill,stroke,--tw-gradient-from,--tw-gradient-via,--tw-gradient-to,opacity,box-shadow,transform,translate,scale,rotate,filter,-webkit-backdrop-filter,backdrop-filter,display,content-visibility,overlay,pointer-events;transition-timing-function:var(--tw-ease,ease);transition-duration:var(--tw-duration,0s)}@property --tw-rotate-x{syntax:"*";inherits:false}@property --tw-rotate-y{syntax:"*";inherits:false}@property --tw-rotate-z{syntax:"*";inherits:false}@property --tw-skew-x{syntax:"*";inherits:false}@property --tw-skew-y{syntax:"*";inherits:false}@property --tw-border-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-outline-style{syntax:"*";inherits:false;initial-value:solid}@property --tw-blur{syntax:"*";inherits:false}@property --tw-brightness{syntax:"*";inherits:false}@property --tw-contrast{syntax:"*";inherits:false}@property --tw-grayscale{syntax:"*";inherits:false}@property --tw-hue-rotate{syntax:"*";inherits:false}@property --tw-invert{syntax:"*";inherits:false}@property --tw-opacity{syntax:"*";inherits:false}@property --tw-saturate{syntax:"*";inherits:false}@property --tw-sepia{syntax:"*";inherits:false}@property --tw-drop-shadow{syntax:"*";inherits:false}@property --tw-drop-shadow-color{syntax:"*";inherits:false}@property --tw-drop-shadow-alpha{syntax:"<percentage>";inherits:false;initial-value:100%}@property --tw-drop-shadow-size{syntax:"*";inherits:false}\r\n/*$vite$:1*/';
   document.head.appendChild(__vite_style__);
@@ -366,9 +366,41 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   function setContainer(c) {
     _container = c;
   }
-  function use(tokenOrCtor) {
+  function use(tokenOrCtor, scope) {
     if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
-    return _container.getService(tokenOrCtor);
+    return _container.getService(tokenOrCtor, scope);
+  }
+  function setCurrentScope(scope) {
+    if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
+    _container.setCurrentScope(scope);
+  }
+  function disposeScopedServices(scope) {
+    if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
+    _container.disposeScopedServices(scope);
+  }
+  function getScopedServiceCount(scope) {
+    if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
+    return _container.getScopedServiceCount(scope);
+  }
+  function createChildScope(parentScope, childType) {
+    if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
+    const timestamp = Date.now();
+    const randomId = foundry.utils.randomID();
+    const childScope = `${childType}-${timestamp}-${randomId}`;
+    _container.addChildScope(parentScope, childScope);
+    return childScope;
+  }
+  function disposeScopeChain(parentScope) {
+    if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
+    _container.disposeScopeChain(parentScope);
+  }
+  function createScopeChain(parentScope) {
+    if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
+    _container.createScopeChain(parentScope);
+  }
+  function removeChildScope(parentScope, childScope) {
+    if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
+    _container.removeChildScope(parentScope, childScope);
   }
   var BROWSER = true;
   var DEV = false;
@@ -8469,22 +8501,22 @@ ${component_stack}
   if (typeof window !== "undefined") {
     ((_a = window.__svelte ?? (window.__svelte = {})).v ?? (_a.v = /* @__PURE__ */ new Set())).add(PUBLIC_VERSION);
   }
-  var root$3 = /* @__PURE__ */ from_html(`<div class="relationship-graph-view svelte-qaxdvx"><div class="graph-container svelte-qaxdvx"><div>Platzhalter für Graph</div></div> <div class="info-container svelte-qaxdvx"><div>Platzhalter für Info-Panel</div></div></div>`);
+  var root$4 = /* @__PURE__ */ from_html(`<div class="relationship-graph-view svelte-qaxdvx"><div class="graph-container svelte-qaxdvx"><div>Platzhalter für Graph</div></div> <div class="info-container svelte-qaxdvx"><div>Platzhalter für Info-Panel</div></div></div>`);
   function RelationshipGraphView($$anchor, $$props) {
     console.log("RelationshipGraphView", $$props.elements);
     console.log("RelationshipGraphView", $$props.interactive);
     console.log("RelationshipGraphView", $$props.onNodeClick);
     console.log("RelationshipGraphView", $$props.onEdgeClick);
-    var div = root$3();
+    var div = root$4();
     append($$anchor, div);
   }
-  var root$2 = /* @__PURE__ */ from_html(`<div class="relationship-graph-view svelte-i1dhkx"><div class="graph-container"><div>Platzhalter für Graph</div></div> <div class="info-container"><div>Platzhalter für Info-Panel</div></div></div>`);
+  var root$3 = /* @__PURE__ */ from_html(`<div class="relationship-graph-view svelte-i1dhkx"><div class="graph-container"><div>Platzhalter für Graph</div></div> <div class="info-container"><div>Platzhalter für Info-Panel</div></div></div>`);
   function RelationshipGraphEdit($$anchor, $$props) {
     console.log("RelationshipGraphView", $$props.elements);
     console.log("RelationshipGraphView", $$props.interactive);
     console.log("RelationshipGraphView", $$props.onNodeClick);
     console.log("RelationshipGraphView", $$props.onEdgeClick);
-    var div = root$2();
+    var div = root$3();
     append($$anchor, div);
   }
   const _SvelteManager = class _SvelteManager {
@@ -8545,7 +8577,7 @@ ${component_stack}
     }
   };
   _SvelteManager.API_NAME = "svelteManager";
-  _SvelteManager.SERVICE_TYPE = "singleton";
+  _SvelteManager.SERVICE_TYPE = "scoped";
   _SvelteManager.CLASS_NAME = "SvelteManager";
   _SvelteManager.DEPENDENCIES = [FoundryLogger];
   let SvelteManager = _SvelteManager;
@@ -8666,11 +8698,11 @@ ${component_stack}
     }
   };
   _CSSManager.API_NAME = "cssManager";
-  _CSSManager.SERVICE_TYPE = "singleton";
+  _CSSManager.SERVICE_TYPE = "scoped";
   _CSSManager.CLASS_NAME = "CSSManager";
   _CSSManager.DEPENDENCIES = [FoundryLogger];
   let CSSManager = _CSSManager;
-  class GraphService {
+  const _GraphService = class _GraphService {
     constructor(page) {
       this._page = page;
       this._snapshot = null;
@@ -8849,7 +8881,12 @@ ${component_stack}
       if (!g.nodes[source2]) throw new Error(`Edge source '${source2}' does not exist`);
       if (!g.nodes[target]) throw new Error(`Edge target '${target}' does not exist`);
     }
-  }
+  };
+  _GraphService.API_NAME = "graphService";
+  _GraphService.SERVICE_TYPE = "scoped";
+  _GraphService.CLASS_NAME = "GraphService";
+  _GraphService.DEPENDENCIES = [];
+  let GraphService = _GraphService;
   function bindFoundrySync(page, service) {
     Hooks.on("updateJournalEntryPage", async (doc, changes, options, userId) => {
       if (doc.id !== page.id) return;
@@ -8868,16 +8905,23 @@ ${component_stack}
       __privateAdd(this, _logger);
       __privateAdd(this, _svelte);
       __privateAdd(this, _css);
+      __privateAdd(this, _graphService);
       this.svelteApp = null;
     }
     get logger() {
       return __privateGet(this, _logger) ?? __privateSet(this, _logger, use(FoundryLogger));
     }
     get svelteManager() {
-      return __privateGet(this, _svelte) ?? __privateSet(this, _svelte, use(SvelteManager));
+      if (!this._pageScope) throw new Error("Page scope not set. Call _onRender first.");
+      return __privateGet(this, _svelte) ?? __privateSet(this, _svelte, use(SvelteManager, this._pageScope));
     }
     get cssManager() {
-      return __privateGet(this, _css) ?? __privateSet(this, _css, use(CSSManager));
+      if (!this._pageScope) throw new Error("Page scope not set. Call _onRender first.");
+      return __privateGet(this, _css) ?? __privateSet(this, _css, use(CSSManager, this._pageScope));
+    }
+    get graphService() {
+      if (!this._pageScope) throw new Error("Page scope not set. Call _onRender first.");
+      return __privateGet(this, _graphService) ?? __privateSet(this, _graphService, use(GraphService, this._pageScope));
     }
     /** @override */
     get title() {
@@ -8916,9 +8960,11 @@ ${component_stack}
         context,
         options
       });
-      const graphService = use(GraphService);
-      await graphService.init(this.document);
-      bindFoundrySync(this.document, graphService);
+      const pageId = this.document.uuid;
+      this._pageScope = `page-${pageId}`;
+      setCurrentScope(this._pageScope);
+      await this.graphService.init(this.document);
+      bindFoundrySync(this.document, this.graphService);
       await super._onRender(context, options);
       await this.svelteManager.unmountApp(this.svelteApp);
       this.svelteApp = null;
@@ -8942,12 +8988,19 @@ ${component_stack}
       );
       await this.svelteManager.unmountApp(this.svelteApp);
       this.svelteApp = null;
+      if (this._pageScope) {
+        disposeScopedServices(this._pageScope);
+        this.logger.info(
+          `[JournalEntryPageRelationshipGraphSheet] Disposed scoped services for scope: ${this._pageScope}`
+        );
+      }
       return super._onClose(options);
     }
   };
   _logger = new WeakMap();
   _svelte = new WeakMap();
   _css = new WeakMap();
+  _graphService = new WeakMap();
   _JournalEntryPageRelationshipGraphSheet.EDIT_PARTS = (() => {
     const parts = foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet.EDIT_PARTS;
     const { header, footer, ...rest } = parts;
@@ -9118,6 +9171,8 @@ ${component_stack}
         dependencies,
         resolutionOrder,
         isSingleton: this.isSingleton(serviceClass),
+        isTransient: this.isTransient(serviceClass),
+        isScoped: this.isScoped(serviceClass),
         apiName: this.getApiName(serviceClass),
         serviceType: this.getServiceType(serviceClass)
       };
@@ -9155,6 +9210,20 @@ ${component_stack}
     isSingleton(serviceClass) {
       const serviceType = serviceClass.SERVICE_TYPE;
       return serviceType === "singleton" || serviceType === void 0;
+    }
+    /**
+     * Prüfen ob Service ein Transient ist
+     */
+    isTransient(serviceClass) {
+      const serviceType = serviceClass.SERVICE_TYPE;
+      return serviceType === "transient";
+    }
+    /**
+     * Prüfen ob Service ein Scoped ist
+     */
+    isScoped(serviceClass) {
+      const serviceType = serviceClass.SERVICE_TYPE;
+      return serviceType === "scoped";
     }
     /**
      * API Name aus Service-Klasse extrahieren
@@ -9416,88 +9485,41 @@ ${component_stack}
     __proto__: null,
     ServiceValidator
   });
-  const _ServiceContainer = class _ServiceContainer {
-    constructor(logger2, servicePlans, serviceValidator) {
-      this.instances = /* @__PURE__ */ new Map();
+  class ServiceFactory {
+    constructor(logger2, servicePlans, serviceValidator, serviceContainer) {
       this.logger = logger2;
       this.servicePlans = servicePlans;
       this.serviceValidator = serviceValidator;
-    }
-    static getInstance(logger2, servicePlans, serviceValidator) {
-      if (!_ServiceContainer.instance) {
-        _ServiceContainer.instance = new _ServiceContainer(logger2, servicePlans, serviceValidator);
-      }
-      return _ServiceContainer.instance;
-    }
-    /**
-     * Service aus Lagerhaus holen oder neu erstellen
-     */
-    getService(identifier) {
-      this.writeLog(
-        "info",
-        `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}`
-      );
-      if (this.instances.has(identifier)) {
-        this.writeLog(
-          "info",
-          `[ServiceContainer] ♻️ Returning cached singleton: ${identifier.name || identifier}`
-        );
-        return this.instances.get(identifier);
-      }
-      this.writeLog(
-        "info",
-        `[ServiceContainer] 🏗️ Creating new service: ${identifier.name || identifier}`
-      );
-      const service = this.createService(identifier);
-      const plan = this.servicePlans.get(identifier);
-      if (plan && plan.isSingleton) {
-        this.writeLog(
-          "info",
-          `[ServiceContainer] 💾 Caching singleton: ${identifier.name || identifier}`
-        );
-        this.instances.set(identifier, service);
-      }
-      return service;
+      this.serviceContainer = serviceContainer;
     }
     /**
      * Service mit Dependencies erstellen
      */
     createService(identifier) {
-      this.writeLog(
-        "info",
-        `[ServiceContainer] 🏗️ Creating service: ${identifier.name || identifier}`
-      );
-      this.writeLog(
-        "info",
-        `[ServiceContainer] 🔍 Available service plans:`,
-        Array.from(this.servicePlans.keys()).map((k) => k.name || k)
-      );
+      this.writeLog("info", `[ServiceFactory] 🏗️ Creating service: ${identifier.name || identifier}`);
       const plan = this.servicePlans.get(identifier);
       if (!plan) {
         this.writeLog(
           "error",
-          `[ServiceContainer] ❌ No service plan found for ${identifier.name || identifier}`
-        );
-        this.writeLog(
-          "error",
-          `[ServiceContainer] 🔍 Available plans:`,
-          Array.from(this.servicePlans.keys()).map((k) => k.name || k)
+          `[ServiceFactory] ❌ No service plan found for ${identifier.name || identifier}`
         );
         throw new Error(`No service plan found for ${identifier.name || identifier}`);
       }
       this.writeLog(
         "info",
-        `[ServiceContainer] 📋 Service plan for ${identifier.name || identifier}:`,
+        `[ServiceFactory] 📋 Service plan for ${identifier.name || identifier}:`,
         {
           dependencies: plan.dependencies.map((d) => d.name || d),
           isSingleton: plan.isSingleton,
+          isScoped: plan.isScoped,
+          isTransient: plan.isTransient,
           serviceType: plan.serviceType
         }
       );
       const dependencies = this.resolveDependencies(plan);
       this.writeLog(
         "info",
-        `[ServiceContainer] 🔗 Resolved dependencies for ${identifier.name || identifier}:`,
+        `[ServiceFactory] 🔗 Resolved dependencies for ${identifier.name || identifier}:`,
         {
           count: dependencies.length,
           dependencies: dependencies.map((d) => d.constructor.name)
@@ -9513,35 +9535,35 @@ ${component_stack}
       }
       this.writeLog(
         "info",
-        `[ServiceContainer] ✅ Service created successfully: ${identifier.name || identifier}`
+        `[ServiceFactory] ✅ Service created successfully: ${identifier.name || identifier}`
       );
       return service;
     }
     /**
-     * Dependencies rekursiv auflösen
+     * Dependencies über Container auflösen (mit korrektem Caching!)
      */
     resolveDependencies(plan) {
       this.writeLog(
         "info",
-        `[ServiceContainer] 🔗 Resolving dependencies for: ${plan.constructor.name || plan.constructor}`
+        `[ServiceFactory] 🔗 Resolving dependencies for: ${plan.constructor.name || plan.constructor}`
       );
       const dependencies = [];
       for (const dependency of plan.dependencies) {
         this.writeLog(
           "info",
-          `[ServiceContainer] 🔍 Resolving dependency: ${dependency.name || dependency}`
+          `[ServiceFactory] 🔍 Resolving dependency: ${dependency.name || dependency}`
         );
         try {
-          const resolvedDependency = this.getService(dependency);
+          const resolvedDependency = this.serviceContainer.getService(dependency);
           dependencies.push(resolvedDependency);
           this.writeLog(
             "info",
-            `[ServiceContainer] ✅ Dependency resolved: ${dependency.name || dependency} -> ${resolvedDependency.constructor.name}`
+            `[ServiceFactory] ✅ Dependency resolved: ${dependency.name || dependency} -> ${resolvedDependency.constructor.name}`
           );
         } catch (error) {
           this.writeLog(
             "error",
-            `[ServiceContainer] ❌ Failed to resolve dependency ${dependency.name || dependency}:`,
+            `[ServiceFactory] ❌ Failed to resolve dependency ${dependency.name || dependency}:`,
             error
           );
           this.serviceValidator.handleServiceCreationError(error, dependency);
@@ -9550,8 +9572,442 @@ ${component_stack}
       }
       return dependencies;
     }
+    writeLog(modus, message, ...args) {
+      if (this.logger) {
+        this.logger[modus](message, ...args);
+      } else {
+        console[modus](message, ...args);
+      }
+    }
+  }
+  var ServiceFactory$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    ServiceFactory
+  });
+  class ServiceCache {
+    // Scoped Cache
+    constructor(logger2) {
+      this.logger = logger2;
+      this.instances = /* @__PURE__ */ new Map();
+      this.scopedInstances = /* @__PURE__ */ new Map();
+    }
     /**
-     * Alle Services erstellen
+     * Singleton Service abrufen oder erstellen
+     */
+    getSingleton(identifier, factory) {
+      this.writeLog("info", `[ServiceCache] 🔍 Getting singleton: ${identifier.name || identifier}`);
+      if (this.instances.has(identifier)) {
+        this.writeLog(
+          "info",
+          `[ServiceCache] ♻️ Returning cached singleton: ${identifier.name || identifier}`
+        );
+        return this.instances.get(identifier);
+      }
+      this.writeLog(
+        "info",
+        `[ServiceCache] 🏗️ Creating new singleton: ${identifier.name || identifier}`
+      );
+      const service = factory();
+      this.instances.set(identifier, service);
+      this.writeLog("info", `[ServiceCache] 💾 Cached singleton: ${identifier.name || identifier}`);
+      return service;
+    }
+    /**
+     * Scoped Service abrufen oder erstellen
+     */
+    getScoped(identifier, scope, factory) {
+      this.writeLog(
+        "info",
+        `[ServiceCache] 🎯 Getting scoped service: ${identifier.name || identifier} (scope: ${scope})`
+      );
+      if (!this.scopedInstances.has(scope)) {
+        this.scopedInstances.set(scope, /* @__PURE__ */ new Map());
+        this.writeLog("info", `[ServiceCache] 📁 Created new scope: ${scope}`);
+      }
+      const scopeInstances = this.scopedInstances.get(scope);
+      if (scopeInstances.has(identifier)) {
+        this.writeLog(
+          "info",
+          `[ServiceCache] ♻️ Returning cached scoped service: ${identifier.name || identifier} (scope: ${scope})`
+        );
+        return scopeInstances.get(identifier);
+      }
+      this.writeLog(
+        "info",
+        `[ServiceCache] 🏗️ Creating new scoped service: ${identifier.name || identifier} (scope: ${scope})`
+      );
+      const service = factory();
+      scopeInstances.set(identifier, service);
+      this.writeLog(
+        "info",
+        `[ServiceCache] 💾 Cached scoped service: ${identifier.name || identifier} (scope: ${scope})`
+      );
+      return service;
+    }
+    /**
+     * Transient Service erstellen (kein Caching)
+     */
+    getTransient(identifier, factory) {
+      this.writeLog(
+        "info",
+        `[ServiceCache] 🔄 Creating transient service: ${identifier.name || identifier}`
+      );
+      return factory();
+    }
+    /**
+     * Singleton Service aus Cache entfernen
+     */
+    disposeSingleton(identifier) {
+      this.writeLog(
+        "info",
+        `[ServiceCache] 🗑️ Disposing singleton: ${identifier.name || identifier}`
+      );
+      if (this.instances.has(identifier)) {
+        this.instances.delete(identifier);
+        this.writeLog(
+          "info",
+          `[ServiceCache] ✅ Singleton disposed: ${identifier.name || identifier}`
+        );
+      } else {
+        this.writeLog(
+          "info",
+          `[ServiceCache] ℹ️ Singleton not cached: ${identifier.name || identifier}`
+        );
+      }
+    }
+    /**
+     * Alle Singleton Services aus Cache entfernen
+     */
+    disposeAllSingletons() {
+      this.writeLog(
+        "info",
+        `[ServiceCache] 🗑️ Disposing all singletons (${this.instances.size} cached)`
+      );
+      this.instances.clear();
+      this.writeLog("info", `[ServiceCache] ✅ All singletons disposed`);
+    }
+    /**
+     * Scoped Services eines Scopes entsorgen
+     */
+    disposeScopedServices(scope) {
+      this.writeLog("info", `[ServiceCache] 🗑️ Disposing scoped services: ${scope}`);
+      if (this.scopedInstances.has(scope)) {
+        const scopeInstances = this.scopedInstances.get(scope);
+        const count = scopeInstances.size;
+        scopeInstances.clear();
+        this.scopedInstances.delete(scope);
+        this.writeLog(
+          "info",
+          `[ServiceCache] ✅ Disposed ${count} scoped services from scope: ${scope}`
+        );
+      } else {
+        this.writeLog("info", `[ServiceCache] ℹ️ No scoped services found in scope: ${scope}`);
+      }
+    }
+    /**
+     * Alle Scoped Services entsorgen
+     */
+    disposeAllScopedServices() {
+      this.writeLog(
+        "info",
+        `[ServiceCache] 🗑️ Disposing all scoped services (${this.scopedInstances.size} scopes)`
+      );
+      for (const [scope, scopeInstances] of this.scopedInstances) {
+        const count = scopeInstances.size;
+        scopeInstances.clear();
+        this.writeLog("info", `[ServiceCache] ✅ Disposed ${count} services from scope: ${scope}`);
+      }
+      this.scopedInstances.clear();
+      this.writeLog("info", `[ServiceCache] ✅ All scoped services disposed`);
+    }
+    /**
+     * Alle Services entsorgen
+     */
+    disposeAll() {
+      this.writeLog(
+        "info",
+        `[ServiceCache] 🗑️ Disposing all services (${this.instances.size} singletons, ${this.scopedInstances.size} scopes)`
+      );
+      this.disposeAllSingletons();
+      this.disposeAllScopedServices();
+      this.writeLog("info", `[ServiceCache] ✅ All services disposed`);
+    }
+    /**
+     * Prüfen ob Singleton im Cache ist
+     */
+    hasSingleton(identifier) {
+      return this.instances.has(identifier);
+    }
+    /**
+     * Anzahl gecachter Singleton Services
+     */
+    getSingletonCount() {
+      return this.instances.size;
+    }
+    /**
+     * Anzahl Scoped Services in einem Scope
+     */
+    getScopedServiceCount(scope) {
+      if (this.scopedInstances.has(scope)) {
+        return this.scopedInstances.get(scope).size;
+      }
+      return 0;
+    }
+    /**
+     * Anzahl aller Scopes
+     */
+    getScopeCount() {
+      return this.scopedInstances.size;
+    }
+    writeLog(modus, message, ...args) {
+      if (this.logger) {
+        this.logger[modus](message, ...args);
+      } else {
+        console[modus](message, ...args);
+      }
+    }
+  }
+  var ServiceCache$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    ServiceCache
+  });
+  class ScopeManager {
+    constructor(logger2) {
+      this.logger = logger2;
+      this.currentScope = null;
+      this.scopeChains = /* @__PURE__ */ new Map();
+    }
+    /**
+     * Aktuellen Scope setzen
+     */
+    setCurrentScope(scope) {
+      this.writeLog("info", `[ScopeManager] 🎯 Setting current scope: ${scope}`);
+      this.currentScope = scope;
+    }
+    /**
+     * Aktuellen Scope abrufen
+     */
+    getCurrentScope() {
+      return this.currentScope;
+    }
+    /**
+     * Scope leeren
+     */
+    clearScope(scope) {
+      this.writeLog("info", `[ScopeManager] 🗑️ Clearing scope: ${scope}`);
+      this.writeLog("info", `[ScopeManager] ✅ Scope cleared: ${scope}`);
+    }
+    /**
+     * Scope Chain erstellen
+     */
+    createScopeChain(parentScope) {
+      this.writeLog("info", `[ScopeManager] 🔗 Creating scope chain for parent: ${parentScope}`);
+      const chain = {
+        parentScope,
+        childScopes: /* @__PURE__ */ new Set(),
+        addChildScope: (scope) => {
+          chain.childScopes.add(scope);
+          this.writeLog(
+            "info",
+            `[ScopeManager] ➕ Added child scope: ${scope} to parent: ${parentScope}`
+          );
+        },
+        removeChildScope: (scope) => {
+          chain.childScopes.delete(scope);
+          this.writeLog(
+            "info",
+            `[ScopeManager] ➖ Removed child scope: ${scope} from parent: ${parentScope}`
+          );
+        },
+        disposeAllChildScopes: () => {
+          this.writeLog(
+            "info",
+            `[ScopeManager] 🧹 Disposing ${chain.childScopes.size} child scopes for parent: ${parentScope}`
+          );
+          chain.childScopes.clear();
+        },
+        getChildScopeCount: () => chain.childScopes.size,
+        isChildScope: (scope) => chain.childScopes.has(scope)
+      };
+      this.scopeChains.set(parentScope, chain);
+      this.writeLog("info", `[ScopeManager] ✅ Scope chain created for parent: ${parentScope}`);
+      return chain;
+    }
+    /**
+     * Child Scope zu Parent hinzufügen
+     */
+    addChildScope(parentScope, childScope) {
+      const chain = this.scopeChains.get(parentScope);
+      if (chain) {
+        chain.addChildScope(childScope);
+      } else {
+        this.writeLog("warn", `[ScopeManager] ⚠️ Parent scope chain not found: ${parentScope}`);
+      }
+    }
+    /**
+     * Child Scope von Parent entfernen
+     */
+    removeChildScope(parentScope, childScope) {
+      const chain = this.scopeChains.get(parentScope);
+      if (chain) {
+        chain.removeChildScope(childScope);
+      } else {
+        this.writeLog("warn", `[ScopeManager] ⚠️ Parent scope chain not found: ${parentScope}`);
+      }
+    }
+    /**
+     * Scope Chain entsorgen
+     */
+    disposeScopeChain(parentScope) {
+      const chain = this.scopeChains.get(parentScope);
+      if (chain) {
+        this.writeLog("info", `[ScopeManager] 🧹 Disposing scope chain for parent: ${parentScope}`);
+        chain.disposeAllChildScopes();
+        this.scopeChains.delete(parentScope);
+        this.writeLog("info", `[ScopeManager] ✅ Scope chain disposed for parent: ${parentScope}`);
+      } else {
+        this.writeLog("warn", `[ScopeManager] ⚠️ Scope chain not found: ${parentScope}`);
+      }
+    }
+    /**
+     * Scope Chain abrufen
+     */
+    getScopeChain(parentScope) {
+      return this.scopeChains.get(parentScope);
+    }
+    /**
+     * Alle Scope Chains entsorgen
+     */
+    disposeAllScopeChains() {
+      this.writeLog(
+        "info",
+        `[ScopeManager] 🗑️ Disposing all scope chains (${this.scopeChains.size} chains)`
+      );
+      for (const [parentScope, chain] of this.scopeChains) {
+        chain.disposeAllChildScopes();
+        this.writeLog("info", `[ScopeManager] ✅ Disposed scope chain: ${parentScope}`);
+      }
+      this.scopeChains.clear();
+      this.writeLog("info", `[ScopeManager] ✅ All scope chains disposed`);
+    }
+    /**
+     * Anzahl Scope Chains
+     */
+    getScopeChainCount() {
+      return this.scopeChains.size;
+    }
+    /**
+     * Alle Parent Scopes abrufen
+     */
+    getAllParentScopes() {
+      return Array.from(this.scopeChains.keys());
+    }
+    writeLog(modus, message, ...args) {
+      if (this.logger) {
+        this.logger[modus](message, ...args);
+      } else {
+        console[modus](message, ...args);
+      }
+    }
+  }
+  var ScopeManager$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    ScopeManager
+  });
+  const _ServiceContainer = class _ServiceContainer {
+    constructor(logger2, servicePlans, serviceValidator) {
+      this.logger = logger2;
+      this.servicePlans = servicePlans;
+      this.serviceValidator = serviceValidator;
+    }
+    /**
+     * ServiceFactory nachträglich injizieren
+     */
+    setServiceFactory(factory) {
+      this.serviceFactory = factory;
+      this.writeLog("info", `[ServiceContainer] ✅ ServiceFactory injected`);
+    }
+    /**
+     * ServiceCache nachträglich injizieren
+     */
+    setServiceCache(cache) {
+      this.serviceCache = cache;
+      this.writeLog("info", `[ServiceContainer] ✅ ServiceCache injected`);
+    }
+    /**
+     * ScopeManager nachträglich injizieren
+     */
+    setScopeManager(scopeManager) {
+      this.scopeManager = scopeManager;
+      this.writeLog("info", `[ServiceContainer] ✅ ScopeManager injected`);
+    }
+    static getInstance(logger2, servicePlans, serviceValidator) {
+      if (!_ServiceContainer.instance) {
+        _ServiceContainer.instance = new _ServiceContainer(logger2, servicePlans, serviceValidator);
+      }
+      return _ServiceContainer.instance;
+    }
+    /**
+     * Service über spezialisierte Services abrufen oder erstellen
+     */
+    getService(identifier, scope) {
+      this.writeLog(
+        "info",
+        `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}${scope ? ` (scope: ${scope})` : ""}`
+      );
+      const plan = this.servicePlans.get(identifier);
+      if (!plan) {
+        this.writeLog(
+          "error",
+          `[ServiceContainer] ❌ No service plan found for ${identifier.name || identifier}`
+        );
+        throw new Error(`No service plan found for ${identifier.name || identifier}`);
+      }
+      if (!this.serviceFactory || !this.serviceCache || !this.scopeManager) {
+        throw new Error(
+          "ServiceContainer not properly initialized. Missing ServiceFactory, ServiceCache, or ScopeManager."
+        );
+      }
+      const factory = () => this.serviceFactory.createService(identifier);
+      if (plan.isTransient) {
+        this.writeLog(
+          "info",
+          `[ServiceContainer] 🔄 Creating transient service: ${identifier.name || identifier}`
+        );
+        return this.serviceCache.getTransient(identifier, factory);
+      }
+      if (plan.isScoped) {
+        const scopeKey = scope || this.scopeManager.getCurrentScope() || "default";
+        this.writeLog(
+          "info",
+          `[ServiceContainer] 🎯 Getting scoped service: ${identifier.name || identifier} (scope: ${scopeKey})`
+        );
+        return this.serviceCache.getScoped(identifier, scopeKey, factory);
+      }
+      if (plan.isSingleton) {
+        this.writeLog(
+          "info",
+          `[ServiceContainer] ♻️ Getting singleton service: ${identifier.name || identifier}`
+        );
+        return this.serviceCache.getSingleton(identifier, factory);
+      }
+      this.writeLog(
+        "warn",
+        `[ServiceContainer] ⚠️ Unknown service type for ${identifier.name || identifier}, treating as singleton`
+      );
+      return this.serviceCache.getSingleton(identifier, factory);
+    }
+    /**
+     * Service mit Dependencies erstellen (delegiert an ServiceFactory)
+     */
+    createService(identifier) {
+      if (!this.serviceFactory) {
+        throw new Error("ServiceFactory not injected. Call setServiceFactory() first.");
+      }
+      return this.serviceFactory.createService(identifier);
+    }
+    /**
+     * Alle Services erstellen (delegiert an ServiceFactory)
      */
     createAllServices() {
       this.writeLog(
@@ -9613,48 +10069,40 @@ ${component_stack}
       result.push(service);
     }
     /**
-     * Service aus Cache entfernen
+     * Service aus Cache entfernen (delegiert an ServiceCache)
      */
     disposeService(identifier) {
-      this.writeLog(
-        "info",
-        `[ServiceContainer] 🗑️ Disposing service: ${identifier.name || identifier}`
-      );
-      if (this.instances.has(identifier)) {
-        this.instances.delete(identifier);
-        this.writeLog(
-          "info",
-          `[ServiceContainer] ✅ Service disposed: ${identifier.name || identifier}`
-        );
-      } else {
-        this.writeLog(
-          "info",
-          `[ServiceContainer] ℹ️ Service not cached: ${identifier.name || identifier}`
-        );
+      if (!this.serviceCache) {
+        throw new Error("ServiceCache not injected. Call setServiceCache() first.");
       }
+      this.serviceCache.disposeSingleton(identifier);
     }
     /**
-     * Alle Services aus Cache entfernen
+     * Alle Services aus Cache entfernen (delegiert an ServiceCache)
      */
     disposeAll() {
-      this.writeLog(
-        "info",
-        `[ServiceContainer] 🗑️ Disposing all services (${this.instances.size} cached)`
-      );
-      this.instances.clear();
-      this.writeLog("info", `[ServiceContainer] ✅ All services disposed`);
+      if (!this.serviceCache) {
+        throw new Error("ServiceCache not injected. Call setServiceCache() first.");
+      }
+      this.serviceCache.disposeAll();
     }
     /**
-     * Prüfen ob Service im Cache ist
+     * Prüfen ob Service im Cache ist (delegiert an ServiceCache)
      */
     hasCachedService(identifier) {
-      return this.instances.has(identifier);
+      if (!this.serviceCache) {
+        return false;
+      }
+      return this.serviceCache.hasSingleton(identifier);
     }
     /**
-     * Anzahl gecachter Services
+     * Anzahl gecachter Services (delegiert an ServiceCache)
      */
     getCachedServiceCount() {
-      return this.instances.size;
+      if (!this.serviceCache) {
+        return 0;
+      }
+      return this.serviceCache.getSingletonCount();
     }
     /**
      * Service-Plan abrufen
@@ -9668,12 +10116,82 @@ ${component_stack}
     getAllServicePlans() {
       return this.servicePlans;
     }
+    /**
+     * Aktuellen Scope setzen (delegiert an ScopeManager)
+     */
+    setCurrentScope(scope) {
+      if (!this.scopeManager) {
+        throw new Error("ScopeManager not injected. Call setScopeManager() first.");
+      }
+      this.scopeManager.setCurrentScope(scope);
+    }
+    /**
+     * Scope leeren (delegiert an ScopeManager)
+     */
+    clearScope(scope) {
+      if (!this.scopeManager) {
+        throw new Error("ScopeManager not injected. Call setScopeManager() first.");
+      }
+      this.scopeManager.clearScope(scope);
+    }
+    /**
+     * Scoped Services eines Scopes entsorgen (delegiert an ServiceCache)
+     */
+    disposeScopedServices(scope) {
+      if (!this.serviceCache) {
+        throw new Error("ServiceCache not injected. Call setServiceCache() first.");
+      }
+      this.serviceCache.disposeScopedServices(scope);
+    }
+    /**
+     * Anzahl Scoped Services in einem Scope (delegiert an ServiceCache)
+     */
+    getScopedServiceCount(scope) {
+      if (!this.serviceCache) {
+        return 0;
+      }
+      return this.serviceCache.getScopedServiceCount(scope);
+    }
     writeLog(modus, message, ...args) {
       if (this.logger) {
         this.logger[modus](message, ...args);
       } else {
         console[modus](message, ...args);
       }
+    }
+    // Scope Chain Management (delegiert an ScopeManager)
+    createScopeChain(parentScope) {
+      if (!this.scopeManager) {
+        throw new Error("ScopeManager not injected. Call setScopeManager() first.");
+      }
+      return this.scopeManager.createScopeChain(parentScope);
+    }
+    addChildScope(parentScope, childScope) {
+      if (!this.scopeManager) {
+        throw new Error("ScopeManager not injected. Call setScopeManager() first.");
+      }
+      this.scopeManager.addChildScope(parentScope, childScope);
+    }
+    removeChildScope(parentScope, childScope) {
+      if (!this.scopeManager) {
+        throw new Error("ScopeManager not injected. Call setScopeManager() first.");
+      }
+      this.scopeManager.removeChildScope(parentScope, childScope);
+    }
+    disposeScopeChain(parentScope) {
+      if (!this.scopeManager || !this.serviceCache) {
+        throw new Error(
+          "ScopeManager or ServiceCache not injected. Call setScopeManager() and setServiceCache() first."
+        );
+      }
+      this.scopeManager.disposeScopeChain(parentScope);
+      this.serviceCache.disposeScopedServices(parentScope);
+    }
+    getScopeChain(parentScope) {
+      if (!this.scopeManager) {
+        return void 0;
+      }
+      return this.scopeManager.getScopeChain(parentScope);
     }
   };
   _ServiceContainer.API_NAME = "serviceContainer";
@@ -9856,14 +10374,18 @@ ${component_stack}
     /**
      * Service über Factory abrufen - On-Demand
      */
-    getService(identifier) {
-      this.logger.info(`[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}`);
+    getService(identifier, scope) {
+      this.logger.info(
+        `[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}${scope ? ` (scope: ${scope})` : ""}`
+      );
       const factory = this.serviceLocator.get(identifier);
       if (!factory) {
         throw new Error(`Service ${identifier.name || identifier} not registered`);
       }
-      const service = factory();
-      this.logger.info(`[ServiceRegistrar] ✅ Service retrieved: ${identifier.name || identifier}`);
+      const service = this.serviceContainer.getService(identifier, scope);
+      this.logger.info(
+        `[ServiceRegistrar] ✅ Service retrieved: ${identifier.name || identifier}${scope ? ` (scope: ${scope})` : ""}`
+      );
       return service;
     }
     /**
@@ -11095,7 +11617,7 @@ ${component_stack}
   var root_3$1 = /* @__PURE__ */ from_html(`<div class="field-container svelte-1hegfbw"><!></div>`);
   var root_4 = /* @__PURE__ */ from_html(`<span class="spinner svelte-1hegfbw"></span>`);
   var root_5$1 = /* @__PURE__ */ from_html(`<button type="button" class="btn btn-secondary svelte-1hegfbw"> </button>`);
-  var root$1 = /* @__PURE__ */ from_html(`<div><div class="form-header svelte-1hegfbw"><h3 class="form-title svelte-1hegfbw"> </h3> <!></div> <form class="dynamic-form svelte-1hegfbw"><!> <div class="form-actions svelte-1hegfbw"><button type="submit" class="btn btn-primary svelte-1hegfbw"><!> </button> <!></div></form></div>`);
+  var root$2 = /* @__PURE__ */ from_html(`<div><div class="form-header svelte-1hegfbw"><h3 class="form-title svelte-1hegfbw"> </h3> <!></div> <form class="dynamic-form svelte-1hegfbw"><!> <div class="form-actions svelte-1hegfbw"><button type="submit" class="btn btn-primary svelte-1hegfbw"><!> </button> <!></div></form></div>`);
   function DynamicFormSheet($$anchor, $$props) {
     push($$props, true);
     let formValues = /* @__PURE__ */ state(proxy({}));
@@ -11254,7 +11776,7 @@ ${component_stack}
       `theme-${get$1(mergedConfig).styling.theme}`,
       get$1(mergedConfig).styling.customClasses?.container || ""
     ].filter(Boolean).join(" "));
-    var div = root$1();
+    var div = root$2();
     event("keydown", $window, handleKeydown);
     event("keyup", $window, handleKeyNavigation);
     var div_1 = child(div);
@@ -11354,22 +11876,37 @@ ${component_stack}
   const _DynamicDialogApp = class _DynamicDialogApp extends foundry.applications.api.HandlebarsApplicationMixin(
     foundry.applications.api.ApplicationV2
   ) {
-    constructor() {
+    constructor(parentScope) {
       super();
       // Lazy-Memoized Getter – kein Service im Konstruktor auflösen!
       __privateAdd(this, _logger2);
       __privateAdd(this, _svelte2);
       __privateAdd(this, _css2);
       this.svelteApp = null;
+      this._parentScope = parentScope;
+      if (parentScope) {
+        this._instanceScope = createChildScope(parentScope, "DynamicDialogApp");
+        this._instanceId = this._instanceScope;
+      } else {
+        this._instanceId = this.generateInstanceId();
+        this._instanceScope = `instance-${this._instanceId}`;
+      }
     }
     get logger() {
       return __privateGet(this, _logger2) ?? __privateSet(this, _logger2, use(FoundryLogger));
     }
     get svelteManager() {
-      return __privateGet(this, _svelte2) ?? __privateSet(this, _svelte2, use(SvelteManager));
+      if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
+      return __privateGet(this, _svelte2) ?? __privateSet(this, _svelte2, use(SvelteManager, this._instanceScope));
     }
     get cssManager() {
-      return __privateGet(this, _css2) ?? __privateSet(this, _css2, use(CSSManager));
+      if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
+      return __privateGet(this, _css2) ?? __privateSet(this, _css2, use(CSSManager, this._instanceScope));
+    }
+    generateInstanceId() {
+      const timestamp = Date.now();
+      const randomId = foundry.utils.randomID();
+      return `${this.constructor.name}-${timestamp}-${randomId}`;
     }
     /** @override */
     get title() {
@@ -11414,7 +11951,14 @@ ${component_stack}
       return _DynamicDialogApp.onCancel;
     }
     async _onRender(context, options) {
-      this.logger.info(`[${_DynamicDialogApp.appId}] _onRender started`, { context, options });
+      this.logger.info(`[${_DynamicDialogApp.appId}] _onRender started`, {
+        instanceId: this._instanceId,
+        context,
+        options
+      });
+      if (this._instanceScope) {
+        setCurrentScope(this._instanceScope);
+      }
       try {
         await super._onRender(context, options);
         await this._loadCSS();
@@ -11452,17 +11996,33 @@ ${component_stack}
     }
     /** @override */
     async _onClose(options) {
-      this.logger.info(`[${_DynamicDialogApp.appId}] _onClose called with options:`, options);
+      this.logger.info(`[${_DynamicDialogApp.appId}] _onClose called`, {
+        instanceId: this._instanceId,
+        parentScope: this._parentScope,
+        options
+      });
       await this.svelteManager.unmountApp(this.svelteApp);
       this.svelteApp = null;
+      if (this._parentScope && this._instanceScope) {
+        removeChildScope(this._parentScope, this._instanceScope);
+        this.logger.info(
+          `[${_DynamicDialogApp.appId}] Removed child scope from parent chain: ${this._instanceScope}`
+        );
+      }
+      if (this._instanceScope) {
+        disposeScopedServices(this._instanceScope);
+        this.logger.info(
+          `[${_DynamicDialogApp.appId}] Disposed instance scope: ${this._instanceScope}`
+        );
+      }
       return super._onClose(options);
     }
     /**
      * Statische Methode zum einfachen Öffnen des Dialogs
      */
-    static async show(config) {
+    static async show(config, parentScope) {
       return new Promise((resolve) => {
-        const app = new _DynamicDialogApp();
+        const app = new _DynamicDialogApp(parentScope);
         app._prepareConfig(config);
         app._prepareOnSubmit((values) => {
           app.close();
@@ -11504,6 +12064,210 @@ ${component_stack}
     tag: "div"
   };
   let DynamicDialogApp = _DynamicDialogApp;
+  var DynamicDialogApp$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    default: DynamicDialogApp
+  });
+  var root$1 = /* @__PURE__ */ from_html(`<div><h1>Dynamic Table</h1></div>`);
+  function DynamicTableSheet($$anchor, $$props) {
+    var div = root$1();
+    append($$anchor, div);
+  }
+  const _DynamicTableApp = class _DynamicTableApp extends foundry.applications.api.HandlebarsApplicationMixin(
+    foundry.applications.api.ApplicationV2
+  ) {
+    constructor(parentScope) {
+      super();
+      // Lazy-Memoized Getter – kein Service im Konstruktor auflösen!
+      __privateAdd(this, _logger3);
+      __privateAdd(this, _svelte3);
+      __privateAdd(this, _css3);
+      this.svelteApp = null;
+      this._parentScope = parentScope;
+      if (parentScope) {
+        this._instanceScope = createChildScope(parentScope, "DynamicTableApp");
+        this._instanceId = this._instanceScope;
+      } else {
+        this._instanceId = this.generateInstanceId();
+        this._instanceScope = `instance-${this._instanceId}`;
+      }
+    }
+    get logger() {
+      return __privateGet(this, _logger3) ?? __privateSet(this, _logger3, use(FoundryLogger));
+    }
+    get svelteManager() {
+      if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
+      return __privateGet(this, _svelte3) ?? __privateSet(this, _svelte3, use(SvelteManager, this._instanceScope));
+    }
+    get cssManager() {
+      if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
+      return __privateGet(this, _css3) ?? __privateSet(this, _css3, use(CSSManager, this._instanceScope));
+    }
+    generateInstanceId() {
+      const timestamp = Date.now();
+      const randomId = foundry.utils.randomID();
+      return `${this.constructor.name}-${timestamp}-${randomId}`;
+    }
+    /** @override */
+    get title() {
+      return this.options.window.title;
+    }
+    /** @override */
+    async _renderHTML(context, options) {
+      return super._renderHTML(context, options);
+    }
+    /** @override */
+    _replaceHTML(html2, options, context) {
+      return super._replaceHTML(html2, options, context);
+    }
+    async _prepareContext(options) {
+      const context = await super._prepareContext(options);
+      this.logger.info(`[${_DynamicTableApp.appId}] _prepareContext called with context:`, context);
+      this.logger.info(`[${_DynamicTableApp.appId}] _prepareContext called with options:`, options);
+      return context;
+    }
+    async _prepareConfig(config) {
+      _DynamicTableApp.config = config;
+      this.logger.info(
+        `[${_DynamicTableApp.appId}] _prepareConfig called with config:`,
+        _DynamicTableApp.config
+      );
+      return _DynamicTableApp.config;
+    }
+    async _prepareOnSubmit(onSubmit) {
+      _DynamicTableApp.onSubmit = onSubmit;
+      this.logger.info(
+        `[${_DynamicTableApp.appId}] _prepareOnSubmit called with onSubmit:`,
+        _DynamicTableApp.onSubmit
+      );
+      return _DynamicTableApp.onSubmit;
+    }
+    async _prepareOnCancel(onCancel) {
+      _DynamicTableApp.onCancel = onCancel;
+      this.logger.info(
+        `[${_DynamicTableApp.appId}] _prepareOnCancel called with onCancel:`,
+        _DynamicTableApp.onCancel
+      );
+      return _DynamicTableApp.onCancel;
+    }
+    async _onRender(context, options) {
+      this.logger.info(`[${_DynamicTableApp.appId}] _onRender started`, {
+        instanceId: this._instanceId,
+        context,
+        options
+      });
+      if (this._instanceScope) {
+        setCurrentScope(this._instanceScope);
+      }
+      try {
+        await super._onRender(context, options);
+        await this._loadCSS();
+        const target = this.element.querySelector("#dynamic-table-svelte");
+        if (!target) {
+          this.logger.warn(
+            `[${_DynamicTableApp.appId}] Svelte mount point '#dynamic-table-svelte' not found`
+          );
+          return;
+        }
+        this.logger.info(`[${_DynamicTableApp.appId}] Found target element:`, target);
+        await this.svelteManager.unmountApp(this.svelteApp);
+        this.svelteApp = null;
+        this.svelteApp = await this.svelteManager.mountComponent(
+          DynamicTableSheet,
+          target,
+          {
+            config: _DynamicTableApp.config,
+            onSubmit: _DynamicTableApp.onSubmit,
+            onCancel: _DynamicTableApp.onCancel
+          }
+        );
+        this.logger.info(`[${_DynamicTableApp.appId}] DynamicTableSheet mounted successfully`);
+      } catch (error) {
+        this.logger.error(`[${_DynamicTableApp.appId}] Error during render:`, error);
+        throw error;
+      }
+    }
+    /**
+     * CSS-Datei für die DynamicTableApp laden
+     */
+    async _loadCSS() {
+      const cssPath = "modules/relationship-app/styles/dynamic-table-app.css";
+      await this.cssManager.loadCSS(cssPath);
+    }
+    /** @override */
+    async _onClose(options) {
+      this.logger.info(`[${_DynamicTableApp.appId}] _onClose called`, {
+        instanceId: this._instanceId,
+        parentScope: this._parentScope,
+        options
+      });
+      await this.svelteManager.unmountApp(this.svelteApp);
+      this.svelteApp = null;
+      if (this._parentScope && this._instanceScope) {
+        removeChildScope(this._parentScope, this._instanceScope);
+        this.logger.info(
+          `[${_DynamicTableApp.appId}] Removed child scope from parent chain: ${this._instanceScope}`
+        );
+      }
+      if (this._instanceScope) {
+        disposeScopedServices(this._instanceScope);
+        this.logger.info(
+          `[${_DynamicTableApp.appId}] Disposed instance scope: ${this._instanceScope}`
+        );
+      }
+      return super._onClose(options);
+    }
+    /**
+     * Statische Methode zum einfachen Öffnen der Tabelle
+     */
+    static async show(config, parentScope) {
+      return new Promise((resolve) => {
+        const app = new _DynamicTableApp(parentScope);
+        app._prepareConfig(config);
+        app._prepareOnSubmit((data) => {
+          app.close();
+          resolve(data);
+        });
+        app._prepareOnCancel(() => {
+          app.close();
+          resolve(null);
+        });
+        app.render({ force: true });
+      });
+    }
+  };
+  _logger3 = new WeakMap();
+  _svelte3 = new WeakMap();
+  _css3 = new WeakMap();
+  _DynamicTableApp.PARTS = {
+    main: {
+      template: "modules/relationship-app/templates/DynamicTableApp.hbs"
+    }
+  };
+  _DynamicTableApp.appId = "DynamicTableApp";
+  _DynamicTableApp.config = {
+    title: "Dynamic Table",
+    columns: []
+  };
+  _DynamicTableApp.onSubmit = () => {
+  };
+  _DynamicTableApp.onCancel = () => {
+  };
+  _DynamicTableApp.DEFAULT_OPTIONS = {
+    // Unique ID for the sheet
+    id: "dynamic-table",
+    // CSS classes to apply
+    classes: ["dynamic-table"],
+    // Window sizing and behavior
+    position: { width: 1200, height: 800 },
+    window: { title: "Dynamic Table", resizable: true },
+    tag: "div"
+  };
+  let DynamicTableApp = _DynamicTableApp;
+  var DynamicTableApp$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    default: DynamicTableApp
+  });
   var on_click = (__1, startCreatingNewSchema) => startCreatingNewSchema();
   var on_click_1 = (__2, errorMessage) => set(errorMessage, null);
   var root_1 = /* @__PURE__ */ from_html(`<div class="error-message svelte-qx734j"><span> </span> <button class="close-btn svelte-qx734j">×</button></div>`);
@@ -11745,7 +12509,7 @@ ${component_stack}
       set(isCreatingNewSchema, true);
       set(editingSchema, null);
       const config = createSchemaFormConfig();
-      const result = await DynamicDialogApp.show(config);
+      const result = $$props.parentApp ? await $$props.parentApp.openDynamicDialog(config) : await DynamicDialogApp.show(config, $$props.parentScope);
       if (result) {
         console.log("Neues Schema erstellt:", result);
       }
@@ -11755,7 +12519,7 @@ ${component_stack}
       set(editingSchema, schema, true);
       set(isCreatingNewSchema, false);
       const config = createSchemaFormConfig();
-      const result = await DynamicDialogApp.show(config);
+      const result = $$props.parentApp ? await $$props.parentApp.openDynamicDialog(config) : await DynamicDialogApp.show(config, $$props.parentScope);
       if (result) {
         console.log("Schema bearbeitet:", result);
       }
@@ -11765,7 +12529,7 @@ ${component_stack}
       set(editingRow, { ...row }, true);
       set(isCreatingNewRow, false);
       const config = createRowFormConfig();
-      const result = await DynamicDialogApp.show(config);
+      const result = $$props.parentApp ? await $$props.parentApp.openDynamicDialog(config) : await DynamicDialogApp.show(config, $$props.parentScope);
       if (result) {
         console.log("Metadaten-Zeile bearbeitet:", result);
       }
@@ -11775,7 +12539,7 @@ ${component_stack}
       set(isCreatingNewRow, true);
       set(editingRow, null);
       const config = createRowFormConfig();
-      const result = await DynamicDialogApp.show(config);
+      const result = $$props.parentApp ? await $$props.parentApp.openDynamicDialog(config) : await DynamicDialogApp.show(config, $$props.parentScope);
       if (result) {
         console.log("Neue Metadaten-Zeile erstellt:", result);
       }
@@ -12166,19 +12930,23 @@ ${component_stack}
     constructor() {
       super();
       // Lazy-Memoized Getter – kein Service im Konstruktor auflösen!
-      __privateAdd(this, _logger3);
-      __privateAdd(this, _svelte3);
-      __privateAdd(this, _css3);
+      __privateAdd(this, _logger4);
+      __privateAdd(this, _svelte4);
+      __privateAdd(this, _css4);
+      this._openChildApps = /* @__PURE__ */ new Set();
       this.svelteApp = null;
     }
+    // Tracking offener Child Apps
     get logger() {
-      return __privateGet(this, _logger3) ?? __privateSet(this, _logger3, use(FoundryLogger));
+      return __privateGet(this, _logger4) ?? __privateSet(this, _logger4, use(FoundryLogger));
     }
     get svelte() {
-      return __privateGet(this, _svelte3) ?? __privateSet(this, _svelte3, use(SvelteManager));
+      if (!this._appScope) throw new Error("App scope not set. Call _onRender first.");
+      return __privateGet(this, _svelte4) ?? __privateSet(this, _svelte4, use(SvelteManager, this._appScope));
     }
     get css() {
-      return __privateGet(this, _css3) ?? __privateSet(this, _css3, use(CSSManager));
+      if (!this._appScope) throw new Error("App scope not set. Call _onRender first.");
+      return __privateGet(this, _css4) ?? __privateSet(this, _css4, use(CSSManager, this._appScope));
     }
     /** @override */
     get title() {
@@ -12210,6 +12978,10 @@ ${component_stack}
     }
     async _onRender(context, options) {
       this.logger.info("[MetadataManagementApplication] _onRender started", { context, options });
+      const appId = "MetadataManagementApplication";
+      this._appScope = `app-${appId}`;
+      setCurrentScope(this._appScope);
+      createScopeChain(this._appScope);
       await super._onRender(context, options);
       const target = this.element.querySelector("#metadata-management-svelte");
       if (!target) {
@@ -12223,21 +12995,104 @@ ${component_stack}
       this.svelteApp = await this.svelte.mountComponent(
         MetadataManagementView,
         target,
-        {}
+        {
+          parentScope: this._appScope,
+          parentApp: this
+          // Parent App-Referenz für automatisches Tracking
+        }
       );
       this.logger.info("[MetadataManagementApplication] MetadataManagementView mounted successfully");
     }
     /** @override */
     async _onClose(options) {
       this.logger.info("[MetadataManagementApplication] _onClose called with options:", options);
+      if (this._openChildApps.size > 0) {
+        this.logger.info(
+          `[MetadataManagementApplication] Closing ${this._openChildApps.size} open child apps`
+        );
+        for (const childApp of this._openChildApps) {
+          try {
+            await childApp.close();
+            this.logger.info(
+              `[MetadataManagementApplication] Closed child app: ${childApp.constructor.name}`
+            );
+          } catch (error) {
+            this.logger.warn(`[MetadataManagementApplication] Error closing child app:`, error);
+          }
+        }
+        this._openChildApps.clear();
+      }
       await this.svelte.unmountApp(this.svelteApp);
       this.svelteApp = null;
+      if (this._appScope) {
+        this.logger.info(
+          `[MetadataManagementApplication] Disposing scope chain with all child services: ${this._appScope}`
+        );
+        disposeScopeChain(this._appScope);
+        this.logger.info(`[MetadataManagementApplication] ✅ All child services have been disposed`);
+      }
       return super._onClose(options);
     }
+    /**
+     * Dynamic Dialog öffnen mit Parent Scope
+     */
+    async openDynamicDialog(config) {
+      const DynamicDialogApp2 = (await __vitePreload(async () => {
+        const { default: __vite_default__ } = await Promise.resolve().then(function() {
+          return DynamicDialogApp$1;
+        });
+        return { default: __vite_default__ };
+      }, false ? __VITE_PRELOAD__ : void 0)).default;
+      const app = new DynamicDialogApp2(this._appScope);
+      this._openChildApps.add(app);
+      const result = await new Promise((resolve) => {
+        app._prepareConfig(config);
+        app._prepareOnSubmit((values) => {
+          app.close();
+          this._openChildApps.delete(app);
+          resolve(values);
+        });
+        app._prepareOnCancel(() => {
+          app.close();
+          this._openChildApps.delete(app);
+          resolve(null);
+        });
+        app.render({ force: true });
+      });
+      return result;
+    }
+    /**
+     * Dynamic Table öffnen mit Parent Scope
+     */
+    async openDynamicTable(config) {
+      const DynamicTableApp2 = (await __vitePreload(async () => {
+        const { default: __vite_default__ } = await Promise.resolve().then(function() {
+          return DynamicTableApp$1;
+        });
+        return { default: __vite_default__ };
+      }, false ? __VITE_PRELOAD__ : void 0)).default;
+      const app = new DynamicTableApp2(this._appScope);
+      this._openChildApps.add(app);
+      const result = await new Promise((resolve) => {
+        app._prepareConfig(config);
+        app._prepareOnSubmit((data) => {
+          app.close();
+          this._openChildApps.delete(app);
+          resolve(data);
+        });
+        app._prepareOnCancel(() => {
+          app.close();
+          this._openChildApps.delete(app);
+          resolve(null);
+        });
+        app.render({ force: true });
+      });
+      return result;
+    }
   };
-  _logger3 = new WeakMap();
-  _svelte3 = new WeakMap();
-  _css3 = new WeakMap();
+  _logger4 = new WeakMap();
+  _svelte4 = new WeakMap();
+  _css4 = new WeakMap();
   _MetadataManagementApplication.PARTS = {
     main: {
       template: "modules/relationship-app/templates/metadata-management-main.hbs"
@@ -12320,6 +13175,35 @@ ${component_stack}
         return { ServiceContainer: ServiceContainer3 };
       }, false ? __VITE_PRELOAD__ : void 0);
       const serviceContainer = new ServiceContainer2(logger2, servicePlans, serviceValidator);
+      const { ServiceFactory: ServiceFactory2 } = await __vitePreload(async () => {
+        const { ServiceFactory: ServiceFactory3 } = await Promise.resolve().then(function() {
+          return ServiceFactory$1;
+        });
+        return { ServiceFactory: ServiceFactory3 };
+      }, false ? __VITE_PRELOAD__ : void 0);
+      const { ServiceCache: ServiceCache2 } = await __vitePreload(async () => {
+        const { ServiceCache: ServiceCache3 } = await Promise.resolve().then(function() {
+          return ServiceCache$1;
+        });
+        return { ServiceCache: ServiceCache3 };
+      }, false ? __VITE_PRELOAD__ : void 0);
+      const { ScopeManager: ScopeManager2 } = await __vitePreload(async () => {
+        const { ScopeManager: ScopeManager3 } = await Promise.resolve().then(function() {
+          return ScopeManager$1;
+        });
+        return { ScopeManager: ScopeManager3 };
+      }, false ? __VITE_PRELOAD__ : void 0);
+      const serviceCache = new ServiceCache2(logger2);
+      const scopeManager = new ScopeManager2(logger2);
+      const serviceFactory = new ServiceFactory2(
+        logger2,
+        servicePlans,
+        serviceValidator,
+        serviceContainer
+      );
+      serviceContainer.setServiceFactory(serviceFactory);
+      serviceContainer.setServiceCache(serviceCache);
+      serviceContainer.setScopeManager(scopeManager);
       const { ServiceRegistrar: ServiceRegistrar2 } = await __vitePreload(async () => {
         const { ServiceRegistrar: ServiceRegistrar3 } = await Promise.resolve().then(function() {
           return ServiceRegistrar$1;

@@ -19,9 +19,10 @@ export interface IServiceRegistrar {
   /**
    * Service über ServiceContainer abrufen
    * @param identifier - Service-Identifier
+   * @param scope - Optionaler Scope für Scoped Services
    * @returns Service-Instanz
    */
-  getService<T>(identifier: any): T;
+  getService<T>(identifier: any, scope?: string): T;
 
   /**
    * Prüfen ob Service registriert ist

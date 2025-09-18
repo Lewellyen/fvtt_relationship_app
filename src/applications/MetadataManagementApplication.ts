@@ -1,5 +1,5 @@
 import MetadataManagementView from "../svelte/MetadataManagementView.svelte";
-import { use } from "../core/edge/appContext";
+import { use, setCurrentScope, createScopeChain, disposeScopeChain } from "../core/edge/appContext";
 import { FoundryLogger } from "../core/services/FoundryLogger";
 import { SvelteManager } from "../core/services/SvelteManager";
 import { CSSManager } from "../core/services/CSSManager";
@@ -11,15 +11,19 @@ export default class MetadataManagementApplication extends foundry.applications.
   #logger?: FoundryLogger;
   #svelte?: SvelteManager;
   #css?: CSSManager;
+  private _appScope?: string;
+  private _openChildApps: Set<any> = new Set(); // Tracking offener Child Apps
 
   private get logger() {
     return (this.#logger ??= use(FoundryLogger));
   }
   private get svelte() {
-    return (this.#svelte ??= use(SvelteManager));
+    if (!this._appScope) throw new Error("App scope not set. Call _onRender first.");
+    return (this.#svelte ??= use(SvelteManager, this._appScope));
   }
   private get css() {
-    return (this.#css ??= use(CSSManager));
+    if (!this._appScope) throw new Error("App scope not set. Call _onRender first.");
+    return (this.#css ??= use(CSSManager, this._appScope));
   }
 
   constructor() {
@@ -87,6 +91,15 @@ export default class MetadataManagementApplication extends foundry.applications.
 
   async _onRender(context: any, options: any) {
     this.logger.info("[MetadataManagementApplication] _onRender started", { context, options });
+
+    // App-Scope setzen
+    const appId = "MetadataManagementApplication";
+    this._appScope = `app-${appId}`;
+    setCurrentScope(this._appScope);
+
+    // Scope Chain erstellen für Child Apps
+    createScopeChain(this._appScope);
+
     await super._onRender(context, options);
 
     const target = this.element.querySelector("#metadata-management-svelte");
@@ -106,7 +119,10 @@ export default class MetadataManagementApplication extends foundry.applications.
     this.svelteApp = await this.svelte.mountComponent(
       MetadataManagementView,
       target as HTMLElement,
-      {}
+      {
+        parentScope: this._appScope,
+        parentApp: this, // Parent App-Referenz für automatisches Tracking
+      }
     );
 
     this.logger.info("[MetadataManagementApplication] MetadataManagementView mounted successfully");
@@ -115,9 +131,96 @@ export default class MetadataManagementApplication extends foundry.applications.
   /** @override */
   async _onClose(options: any) {
     this.logger.info("[MetadataManagementApplication] _onClose called with options:", options);
+
+    // ✅ Alle offenen Child Apps schließen
+    if (this._openChildApps.size > 0) {
+      this.logger.info(
+        `[MetadataManagementApplication] Closing ${this._openChildApps.size} open child apps`
+      );
+      for (const childApp of this._openChildApps) {
+        try {
+          await childApp.close();
+          this.logger.info(
+            `[MetadataManagementApplication] Closed child app: ${childApp.constructor.name}`
+          );
+        } catch (error) {
+          this.logger.warn(`[MetadataManagementApplication] Error closing child app:`, error);
+        }
+      }
+      this._openChildApps.clear();
+    }
+
     // ✅ Delegation an SvelteManager - Single Responsibility
     await this.svelte.unmountApp(this.svelteApp);
     this.svelteApp = null;
+
+    // Scope Chain mit allen Children entsorgen
+    if (this._appScope) {
+      this.logger.info(
+        `[MetadataManagementApplication] Disposing scope chain with all child services: ${this._appScope}`
+      );
+      disposeScopeChain(this._appScope);
+      this.logger.info(`[MetadataManagementApplication] ✅ All child services have been disposed`);
+    }
+
     return super._onClose(options);
+  }
+
+  /**
+   * Dynamic Dialog öffnen mit Parent Scope
+   */
+  async openDynamicDialog(config: any): Promise<Record<string, any> | null> {
+    const DynamicDialogApp = (await import("./DynamicDialogApp")).default;
+    const app = new DynamicDialogApp(this._appScope);
+
+    // App zur Tracking-Liste hinzufügen
+    this._openChildApps.add(app);
+
+    // Promise für automatisches Cleanup
+    const result = await new Promise<Record<string, any> | null>((resolve) => {
+      app._prepareConfig(config);
+      app._prepareOnSubmit((values) => {
+        app.close();
+        this._openChildApps.delete(app); // Aus Tracking entfernen
+        resolve(values);
+      });
+      app._prepareOnCancel(() => {
+        app.close();
+        this._openChildApps.delete(app); // Aus Tracking entfernen
+        resolve(null);
+      });
+      app.render({ force: true });
+    });
+
+    return result;
+  }
+
+  /**
+   * Dynamic Table öffnen mit Parent Scope
+   */
+  async openDynamicTable(config: any): Promise<any[] | null> {
+    const DynamicTableApp = (await import("./DynamicTableApp")).default;
+    const app = new DynamicTableApp(this._appScope);
+
+    // App zur Tracking-Liste hinzufügen
+    this._openChildApps.add(app);
+
+    // Promise für automatisches Cleanup
+    const result = await new Promise<any[] | null>((resolve) => {
+      app._prepareConfig(config);
+      app._prepareOnSubmit((data) => {
+        app.close();
+        this._openChildApps.delete(app); // Aus Tracking entfernen
+        resolve(data);
+      });
+      app._prepareOnCancel(() => {
+        app.close();
+        this._openChildApps.delete(app); // Aus Tracking entfernen
+        resolve(null);
+      });
+      app.render({ force: true });
+    });
+
+    return result;
   }
 }

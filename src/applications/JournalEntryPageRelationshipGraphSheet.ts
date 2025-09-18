@@ -1,4 +1,4 @@
-import { use } from "../core/edge/appContext";
+import { use, setCurrentScope, disposeScopedServices } from "../core/edge/appContext";
 import { FoundryLogger } from "../core/services/FoundryLogger";
 import { SvelteManager } from "../core/services/SvelteManager";
 import { CSSManager } from "../core/services/CSSManager";
@@ -15,19 +15,27 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
   #logger?: FoundryLogger;
   #svelte?: SvelteManager;
   #css?: CSSManager;
+  #graphService?: GraphService;
+  private _pageScope?: string;
 
   private get logger() {
     return (this.#logger ??= use(FoundryLogger));
   }
   private get svelteManager() {
-    return (this.#svelte ??= use(SvelteManager));
+    if (!this._pageScope) throw new Error("Page scope not set. Call _onRender first.");
+    return (this.#svelte ??= use(SvelteManager, this._pageScope));
   }
   private get cssManager() {
-    return (this.#css ??= use(CSSManager));
+    if (!this._pageScope) throw new Error("Page scope not set. Call _onRender first.");
+    return (this.#css ??= use(CSSManager, this._pageScope));
+  }
+  private get graphService() {
+    if (!this._pageScope) throw new Error("Page scope not set. Call _onRender first.");
+    return (this.#graphService ??= use(GraphService, this._pageScope));
   }
 
   constructor(...args: any[]) {
-    super(...args);    
+    super(...args);
     // Kein Service im Konstruktor holen (Foundry erzeugt die Klasse; Constructor-Zeitpunkt ist zu früh)
   }
   /**
@@ -123,9 +131,14 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
       options,
     });
 
-    const graphService: GraphService = use(GraphService);
-    await graphService.init(this.document);
-    bindFoundrySync(this.document, graphService);
+    // Page-Scope setzen
+    const pageId = this.document.uuid;
+    this._pageScope = `page-${pageId}`;
+    setCurrentScope(this._pageScope);
+
+    // Scoped Services verwenden
+    await this.graphService.init(this.document);
+    bindFoundrySync(this.document, this.graphService);
 
     await super._onRender(context, options);
 
@@ -156,9 +169,19 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
       "[JournalEntryPageRelationshipGraphSheet] _onClose called with options:",
       options
     );
+
     // ✅ Delegation an SvelteManager - Single Responsibility
     await this.svelteManager.unmountApp(this.svelteApp);
     this.svelteApp = null;
+
+    // Scope-Cleanup
+    if (this._pageScope) {
+      disposeScopedServices(this._pageScope);
+      this.logger.info(
+        `[JournalEntryPageRelationshipGraphSheet] Disposed scoped services for scope: ${this._pageScope}`
+      );
+    }
+
     return super._onClose(options);
   }
 }

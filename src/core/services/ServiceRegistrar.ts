@@ -53,18 +53,22 @@ export class ServiceRegistrar implements IServiceRegistrar {
   /**
    * Service über Factory abrufen - On-Demand
    */
-  getService<T>(identifier: any): T {
-    this.logger.info(`[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}`);
+  getService<T>(identifier: any, scope?: string): T {
+    this.logger.info(
+      `[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}${scope ? ` (scope: ${scope})` : ""}`
+    );
 
     const factory = this.serviceLocator.get(identifier);
     if (!factory) {
       throw new Error(`Service ${identifier.name || identifier} not registered`);
     }
 
-    // Factory aufrufen - Service wird erst hier erstellt
-    const service = factory();
-    this.logger.info(`[ServiceRegistrar] ✅ Service retrieved: ${identifier.name || identifier}`);
-    return service;
+    // Scope an ServiceContainer weiterleiten
+    const service = this.serviceContainer.getService(identifier, scope);
+    this.logger.info(
+      `[ServiceRegistrar] ✅ Service retrieved: ${identifier.name || identifier}${scope ? ` (scope: ${scope})` : ""}`
+    );
+    return service as T;
   }
 
   /**

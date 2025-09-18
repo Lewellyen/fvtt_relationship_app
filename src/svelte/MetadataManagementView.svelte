@@ -12,6 +12,7 @@
   createOptions 
 } from '../utils/formWrappers';
   import DynamicDialogApp from '../applications/DynamicDialogApp';
+  import DynamicTableApp from '../applications/DynamicTableApp';
 
 
   interface IMetadata {
@@ -93,7 +94,8 @@
   let isLoading: boolean = $state(false);
   let errorMessage: string | null = $state(null);
   let successMessage: string | null = $state(null);
-  // App-Instanz nicht mehr benötigt, da wir die statische show()-Methode verwenden
+  // Props von Parent App
+  let { parentScope, parentApp }: { parentScope?: string; parentApp?: any } = $props();
 
   // Neue Schema-Erstellung
   let newSchema: Partial<ISchema> = $state({
@@ -359,7 +361,11 @@
     editingSchema = null;
     
     const config = createSchemaFormConfig();
-    const result = await DynamicDialogApp.show(config);
+    
+    // Parent App's Methode nutzen für automatisches Tracking
+    const result = parentApp 
+      ? await parentApp.openDynamicDialog(config)
+      : await DynamicDialogApp.show(config, parentScope);
     
     if (result) {
       console.log('Neues Schema erstellt:', result);
@@ -375,7 +381,11 @@
     isCreatingNewSchema = false;
     
     const config = createSchemaFormConfig();
-    const result = await DynamicDialogApp.show(config);
+    
+    // Parent App's Methode nutzen für automatisches Tracking
+    const result = parentApp 
+      ? await parentApp.openDynamicDialog(config)
+      : await DynamicDialogApp.show(config, parentScope);
     
     if (result) {
       console.log('Schema bearbeitet:', result);
@@ -391,7 +401,11 @@
     isCreatingNewRow = false;
     
     const config = createRowFormConfig();
-    const result = await DynamicDialogApp.show(config);
+    
+    // Parent App's Methode nutzen für automatisches Tracking
+    const result = parentApp 
+      ? await parentApp.openDynamicDialog(config)
+      : await DynamicDialogApp.show(config, parentScope);
     
     if (result) {
       console.log('Metadaten-Zeile bearbeitet:', result);
@@ -407,7 +421,11 @@
     editingRow = null;
     
     const config = createRowFormConfig();
-    const result = await DynamicDialogApp.show(config);
+    
+    // Parent App's Methode nutzen für automatisches Tracking
+    const result = parentApp 
+      ? await parentApp.openDynamicDialog(config)
+      : await DynamicDialogApp.show(config, parentScope);
     
     if (result) {
       console.log('Neue Metadaten-Zeile erstellt:', result);

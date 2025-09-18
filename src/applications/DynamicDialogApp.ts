@@ -1,6 +1,12 @@
 import DynamicFormSheet from "../svelte/DynamicFormSheet.svelte";
 import type { IDynamicFormConfig } from "../types/DynamicFormTypes";
-import { use } from "../core/edge/appContext";
+import {
+  use,
+  setCurrentScope,
+  disposeScopedServices,
+  createChildScope,
+  removeChildScope,
+} from "../core/edge/appContext";
 import { FoundryLogger } from "../core/services/FoundryLogger";
 import { SvelteManager } from "../core/services/SvelteManager";
 import { CSSManager } from "../core/services/CSSManager";
@@ -12,20 +18,41 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
   #logger?: FoundryLogger;
   #svelte?: SvelteManager;
   #css?: CSSManager;
+  private _instanceId?: string;
+  private _instanceScope?: string;
+  private _parentScope?: string;
 
   private get logger() {
     return (this.#logger ??= use(FoundryLogger));
   }
   private get svelteManager() {
-    return (this.#svelte ??= use(SvelteManager));
+    if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
+    return (this.#svelte ??= use(SvelteManager, this._instanceScope));
   }
   private get cssManager() {
-    return (this.#css ??= use(CSSManager));
+    if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
+    return (this.#css ??= use(CSSManager, this._instanceScope));
   }
 
-  constructor() {
+  constructor(parentScope?: string) {
     super();
-    // Kein Service im Konstruktor holen (Foundry erzeugt die Klasse; Constructor-Zeitpunkt ist zu früh)
+    this._parentScope = parentScope;
+
+    if (parentScope) {
+      // Child Scope in Parent Chain erstellen
+      this._instanceScope = createChildScope(parentScope, "DynamicDialogApp");
+      this._instanceId = this._instanceScope;
+    } else {
+      // Fallback: Eigenen Scope erstellen
+      this._instanceId = this.generateInstanceId();
+      this._instanceScope = `instance-${this._instanceId}`;
+    }
+  }
+
+  private generateInstanceId(): string {
+    const timestamp = Date.now();
+    const randomId = foundry.utils.randomID();
+    return `${this.constructor.name}-${timestamp}-${randomId}`;
   }
   /**
    * Merge the default parts, inserting our graph part between header and footer.
@@ -110,7 +137,16 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
   }
 
   async _onRender(context: any, options: any) {
-    this.logger.info(`[${DynamicDialogApp.appId}] _onRender started`, { context, options });
+    this.logger.info(`[${DynamicDialogApp.appId}] _onRender started`, {
+      instanceId: this._instanceId,
+      context,
+      options,
+    });
+
+    // Instance-Scope setzen
+    if (this._instanceScope) {
+      setCurrentScope(this._instanceScope);
+    }
 
     try {
       await super._onRender(context, options);
@@ -161,19 +197,44 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
 
   /** @override */
   async _onClose(options: any) {
-    this.logger.info(`[${DynamicDialogApp.appId}] _onClose called with options:`, options);
+    this.logger.info(`[${DynamicDialogApp.appId}] _onClose called`, {
+      instanceId: this._instanceId,
+      parentScope: this._parentScope,
+      options,
+    });
+
     // ✅ Delegation an SvelteManager - Single Responsibility
     await this.svelteManager.unmountApp(this.svelteApp);
     this.svelteApp = null;
+
+    // Child Scope aus Parent Chain entfernen (falls vorhanden)
+    if (this._parentScope && this._instanceScope) {
+      removeChildScope(this._parentScope, this._instanceScope);
+      this.logger.info(
+        `[${DynamicDialogApp.appId}] Removed child scope from parent chain: ${this._instanceScope}`
+      );
+    }
+
+    // Instance-Scope cleanup
+    if (this._instanceScope) {
+      disposeScopedServices(this._instanceScope);
+      this.logger.info(
+        `[${DynamicDialogApp.appId}] Disposed instance scope: ${this._instanceScope}`
+      );
+    }
+
     return super._onClose(options);
   }
 
   /**
    * Statische Methode zum einfachen Öffnen des Dialogs
    */
-  static async show(config: IDynamicFormConfig): Promise<Record<string, any> | null> {
+  static async show(
+    config: IDynamicFormConfig,
+    parentScope?: string
+  ): Promise<Record<string, any> | null> {
     return new Promise((resolve) => {
-      const app = new DynamicDialogApp();
+      const app = new DynamicDialogApp(parentScope);
 
       // Konfiguration setzen
       app._prepareConfig(config);

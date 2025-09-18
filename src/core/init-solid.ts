@@ -75,9 +75,28 @@ foundryAdapter.onInit(async () => {
       throw new Error(`Plan validation failed: ${planValidation.errors.join(", ")}`);
     }
 
-    // Runtime Services erstellen
+    // Runtime Services erstellen - Neue Hierarchie
     const { ServiceContainer } = await import("../services/ServiceContainer");
     const serviceContainer = new ServiceContainer(logger, servicePlans, serviceValidator);
+
+    // Spezialisierte Services erstellen
+    const { ServiceFactory } = await import("../core/services/ServiceFactory");
+    const { ServiceCache } = await import("../core/services/ServiceCache");
+    const { ScopeManager } = await import("../core/services/ScopeManager");
+
+    const serviceCache = new ServiceCache(logger);
+    const scopeManager = new ScopeManager(logger);
+    const serviceFactory = new ServiceFactory(
+      logger,
+      servicePlans,
+      serviceValidator,
+      serviceContainer
+    );
+
+    // Services in Container injizieren
+    serviceContainer.setServiceFactory(serviceFactory);
+    serviceContainer.setServiceCache(serviceCache);
+    serviceContainer.setScopeManager(scopeManager);
 
     const { ServiceRegistrar } = await import("../core/services/ServiceRegistrar");
     const serviceRegistrar = new ServiceRegistrar(logger, serviceContainer);
