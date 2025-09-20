@@ -265,6 +265,22 @@ Alle relevanten Änderungen an diesem Projekt werden in diesem Dokument festgeha
 
 - Keine besonderen Maßnahmen erforderlich
 
+## [0.27.0] - 2025-09-20
+### Hinzugefügt
+- Keine Einträge
+
+### Geändert
+- Refactoring Domänentrennung
+
+### Fehlerbehebungen
+- Keine Einträge
+
+### Bekannte Probleme
+- Keine bekannten Probleme
+
+### Upgrade-Hinweise
+- Keine besonderen Maßnahmen erforderlich
+
 ## [0.26.0] - 2025-09-20
 ### Hinzugefügt
 - Keine Einträge

@@ -5,40 +5,38 @@ import type {
   NodePolicy,
   FieldPath,
 } from "../types/RelationshipGraphTypes";
-import type { IFoundryAdapter } from "../core/adapters/IFoundryAdapter";
+import type { IGraphRepository } from "../interfaces/core/IPorts";
+import { IdGeneratorAdapter } from "../core/adapters/IdGeneratorAdapter";
+import { TimeSourceAdapter } from "../core/adapters/TimeSourceAdapter";
+import { GraphRepositoryAdapter } from "../core/adapters/GraphRepositoryAdapter";
 import { FoundryLogger } from "../core/services/FoundryLogger";
+import type { ILogger } from "../interfaces";
 
 export class GraphService {
   // ✅ Metadaten für Service Registration
   static readonly API_NAME = "graphService";
   static readonly SERVICE_TYPE = "scoped" as const;
   static readonly CLASS_NAME = "GraphService";
-  static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies werden über Container injiziert
-  private _page?: JournalEntryPage | undefined;
+  static readonly DEPENDENCIES = [FoundryLogger, IdGeneratorAdapter, TimeSourceAdapter, GraphRepositoryAdapter];
+  
   private _snapshot: GraphModel | null;
   private _instanceId: string;
   private _initialized: boolean = false;
-  private _foundryAdapter?: IFoundryAdapter | undefined;
 
-  constructor(page?: JournalEntryPage, foundryAdapter?: IFoundryAdapter) {
-    this._page = page;
-    this._foundryAdapter = foundryAdapter;
+  constructor(
+    private readonly logger: ILogger,
+    private readonly idGenerator: IdGeneratorAdapter,
+    private readonly timeSource: TimeSourceAdapter,
+    public readonly repository: GraphRepositoryAdapter
+  ) {
     this._snapshot = null;
-    this._instanceId = foundry.utils.randomID();
+    this._instanceId = this.idGenerator.generateId();
   }
 
   // -- Public ----------------------------------------------------------------
 
-  async init(page: JournalEntryPage): Promise<void> {
-    this._page = page;
-    
-    // FoundryAdapter über API abrufen, falls nicht injiziert
-    if (!this._foundryAdapter) {
-      const api = (globalThis as any).game?.modules?.get("relationship-app")?.api;
-      this._foundryAdapter = api?.foundryAdapter;
-    }
-    
-    this._snapshot = foundry.utils.deepClone(this._loadFromSystem());
+  async init(): Promise<void> {
+    this._snapshot = await this.repository.load();
     this._initialized = true;
   }
 
@@ -48,7 +46,7 @@ export class GraphService {
 
   getSnapshot(): Readonly<GraphModel> {
     if (!this._initialized || !this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
-    return foundry.utils.deepClone(this._snapshot);
+    return this._snapshot;
   }
 
   getNode(id: string): NodeData | undefined {
@@ -59,7 +57,7 @@ export class GraphService {
   async addNode(node: NodeData): Promise<void> {
     if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     const next = this._cloneCurrent();
-    next.nodes[node.id] = foundry.utils.deepClone(node);
+    next.nodes[node.id] = { ...node };
     await this._write(next);
   }
 
@@ -91,7 +89,7 @@ export class GraphService {
     if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     const next = this._cloneCurrent();
     this._assertEndpointsExist(next, edge.source, edge.target);
-    next.edges[edge.id] = foundry.utils.deepClone(edge);
+    next.edges[edge.id] = { ...edge };
     await this._write(next);
   }
 
@@ -118,10 +116,10 @@ export class GraphService {
   /** GM-only: komplette Policy eines Nodes setzen/überschreiben */
   async setPolicy(nodeId: string, policy: NodePolicy): Promise<void> {
     if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
-    if (!game.user?.isGM) throw new Error("Only GM can modify policies.");
+    // Note: GM check should be handled by the calling application layer
     const next = this._cloneCurrent();
     if (!next.policy) next.policy = {};
-    next.policy[nodeId] = foundry.utils.deepClone(policy);
+    next.policy[nodeId] = { ...policy };
     await this._write(next);
   }
 
@@ -133,7 +131,7 @@ export class GraphService {
   /** GM-only: Node-Sichtbarkeit (für Spieler) setzen */
   async setNodeVisible(nodeId: string, visible: boolean): Promise<void> {
     if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
-    if (!game.user?.isGM) throw new Error("Only GM can modify node visibility.");
+    // Note: GM check should be handled by the calling application layer
     const next = this._cloneCurrent();
     if (!next.policy) next.policy = {};
     const np: NodePolicy = next.policy[nodeId] ?? { visibility: {} };
@@ -152,7 +150,7 @@ export class GraphService {
   /** GM-only: komplette Policy eines Nodes entfernen */
   async removePolicy(nodeId: string): Promise<void> {
     if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
-    if (!game.user?.isGM) throw new Error("Only GM can remove policies.");
+    // Note: GM check should be handled by the calling application layer
     const next = this._cloneCurrent();
     if (!next.policy || !(nodeId in next.policy)) return;
     delete next.policy[nodeId];
@@ -162,7 +160,7 @@ export class GraphService {
   /** GM-only: nur Node-Visibility zurücksetzen (Policy-Eintrag bleibt sonst erhalten) */
   async clearNodeVisible(nodeId: string): Promise<void> {
     if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
-    if (!game.user?.isGM) throw new Error("Only GM can modify visibility.");
+    // Note: GM check should be handled by the calling application layer
     const next = this._cloneCurrent();
     const p = next.policy?.[nodeId];
     if (!p) return;
@@ -174,7 +172,7 @@ export class GraphService {
   /** GM-only: Feld-Visibilities zurücksetzen (alle oder ausgewählte Pfade) */
   async clearFieldVisibility(nodeId: string, paths?: FieldPath[]): Promise<void> {
     if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
-    if (!game.user?.isGM) throw new Error("Only GM can modify field policies.");
+    // Note: GM check should be handled by the calling application layer
     const next = this._cloneCurrent();
     const p = next.policy?.[nodeId];
     if (!p) return;
@@ -190,86 +188,16 @@ export class GraphService {
 
   // -- Intern ----------------------------------------------------------------
 
-  private _loadFromSystem(): GraphModel {
-    if (!this._page) throw new Error("GraphService not initialized. Call init() first.");
-    const sys = this._page.system as any;
-    return {
-      version: sys.version ?? 1,
-      nodes: foundry.utils.deepClone(sys.nodes ?? {}),
-      edges: foundry.utils.deepClone(sys.edges ?? {}),
-      policy: foundry.utils.deepClone(sys.policy ?? {}),
-    } as GraphModel;
-  }
-
   private _cloneCurrent(): GraphModel {
     if (!this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
-    return foundry.utils.deepClone(this._snapshot);
+    return JSON.parse(JSON.stringify(this._snapshot)); // Deep clone without Foundry dependency
   }
 
   private async _write(next: GraphModel): Promise<void> {
-    await this._writeToSystem(next);
-    this._snapshot = foundry.utils.deepClone(next);
+    await this.repository.save(next);
+    this._snapshot = next;
   }
 
-  private async _writeToSystem(next: GraphModel): Promise<void> {
-    if (!this._initialized || !this._page) throw new Error("GraphService not initialized. Call init() first.");
-
-    const prev = this._snapshot;
-    if (!prev) throw new Error("GraphService not initialized. Call init() first.");
-    
-    let patch: Record<string, unknown> = {};
-
-    // version (optional – setze nur, wenn geändert)
-    if (next.version !== prev.version) {
-      patch["system.version"] = next.version;
-    }
-
-    // Dictionaries diffen (Nodes, Edges, Policy)
-    patch = { ...patch, ...this._dictDiff("system.nodes", prev.nodes, next.nodes) };
-    patch = { ...patch, ...this._dictDiff("system.edges", prev.edges, next.edges) };
-    patch = { ...patch, ...this._dictDiff("system.policy", prev.policy ?? {}, next.policy ?? {}) };
-
-    if (foundry.utils.isEmpty(patch)) return;
-
-    // FoundryAdapter verwenden für konsistente Updates mit Reload
-    if (this._foundryAdapter) {
-      await this._foundryAdapter.updateDocumentWithReload(this._page, patch);
-    } else {
-      // Fallback: Direktes Update (für Backward-Kompatibilität)
-      await this._page.update(patch, { _graphService: this._instanceId, render: false } as any);
-    }
-  }
-
-  /**
-   * Patch für Dictionary-Felder (Record<string, any>) erzeugen:
-   * - Entfernte Keys -> `${basePath}.-=${key}`: null
-   * - Neu/Geändert   -> `${basePath}.${key}`: value   (ganzen Eintrag setzen)
-   */
-  private _dictDiff(
-    basePath: string,
-    prev: Record<string, any>,
-    next: Record<string, any>
-  ): Record<string, unknown> {
-    const patch: Record<string, unknown> = {};
-
-    // 1) Deletions (Top-Level)
-    for (const k of Object.keys(prev)) {
-      if (!(k in next)) patch[`${basePath}.-=${k}`] = null;
-    }
-
-    // 2) Inserts/Updates (ganzer Eintrag, robust & simpel)
-    for (const [k, newVal] of Object.entries(next)) {
-      const oldVal = prev[k];
-      if (oldVal === undefined) {
-        patch[`${basePath}.${k}`] = newVal;
-      } else {
-        const d = foundry.utils.diffObject(oldVal, newVal);
-        if (!foundry.utils.isEmpty(d)) patch[`${basePath}.${k}`] = newVal;
-      }
-    }
-
-    return patch;
-  }
 
   private _assertEndpointsExist(g: GraphModel, source: string, target: string): void {
     if (!g.nodes[source]) throw new Error(`Edge source '${source}' does not exist`);

@@ -1,5 +1,7 @@
 import type { IFoundryAdapter } from "./IFoundryAdapter";
 import { MODULE_ID } from "../../constants";
+import type { ILogger } from "../../interfaces";
+import { FoundryLogger } from "../services/FoundryLogger";
 
 /**
  * Foundry VTT API Adapter für Version 13
@@ -26,15 +28,22 @@ export class FoundryAdapter implements IFoundryAdapter {
   static readonly API_NAME = "foundryAdapter";
   static readonly SERVICE_TYPE = "singleton" as const;
   static readonly CLASS_NAME = "FoundryAdapter"; // ✅ Klassename für Dependency Resolution
-  static readonly DEPENDENCIES = []; // ✅ Keine Dependencies erforderlich
+  static readonly DEPENDENCIES = [FoundryLogger];
+
+  constructor(private readonly logger: ILogger) {}
 
   // Utils
   generateId(): string {
     return foundry.utils.randomID();
   }
 
-  async loadDocument(uuid: string): Promise<unknown> {
-    return await foundry.utils.fromUuid(uuid);
+  async loadDocument<TDoc extends foundry.abstract.Document | object>(uuid: string): Promise<TDoc | null> {
+    const doc = await foundry.utils.fromUuid(uuid);
+    return (doc ?? null) as TDoc | null;
+  }
+
+  deepClone<T>(obj: T): T {
+    return foundry.utils.deepClone(obj);
   }
 
   // UI Notifications
@@ -59,13 +68,16 @@ export class FoundryAdapter implements IFoundryAdapter {
     Hooks.once("init", callback);
   }
 
-  onReady(callback: () => Promise<void>): void {
+  onReady(callback: () => Promise<void> | void): void {
     Hooks.once("ready", callback);
   }
 
   // Document Operations
-  async updateDocument(document: unknown, data: unknown): Promise<unknown> {
-    return await (document as any).update(data);
+  async updateDocument<TDoc extends foundry.abstract.Document, TData extends Record<string, unknown>>(
+    document: TDoc,
+    data: TData
+  ): Promise<TDoc> {
+    return (await (document as any).update(data)) as TDoc;
   }
 
   /**
@@ -78,35 +90,25 @@ export class FoundryAdapter implements IFoundryAdapter {
    * @param data - Die zu speichernden Daten
    * @returns Promise mit dem aktualisierten Dokument
    */
-  async updateDocumentWithReload(document: unknown, data: unknown): Promise<unknown> {
+  async updateDocumentWithReload<TDoc extends foundry.abstract.Document, TData extends Record<string, unknown>>(
+    document: TDoc,
+    data: TData
+  ): Promise<TDoc> {
     try {
       // Lade das Dokument neu für Datenkonsistenz
-      const documentUuid = (document as any).uuid;
-      const freshDocument = await this.loadDocument(documentUuid);
+      const documentUuid = (document as any).uuid as string;
+      const freshDocument = await this.loadDocument<TDoc>(documentUuid);
 
       if (freshDocument) {
         // ✅ Update mit frischen Daten
-        return await (freshDocument as any).update(data);
+        return (await (freshDocument as any).update(data)) as TDoc;
       } else {
         // ✅ Fallback: Direktes Update wenn Reload fehlschlägt
-        return await (document as any).update(data);
+        return (await (document as any).update(data)) as TDoc;
       }
     } catch (error) {
-      // ✅ Error Handling mit Fallback
-      // Logger über GlobalStateManager abrufen (falls verfügbar)
-      try {
-        const globalState = (globalThis as any).relationshipApp?.globalStateManager;
-        if (globalState) {
-          const logger = globalState.getService("logger");
-          if (logger) {
-            logger.warn("Failed to reload document, using direct update:", error);
-          }
-        }
-      } catch {
-        // Fallback: Logger nicht verfügbar, aber trotzdem nicht console verwenden
-        // In diesem Fall wird der Fehler stillschweigend ignoriert und direktes Update versucht
-      }
-      return await (document as any).update(data);
+      this.logger.warn("Failed to reload document, using direct update:", error as unknown);
+      return (await (document as any).update(data)) as TDoc;
     }
   }
 

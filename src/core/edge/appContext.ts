@@ -41,7 +41,7 @@ export function getScopedServiceCount(scope: string): number {
 export function createChildScope(parentScope: string, childType: string): string {
   if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
 
-  const childScope = `${childType}-${foundry.utils.randomID()}`;
+  const childScope = `${childType}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
 
   // Child Scope zur Parent Chain hinzufügen
   _container.addChildScope(parentScope, childScope);

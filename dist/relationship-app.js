@@ -242,13 +242,19 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   _FoundryLogger.DEPENDENCIES = [];
   let FoundryLogger = _FoundryLogger;
   const _FoundryAdapter = class _FoundryAdapter {
-    // ✅ Keine Dependencies erforderlich
+    constructor(logger2) {
+      this.logger = logger2;
+    }
     // Utils
     generateId() {
       return foundry.utils.randomID();
     }
     async loadDocument(uuid) {
-      return await foundry.utils.fromUuid(uuid);
+      const doc = await foundry.utils.fromUuid(uuid);
+      return doc ?? null;
+    }
+    deepClone(obj) {
+      return foundry.utils.deepClone(obj);
     }
     // UI Notifications
     showInfo(message) {
@@ -294,16 +300,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
           return await document2.update(data);
         }
       } catch (error) {
-        try {
-          const globalState = globalThis.relationshipApp?.globalStateManager;
-          if (globalState) {
-            const logger2 = globalState.getService("logger");
-            if (logger2) {
-              logger2.warn("Failed to reload document, using direct update:", error);
-            }
-          }
-        } catch {
-        }
+        this.logger.warn("Failed to reload document, using direct update:", error);
         return await document2.update(data);
       }
     }
@@ -323,7 +320,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   _FoundryAdapter.API_NAME = "foundryAdapter";
   _FoundryAdapter.SERVICE_TYPE = "singleton";
   _FoundryAdapter.CLASS_NAME = "FoundryAdapter";
-  _FoundryAdapter.DEPENDENCIES = [];
+  _FoundryAdapter.DEPENDENCIES = [FoundryLogger];
   let FoundryAdapter = _FoundryAdapter;
   const _ConsoleErrorHandler = class _ConsoleErrorHandler {
     // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
@@ -399,7 +396,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   }
   function createChildScope(parentScope, childType) {
     if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
-    const childScope = `${childType}-${foundry.utils.randomID()}`;
+    const childScope = `${childType}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
     _container.addChildScope(parentScope, childScope);
     return childScope;
   }
@@ -8752,22 +8749,108 @@ ${component_stack}
   _CSSManager.CLASS_NAME = "CSSManager";
   _CSSManager.DEPENDENCIES = [FoundryLogger];
   let CSSManager = _CSSManager;
+  const _IdGeneratorAdapter = class _IdGeneratorAdapter {
+    /**
+     * Generiert eine eindeutige ID
+     */
+    generateId() {
+      return foundry.utils.randomID();
+    }
+  };
+  _IdGeneratorAdapter.API_NAME = "idGenerator";
+  _IdGeneratorAdapter.SERVICE_TYPE = "singleton";
+  _IdGeneratorAdapter.CLASS_NAME = "IdGeneratorAdapter";
+  _IdGeneratorAdapter.DEPENDENCIES = [];
+  let IdGeneratorAdapter = _IdGeneratorAdapter;
+  const _TimeSourceAdapter = class _TimeSourceAdapter {
+    /**
+     * Liefert aktuelle Zeit
+     */
+    getCurrentTime() {
+      return /* @__PURE__ */ new Date();
+    }
+  };
+  _TimeSourceAdapter.API_NAME = "timeSource";
+  _TimeSourceAdapter.SERVICE_TYPE = "singleton";
+  _TimeSourceAdapter.CLASS_NAME = "TimeSourceAdapter";
+  _TimeSourceAdapter.DEPENDENCIES = [];
+  let TimeSourceAdapter = _TimeSourceAdapter;
+  const _GraphRepositoryAdapter = class _GraphRepositoryAdapter {
+    constructor(foundryAdapter2, logger2) {
+      this.foundryAdapter = foundryAdapter2;
+      this.logger = logger2;
+    }
+    setPageUuid(pageUuid) {
+      this.pageUuid = pageUuid;
+    }
+    /**
+     * Lädt Graph-Daten aus der JournalEntryPage
+     */
+    async load() {
+      if (!this.pageUuid) {
+        throw new Error("Page UUID not set. Call setPageUuid() first.");
+      }
+      try {
+        const page = await this.foundryAdapter.loadDocument(this.pageUuid);
+        if (!page) {
+          throw new Error(`JournalEntryPage not found: ${this.pageUuid}`);
+        }
+        const system = page.system;
+        return {
+          version: system.version ?? 1,
+          nodes: this.foundryAdapter.deepClone(system.nodes ?? {}),
+          edges: this.foundryAdapter.deepClone(system.edges ?? {}),
+          policy: this.foundryAdapter.deepClone(system.policy ?? {})
+        };
+      } catch (error) {
+        this.logger.error("Failed to load graph data:", error);
+        throw error;
+      }
+    }
+    /**
+     * Speichert Graph-Daten in der JournalEntryPage
+     */
+    async save(model) {
+      if (!this.pageUuid) {
+        throw new Error("Page UUID not set. Call setPageUuid() first.");
+      }
+      try {
+        const page = await this.foundryAdapter.loadDocument(this.pageUuid);
+        if (!page) {
+          throw new Error(`JournalEntryPage not found: ${this.pageUuid}`);
+        }
+        const patch = {};
+        if (model.version !== void 0) {
+          patch["system.version"] = model.version;
+        }
+        patch["system.nodes"] = model.nodes;
+        patch["system.edges"] = model.edges;
+        patch["system.policy"] = model.policy ?? {};
+        await this.foundryAdapter.updateDocumentWithReload(page, patch);
+      } catch (error) {
+        this.logger.error("Failed to save graph data:", error);
+        throw error;
+      }
+    }
+  };
+  _GraphRepositoryAdapter.API_NAME = "graphRepository";
+  _GraphRepositoryAdapter.SERVICE_TYPE = "scoped";
+  _GraphRepositoryAdapter.CLASS_NAME = "GraphRepositoryAdapter";
+  _GraphRepositoryAdapter.DEPENDENCIES = [FoundryAdapter, FoundryLogger];
+  let GraphRepositoryAdapter = _GraphRepositoryAdapter;
   const _GraphService = class _GraphService {
-    constructor(page, foundryAdapter2) {
+    constructor(logger2, idGenerator, timeSource, repository) {
+      this.logger = logger2;
+      this.idGenerator = idGenerator;
+      this.timeSource = timeSource;
+      this.repository = repository;
       this._initialized = false;
-      this._page = page;
-      this._foundryAdapter = foundryAdapter2;
       this._snapshot = null;
-      this._instanceId = foundry.utils.randomID();
+      this._instanceId = this.idGenerator.generateId();
     }
     // -- Public ----------------------------------------------------------------
-    async init(page) {
-      this._page = page;
-      if (!this._foundryAdapter) {
-        const api = globalThis.game?.modules?.get("relationship-app")?.api;
-        this._foundryAdapter = api?.foundryAdapter;
-      }
-      this._snapshot = foundry.utils.deepClone(this._loadFromSystem());
+    async init() {
+      this._snapshot = await this.repository.load();
       this._initialized = true;
     }
     get instanceId() {
@@ -8775,7 +8858,7 @@ ${component_stack}
     }
     getSnapshot() {
       if (!this._initialized || !this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
-      return foundry.utils.deepClone(this._snapshot);
+      return this._snapshot;
     }
     getNode(id) {
       if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
@@ -8784,7 +8867,7 @@ ${component_stack}
     async addNode(node) {
       if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       const next2 = this._cloneCurrent();
-      next2.nodes[node.id] = foundry.utils.deepClone(node);
+      next2.nodes[node.id] = { ...node };
       await this._write(next2);
     }
     async updateNode(id, patch) {
@@ -8812,7 +8895,7 @@ ${component_stack}
       if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       const next2 = this._cloneCurrent();
       this._assertEndpointsExist(next2, edge.source, edge.target);
-      next2.edges[edge.id] = foundry.utils.deepClone(edge);
+      next2.edges[edge.id] = { ...edge };
       await this._write(next2);
     }
     async updateEdge(id, patch) {
@@ -8835,10 +8918,9 @@ ${component_stack}
     /** GM-only: komplette Policy eines Nodes setzen/überschreiben */
     async setPolicy(nodeId, policy) {
       if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
-      if (!game.user?.isGM) throw new Error("Only GM can modify policies.");
       const next2 = this._cloneCurrent();
       if (!next2.policy) next2.policy = {};
-      next2.policy[nodeId] = foundry.utils.deepClone(policy);
+      next2.policy[nodeId] = { ...policy };
       await this._write(next2);
     }
     getPolicy(nodeId) {
@@ -8848,7 +8930,6 @@ ${component_stack}
     /** GM-only: Node-Sichtbarkeit (für Spieler) setzen */
     async setNodeVisible(nodeId, visible) {
       if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
-      if (!game.user?.isGM) throw new Error("Only GM can modify node visibility.");
       const next2 = this._cloneCurrent();
       if (!next2.policy) next2.policy = {};
       const np = next2.policy[nodeId] ?? { visibility: {} };
@@ -8865,7 +8946,6 @@ ${component_stack}
     /** GM-only: komplette Policy eines Nodes entfernen */
     async removePolicy(nodeId) {
       if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
-      if (!game.user?.isGM) throw new Error("Only GM can remove policies.");
       const next2 = this._cloneCurrent();
       if (!next2.policy || !(nodeId in next2.policy)) return;
       delete next2.policy[nodeId];
@@ -8874,7 +8954,6 @@ ${component_stack}
     /** GM-only: nur Node-Visibility zurücksetzen (Policy-Eintrag bleibt sonst erhalten) */
     async clearNodeVisible(nodeId) {
       if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
-      if (!game.user?.isGM) throw new Error("Only GM can modify visibility.");
       const next2 = this._cloneCurrent();
       const p = next2.policy?.[nodeId];
       if (!p) return;
@@ -8885,7 +8964,6 @@ ${component_stack}
     /** GM-only: Feld-Visibilities zurücksetzen (alle oder ausgewählte Pfade) */
     async clearFieldVisibility(nodeId, paths) {
       if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
-      if (!game.user?.isGM) throw new Error("Only GM can modify field policies.");
       const next2 = this._cloneCurrent();
       const p = next2.policy?.[nodeId];
       if (!p) return;
@@ -8898,62 +8976,13 @@ ${component_stack}
       await this._write(next2);
     }
     // -- Intern ----------------------------------------------------------------
-    _loadFromSystem() {
-      if (!this._page) throw new Error("GraphService not initialized. Call init() first.");
-      const sys = this._page.system;
-      return {
-        version: sys.version ?? 1,
-        nodes: foundry.utils.deepClone(sys.nodes ?? {}),
-        edges: foundry.utils.deepClone(sys.edges ?? {}),
-        policy: foundry.utils.deepClone(sys.policy ?? {})
-      };
-    }
     _cloneCurrent() {
       if (!this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
-      return foundry.utils.deepClone(this._snapshot);
+      return JSON.parse(JSON.stringify(this._snapshot));
     }
     async _write(next2) {
-      await this._writeToSystem(next2);
-      this._snapshot = foundry.utils.deepClone(next2);
-    }
-    async _writeToSystem(next2) {
-      if (!this._initialized || !this._page) throw new Error("GraphService not initialized. Call init() first.");
-      const prev = this._snapshot;
-      if (!prev) throw new Error("GraphService not initialized. Call init() first.");
-      let patch = {};
-      if (next2.version !== prev.version) {
-        patch["system.version"] = next2.version;
-      }
-      patch = { ...patch, ...this._dictDiff("system.nodes", prev.nodes, next2.nodes) };
-      patch = { ...patch, ...this._dictDiff("system.edges", prev.edges, next2.edges) };
-      patch = { ...patch, ...this._dictDiff("system.policy", prev.policy ?? {}, next2.policy ?? {}) };
-      if (foundry.utils.isEmpty(patch)) return;
-      if (this._foundryAdapter) {
-        await this._foundryAdapter.updateDocumentWithReload(this._page, patch);
-      } else {
-        await this._page.update(patch, { _graphService: this._instanceId, render: false });
-      }
-    }
-    /**
-     * Patch für Dictionary-Felder (Record<string, any>) erzeugen:
-     * - Entfernte Keys -> `${basePath}.-=${key}`: null
-     * - Neu/Geändert   -> `${basePath}.${key}`: value   (ganzen Eintrag setzen)
-     */
-    _dictDiff(basePath, prev, next2) {
-      const patch = {};
-      for (const k of Object.keys(prev)) {
-        if (!(k in next2)) patch[`${basePath}.-=${k}`] = null;
-      }
-      for (const [k, newVal] of Object.entries(next2)) {
-        const oldVal = prev[k];
-        if (oldVal === void 0) {
-          patch[`${basePath}.${k}`] = newVal;
-        } else {
-          const d = foundry.utils.diffObject(oldVal, newVal);
-          if (!foundry.utils.isEmpty(d)) patch[`${basePath}.${k}`] = newVal;
-        }
-      }
-      return patch;
+      await this.repository.save(next2);
+      this._snapshot = next2;
     }
     _assertEndpointsExist(g, source2, target) {
       if (!g.nodes[source2]) throw new Error(`Edge source '${source2}' does not exist`);
@@ -8963,7 +8992,7 @@ ${component_stack}
   _GraphService.API_NAME = "graphService";
   _GraphService.SERVICE_TYPE = "scoped";
   _GraphService.CLASS_NAME = "GraphService";
-  _GraphService.DEPENDENCIES = [FoundryLogger];
+  _GraphService.DEPENDENCIES = [FoundryLogger, IdGeneratorAdapter, TimeSourceAdapter, GraphRepositoryAdapter];
   let GraphService = _GraphService;
   function bindFoundrySync(page, service) {
     Hooks.on("updateJournalEntryPage", async (doc, changes, options, userId) => {
@@ -8973,7 +9002,7 @@ ${component_stack}
       const sys = changes.system ?? {};
       const touched = "nodes" in sys || "edges" in sys || "policy" in sys || "version" in sys;
       if (!touched) return;
-      await service.init(page);
+      await service.init();
     });
   }
   const _JournalEntryPageRelationshipGraphSheet = class _JournalEntryPageRelationshipGraphSheet extends foundry.applications.sheets.journal.JournalEntryPageHandlebarsSheet {
@@ -9041,7 +9070,8 @@ ${component_stack}
       const pageId = this.document.uuid;
       this._pageScope = `page-${pageId}`;
       setCurrentScope(this._pageScope);
-      await this.graphService.init(this.document);
+      this.graphService.repository.setPageUuid(this.document.uuid);
+      await this.graphService.init();
       bindFoundrySync(this.document, this.graphService);
       await super._onRender(context, options);
       await this.svelteManager.unmountApp(this.svelteApp);
@@ -10866,7 +10896,7 @@ ${component_stack}
       if (!this.foundryAdapter) {
         throw new Error("FoundryAdapter not available for settings registration");
       }
-      this.foundryAdapter.registerSetting("debugLogs", {
+      this.foundryAdapter.registerSetting(SETTINGS_KEYS.DEBUG_LOGS, {
         name: "Debug Logging",
         hint: "Enable detailed debug logging for development",
         scope: "world",
@@ -10874,7 +10904,7 @@ ${component_stack}
         type: Boolean,
         default: false
       });
-      this.foundryAdapter.registerSetting("metadata", {
+      this.foundryAdapter.registerSetting(SETTINGS_KEYS.METADATA, {
         name: "Relationship App Metadata",
         hint: "Metadata for the Relationship App",
         scope: "world",
@@ -10919,19 +10949,19 @@ ${component_stack}
      * Debug-Logging aktiviert?
      */
     isDebugLoggingEnabled() {
-      return this.getBoolean("debugLogs");
+      return this.getBoolean(SETTINGS_KEYS.DEBUG_LOGS);
     }
     /**
      * Metadata abrufen
      */
     getMetadata() {
-      return this.getObject("metadata", {});
+      return this.getObject(SETTINGS_KEYS.METADATA, {});
     }
     /**
      * Metadata setzen
      */
     async setMetadata(metadata) {
-      return await this.setSetting("metadata", metadata);
+      return await this.setSetting(SETTINGS_KEYS.METADATA, metadata);
     }
   };
   _SettingsService.API_NAME = "settingsService";
@@ -10954,6 +10984,13 @@ ${component_stack}
     // Foundry VTT API
     { name: NotificationService, class: NotificationService },
     // Benachrichtigungen
+    // 🔌 Port Adapters (Domäne-spezifische Abstraktionen)
+    { name: IdGeneratorAdapter, class: IdGeneratorAdapter },
+    // ID-Generator Port
+    { name: TimeSourceAdapter, class: TimeSourceAdapter },
+    // Zeitquelle Port
+    { name: GraphRepositoryAdapter, class: GraphRepositoryAdapter },
+    // Graph Repository Port
     // 🎨 Svelte & UI Services (Benutzeroberfläche)
     { name: SvelteManager, class: SvelteManager },
     // Svelte-Komponenten
@@ -12079,7 +12116,7 @@ ${component_stack}
     }
     generateInstanceId() {
       const timestamp = Date.now();
-      const randomId = foundry.utils.randomID();
+      const randomId = `dialog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       return `${this.constructor.name}-${timestamp}-${randomId}`;
     }
     /** @override */
@@ -12279,7 +12316,7 @@ ${component_stack}
     }
     generateInstanceId() {
       const timestamp = Date.now();
-      const randomId = foundry.utils.randomID();
+      const randomId = `table_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
       return `${this.constructor.name}-${timestamp}-${randomId}`;
     }
     /** @override */
@@ -12514,10 +12551,10 @@ ${component_stack}
       "System"
     ];
     function generateSchemaId() {
-      return foundry.utils.randomID();
+      return `schema_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
     function generateRowId() {
-      return foundry.utils.randomID();
+      return `row_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     }
     function validateSchema(schema) {
       const errors = [];
@@ -12658,6 +12695,7 @@ ${component_stack}
         return;
       }
       const existingRow = schema.rows[rowIndex];
+      if (!existingRow) return;
       schema.rows[rowIndex] = {
         id: existingRow.id,
         name: existingRow.name,
@@ -12929,14 +12967,18 @@ ${component_stack}
         );
       }
     });
-    onMount(() => {
-      loadMetadata();
+    user_effect(() => {
+      let disposed = false;
+      (async () => {
+        await loadMetadata();
+      })();
       const handleEscape = (e) => {
         if (e.key === "Escape" && (get$1(isCreatingNewSchema) || get$1(editingSchema) || get$1(isCreatingNewRow) || get$1(editingRow))) {
         }
       };
       document.addEventListener("keydown", handleEscape);
       return () => {
+        disposed = true;
         document.removeEventListener("keydown", handleEscape);
       };
     });
@@ -13421,8 +13463,8 @@ ${component_stack}
   _GlobalStateManager.CLASS_NAME = "GlobalStateManager";
   _GlobalStateManager.DEPENDENCIES = [];
   let GlobalStateManager = _GlobalStateManager;
-  const foundryAdapter = new FoundryAdapter();
   const logger = new FoundryLogger();
+  const foundryAdapter = new FoundryAdapter(logger);
   const errorHandler = new ConsoleErrorHandler(logger, foundryAdapter);
   const notificationService = new NotificationService(logger, foundryAdapter);
   logger.info(`[SOLID Boot] 🚀 Phase 1: Early Bootstrap - Creating core services`);

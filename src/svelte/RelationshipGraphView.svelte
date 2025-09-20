@@ -1,4 +1,6 @@
 <script lang="ts">
+  import type { ILogger } from '../interfaces';
+
   let {
     elements,
     interactive,
@@ -6,11 +8,11 @@
     onEdgeClick,
     logger,
   }: {
-    elements: any[];
+    elements: unknown[];
     interactive: boolean;
     onNodeClick: (nodeId: string) => void;
     onEdgeClick: (edgeId: string) => void;
-    logger: any;
+    logger: ILogger;
   } = $props();
 
   // Debug-Logging über Logger

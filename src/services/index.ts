@@ -25,6 +25,15 @@ export { ConsoleErrorHandler } from "../core/services/ConsoleErrorHandler";
 import { FoundryAdapter } from "../core/adapters/FoundryAdapter";
 export { FoundryAdapter } from "../core/adapters/FoundryAdapter";
 
+import { IdGeneratorAdapter } from "../core/adapters/IdGeneratorAdapter";
+export { IdGeneratorAdapter } from "../core/adapters/IdGeneratorAdapter";
+
+import { TimeSourceAdapter } from "../core/adapters/TimeSourceAdapter";
+export { TimeSourceAdapter } from "../core/adapters/TimeSourceAdapter";
+
+import { GraphRepositoryAdapter } from "../core/adapters/GraphRepositoryAdapter";
+export { GraphRepositoryAdapter } from "../core/adapters/GraphRepositoryAdapter";
+
 // 🔧 Core Services (Hauptfunktionen)
 export { ModuleInitializer } from "../core/services/ModuleInitializer";
 
@@ -64,6 +73,11 @@ export const SERVICE_CONFIG = [
   { name: ConsoleErrorHandler, class: ConsoleErrorHandler }, // Fehlerbehandlung
   { name: FoundryAdapter, class: FoundryAdapter }, // Foundry VTT API
   { name: NotificationService, class: NotificationService }, // Benachrichtigungen
+
+  // 🔌 Port Adapters (Domäne-spezifische Abstraktionen)
+  { name: IdGeneratorAdapter, class: IdGeneratorAdapter }, // ID-Generator Port
+  { name: TimeSourceAdapter, class: TimeSourceAdapter }, // Zeitquelle Port
+  { name: GraphRepositoryAdapter, class: GraphRepositoryAdapter }, // Graph Repository Port
 
   // 🎨 Svelte & UI Services (Benutzeroberfläche)
   { name: SvelteManager, class: SvelteManager }, // Svelte-Komponenten

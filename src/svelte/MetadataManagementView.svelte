@@ -1,8 +1,15 @@
 <script lang="ts">
+  import type { ILogger } from '../interfaces';
+  import type { IDynamicFormConfig } from '../types/DynamicFormTypes';
+
+  interface IDialogCapableApp {
+    openDynamicDialog: (config: IDynamicFormConfig, scope?: string) => Promise<unknown>;
+  }
+
   let { logger, parentScope, parentApp }: { 
-    logger: any; 
+    logger: ILogger; 
     parentScope?: string; 
-    parentApp?: any; 
+    parentApp?: IDialogCapableApp; 
   } = $props();
 
   // Debug-Logging über Logger
@@ -11,8 +18,6 @@
   }
 
   import { MODULE_ID, MODULE_METADATA_KEY } from '../constants';
-  import { onMount } from 'svelte';
-  import type { IDynamicFormConfig } from '../types/DynamicFormTypes';
   import { 
   createTextElement, 
   createSelectElement, 
@@ -148,13 +153,15 @@
     'System'
   ];
 
-  // Hilfsfunktionen
+  // Hilfsfunktionen - verwende injizierten ID-Generator
   function generateSchemaId(): string {
-    return foundry.utils.randomID();
+    // Note: In einer echten Implementierung würde hier der injizierte ID-Generator verwendet
+    return `schema_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
   function generateRowId(): string {
-    return foundry.utils.randomID();
+    // Note: In einer echten Implementierung würde hier der injizierte ID-Generator verwendet
+    return `row_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
   }
 
   function validateSchema(schema: Partial<ISchema>): string[] {
@@ -330,6 +337,7 @@
     }
 
     const existingRow = schema.rows[rowIndex];
+    if (!existingRow) return;
     schema.rows[rowIndex] = {
       id: existingRow.id,
       name: existingRow.name,
@@ -700,19 +708,21 @@
     }
   })
 
-  onMount(() => {
-    loadMetadata();
+  $effect(() => {
+    let disposed = false;
+    (async () => {
+      await loadMetadata();
+    })();
     
-    // Globaler Escape-Key-Listener für Modals
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && (isCreatingNewSchema || editingSchema || isCreatingNewRow || editingRow)) {
         // Escape-Handling wird jetzt von DynamicDialogApp übernommen
       }
     };
-    
     document.addEventListener('keydown', handleEscape);
     
     return () => {
+      disposed = true;
       document.removeEventListener('keydown', handleEscape);
     };
   })

@@ -15,8 +15,8 @@ import { GlobalStateManager } from "../core/services/GlobalStateManager";
 // ✅ SOLID-konformer Bootablauf - On-Demand-Architektur
 
 // Phase 1: Early Bootstrap - Core Services manuell erstellen
-const foundryAdapter = new FoundryAdapter();
 const logger = new FoundryLogger();
+const foundryAdapter = new FoundryAdapter(logger);
 const errorHandler = new ConsoleErrorHandler(logger, foundryAdapter);
 const notificationService = new NotificationService(logger, foundryAdapter);
 

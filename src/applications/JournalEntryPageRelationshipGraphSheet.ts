@@ -137,7 +137,10 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     setCurrentScope(this._pageScope);
 
     // Scoped Services verwenden
-    await this.graphService.init(this.document);
+    // GraphRepositoryAdapter mit pageUuid konfigurieren
+    this.graphService.repository.setPageUuid(this.document.uuid);
+    
+    await this.graphService.init();
     bindFoundrySync(this.document, this.graphService);
 
     await super._onRender(context, options);

@@ -9,6 +9,9 @@ export type { ICSSManager } from "./core/ICSSManager";
 export type { ISvelteManager } from "./core/ISvelteManager";
 export type { IGlobalStateManager, GlobalStateDebugInfo } from "./core/IGlobalStateManager";
 
+// Port Interfaces
+export type { IIdGenerator, ITimeSource, IGraphRepository, GraphModel, NodeData, EdgeData, NodePolicy } from "./core/IPorts";
+
 // Service Interfaces
 export type { INotificationService } from "./services/INotificationService";
 

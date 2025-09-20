@@ -1,13 +1,14 @@
 <script lang="ts">
 
   import type { IDynamicFormConfig, IFormFieldDefinition } from '../types/DynamicFormTypes';
+  import type { ILogger } from '../interfaces';
   import DynamicFormField from './DynamicFormField.svelte';
   
   const { config, onSubmit, onCancel, logger } = $props<{ 
     config: IDynamicFormConfig;
-    onSubmit: (values: Record<string, any>) => void;
+    onSubmit: (values: Record<string, unknown>) => void;
     onCancel: () => void;
-    logger?: any;
+    logger?: ILogger;
   }>();
   
   // Lokaler State für alle Formularwerte

@@ -7,7 +7,8 @@
 export interface IFoundryAdapter {
   // Utils
   generateId(): string;
-  loadDocument(uuid: string): Promise<unknown>;
+  loadDocument<TDoc extends foundry.abstract.Document | object>(uuid: string): Promise<TDoc | null>;
+  deepClone<T>(obj: T): T;
 
   // UI Notifications
   showInfo(message: string): void;
@@ -17,11 +18,17 @@ export interface IFoundryAdapter {
 
   // Hooks
   onInit(callback: () => void): void;
-  onReady(callback: () => Promise<void>): void;
+  onReady(callback: () => Promise<void> | void): void;
 
   // Document Operations
-  updateDocument(document: unknown, data: unknown): Promise<unknown>;
-  updateDocumentWithReload(document: unknown, data: unknown): Promise<unknown>;
+  updateDocument<TDoc extends foundry.abstract.Document, TData extends Record<string, unknown>>(
+    document: TDoc,
+    data: TData
+  ): Promise<TDoc>;
+  updateDocumentWithReload<TDoc extends foundry.abstract.Document, TData extends Record<string, unknown>>(
+    document: TDoc,
+    data: TData
+  ): Promise<TDoc>;
 
   // Settings Operations
   registerSetting(key: string, config: ClientSettings.NumberConfig | ClientSettings.StringConfig | ClientSettings.BooleanConfig | ClientSettings.ObjectConfig): void;

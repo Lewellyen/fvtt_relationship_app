@@ -1,6 +1,6 @@
 import type { ILogger } from "../interfaces";
 import type { IFoundryAdapter } from "../core/adapters/IFoundryAdapter";
-import { MODULE_ID } from "../constants";
+import { MODULE_ID, SETTINGS_KEYS } from "../constants";
 
 /**
  * SettingsService - Zentrale Verwaltung aller Module-Settings
@@ -29,7 +29,7 @@ export class SettingsService {
     }
 
     // Debug-Logging Setting
-    this.foundryAdapter.registerSetting("debugLogs", {
+    this.foundryAdapter.registerSetting(SETTINGS_KEYS.DEBUG_LOGS as any, {
       name: "Debug Logging",
       hint: "Enable detailed debug logging for development",
       scope: "world",
@@ -39,7 +39,7 @@ export class SettingsService {
     });
 
     // Metadata Setting (bereits vorhanden, aber hier zentralisiert)
-    this.foundryAdapter.registerSetting("metadata", {
+    this.foundryAdapter.registerSetting(SETTINGS_KEYS.METADATA as any, {
       name: "Relationship App Metadata",
       hint: "Metadata for the Relationship App",
       scope: "world",
@@ -54,58 +54,58 @@ export class SettingsService {
    * Boolean-Setting abrufen
    */
   getBoolean(key: string): boolean {
-    return this.foundryAdapter?.getSetting(key) ?? false;
+    return (this.foundryAdapter?.getSetting(key) as boolean) ?? false;
   }
 
   /**
    * String-Setting abrufen
    */
   getString(key: string, defaultValue: string = ""): string {
-    return this.foundryAdapter?.getSetting(key) ?? defaultValue;
+    return (this.foundryAdapter?.getSetting(key) as string) ?? defaultValue;
   }
 
   /**
    * Number-Setting abrufen
    */
   getNumber(key: string, defaultValue: number = 0): number {
-    return this.foundryAdapter?.getSetting(key) ?? defaultValue;
+    return (this.foundryAdapter?.getSetting(key) as number) ?? defaultValue;
   }
 
   /**
    * Object-Setting abrufen
    */
   getObject<T = any>(key: string, defaultValue: T): T {
-    return this.foundryAdapter?.getSetting(key) ?? defaultValue;
+    return (this.foundryAdapter?.getSetting(key) as T) ?? defaultValue;
   }
 
   /**
    * Setting setzen
    */
-  async setSetting(key: string, value: any): Promise<any> {
+  async setSetting<T>(key: string, value: T): Promise<T> {
     if (!this.foundryAdapter) {
       throw new Error("FoundryAdapter not available for setting update");
     }
-    return await this.foundryAdapter.setSetting(key, value);
+    return (await this.foundryAdapter.setSetting(key, value)) as T;
   }
 
   /**
    * Debug-Logging aktiviert?
    */
   isDebugLoggingEnabled(): boolean {
-    return this.getBoolean("debugLogs");
+    return this.getBoolean(SETTINGS_KEYS.DEBUG_LOGS as any);
   }
 
   /**
    * Metadata abrufen
    */
-  getMetadata(): any {
-    return this.getObject("metadata", {});
+  getMetadata<T = unknown>(): T {
+    return this.getObject(SETTINGS_KEYS.METADATA as any, {} as T);
   }
 
   /**
    * Metadata setzen
    */
-  async setMetadata(metadata: any): Promise<any> {
-    return await this.setSetting("metadata", metadata);
+  async setMetadata<T>(metadata: T): Promise<T> {
+    return await this.setSetting(SETTINGS_KEYS.METADATA as any, metadata);
   }
 }

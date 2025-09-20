@@ -4,13 +4,13 @@
   
   const { element, value, error, onUpdate } = $props<{
     element: IFormFieldDefinition;
-    value: any;
+    value: unknown;
     error: string | undefined;
-    onUpdate: (value: any) => void;
+    onUpdate: (value: unknown) => void;
   }>();
   
   // Feldwert aktualisieren
-  function updateValue(newValue: any) {
+  function updateValue(newValue: unknown) {
     onUpdate(newValue);
   }
   

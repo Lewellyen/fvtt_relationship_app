@@ -51,7 +51,7 @@ export default class DynamicDialogApp extends foundry.applications.api.Handlebar
 
   private generateInstanceId(): string {
     const timestamp = Date.now();
-    const randomId = foundry.utils.randomID();
+    const randomId = `dialog_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     return `${this.constructor.name}-${timestamp}-${randomId}`;
   }
   /**

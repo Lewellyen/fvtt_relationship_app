@@ -4,7 +4,7 @@
   
   let { config, onSubmit, onCancel } = $props<{ 
     config: IDynamicTableConfig;
-    onSubmit: (data: any[]) => void;
+    onSubmit: (data: unknown[]) => void;
     onCancel: () => void;
   }>();
 </script>
