@@ -66,7 +66,10 @@ export class ServiceRegistry implements IServiceRegistry {
     }
 
     const serviceName =
-      identifier.CLASS_NAME || identifier.className || identifier.name || identifier;
+      (identifier as any).CLASS_NAME ||
+      (identifier as any).className ||
+      identifier.name ||
+      identifier;
     this.writeLog("info", `[ServiceRegistry] 📝 Registering service: ${serviceName}`);
     this.serviceRegistry.set(identifier, constructor);
   }

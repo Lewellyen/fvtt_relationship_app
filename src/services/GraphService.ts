@@ -4,8 +4,8 @@ import type {
   EdgeData,
   NodePolicy,
   FieldPath,
-} from "../types/RelationshipGraphTypes";
-import type { IGraphRepository } from "../interfaces/core/IPorts";
+} from "../domain/types/RelationshipGraphDomain";
+// import type { IGraphRepository } from "../interfaces/core/IPorts";
 import { IdGeneratorAdapter } from "../core/adapters/IdGeneratorAdapter";
 import { TimeSourceAdapter } from "../core/adapters/TimeSourceAdapter";
 import { GraphRepositoryAdapter } from "../core/adapters/GraphRepositoryAdapter";
@@ -17,8 +17,13 @@ export class GraphService {
   static readonly API_NAME = "graphService";
   static readonly SERVICE_TYPE = "scoped" as const;
   static readonly CLASS_NAME = "GraphService";
-  static readonly DEPENDENCIES = [FoundryLogger, IdGeneratorAdapter, TimeSourceAdapter, GraphRepositoryAdapter];
-  
+  static readonly DEPENDENCIES = [
+    FoundryLogger,
+    IdGeneratorAdapter,
+    TimeSourceAdapter,
+    GraphRepositoryAdapter,
+  ];
+
   private _snapshot: GraphModel | null;
   private _instanceId: string;
   private _initialized: boolean = false;
@@ -36,7 +41,11 @@ export class GraphService {
   // -- Public ----------------------------------------------------------------
 
   async init(): Promise<void> {
-    this._snapshot = await this.repository.load();
+    const result = await this.repository.load();
+    if (!result.ok) {
+      throw new Error(`Failed to load graph data: ${result.error.message}`);
+    }
+    this._snapshot = result.value;
     this._initialized = true;
   }
 
@@ -45,7 +54,8 @@ export class GraphService {
   }
 
   getSnapshot(): Readonly<GraphModel> {
-    if (!this._initialized || !this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
+    if (!this._initialized || !this._snapshot)
+      throw new Error("GraphService not initialized. Call init() first.");
     return this._snapshot;
   }
 
@@ -180,7 +190,11 @@ export class GraphService {
     if (!paths || paths.length === 0) {
       p.visibility = {};
     } else {
-      for (const fp of paths) delete p.visibility[fp];
+      for (const fp of paths) {
+        if (p.visibility) {
+          delete p.visibility[fp];
+        }
+      }
     }
     next.policy![nodeId] = p;
     await this._write(next);
@@ -194,10 +208,12 @@ export class GraphService {
   }
 
   private async _write(next: GraphModel): Promise<void> {
-    await this.repository.save(next);
+    const result = await this.repository.save(next);
+    if (!result.ok) {
+      throw new Error(`Failed to save graph data: ${result.error.message}`);
+    }
     this._snapshot = next;
   }
-
 
   private _assertEndpointsExist(g: GraphModel, source: string, target: string): void {
     if (!g.nodes[source]) throw new Error(`Edge source '${source}' does not exist`);

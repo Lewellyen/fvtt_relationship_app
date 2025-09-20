@@ -97,7 +97,37 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
     DEBUG_LOGS: "debugLogs",
     METADATA: "metadata"
   };
+  const SERVICE_NAMES = {
+    FOUNDRY_ADAPTER: "foundryAdapter",
+    LOGGER: "logger",
+    ERROR_HANDLER: "errorHandler",
+    NOTIFICATION_SERVICE: "notificationService",
+    SERVICE_CONTAINER: "serviceContainer",
+    SERVICE_REGISTRAR: "serviceRegistrar",
+    API_MANAGER: "apiManager",
+    GRAPH_SERVICE: "graphService",
+    GRAPH_REPOSITORY: "graphRepository",
+    ID_GENERATOR: "idGenerator",
+    TIME_SOURCE: "timeSource",
+    DEBUG_HELPERS: "debugHelpers"
+  };
   const CSS_CLASSES = {
+    DYNAMIC_DIALOG: "dynamic-dialog",
+    DYNAMIC_TABLE: "dynamic-table",
+    METADATA_MANAGEMENT: "metadata-management",
+    RELATIONSHIP_GRAPH: "relationship-graph"
+  };
+  const APP_IDS = {
+    DYNAMIC_DIALOG: "DynamicDialogApp",
+    DYNAMIC_TABLE: "DynamicTableApp",
+    METADATA_MANAGEMENT: "MetadataManagementApplication",
+    RELATIONSHIP_GRAPH: "JournalEntryPageRelationshipGraphSheet"
+  };
+  const MODULE_REFERENCES = {
+    MODULE_ID: "relationship-app",
+    MODULE_NAME: "relationship-app"
+  };
+  const LEGACY_CSS_CLASSES = {
     // Haupt-Container
     mainContainer: "relationship-app",
     // Beziehungsgraph
@@ -225,7 +255,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
       let debugEnabled = false;
       try {
         debugEnabled = game?.settings?.get(MODULE_ID, SETTINGS_KEYS.DEBUG_LOGS) === true;
-      } catch (error) {
+      } catch {
         debugEnabled = false;
       }
       if (!debugEnabled) return;
@@ -8612,7 +8642,7 @@ ${component_stack}
       let debugEnabled = false;
       try {
         debugEnabled = game?.settings?.get(MODULE_ID, SETTINGS_KEYS.DEBUG_LOGS) === true;
-      } catch (error) {
+      } catch {
         debugEnabled = false;
       }
       if (debugEnabled) {
@@ -8663,7 +8693,10 @@ ${component_stack}
         if (this.logger) {
           this.logger.info(`[CSSManager] CSS already loaded: ${cssPath} (refs: ${currentCount + 1})`);
         } else {
-          this.writeLog("debug", `[CSSManager] CSS already loaded: ${cssPath} (refs: ${currentCount + 1})`);
+          this.writeLog(
+            "debug",
+            `[CSSManager] CSS already loaded: ${cssPath} (refs: ${currentCount + 1})`
+          );
         }
         return;
       }
@@ -8676,9 +8709,14 @@ ${component_stack}
         document.head.appendChild(link2);
         this.loadedCSS.add(cssPath);
         if (this.logger) {
-          this.logger.info(`[CSSManager] CSS loaded successfully: ${cssPath} (refs: ${currentCount + 1})`);
+          this.logger.info(
+            `[CSSManager] CSS loaded successfully: ${cssPath} (refs: ${currentCount + 1})`
+          );
         } else {
-          this.writeLog("info", `[CSSManager] CSS loaded successfully: ${cssPath} (refs: ${currentCount + 1})`);
+          this.writeLog(
+            "info",
+            `[CSSManager] CSS loaded successfully: ${cssPath} (refs: ${currentCount + 1})`
+          );
         }
       } catch (error) {
         this.cssReferenceCount.set(cssPath, currentCount);
@@ -8712,9 +8750,14 @@ ${component_stack}
       } else {
         this.cssReferenceCount.set(cssPath, newCount);
         if (this.logger) {
-          this.logger.info(`[CSSManager] CSS reference count decreased: ${cssPath} (refs: ${newCount})`);
+          this.logger.info(
+            `[CSSManager] CSS reference count decreased: ${cssPath} (refs: ${newCount})`
+          );
         } else {
-          this.writeLog("info", `[CSSManager] CSS reference count decreased: ${cssPath} (refs: ${newCount})`);
+          this.writeLog(
+            "info",
+            `[CSSManager] CSS reference count decreased: ${cssPath} (refs: ${newCount})`
+          );
         }
       }
     }
@@ -8775,6 +8818,17 @@ ${component_stack}
   _TimeSourceAdapter.CLASS_NAME = "TimeSourceAdapter";
   _TimeSourceAdapter.DEPENDENCIES = [];
   let TimeSourceAdapter = _TimeSourceAdapter;
+  const ok = (value) => ({ ok: true, value });
+  const err = (error) => ({ ok: false, error });
+  async function wrap(promise) {
+    try {
+      const value = await promise;
+      return ok(value);
+    } catch (e) {
+      const error = e instanceof Error ? e : new Error(String(e));
+      return err(error);
+    }
+  }
   const _GraphRepositoryAdapter = class _GraphRepositoryAdapter {
     constructor(foundryAdapter2, logger2) {
       this.foundryAdapter = foundryAdapter2;
@@ -8788,23 +8842,24 @@ ${component_stack}
      */
     async load() {
       if (!this.pageUuid) {
-        throw new Error("Page UUID not set. Call setPageUuid() first.");
+        return err(new Error("Page UUID not set. Call setPageUuid() first."));
       }
       try {
         const page = await this.foundryAdapter.loadDocument(this.pageUuid);
         if (!page) {
-          throw new Error(`JournalEntryPage not found: ${this.pageUuid}`);
+          return err(new Error(`JournalEntryPage not found: ${this.pageUuid}`));
         }
         const system = page.system;
-        return {
+        const model = {
           version: system.version ?? 1,
           nodes: this.foundryAdapter.deepClone(system.nodes ?? {}),
           edges: this.foundryAdapter.deepClone(system.edges ?? {}),
           policy: this.foundryAdapter.deepClone(system.policy ?? {})
         };
+        return ok(model);
       } catch (error) {
         this.logger.error("Failed to load graph data:", error);
-        throw error;
+        return err(error instanceof Error ? error : new Error(String(error)));
       }
     }
     /**
@@ -8812,12 +8867,12 @@ ${component_stack}
      */
     async save(model) {
       if (!this.pageUuid) {
-        throw new Error("Page UUID not set. Call setPageUuid() first.");
+        return err(new Error("Page UUID not set. Call setPageUuid() first."));
       }
       try {
         const page = await this.foundryAdapter.loadDocument(this.pageUuid);
         if (!page) {
-          throw new Error(`JournalEntryPage not found: ${this.pageUuid}`);
+          return err(new Error(`JournalEntryPage not found: ${this.pageUuid}`));
         }
         const patch = {};
         if (model.version !== void 0) {
@@ -8827,9 +8882,10 @@ ${component_stack}
         patch["system.edges"] = model.edges;
         patch["system.policy"] = model.policy ?? {};
         await this.foundryAdapter.updateDocumentWithReload(page, patch);
+        return ok(void 0);
       } catch (error) {
         this.logger.error("Failed to save graph data:", error);
-        throw error;
+        return err(error instanceof Error ? error : new Error(String(error)));
       }
     }
   };
@@ -8850,14 +8906,19 @@ ${component_stack}
     }
     // -- Public ----------------------------------------------------------------
     async init() {
-      this._snapshot = await this.repository.load();
+      const result = await this.repository.load();
+      if (!result.ok) {
+        throw new Error(`Failed to load graph data: ${result.error.message}`);
+      }
+      this._snapshot = result.value;
       this._initialized = true;
     }
     get instanceId() {
       return this._instanceId;
     }
     getSnapshot() {
-      if (!this._initialized || !this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
+      if (!this._initialized || !this._snapshot)
+        throw new Error("GraphService not initialized. Call init() first.");
       return this._snapshot;
     }
     getNode(id) {
@@ -8970,7 +9031,11 @@ ${component_stack}
       if (!paths || paths.length === 0) {
         p.visibility = {};
       } else {
-        for (const fp of paths) delete p.visibility[fp];
+        for (const fp of paths) {
+          if (p.visibility) {
+            delete p.visibility[fp];
+          }
+        }
       }
       next2.policy[nodeId] = p;
       await this._write(next2);
@@ -8981,7 +9046,10 @@ ${component_stack}
       return JSON.parse(JSON.stringify(this._snapshot));
     }
     async _write(next2) {
-      await this.repository.save(next2);
+      const result = await this.repository.save(next2);
+      if (!result.ok) {
+        throw new Error(`Failed to save graph data: ${result.error.message}`);
+      }
       this._snapshot = next2;
     }
     _assertEndpointsExist(g, source2, target) {
@@ -8992,7 +9060,12 @@ ${component_stack}
   _GraphService.API_NAME = "graphService";
   _GraphService.SERVICE_TYPE = "scoped";
   _GraphService.CLASS_NAME = "GraphService";
-  _GraphService.DEPENDENCIES = [FoundryLogger, IdGeneratorAdapter, TimeSourceAdapter, GraphRepositoryAdapter];
+  _GraphService.DEPENDENCIES = [
+    FoundryLogger,
+    IdGeneratorAdapter,
+    TimeSourceAdapter,
+    GraphRepositoryAdapter
+  ];
   let GraphService = _GraphService;
   function bindFoundrySync(page, service) {
     Hooks.on("updateJournalEntryPage", async (doc, changes, options, userId) => {
@@ -9499,9 +9572,7 @@ ${component_stack}
      * Service-Erstellung validieren
      */
     validateServiceCreation(service, ctor) {
-      this.logger.info(
-        `[ServiceValidator] 🔍 Validating service creation for: ${ctor.name || ctor}`
-      );
+      this.logger.info(`[ServiceValidator] 🔍 Validating service creation for: ${ctor.name || ctor}`);
       if (!service) {
         this.logger.error(
           `[ServiceValidator] ❌ Service is null or undefined for ${ctor.name || ctor}`
@@ -9509,14 +9580,10 @@ ${component_stack}
         return false;
       }
       if (typeof service !== "object") {
-        this.logger.error(
-          `[ServiceValidator] ❌ Service is not an object for ${ctor.name || ctor}`
-        );
+        this.logger.error(`[ServiceValidator] ❌ Service is not an object for ${ctor.name || ctor}`);
         return false;
       }
-      this.logger.info(
-        `[ServiceValidator] ✅ Service creation valid for ${ctor.name || ctor}`
-      );
+      this.logger.info(`[ServiceValidator] ✅ Service creation valid for ${ctor.name || ctor}`);
       return true;
     }
     /**
@@ -9617,32 +9684,21 @@ ${component_stack}
       this.writeLog("info", `[ServiceFactory] 🏗️ Creating service: ${ctor.name || ctor}`);
       const plan = this.servicePlans.get(ctor);
       if (!plan) {
-        this.writeLog(
-          "error",
-          `[ServiceFactory] ❌ No service plan found for ${ctor.name || ctor}`
-        );
+        this.writeLog("error", `[ServiceFactory] ❌ No service plan found for ${ctor.name || ctor}`);
         throw new Error(`No service plan found for ${ctor.name || ctor}`);
       }
-      this.writeLog(
-        "info",
-        `[ServiceFactory] 📋 Service plan for ${ctor.name || ctor}:`,
-        {
-          dependencies: plan.dependencies.map((d) => d.name || d),
-          isSingleton: plan.isSingleton,
-          isScoped: plan.isScoped,
-          isTransient: plan.isTransient,
-          serviceType: plan.serviceType
-        }
-      );
+      this.writeLog("info", `[ServiceFactory] 📋 Service plan for ${ctor.name || ctor}:`, {
+        dependencies: plan.dependencies.map((d) => d.name || d),
+        isSingleton: plan.isSingleton,
+        isScoped: plan.isScoped,
+        isTransient: plan.isTransient,
+        serviceType: plan.serviceType
+      });
       const dependencies = this.resolveDependencies(plan);
-      this.writeLog(
-        "info",
-        `[ServiceFactory] 🔗 Resolved dependencies for ${ctor.name || ctor}:`,
-        {
-          count: dependencies.length,
-          dependencies: dependencies.map((d) => d.constructor.name)
-        }
-      );
+      this.writeLog("info", `[ServiceFactory] 🔗 Resolved dependencies for ${ctor.name || ctor}:`, {
+        count: dependencies.length,
+        dependencies: dependencies.map((d) => d.constructor.name)
+      });
       const service = new plan.constructor(...dependencies);
       if (!this.serviceValidator.validateServiceCreation(service, ctor)) {
         this.serviceValidator.handleServiceCreationError(
@@ -9651,10 +9707,7 @@ ${component_stack}
         );
         throw new Error(`Service creation validation failed for ${ctor.name || ctor}`);
       }
-      this.writeLog(
-        "info",
-        `[ServiceFactory] ✅ Service created successfully: ${ctor.name || ctor}`
-      );
+      this.writeLog("info", `[ServiceFactory] ✅ Service created successfully: ${ctor.name || ctor}`);
       return service;
     }
     /**
@@ -9713,16 +9766,10 @@ ${component_stack}
     getSingleton(ctor, factory) {
       this.writeLog("info", `[ServiceCache] 🔍 Getting singleton: ${ctor.name || ctor}`);
       if (this.instances.has(ctor)) {
-        this.writeLog(
-          "info",
-          `[ServiceCache] ♻️ Returning cached singleton: ${ctor.name || ctor}`
-        );
+        this.writeLog("info", `[ServiceCache] ♻️ Returning cached singleton: ${ctor.name || ctor}`);
         return this.instances.get(ctor);
       }
-      this.writeLog(
-        "info",
-        `[ServiceCache] 🏗️ Creating new singleton: ${ctor.name || ctor}`
-      );
+      this.writeLog("info", `[ServiceCache] 🏗️ Creating new singleton: ${ctor.name || ctor}`);
       const service = factory();
       this.instances.set(ctor, service);
       this.writeLog("info", `[ServiceCache] 💾 Cached singleton: ${ctor.name || ctor}`);
@@ -10543,10 +10590,9 @@ ${component_stack}
      * @deprecated Verwende GlobalStateManager statt globalThis
      */
     enableServiceDiscovery() {
-      this.logger.warn(`[ServiceRegistrar] ⚠️ enableServiceDiscovery is deprecated. Use GlobalStateManager instead.`);
-      globalThis.relationshipApp = globalThis.relationshipApp || {};
-      globalThis.relationshipApp.serviceLocator = this;
-      this.logger.info(`[ServiceRegistrar] ✅ Service discovery enabled (deprecated method)`);
+      this.logger.warn(
+        `[ServiceRegistrar] ⚠️ enableServiceDiscovery is deprecated. Use GlobalStateManager instead.`
+      );
     }
     /**
      * Service Metadaten abrufen
@@ -10771,10 +10817,10 @@ ${component_stack}
      * Module API abrufen oder erstellen
      */
     getModuleAPI() {
-      let moduleApi = globalThis.game?.modules?.get("relationship-app")?.api;
+      let moduleApi = game?.modules?.get("relationship-app")?.api;
       if (!moduleApi) {
         this.logger.info(`[APIManager] 🔧 Module API not available, creating it`);
-        const module = globalThis.game?.modules?.get("relationship-app");
+        const module = game?.modules?.get("relationship-app");
         if (module) {
           module.api = {};
           moduleApi = module.api;
@@ -10830,11 +10876,13 @@ ${component_stack}
       const servicePlans = this.serviceContainer.getAllServicePlans();
       for (const [serviceClass, plan] of servicePlans) {
         metadata.services.set(plan.apiName, {
-          serviceClass: serviceClass.name || serviceClass,
+          serviceClass: typeof serviceClass === "string" ? serviceClass : serviceClass.name || serviceClass.toString(),
           apiName: plan.apiName,
           serviceType: plan.serviceType,
           isSingleton: plan.isSingleton,
-          dependencies: plan.dependencies.map((d) => d.name || d),
+          dependencies: plan.dependencies.map(
+            (d) => typeof d === "string" ? d : d.name || d.toString()
+          ),
           isRegistered: this.registeredServices.has(plan.apiName)
         });
       }
@@ -10896,21 +10944,32 @@ ${component_stack}
       if (!this.foundryAdapter) {
         throw new Error("FoundryAdapter not available for settings registration");
       }
-      this.foundryAdapter.registerSetting(SETTINGS_KEYS.DEBUG_LOGS, {
-        name: "Debug Logging",
-        hint: "Enable detailed debug logging for development",
-        scope: "world",
-        config: true,
-        type: Boolean,
-        default: false
-      });
-      this.foundryAdapter.registerSetting(SETTINGS_KEYS.METADATA, {
-        name: "Relationship App Metadata",
-        hint: "Metadata for the Relationship App",
-        scope: "world",
-        config: false,
-        type: Object
-      });
+      this.foundryAdapter.registerSetting(
+        SETTINGS_KEYS.DEBUG_LOGS,
+        {
+          key: SETTINGS_KEYS.DEBUG_LOGS,
+          namespace: MODULE_ID,
+          name: "Debug Logging",
+          hint: "Enable detailed debug logging for development",
+          scope: "world",
+          config: true,
+          type: Boolean,
+          default: false
+        }
+      );
+      this.foundryAdapter.registerSetting(
+        SETTINGS_KEYS.METADATA,
+        {
+          key: SETTINGS_KEYS.METADATA,
+          namespace: MODULE_ID,
+          name: "Relationship App Metadata",
+          hint: "Metadata for the Relationship App",
+          scope: "world",
+          config: false,
+          type: Object,
+          default: {}
+        }
+      );
     }
     /**
      * Boolean-Setting abrufen
@@ -11021,25 +11080,25 @@ ${component_stack}
         disabled: config.ui?.disabled || false,
         readonly: config.ui?.readonly || false
       },
-      showIf: config.showIf
+      showIf: config.showIf || (() => true)
     };
   }
   function createTextElement(field, options = {}) {
     return createElement({
       field,
       type: options.multiline ? "textarea" : "text",
-      label: options.label,
-      required: options.required,
-      placeholder: options.placeholder,
-      default: options.default,
-      description: options.description,
-      category: options.category,
-      validation: options.validation,
-      showIf: options.showIf,
+      label: options.label || field,
+      required: options.required || false,
+      placeholder: options.placeholder || "",
+      default: options.default || void 0,
+      description: options.description || "",
+      category: options.category || "",
+      validation: options.validation ?? {},
+      showIf: options.showIf ?? (() => true),
       ui: {
         width: "full",
-        multiline: options.multiline,
-        rows: options.multiline ? 3 : void 0
+        multiline: options.multiline || false,
+        rows: options.multiline ? 3 : 1
       }
     });
   }
@@ -11047,63 +11106,63 @@ ${component_stack}
     return createElement({
       field,
       type: "select",
-      label: options.label,
-      required: options.required,
+      label: options.label || field,
+      required: options.required || false,
       options: options.options,
       default: options.default,
-      description: options.description,
-      category: options.category
+      description: options.description || "",
+      category: options.category || ""
     });
   }
   function createMultiSelectElement(field, options) {
     return createElement({
       field,
       type: "multiselect",
-      label: options.label,
-      required: options.required,
+      label: options.label || field,
+      required: options.required || false,
       options: options.options,
       default: options.default || [],
-      description: options.description,
-      category: options.category
+      description: options.description || "",
+      category: options.category || ""
     });
   }
   function createNumberElement(field, options = {}) {
     return createElement({
       field,
       type: "number",
-      label: options.label,
-      required: options.required,
-      placeholder: options.placeholder,
-      default: options.default,
-      description: options.description,
-      category: options.category,
-      validation: {
-        min: options.min,
-        max: options.max
-      }
+      label: options.label || field,
+      required: options.required || false,
+      placeholder: options.placeholder || "",
+      default: options.default || 0,
+      description: options.description || "",
+      category: options.category || "",
+      validation: options.min !== void 0 || options.max !== void 0 ? {
+        min: options.min || 0,
+        max: options.max || 100
+      } : {}
     });
   }
   function createBooleanElement(field, options = {}) {
     return createElement({
       field,
       type: "boolean",
-      label: options.label,
-      required: options.required,
-      default: options.default,
-      description: options.description,
-      category: options.category
+      label: options.label || field,
+      required: options.required || false,
+      default: options.default || false,
+      description: options.description || "",
+      category: options.category || ""
     });
   }
   function createTextareaElement(field, options = {}) {
     return createElement({
       field,
       type: "textarea",
-      label: options.label,
-      required: options.required,
-      placeholder: options.placeholder,
+      label: options.label || field,
+      required: options.required || false,
+      placeholder: options.placeholder || "",
       default: options.default,
-      description: options.description,
-      category: options.category,
+      description: options.description || "",
+      category: options.category || "",
       ui: {
         width: "full",
         multiline: true,
@@ -12107,11 +12166,9 @@ ${component_stack}
       return __privateGet(this, _logger2) ?? __privateSet(this, _logger2, use(FoundryLogger));
     }
     get svelteManager() {
-      if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
       return __privateGet(this, _svelte2) ?? __privateSet(this, _svelte2, use(SvelteManager, this._instanceScope));
     }
     get cssManager() {
-      if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
       return __privateGet(this, _css2) ?? __privateSet(this, _css2, use(CSSManager, this._instanceScope));
     }
     generateInstanceId() {
@@ -12122,6 +12179,13 @@ ${component_stack}
     /** @override */
     get title() {
       return this.options.window.title;
+    }
+    // IWindowedApp implementation
+    get id() {
+      return this._instanceId;
+    }
+    get isVisible() {
+      return this.rendered;
     }
     /** @override */
     async _renderHTML(context, options) {
@@ -12307,11 +12371,9 @@ ${component_stack}
       return __privateGet(this, _logger3) ?? __privateSet(this, _logger3, use(FoundryLogger));
     }
     get svelteManager() {
-      if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
       return __privateGet(this, _svelte3) ?? __privateSet(this, _svelte3, use(SvelteManager, this._instanceScope));
     }
     get cssManager() {
-      if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
       return __privateGet(this, _css3) ?? __privateSet(this, _css3, use(CSSManager, this._instanceScope));
     }
     generateInstanceId() {
@@ -12322,6 +12384,13 @@ ${component_stack}
     /** @override */
     get title() {
       return this.options.window.title;
+    }
+    // IWindowedApp implementation
+    get id() {
+      return this._instanceId;
+    }
+    get isVisible() {
+      return this.rendered;
     }
     /** @override */
     async _renderHTML(context, options) {
@@ -13469,10 +13538,10 @@ ${component_stack}
   const notificationService = new NotificationService(logger, foundryAdapter);
   logger.info(`[SOLID Boot] 🚀 Phase 1: Early Bootstrap - Creating core services`);
   const globalStateManager = GlobalStateManager.getInstance(logger);
-  globalStateManager.registerService("foundryAdapter", foundryAdapter);
-  globalStateManager.registerService("logger", logger);
-  globalStateManager.registerService("errorHandler", errorHandler);
-  globalStateManager.registerService("notificationService", notificationService);
+  globalStateManager.registerService(SERVICE_NAMES.FOUNDRY_ADAPTER, foundryAdapter);
+  globalStateManager.registerService(SERVICE_NAMES.LOGGER, logger);
+  globalStateManager.registerService(SERVICE_NAMES.ERROR_HANDLER, errorHandler);
+  globalStateManager.registerService(SERVICE_NAMES.NOTIFICATION_SERVICE, notificationService);
   logger.info(`[SOLID Boot] ✅ Phase 1 completed - Core services available via GlobalStateManager`);
   foundryAdapter.onInit(async () => {
     const globalState = GlobalStateManager.getInstance(logger);
@@ -13595,26 +13664,26 @@ ${component_stack}
         debugEnabled = false;
       }
       if (debugEnabled) {
-        globalState.registerService("serviceContainer", serviceContainer);
-        globalState.registerService("serviceRegistrar", serviceRegistrar);
-        globalState.registerService("apiManager", apiManager);
+        globalState.registerService(SERVICE_NAMES.SERVICE_CONTAINER, serviceContainer);
+        globalState.registerService(SERVICE_NAMES.SERVICE_REGISTRAR, serviceRegistrar);
+        globalState.registerService(SERVICE_NAMES.API_MANAGER, apiManager);
         const debugHelpers = {
-          getLogger: () => globalState.getService("logger"),
-          getErrorHandler: () => globalState.getService("errorHandler"),
-          getNotificationService: () => globalState.getService("notificationService"),
-          getServiceContainer: () => globalState.getService("serviceContainer"),
-          getServiceRegistrar: () => globalState.getService("serviceRegistrar"),
-          getAPIManager: () => globalState.getService("apiManager"),
+          getLogger: () => globalState.getService(SERVICE_NAMES.LOGGER),
+          getErrorHandler: () => globalState.getService(SERVICE_NAMES.ERROR_HANDLER),
+          getNotificationService: () => globalState.getService(SERVICE_NAMES.NOTIFICATION_SERVICE),
+          getServiceContainer: () => globalState.getService(SERVICE_NAMES.SERVICE_CONTAINER),
+          getServiceRegistrar: () => globalState.getService(SERVICE_NAMES.SERVICE_REGISTRAR),
+          getAPIManager: () => globalState.getService(SERVICE_NAMES.API_MANAGER),
           getAllServices: () => globalState.getAllServices(),
           getDebugInfo: () => globalState.getDebugInfo(),
           // Convenience-Methoden
-          log: (message, ...args) => globalState.getService("logger")?.info(message, ...args),
-          warn: (message, ...args) => globalState.getService("logger")?.warn(message, ...args),
-          error: (message, ...args) => globalState.getService("logger")?.error(message, ...args),
-          debug: (message, ...args) => globalState.getService("logger")?.debug(message, ...args)
+          log: (message, ...args) => globalState.getService(SERVICE_NAMES.LOGGER)?.info(message, ...args),
+          warn: (message, ...args) => globalState.getService(SERVICE_NAMES.LOGGER)?.warn(message, ...args),
+          error: (message, ...args) => globalState.getService(SERVICE_NAMES.LOGGER)?.error(message, ...args),
+          debug: (message, ...args) => globalState.getService(SERVICE_NAMES.LOGGER)?.debug(message, ...args)
         };
-        globalThis.relationshipAppDebug = debugHelpers;
-        loggerInstance.info(`[SOLID Boot] 🐛 Debug helpers available in globalThis.relationshipAppDebug`);
+        globalState.registerService(SERVICE_NAMES.DEBUG_HELPERS, debugHelpers);
+        loggerInstance.info(`[SOLID Boot] 🐛 Debug helpers available via GlobalStateManager`);
       }
       loggerInstance.info(
         `[SOLID Boot] ✅ Phase 2 completed - All services registered and available (on-demand)`
@@ -13645,7 +13714,11 @@ ${component_stack}
         });
         return { ModuleInitializer: ModuleInitializer3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const moduleInitializer = new ModuleInitializer2(loggerInstance, errorHandler2, registrationService);
+      const moduleInitializer = new ModuleInitializer2(
+        loggerInstance,
+        errorHandler2,
+        registrationService
+      );
       loggerInstance.info(`[SOLID Boot] 🚀 Starting module initialization`);
       await moduleInitializer.initialize();
       loggerInstance.info(`[SOLID Boot] ✅ Phase 3 completed - Module initialized`);

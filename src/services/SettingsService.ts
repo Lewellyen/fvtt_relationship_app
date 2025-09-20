@@ -4,7 +4,7 @@ import { MODULE_ID, SETTINGS_KEYS } from "../constants";
 
 /**
  * SettingsService - Zentrale Verwaltung aller Module-Settings
- * 
+ *
  * Single Responsibility: Nur Settings-Registrierung und -Abfrage
  * Kapselt alle Foundry-Settings-Operationen
  */
@@ -14,7 +14,7 @@ export class SettingsService {
   static readonly CLASS_NAME = "SettingsService";
   static readonly DEPENDENCIES = []; // Dependencies werden über Container injiziert
 
-  private foundryAdapter?: IFoundryAdapter;
+  private foundryAdapter: IFoundryAdapter | undefined;
 
   constructor(logger?: ILogger, foundryAdapter?: IFoundryAdapter) {
     this.foundryAdapter = foundryAdapter;
@@ -29,23 +29,34 @@ export class SettingsService {
     }
 
     // Debug-Logging Setting
-    this.foundryAdapter.registerSetting(SETTINGS_KEYS.DEBUG_LOGS as any, {
-      name: "Debug Logging",
-      hint: "Enable detailed debug logging for development",
-      scope: "world",
-      config: true,
-      type: Boolean,
-      default: false,
-    });
+    this.foundryAdapter.registerSetting(
+      SETTINGS_KEYS.DEBUG_LOGS as any,
+      {
+        key: SETTINGS_KEYS.DEBUG_LOGS,
+        namespace: MODULE_ID,
+        name: "Debug Logging",
+        hint: "Enable detailed debug logging for development",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false,
+      } as any
+    );
 
     // Metadata Setting (bereits vorhanden, aber hier zentralisiert)
-    this.foundryAdapter.registerSetting(SETTINGS_KEYS.METADATA as any, {
-      name: "Relationship App Metadata",
-      hint: "Metadata for the Relationship App",
-      scope: "world",
-      config: false,
-      type: Object,
-    });
+    this.foundryAdapter.registerSetting(
+      SETTINGS_KEYS.METADATA as any,
+      {
+        key: SETTINGS_KEYS.METADATA,
+        namespace: MODULE_ID,
+        name: "Relationship App Metadata",
+        hint: "Metadata for the Relationship App",
+        scope: "world",
+        config: false,
+        type: Object,
+        default: {},
+      } as any
+    );
 
     // Weitere Settings können hier hinzugefügt werden
   }

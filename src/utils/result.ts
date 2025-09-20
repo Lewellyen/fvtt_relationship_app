@@ -14,5 +14,3 @@ export async function wrap<T>(promise: Promise<T>): Promise<Result<T>> {
     return err(error);
   }
 }
-
-

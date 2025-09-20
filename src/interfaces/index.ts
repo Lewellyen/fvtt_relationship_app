@@ -8,9 +8,18 @@ export type { IModuleInitializer } from "./core/IModuleInitializer";
 export type { ICSSManager } from "./core/ICSSManager";
 export type { ISvelteManager } from "./core/ISvelteManager";
 export type { IGlobalStateManager, GlobalStateDebugInfo } from "./core/IGlobalStateManager";
+export type { IWindowedApp } from "./core/IWindowedApp";
 
 // Port Interfaces
-export type { IIdGenerator, ITimeSource, IGraphRepository, GraphModel, NodeData, EdgeData, NodePolicy } from "./core/IPorts";
+export type { IIdGenerator, ITimeSource, IGraphRepository } from "./core/IPorts";
+
+// Domain Types
+export type {
+  GraphModel,
+  NodeData,
+  EdgeData,
+  NodePolicy,
+} from "../domain/types/RelationshipGraphDomain";
 
 // Service Interfaces
 export type { INotificationService } from "./services/INotificationService";

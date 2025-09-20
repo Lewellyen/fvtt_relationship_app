@@ -44,14 +44,15 @@ export class FoundryLogger implements ILogger {
     // Graceful handling: Wenn Setting noch nicht registriert ist, debug-Logging deaktivieren
     let debugEnabled = false;
     try {
-      debugEnabled = game?.settings?.get(MODULE_ID, SETTINGS_KEYS.DEBUG_LOGS) === true;
-    } catch (error) {
+      debugEnabled =
+        (game?.settings as any)?.get(MODULE_ID as any, SETTINGS_KEYS.DEBUG_LOGS) === true;
+    } catch {
       // Setting noch nicht registriert - debug-Logging deaktivieren
       debugEnabled = false;
     }
-    
+
     if (!debugEnabled) return;
-    
+
     if (typeof message === "object" && message !== null) {
       console.debug(`${MODULE_ID_PREFIX} 🐛`, message, ...args);
     } else {

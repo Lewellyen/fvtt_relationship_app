@@ -1,4 +1,5 @@
 import type { IServiceRegistry, IDependencyMapper, ILogger } from "../../interfaces";
+import type { ServiceConstructor } from "../../types/ServiceTypes";
 
 /**
  * DependencyMapper - Dependencies aus static readonly DEPENDENCIES extrahieren und mappen
@@ -19,10 +20,10 @@ export class DependencyMapper implements IDependencyMapper {
    * Dependency Graph für alle Services erstellen
    * Single Source of Truth: Holt Services von ServiceRegistry
    */
-  buildDependencyGraph(): Map<any, any[]> {
+  buildDependencyGraph(): Map<ServiceConstructor, ServiceConstructor[]> {
     this.logger.info(`[DependencyMapper] 🗺️ Building dependency graph`);
 
-    const graph = new Map();
+    const graph = new Map<ServiceConstructor, ServiceConstructor[]>();
     const allServices = this.serviceRegistry.getAllServices(); // ← Von ServiceRegistry
 
     this.logger.info(
@@ -53,7 +54,7 @@ export class DependencyMapper implements IDependencyMapper {
   /**
    * Dependencies für einen Service extrahieren
    */
-  extractDependencies(serviceClass: any): any[] {
+  extractDependencies(serviceClass: ServiceConstructor): ServiceConstructor[] {
     this.logger.debug(
       `[DependencyMapper] 🔍 Extracting dependencies for: ${serviceClass.name || serviceClass}`
     );
@@ -76,17 +77,20 @@ export class DependencyMapper implements IDependencyMapper {
   /**
    * Dependencies aus static readonly DEPENDENCIES property extrahieren
    */
-  private extractStaticDependencies(serviceClass: any): any[] | null {
+  private extractStaticDependencies(serviceClass: ServiceConstructor): ServiceConstructor[] | null {
     const className =
-      serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
+      (serviceClass as any).CLASS_NAME ||
+      (serviceClass as any).className ||
+      serviceClass.name ||
+      serviceClass;
     this.logger.debug(`[DependencyMapper] 📋 Checking static dependencies for: ${className}`);
 
     try {
       // Prüfe explizite static readonly DEPENDENCIES Definition
-      if (serviceClass.DEPENDENCIES && Array.isArray(serviceClass.DEPENDENCIES)) {
-        const filteredDependencies = serviceClass.DEPENDENCIES.filter(Boolean);
+      if ((serviceClass as any).DEPENDENCIES && Array.isArray((serviceClass as any).DEPENDENCIES)) {
+        const filteredDependencies = (serviceClass as any).DEPENDENCIES.filter(Boolean);
         this.logger.debug(`[DependencyMapper] 📋 Found static dependencies for ${className}:`, {
-          original: serviceClass.DEPENDENCIES,
+          original: (serviceClass as any).DEPENDENCIES,
           filtered: filteredDependencies,
           count: filteredDependencies.length,
         });
@@ -107,11 +111,13 @@ export class DependencyMapper implements IDependencyMapper {
   /**
    * Zirkuläre Dependencies prüfen
    */
-  checkCircularDependencies(dependencyGraph: Map<any, any[]>): boolean {
+  checkCircularDependencies(
+    dependencyGraph: Map<ServiceConstructor, ServiceConstructor[]>
+  ): boolean {
     this.logger.info(`[DependencyMapper] 🔍 Checking for circular dependencies`);
 
-    const visited = new Set<any>();
-    const recursionStack = new Set<any>();
+    const visited = new Set<ServiceConstructor>();
+    const recursionStack = new Set<ServiceConstructor>();
 
     for (const service of dependencyGraph.keys()) {
       if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
@@ -125,10 +131,10 @@ export class DependencyMapper implements IDependencyMapper {
   }
 
   private hasCircularDependency(
-    service: any,
-    graph: Map<any, any[]>,
-    visited: Set<any>,
-    recursionStack: Set<any>
+    service: ServiceConstructor,
+    graph: Map<ServiceConstructor, ServiceConstructor[]>,
+    visited: Set<ServiceConstructor>,
+    recursionStack: Set<ServiceConstructor>
   ): boolean {
     if (recursionStack.has(service)) {
       return true; // Zirkuläre Abhängigkeit gefunden

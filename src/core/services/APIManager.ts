@@ -99,15 +99,15 @@ export class APIManager implements IAPIManager {
    * Module API abrufen oder erstellen
    */
   private getModuleAPI(): any {
-    let moduleApi = (globalThis as any).game?.modules?.get("relationship-app")?.api;
+    let moduleApi = (game?.modules?.get("relationship-app") as any)?.api;
 
     if (!moduleApi) {
       this.logger.info(`[APIManager] 🔧 Module API not available, creating it`);
 
-      const module = (globalThis as any).game?.modules?.get("relationship-app");
+      const module = game?.modules?.get("relationship-app");
       if (module) {
-        module.api = {};
-        moduleApi = module.api;
+        (module as any).api = {};
+        moduleApi = (module as any).api;
         this.logger.info(`[APIManager] ✅ Module API created`);
       } else {
         this.logger.error(`[APIManager] ❌ Module 'relationship-app' not found`);
@@ -170,11 +170,16 @@ export class APIManager implements IAPIManager {
 
     for (const [serviceClass, plan] of servicePlans) {
       metadata.services.set(plan.apiName, {
-        serviceClass: serviceClass.name || serviceClass,
+        serviceClass:
+          typeof serviceClass === "string"
+            ? serviceClass
+            : serviceClass.name || serviceClass.toString(),
         apiName: plan.apiName,
         serviceType: plan.serviceType,
         isSingleton: plan.isSingleton,
-        dependencies: plan.dependencies.map((d) => d.name || d),
+        dependencies: plan.dependencies.map((d) =>
+          typeof d === "string" ? d : d.name || d.toString()
+        ),
         isRegistered: this.registeredServices.has(plan.apiName),
       });
     }

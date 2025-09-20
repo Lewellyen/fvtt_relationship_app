@@ -1,4 +1,5 @@
 import MetadataManagementView from "../svelte/MetadataManagementView.svelte";
+import type { IWindowedApp } from "../interfaces";
 import { use, setCurrentScope, createScopeChain, disposeScopeChain } from "../core/edge/appContext";
 import { FoundryLogger } from "../core/services/FoundryLogger";
 import { SvelteManager } from "../core/services/SvelteManager";
@@ -12,7 +13,7 @@ export default class MetadataManagementApplication extends foundry.applications.
   #svelte?: SvelteManager;
   #css?: CSSManager;
   private _appScope?: string;
-  private _openChildApps: Set<any> = new Set(); // Tracking offener Child Apps
+  private _openChildApps: Set<IWindowedApp> = new Set(); // Tracking offener Child Apps
 
   private get logger() {
     return (this.#logger ??= use(FoundryLogger));
@@ -34,16 +35,16 @@ export default class MetadataManagementApplication extends foundry.applications.
   /**
    * Merge the default parts, inserting our graph part between header and footer.
    */
-  static PARTS = {
+  static override PARTS = {
     main: {
       template: "modules/relationship-app/templates/metadata-management-main.hbs",
     },
   };
 
-  svelteApp: any = null;
+  svelteApp: unknown = null;
 
   /** @override */
-  static DEFAULT_OPTIONS = {
+  static override DEFAULT_OPTIONS = {
     // Unique ID for the sheet
     id: "metadata-management",
     // CSS classes to apply
@@ -55,23 +56,23 @@ export default class MetadataManagementApplication extends foundry.applications.
   };
 
   /** @override */
-  get title() {
+  override get title() {
     return this.options.window.title;
   }
 
   /** @override */
-  async _renderHTML(context: any, options: any) {
+  override async _renderHTML(context: any, options: any) {
     // Delegate template rendering to HandlebarsApplicationMixin
     return super._renderHTML(context, options);
   }
 
   /** @override */
-  _replaceHTML(html: any, options: any, context: any) {
+  override _replaceHTML(html: any, options: any, context: any) {
     // Replace rendered HTML via HandlebarsApplicationMixin
     return super._replaceHTML(html, options, context);
   }
 
-  async _prepareContext(options: any) {
+  override async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
     this.logger.info(
       "[MetadataManagementApplication] _prepareContext called with context:",
@@ -89,7 +90,7 @@ export default class MetadataManagementApplication extends foundry.applications.
     await this.css.loadCSS(cssPath);
   }
 
-  async _onRender(context: any, options: any) {
+  override async _onRender(context: any, options: any) {
     this.logger.info("[MetadataManagementApplication] _onRender started", { context, options });
 
     // App-Scope setzen
@@ -129,7 +130,7 @@ export default class MetadataManagementApplication extends foundry.applications.
   }
 
   /** @override */
-  async _onClose(options: any) {
+  override async _onClose(options: any) {
     this.logger.info("[MetadataManagementApplication] _onClose called with options:", options);
 
     // ✅ Alle offenen Child Apps schließen
@@ -169,7 +170,7 @@ export default class MetadataManagementApplication extends foundry.applications.
   /**
    * Dynamic Dialog öffnen mit Parent Scope
    */
-  async openDynamicDialog(config: any): Promise<Record<string, any> | null> {
+  async openDynamicDialog(config: any): Promise<Record<string, unknown> | null> {
     const DynamicDialogApp = (await import("./DynamicDialogApp")).default;
     const app = new DynamicDialogApp(this._appScope);
 
@@ -177,7 +178,7 @@ export default class MetadataManagementApplication extends foundry.applications.
     this._openChildApps.add(app);
 
     // Promise für automatisches Cleanup
-    const result = await new Promise<Record<string, any> | null>((resolve) => {
+    const result = await new Promise<Record<string, unknown> | null>((resolve) => {
       app._prepareConfig(config);
       app._prepareOnSubmit((values) => {
         app.close();

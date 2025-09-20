@@ -148,7 +148,7 @@ export class ServiceContainer implements IServiceContainer {
     if (!this.serviceFactory) {
       throw new Error("ServiceFactory not injected. Call setServiceFactory() first.");
     }
-    return this.serviceFactory.createService(ctor);
+    return this.serviceFactory.createService(ctor) as T;
   }
 
   /**
@@ -208,7 +208,11 @@ export class ServiceContainer implements IServiceContainer {
     return result;
   }
 
-  private topologicalSort(service: ServiceConstructor, visited: Set<ServiceConstructor>, result: ServiceConstructor[]): void {
+  private topologicalSort(
+    service: ServiceConstructor,
+    visited: Set<ServiceConstructor>,
+    result: ServiceConstructor[]
+  ): void {
     if (visited.has(service)) {
       return;
     }

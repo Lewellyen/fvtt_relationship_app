@@ -24,12 +24,13 @@ export class CSSManager implements ICSSManager {
     // Graceful handling: Wenn Setting noch nicht registriert ist, debug-Logging deaktivieren
     let debugEnabled = false;
     try {
-      debugEnabled = game?.settings?.get(MODULE_ID, SETTINGS_KEYS.DEBUG_LOGS) === true;
-    } catch (error) {
+      debugEnabled =
+        (game?.settings as any)?.get(MODULE_ID as any, SETTINGS_KEYS.DEBUG_LOGS) === true;
+    } catch {
       // Setting noch nicht registriert - debug-Logging deaktivieren
       debugEnabled = false;
     }
-    
+
     if (debugEnabled) {
       this.testLoggerInjection();
     }
@@ -90,7 +91,10 @@ export class CSSManager implements ICSSManager {
       if (this.logger) {
         this.logger.info(`[CSSManager] CSS already loaded: ${cssPath} (refs: ${currentCount + 1})`);
       } else {
-        this.writeLog("debug", `[CSSManager] CSS already loaded: ${cssPath} (refs: ${currentCount + 1})`);
+        this.writeLog(
+          "debug",
+          `[CSSManager] CSS already loaded: ${cssPath} (refs: ${currentCount + 1})`
+        );
       }
       return;
     }
@@ -106,9 +110,14 @@ export class CSSManager implements ICSSManager {
       this.loadedCSS.add(cssPath);
 
       if (this.logger) {
-        this.logger.info(`[CSSManager] CSS loaded successfully: ${cssPath} (refs: ${currentCount + 1})`);
+        this.logger.info(
+          `[CSSManager] CSS loaded successfully: ${cssPath} (refs: ${currentCount + 1})`
+        );
       } else {
-        this.writeLog("info", `[CSSManager] CSS loaded successfully: ${cssPath} (refs: ${currentCount + 1})`);
+        this.writeLog(
+          "info",
+          `[CSSManager] CSS loaded successfully: ${cssPath} (refs: ${currentCount + 1})`
+        );
       }
     } catch (error) {
       // Bei Fehler Referenzzählung zurücksetzen
@@ -129,7 +138,7 @@ export class CSSManager implements ICSSManager {
     // Referenzzählung verringern
     const currentCount = this.cssReferenceCount.get(cssPath) || 0;
     const newCount = Math.max(0, currentCount - 1);
-    
+
     if (newCount === 0) {
       // Nur entfernen wenn keine Referenzen mehr vorhanden
       const linkId = `css-${cssPath.replace(/[^a-zA-Z0-9]/g, "-")}`;
@@ -150,9 +159,14 @@ export class CSSManager implements ICSSManager {
       // Referenzzählung aktualisieren
       this.cssReferenceCount.set(cssPath, newCount);
       if (this.logger) {
-        this.logger.info(`[CSSManager] CSS reference count decreased: ${cssPath} (refs: ${newCount})`);
+        this.logger.info(
+          `[CSSManager] CSS reference count decreased: ${cssPath} (refs: ${newCount})`
+        );
       } else {
-        this.writeLog("info", `[CSSManager] CSS reference count decreased: ${cssPath} (refs: ${newCount})`);
+        this.writeLog(
+          "info",
+          `[CSSManager] CSS reference count decreased: ${cssPath} (refs: ${newCount})`
+        );
       }
     }
   }

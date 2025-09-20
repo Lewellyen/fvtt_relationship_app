@@ -18,17 +18,11 @@ export class ServiceCache {
     this.writeLog("info", `[ServiceCache] 🔍 Getting singleton: ${ctor.name || ctor}`);
 
     if (this.instances.has(ctor)) {
-      this.writeLog(
-        "info",
-        `[ServiceCache] ♻️ Returning cached singleton: ${ctor.name || ctor}`
-      );
+      this.writeLog("info", `[ServiceCache] ♻️ Returning cached singleton: ${ctor.name || ctor}`);
       return this.instances.get(ctor);
     }
 
-    this.writeLog(
-      "info",
-      `[ServiceCache] 🏗️ Creating new singleton: ${ctor.name || ctor}`
-    );
+    this.writeLog("info", `[ServiceCache] 🏗️ Creating new singleton: ${ctor.name || ctor}`);
     const service = factory();
     this.instances.set(ctor, service);
 

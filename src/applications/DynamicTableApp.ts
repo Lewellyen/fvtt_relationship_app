@@ -1,5 +1,6 @@
 import DynamicTableSheet from "../svelte/DynamicTableSheet.svelte";
 import type { IDynamicTableConfig } from "../types/DynamicTableTypes";
+import type { IWindowedApp } from "../interfaces";
 import {
   use,
   setCurrentScope,
@@ -11,26 +12,27 @@ import { FoundryLogger } from "../core/services/FoundryLogger";
 import { SvelteManager } from "../core/services/SvelteManager";
 import { CSSManager } from "../core/services/CSSManager";
 
-export default class DynamicTableApp extends foundry.applications.api.HandlebarsApplicationMixin(
-  foundry.applications.api.ApplicationV2
-) {
+export default class DynamicTableApp
+  extends foundry.applications.api.HandlebarsApplicationMixin(
+    foundry.applications.api.ApplicationV2
+  )
+  implements IWindowedApp
+{
   // Lazy-Memoized Getter – kein Service im Konstruktor auflösen!
   #logger?: FoundryLogger;
   #svelte?: SvelteManager;
   #css?: CSSManager;
-  private _instanceId?: string;
-  private _instanceScope?: string;
-  private _parentScope?: string;
+  private _instanceId: string;
+  private _instanceScope: string;
+  private _parentScope: string | undefined;
 
   private get logger() {
     return (this.#logger ??= use(FoundryLogger));
   }
   private get svelteManager() {
-    if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
     return (this.#svelte ??= use(SvelteManager, this._instanceScope));
   }
   private get cssManager() {
-    if (!this._instanceScope) throw new Error("Instance scope not set. Call _onRender first.");
     return (this.#css ??= use(CSSManager, this._instanceScope));
   }
 
@@ -57,7 +59,7 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
   /**
    * Merge the default parts, inserting our table part between header and footer.
    */
-  static PARTS = {
+  static override PARTS = {
     main: {
       template: "modules/relationship-app/templates/DynamicTableApp.hbs",
     },
@@ -68,13 +70,13 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
     title: "Dynamic Table",
     columns: [],
   };
-  static onSubmit: (data: any[]) => void = () => {};
+  static onSubmit: (data: unknown[]) => void = () => {};
   static onCancel: () => void = () => {};
 
-  svelteApp: any = null;
+  svelteApp: unknown = null;
 
   /** @override */
-  static DEFAULT_OPTIONS = {
+  static override DEFAULT_OPTIONS = {
     // Unique ID for the sheet
     id: "dynamic-table",
     // CSS classes to apply
@@ -86,23 +88,32 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
   };
 
   /** @override */
-  get title() {
+  override get title() {
     return this.options.window.title;
   }
 
+  // IWindowedApp implementation
+  override get id(): string {
+    return this._instanceId;
+  }
+
+  get isVisible(): boolean {
+    return this.rendered;
+  }
+
   /** @override */
-  async _renderHTML(context: any, options: any) {
+  override async _renderHTML(context: any, options: any) {
     // Delegate template rendering to HandlebarsApplicationMixin
     return super._renderHTML(context, options);
   }
 
   /** @override */
-  _replaceHTML(html: any, options: any, context: any) {
+  override _replaceHTML(html: any, options: any, context: any) {
     // Replace rendered HTML via HandlebarsApplicationMixin
     return super._replaceHTML(html, options, context);
   }
 
-  async _prepareContext(options: any) {
+  override async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
     this.logger.info(`[${DynamicTableApp.appId}] _prepareContext called with context:`, context);
     this.logger.info(`[${DynamicTableApp.appId}] _prepareContext called with options:`, options);
@@ -118,7 +129,7 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
     return DynamicTableApp.config;
   }
 
-  async _prepareOnSubmit(onSubmit: (data: any[]) => void) {
+  async _prepareOnSubmit(onSubmit: (data: unknown[]) => void) {
     DynamicTableApp.onSubmit = onSubmit;
     this.logger.info(
       `[${DynamicTableApp.appId}] _prepareOnSubmit called with onSubmit:`,
@@ -136,7 +147,7 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
     return DynamicTableApp.onCancel;
   }
 
-  async _onRender(context: any, options: any) {
+  override async _onRender(context: any, options: any) {
     this.logger.info(`[${DynamicTableApp.appId}] _onRender started`, {
       instanceId: this._instanceId,
       context,
@@ -196,7 +207,7 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
   }
 
   /** @override */
-  async _onClose(options: any) {
+  override async _onClose(options: any) {
     this.logger.info(`[${DynamicTableApp.appId}] _onClose called`, {
       instanceId: this._instanceId,
       parentScope: this._parentScope,
@@ -229,7 +240,7 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
   /**
    * Statische Methode zum einfachen Öffnen der Tabelle
    */
-  static async show(config: IDynamicTableConfig, parentScope?: string): Promise<any[] | null> {
+  static async show(config: IDynamicTableConfig, parentScope?: string): Promise<unknown[] | null> {
     return new Promise((resolve) => {
       const app = new DynamicTableApp(parentScope);
 
@@ -248,7 +259,7 @@ export default class DynamicTableApp extends foundry.applications.api.Handlebars
       });
 
       // Tabelle öffnen
-      app.render({ force: true });
+      app.render({ force: true } as any);
     });
   }
 }

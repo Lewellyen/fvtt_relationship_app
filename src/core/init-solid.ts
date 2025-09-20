@@ -6,7 +6,7 @@ import { NotificationService } from "../services/NotificationService";
 import { SERVICE_CONFIG } from "../services/index";
 import { setContainer } from "../core/edge/appContext";
 import MetadataManagementApplication from "../applications/MetadataManagementApplication";
-import { MODULE_ID, SETTINGS_KEYS } from "../constants";
+import { MODULE_ID, SETTINGS_KEYS, SERVICE_NAMES } from "../constants";
 import { GlobalStateManager } from "../core/services/GlobalStateManager";
 // GraphService wird nicht mehr global erzeugt - ist scoped Service
 
@@ -24,10 +24,10 @@ logger.info(`[SOLID Boot] 🚀 Phase 1: Early Bootstrap - Creating core services
 
 // Global State Manager erstellen und Services registrieren
 const globalStateManager = GlobalStateManager.getInstance(logger);
-globalStateManager.registerService("foundryAdapter", foundryAdapter);
-globalStateManager.registerService("logger", logger);
-globalStateManager.registerService("errorHandler", errorHandler);
-globalStateManager.registerService("notificationService", notificationService);
+globalStateManager.registerService(SERVICE_NAMES.FOUNDRY_ADAPTER, foundryAdapter);
+globalStateManager.registerService(SERVICE_NAMES.LOGGER, logger);
+globalStateManager.registerService(SERVICE_NAMES.ERROR_HANDLER, errorHandler);
+globalStateManager.registerService(SERVICE_NAMES.NOTIFICATION_SERVICE, notificationService);
 
 logger.info(`[SOLID Boot] ✅ Phase 1 completed - Core services available via GlobalStateManager`);
 
@@ -129,37 +129,42 @@ foundryAdapter.onInit(async () => {
     // Graceful handling: Wenn Setting noch nicht registriert ist, debug-Logging deaktivieren
     let debugEnabled = false;
     try {
-      debugEnabled = game?.settings?.get(MODULE_ID as any, SETTINGS_KEYS.DEBUG_LOGS as any) === true;
+      debugEnabled =
+        game?.settings?.get(MODULE_ID as any, SETTINGS_KEYS.DEBUG_LOGS as any) === true;
     } catch {
       // Setting noch nicht registriert - debug-Logging deaktivieren
       debugEnabled = false;
     }
-    
+
     if (debugEnabled) {
-      globalState.registerService("serviceContainer", serviceContainer);
-      globalState.registerService("serviceRegistrar", serviceRegistrar);
-      globalState.registerService("apiManager", apiManager);
-      
+      globalState.registerService(SERVICE_NAMES.SERVICE_CONTAINER, serviceContainer);
+      globalState.registerService(SERVICE_NAMES.SERVICE_REGISTRAR, serviceRegistrar);
+      globalState.registerService(SERVICE_NAMES.API_MANAGER, apiManager);
+
       // Debug-Hilfsfunktionen für Console-Zugriff
       const debugHelpers = {
-        getLogger: () => globalState.getService("logger"),
-        getErrorHandler: () => globalState.getService("errorHandler"),
-        getNotificationService: () => globalState.getService("notificationService"),
-        getServiceContainer: () => globalState.getService("serviceContainer"),
-        getServiceRegistrar: () => globalState.getService("serviceRegistrar"),
-        getAPIManager: () => globalState.getService("apiManager"),
+        getLogger: () => globalState.getService(SERVICE_NAMES.LOGGER),
+        getErrorHandler: () => globalState.getService(SERVICE_NAMES.ERROR_HANDLER),
+        getNotificationService: () => globalState.getService(SERVICE_NAMES.NOTIFICATION_SERVICE),
+        getServiceContainer: () => globalState.getService(SERVICE_NAMES.SERVICE_CONTAINER),
+        getServiceRegistrar: () => globalState.getService(SERVICE_NAMES.SERVICE_REGISTRAR),
+        getAPIManager: () => globalState.getService(SERVICE_NAMES.API_MANAGER),
         getAllServices: () => globalState.getAllServices(),
         getDebugInfo: () => globalState.getDebugInfo(),
         // Convenience-Methoden
-        log: (message: string | object, ...args: unknown[]) => globalState.getService<FoundryLogger>("logger")?.info(message, ...args),
-        warn: (message: string | object, ...args: unknown[]) => globalState.getService<FoundryLogger>("logger")?.warn(message, ...args),
-        error: (message: string | object, ...args: unknown[]) => globalState.getService<FoundryLogger>("logger")?.error(message, ...args),
-        debug: (message: string | object, ...args: unknown[]) => globalState.getService<FoundryLogger>("logger")?.debug(message, ...args),
+        log: (message: string | object, ...args: unknown[]) =>
+          globalState.getService<FoundryLogger>(SERVICE_NAMES.LOGGER)?.info(message, ...args),
+        warn: (message: string | object, ...args: unknown[]) =>
+          globalState.getService<FoundryLogger>(SERVICE_NAMES.LOGGER)?.warn(message, ...args),
+        error: (message: string | object, ...args: unknown[]) =>
+          globalState.getService<FoundryLogger>(SERVICE_NAMES.LOGGER)?.error(message, ...args),
+        debug: (message: string | object, ...args: unknown[]) =>
+          globalState.getService<FoundryLogger>(SERVICE_NAMES.LOGGER)?.debug(message, ...args),
       };
-      
-      // Debug-Hilfsfunktionen in globalThis verfügbar machen
-      (globalThis as any).relationshipAppDebug = debugHelpers;
-      loggerInstance.info(`[SOLID Boot] 🐛 Debug helpers available in globalThis.relationshipAppDebug`);
+
+      // Debug-Hilfsfunktionen über GlobalStateManager verfügbar machen
+      globalState.registerService(SERVICE_NAMES.DEBUG_HELPERS, debugHelpers);
+      loggerInstance.info(`[SOLID Boot] 🐛 Debug helpers available via GlobalStateManager`);
     }
 
     loggerInstance.info(
@@ -191,7 +196,11 @@ foundryAdapter.onReady(async () => {
 
     // ModuleInitializer manuell erstellen
     const { ModuleInitializer } = await import("../core/services/ModuleInitializer");
-    const moduleInitializer = new ModuleInitializer(loggerInstance, errorHandler, registrationService);
+    const moduleInitializer = new ModuleInitializer(
+      loggerInstance,
+      errorHandler,
+      registrationService
+    );
 
     // Module Initialisierung
     loggerInstance.info(`[SOLID Boot] 🚀 Starting module initialization`);

@@ -37,7 +37,9 @@ export class FoundryAdapter implements IFoundryAdapter {
     return foundry.utils.randomID();
   }
 
-  async loadDocument<TDoc extends foundry.abstract.Document | object>(uuid: string): Promise<TDoc | null> {
+  async loadDocument<TDoc extends foundry.abstract.Document<any, any> | object>(
+    uuid: string
+  ): Promise<TDoc | null> {
     const doc = await foundry.utils.fromUuid(uuid);
     return (doc ?? null) as TDoc | null;
   }
@@ -73,10 +75,10 @@ export class FoundryAdapter implements IFoundryAdapter {
   }
 
   // Document Operations
-  async updateDocument<TDoc extends foundry.abstract.Document, TData extends Record<string, unknown>>(
-    document: TDoc,
-    data: TData
-  ): Promise<TDoc> {
+  async updateDocument<
+    TDoc extends foundry.abstract.Document<any, any>,
+    TData extends Record<string, unknown>,
+  >(document: TDoc, data: TData): Promise<TDoc> {
     return (await (document as any).update(data)) as TDoc;
   }
 
@@ -90,10 +92,10 @@ export class FoundryAdapter implements IFoundryAdapter {
    * @param data - Die zu speichernden Daten
    * @returns Promise mit dem aktualisierten Dokument
    */
-  async updateDocumentWithReload<TDoc extends foundry.abstract.Document, TData extends Record<string, unknown>>(
-    document: TDoc,
-    data: TData
-  ): Promise<TDoc> {
+  async updateDocumentWithReload<
+    TDoc extends foundry.abstract.Document<any, any>,
+    TData extends Record<string, unknown>,
+  >(document: TDoc, data: TData): Promise<TDoc> {
     try {
       // Lade das Dokument neu für Datenkonsistenz
       const documentUuid = (document as any).uuid as string;
@@ -113,18 +115,18 @@ export class FoundryAdapter implements IFoundryAdapter {
   }
 
   // Settings Operations
-  registerSetting(key: string, config: ClientSettings.NumberConfig | ClientSettings.StringConfig | ClientSettings.BooleanConfig | ClientSettings.ObjectConfig): void {
-    game?.settings?.register(MODULE_ID, key, config);
+  registerSetting(key: string, config: ClientSettings.SettingConfig): void {
+    (game?.settings as any)?.register(MODULE_ID as any, key, config);
   }
 
   // Debug Setting registrieren - wird jetzt über SettingsService gemacht
   // registerDebugSetting(): void { ... } // Entfernt - zentralisiert in SettingsService
 
   getSetting(key: string): unknown {
-    return game?.settings?.get(MODULE_ID, key);
+    return (game?.settings as any)?.get(MODULE_ID as any, key);
   }
 
   async setSetting(key: string, value: unknown): Promise<unknown> {
-    return await game?.settings?.set(MODULE_ID, key, value);
+    return await (game?.settings as any)?.set(MODULE_ID as any, key, value);
   }
 }

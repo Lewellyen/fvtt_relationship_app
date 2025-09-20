@@ -1,12 +1,14 @@
-import type { IGraphRepository, GraphModel } from "../../interfaces/core/IPorts";
+// import type { IGraphRepository } from "../../interfaces/core/IPorts";
+import type { GraphModel } from "../../domain/types/RelationshipGraphDomain";
 import type { IFoundryAdapter } from "./IFoundryAdapter";
 import type { ILogger } from "../../interfaces";
 import { FoundryAdapter } from "./FoundryAdapter";
 import { FoundryLogger } from "../services/FoundryLogger";
+import { ok, err, type Result } from "../../utils/result";
 
 /**
  * Graph Repository Adapter
- * 
+ *
  * Foundry-spezifische Implementierung des Graph Repository Ports
  * Kapselt JournalEntryPage-Operationen für die Domäne
  */
@@ -30,46 +32,48 @@ export class GraphRepositoryAdapter {
   /**
    * Lädt Graph-Daten aus der JournalEntryPage
    */
-  async load(): Promise<GraphModel> {
+  async load(): Promise<Result<GraphModel>> {
     if (!this.pageUuid) {
-      throw new Error("Page UUID not set. Call setPageUuid() first.");
+      return err(new Error("Page UUID not set. Call setPageUuid() first."));
     }
-    
+
     try {
       const page = await this.foundryAdapter.loadDocument<JournalEntryPage>(this.pageUuid);
       if (!page) {
-        throw new Error(`JournalEntryPage not found: ${this.pageUuid}`);
+        return err(new Error(`JournalEntryPage not found: ${this.pageUuid}`));
       }
 
       const system = page.system as any;
-      return {
+      const model: GraphModel = {
         version: system.version ?? 1,
         nodes: this.foundryAdapter.deepClone(system.nodes ?? {}),
         edges: this.foundryAdapter.deepClone(system.edges ?? {}),
         policy: this.foundryAdapter.deepClone(system.policy ?? {}),
-      } as GraphModel;
+      };
+
+      return ok(model);
     } catch (error) {
       this.logger.error("Failed to load graph data:", error);
-      throw error;
+      return err(error instanceof Error ? error : new Error(String(error)));
     }
   }
 
   /**
    * Speichert Graph-Daten in der JournalEntryPage
    */
-  async save(model: GraphModel): Promise<void> {
+  async save(model: GraphModel): Promise<Result<void>> {
     if (!this.pageUuid) {
-      throw new Error("Page UUID not set. Call setPageUuid() first.");
+      return err(new Error("Page UUID not set. Call setPageUuid() first."));
     }
-    
+
     try {
       const page = await this.foundryAdapter.loadDocument<JournalEntryPage>(this.pageUuid);
       if (!page) {
-        throw new Error(`JournalEntryPage not found: ${this.pageUuid}`);
+        return err(new Error(`JournalEntryPage not found: ${this.pageUuid}`));
       }
 
       const patch: Record<string, unknown> = {};
-      
+
       // Version
       if (model.version !== undefined) {
         patch["system.version"] = model.version;
@@ -81,9 +85,10 @@ export class GraphRepositoryAdapter {
       patch["system.policy"] = model.policy ?? {};
 
       await this.foundryAdapter.updateDocumentWithReload(page as any, patch);
+      return ok(undefined);
     } catch (error) {
       this.logger.error("Failed to save graph data:", error);
-      throw error;
+      return err(error instanceof Error ? error : new Error(String(error)));
     }
   }
 }

@@ -1,4 +1,5 @@
 import type { IServiceRegistrar, IServiceContainer, ILogger } from "../../interfaces";
+import type { ServiceConstructor } from "../../types/ServiceTypes";
 
 /**
  * ServiceRegistrar - Services registrieren und verfügbar machen
@@ -8,7 +9,7 @@ import type { IServiceRegistrar, IServiceContainer, ILogger } from "../../interf
  * Side-effect-freier Konstruktor
  */
 export class ServiceRegistrar implements IServiceRegistrar {
-  private readonly serviceLocator = new Map<any, () => any>();
+  private readonly serviceLocator = new Map<ServiceConstructor, () => unknown>();
 
   constructor(
     private logger: ILogger,
@@ -38,9 +39,12 @@ export class ServiceRegistrar implements IServiceRegistrar {
   /**
    * Einzelnen Service registrieren
    */
-  registerService(serviceClass: any): void {
+  registerService(serviceClass: ServiceConstructor): void {
     const serviceName =
-      serviceClass.CLASS_NAME || serviceClass.className || serviceClass.name || serviceClass;
+      (serviceClass as any).CLASS_NAME ||
+      (serviceClass as any).className ||
+      serviceClass.name ||
+      serviceClass;
     this.logger.info(`[ServiceRegistrar] 📝 Registering service factory: ${serviceName}`);
 
     // Factory registrieren - keine sofortige Auflösung
@@ -53,7 +57,7 @@ export class ServiceRegistrar implements IServiceRegistrar {
   /**
    * Service über Factory abrufen - On-Demand
    */
-  getService<T>(identifier: any, scope?: string): T {
+  getService<T>(identifier: ServiceConstructor, scope?: string): T {
     this.logger.info(
       `[ServiceRegistrar] 🔍 Getting service: ${identifier.name || identifier}${scope ? ` (scope: ${scope})` : ""}`
     );
@@ -74,21 +78,21 @@ export class ServiceRegistrar implements IServiceRegistrar {
   /**
    * Prüfen ob Service registriert ist
    */
-  hasService(identifier: any): boolean {
+  hasService(identifier: ServiceConstructor): boolean {
     return this.serviceLocator.has(identifier);
   }
 
   /**
    * Alle registrierten Services abrufen
    */
-  getRegisteredServices(): any[] {
+  getRegisteredServices(): ServiceConstructor[] {
     return Array.from(this.serviceLocator.keys());
   }
 
   /**
    * Service aus Registrierung entfernen
    */
-  unregisterService(identifier: any): void {
+  unregisterService(identifier: ServiceConstructor): void {
     this.logger.info(
       `[ServiceRegistrar] 🗑️ Unregistering service: ${identifier.name || identifier}`
     );
@@ -122,19 +126,16 @@ export class ServiceRegistrar implements IServiceRegistrar {
    * @deprecated Verwende GlobalStateManager statt globalThis
    */
   enableServiceDiscovery(): void {
-    this.logger.warn(`[ServiceRegistrar] ⚠️ enableServiceDiscovery is deprecated. Use GlobalStateManager instead.`);
-    
-    // ServiceContainer in globalThis verfügbar machen (für Rückwärtskompatibilität)
-    (globalThis as any).relationshipApp = (globalThis as any).relationshipApp || {};
-    (globalThis as any).relationshipApp.serviceLocator = this;
-
-    this.logger.info(`[ServiceRegistrar] ✅ Service discovery enabled (deprecated method)`);
+    this.logger.warn(
+      `[ServiceRegistrar] ⚠️ enableServiceDiscovery is deprecated. Use GlobalStateManager instead.`
+    );
+    // Method is deprecated - no implementation needed
   }
 
   /**
    * Service Metadaten abrufen
    */
-  getServiceMetadata(identifier: any): any {
+  getServiceMetadata(identifier: ServiceConstructor): unknown {
     const plan = this.serviceContainer.getServicePlan(identifier);
     if (!plan) {
       return null;
@@ -152,8 +153,8 @@ export class ServiceRegistrar implements IServiceRegistrar {
   /**
    * Alle Service Metadaten abrufen
    */
-  getAllServiceMetadata(): Map<any, any> {
-    const metadata = new Map();
+  getAllServiceMetadata(): Map<ServiceConstructor, unknown> {
+    const metadata = new Map<ServiceConstructor, unknown>();
     const servicePlans = this.serviceContainer.getAllServicePlans();
 
     for (const [serviceClass] of servicePlans) {

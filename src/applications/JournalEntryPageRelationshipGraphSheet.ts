@@ -72,7 +72,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
   svelteApp: any = null;
 
   /** @override */
-  static DEFAULT_OPTIONS = {
+  static override DEFAULT_OPTIONS = {
     // Unique ID for the sheet
     id: "journal-entry-relationship-graph",
     // CSS classes to apply
@@ -86,28 +86,28 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
   };
 
   /** @override */
-  get title() {
+  override get title() {
     return this.options.window.title;
   }
 
   /** @override */
-  async _renderHTML(context: any, options: any) {
+  override async _renderHTML(context: any, options: any) {
     // Delegate template rendering to HandlebarsApplicationMixin
     return await super._renderHTML(context, options);
   }
 
   /** @override */
-  _replaceHTML(html: any, options: any, context: any) {
+  override _replaceHTML(html: any, options: any, context: any) {
     // Replace rendered HTML via HandlebarsApplicationMixin
     return super._replaceHTML(html, options, context);
   }
 
-  async _preparePartContext(partContext: any, part: any, options: any) {
+  override async _preparePartContext(partContext: any, part: any, options: any) {
     const context = await super._preparePartContext(partContext, part, options);
     return context;
   }
 
-  async _prepareContext(options: any) {
+  override async _prepareContext(options: any) {
     const context = await super._prepareContext(options);
     this.logger.info(
       "[JournalEntryPageRelationshipGraphSheet] _prepareContext called with context:",
@@ -125,7 +125,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     await this.cssManager.loadCSS(cssPath);
   }
 
-  async _onRender(context: any, options: any) {
+  override async _onRender(context: any, options: any) {
     this.logger.info("[JournalEntryPageRelationshipGraphSheet] _onRender started", {
       context,
       options,
@@ -139,7 +139,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
     // Scoped Services verwenden
     // GraphRepositoryAdapter mit pageUuid konfigurieren
     this.graphService.repository.setPageUuid(this.document.uuid);
-    
+
     await this.graphService.init();
     bindFoundrySync(this.document, this.graphService);
 
@@ -167,7 +167,7 @@ export default class JournalEntryPageRelationshipGraphSheet extends foundry.appl
   }
 
   /** @override */
-  async _onClose(options: any) {
+  override async _onClose(options: any) {
     this.logger.info(
       "[JournalEntryPageRelationshipGraphSheet] _onClose called with options:",
       options

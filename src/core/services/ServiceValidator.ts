@@ -1,5 +1,6 @@
 import type { IServiceValidator, ILogger } from "../../interfaces";
 import type { ServicePlan, ValidationResult } from "./ServicePlanner";
+import type { ServiceConstructor } from "../../types/ServiceTypes";
 
 /**
  * ServiceValidator - Service-Erstellung validieren
@@ -16,7 +17,9 @@ export class ServiceValidator implements IServiceValidator {
   /**
    * Dependency Graph validieren
    */
-  validateDependencyGraph(dependencyGraph: Map<any, any[]>): ValidationResult {
+  validateDependencyGraph(
+    dependencyGraph: Map<ServiceConstructor, ServiceConstructor[]>
+  ): ValidationResult {
     this.logger.info(
       `[ServiceValidator] 🔍 Validating dependency graph with ${dependencyGraph.size} services`
     );
@@ -57,7 +60,7 @@ export class ServiceValidator implements IServiceValidator {
   /**
    * Service-Pläne validieren
    */
-  validateServicePlans(servicePlans: Map<any, ServicePlan>): ValidationResult {
+  validateServicePlans(servicePlans: Map<ServiceConstructor, ServicePlan>): ValidationResult {
     this.logger.info(`[ServiceValidator] 🔍 Validating ${servicePlans.size} service plans`);
 
     const result: ValidationResult = {
@@ -88,7 +91,10 @@ export class ServiceValidator implements IServiceValidator {
   /**
    * Einzelnen Service-Plan validieren
    */
-  private validateServicePlan(serviceClass: any, plan: ServicePlan): ValidationResult {
+  private validateServicePlan(
+    serviceClass: ServiceConstructor,
+    plan: ServicePlan
+  ): ValidationResult {
     const result: ValidationResult = {
       isValid: true,
       errors: [],
@@ -132,14 +138,18 @@ export class ServiceValidator implements IServiceValidator {
     // Prüfe ob alle Dependencies in Registry sind
     // Hinweis: Diese Prüfung wird in der ServicePlanner.validateServicePlan() gemacht
     // Hier nur eine Warnung wenn Dependencies leer sind aber erwartet werden
-    if (plan.dependencies.length === 0 && serviceClass.DEPENDENCIES && serviceClass.DEPENDENCIES.length > 0) {
+    if (
+      plan.dependencies.length === 0 &&
+      (serviceClass as any).DEPENDENCIES &&
+      (serviceClass as any).DEPENDENCIES.length > 0
+    ) {
       result.warnings.push(
         `Service ${serviceClass.name || serviceClass} has DEPENDENCIES defined but no dependencies were resolved`
       );
     }
 
     // Warnung wenn DEPENDENCIES fehlt
-    if (serviceClass.DEPENDENCIES === undefined) {
+    if ((serviceClass as any).DEPENDENCIES === undefined) {
       result.warnings.push(
         `Service ${serviceClass.name || serviceClass} has no DEPENDENCIES property defined. This should be explicitly declared as an empty array if no dependencies are needed.`
       );
@@ -151,10 +161,8 @@ export class ServiceValidator implements IServiceValidator {
   /**
    * Service-Erstellung validieren
    */
-  validateServiceCreation(service: any, ctor: new (...args: unknown[]) => any): boolean {
-    this.logger.info(
-      `[ServiceValidator] 🔍 Validating service creation for: ${ctor.name || ctor}`
-    );
+  validateServiceCreation(service: unknown, ctor: new (...args: unknown[]) => unknown): boolean {
+    this.logger.info(`[ServiceValidator] 🔍 Validating service creation for: ${ctor.name || ctor}`);
 
     if (!service) {
       this.logger.error(
@@ -164,26 +172,24 @@ export class ServiceValidator implements IServiceValidator {
     }
 
     if (typeof service !== "object") {
-      this.logger.error(
-        `[ServiceValidator] ❌ Service is not an object for ${ctor.name || ctor}`
-      );
+      this.logger.error(`[ServiceValidator] ❌ Service is not an object for ${ctor.name || ctor}`);
       return false;
     }
 
-    this.logger.info(
-      `[ServiceValidator] ✅ Service creation valid for ${ctor.name || ctor}`
-    );
+    this.logger.info(`[ServiceValidator] ✅ Service creation valid for ${ctor.name || ctor}`);
     return true;
   }
 
   /**
    * Zirkuläre Dependencies prüfen
    */
-  checkCircularDependencies(dependencyGraph: Map<any, any[]>): boolean {
+  checkCircularDependencies(
+    dependencyGraph: Map<ServiceConstructor, ServiceConstructor[]>
+  ): boolean {
     this.logger.info(`[ServiceValidator] 🔍 Checking for circular dependencies`);
 
-    const visited = new Set<any>();
-    const recursionStack = new Set<any>();
+    const visited = new Set<ServiceConstructor>();
+    const recursionStack = new Set<ServiceConstructor>();
 
     for (const service of dependencyGraph.keys()) {
       if (this.hasCircularDependency(service, dependencyGraph, visited, recursionStack)) {
@@ -199,10 +205,10 @@ export class ServiceValidator implements IServiceValidator {
   }
 
   private hasCircularDependency(
-    service: any,
-    graph: Map<any, any[]>,
-    visited: Set<any>,
-    recursionStack: Set<any>
+    service: ServiceConstructor,
+    graph: Map<ServiceConstructor, ServiceConstructor[]>,
+    visited: Set<ServiceConstructor>,
+    recursionStack: Set<ServiceConstructor>
   ): boolean {
     if (recursionStack.has(service)) {
       this.logger.error(

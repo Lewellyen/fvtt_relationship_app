@@ -1,8 +1,8 @@
-import type { ITimeSource } from "../../interfaces/core/IPorts";
+// import type { ITimeSource } from "../../interfaces/core/IPorts";
 
 /**
  * Time Source Adapter
- * 
+ *
  * Foundry-spezifische Implementierung der Zeitquelle
  * Kapselt Date.now() für deterministische Tests
  */

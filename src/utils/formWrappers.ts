@@ -47,7 +47,7 @@ export function createElement(config: {
       disabled: config.ui?.disabled || false,
       readonly: config.ui?.readonly || false,
     },
-    showIf: config.showIf,
+    showIf: config.showIf || (() => true),
   };
 }
 
@@ -74,18 +74,18 @@ export function createTextElement(
   return createElement({
     field,
     type: options.multiline ? "textarea" : "text",
-    label: options.label,
-    required: options.required,
-    placeholder: options.placeholder,
-    default: options.default,
-    description: options.description,
-    category: options.category,
-    validation: options.validation,
-    showIf: options.showIf,
+    label: options.label || field,
+    required: options.required || false,
+    placeholder: options.placeholder || "",
+    default: options.default || undefined,
+    description: options.description || "",
+    category: options.category || "",
+    validation: options.validation ?? {},
+    showIf: options.showIf ?? (() => true),
     ui: {
       width: "full",
-      multiline: options.multiline,
-      rows: options.multiline ? 3 : undefined,
+      multiline: options.multiline || false,
+      rows: options.multiline ? 3 : 1,
     },
   });
 }
@@ -107,12 +107,12 @@ export function createSelectElement(
   return createElement({
     field,
     type: "select",
-    label: options.label,
-    required: options.required,
+    label: options.label || field,
+    required: options.required || false,
     options: options.options,
     default: options.default,
-    description: options.description,
-    category: options.category,
+    description: options.description || "",
+    category: options.category || "",
   });
 }
 
@@ -133,12 +133,12 @@ export function createMultiSelectElement(
   return createElement({
     field,
     type: "multiselect",
-    label: options.label,
-    required: options.required,
+    label: options.label || field,
+    required: options.required || false,
     options: options.options,
     default: options.default || [],
-    description: options.description,
-    category: options.category,
+    description: options.description || "",
+    category: options.category || "",
   });
 }
 
@@ -161,16 +161,19 @@ export function createNumberElement(
   return createElement({
     field,
     type: "number",
-    label: options.label,
-    required: options.required,
-    placeholder: options.placeholder,
-    default: options.default,
-    description: options.description,
-    category: options.category,
-    validation: {
-      min: options.min,
-      max: options.max,
-    },
+    label: options.label || field,
+    required: options.required || false,
+    placeholder: options.placeholder || "",
+    default: options.default || 0,
+    description: options.description || "",
+    category: options.category || "",
+    validation:
+      options.min !== undefined || options.max !== undefined
+        ? {
+            min: options.min || 0,
+            max: options.max || 100,
+          }
+        : {},
   });
 }
 
@@ -190,11 +193,11 @@ export function createBooleanElement(
   return createElement({
     field,
     type: "boolean",
-    label: options.label,
-    required: options.required,
-    default: options.default,
-    description: options.description,
-    category: options.category,
+    label: options.label || field,
+    required: options.required || false,
+    default: options.default || false,
+    description: options.description || "",
+    category: options.category || "",
   });
 }
 
@@ -216,12 +219,12 @@ export function createTextareaElement(
   return createElement({
     field,
     type: "textarea",
-    label: options.label,
-    required: options.required,
-    placeholder: options.placeholder,
+    label: options.label || field,
+    required: options.required || false,
+    placeholder: options.placeholder || "",
     default: options.default,
-    description: options.description,
-    category: options.category,
+    description: options.description || "",
+    category: options.category || "",
     ui: {
       width: "full",
       multiline: true,

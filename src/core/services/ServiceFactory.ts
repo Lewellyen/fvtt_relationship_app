@@ -23,36 +23,25 @@ export class ServiceFactory {
 
     const plan = this.servicePlans.get(ctor);
     if (!plan) {
-      this.writeLog(
-        "error",
-        `[ServiceFactory] ❌ No service plan found for ${ctor.name || ctor}`
-      );
+      this.writeLog("error", `[ServiceFactory] ❌ No service plan found for ${ctor.name || ctor}`);
       throw new Error(`No service plan found for ${ctor.name || ctor}`);
     }
 
-    this.writeLog(
-      "info",
-      `[ServiceFactory] 📋 Service plan for ${ctor.name || ctor}:`,
-      {
-        dependencies: plan.dependencies.map((d) => d.name || d),
-        isSingleton: plan.isSingleton,
-        isScoped: plan.isScoped,
-        isTransient: plan.isTransient,
-        serviceType: plan.serviceType,
-      }
-    );
+    this.writeLog("info", `[ServiceFactory] 📋 Service plan for ${ctor.name || ctor}:`, {
+      dependencies: plan.dependencies.map((d) => d.name || d),
+      isSingleton: plan.isSingleton,
+      isScoped: plan.isScoped,
+      isTransient: plan.isTransient,
+      serviceType: plan.serviceType,
+    });
 
     // Dependencies über Container auflösen (mit korrektem Caching!)
     const dependencies = this.resolveDependencies(plan);
 
-    this.writeLog(
-      "info",
-      `[ServiceFactory] 🔗 Resolved dependencies for ${ctor.name || ctor}:`,
-      {
-        count: dependencies.length,
-        dependencies: dependencies.map((d) => d.constructor.name),
-      }
-    );
+    this.writeLog("info", `[ServiceFactory] 🔗 Resolved dependencies for ${ctor.name || ctor}:`, {
+      count: dependencies.length,
+      dependencies: dependencies.map((d) => d.constructor.name),
+    });
 
     // Service mit Dependencies erstellen
     const service = new plan.constructor(...dependencies);
@@ -66,10 +55,7 @@ export class ServiceFactory {
       throw new Error(`Service creation validation failed for ${ctor.name || ctor}`);
     }
 
-    this.writeLog(
-      "info",
-      `[ServiceFactory] ✅ Service created successfully: ${ctor.name || ctor}`
-    );
+    this.writeLog("info", `[ServiceFactory] ✅ Service created successfully: ${ctor.name || ctor}`);
     return service as T;
   }
 

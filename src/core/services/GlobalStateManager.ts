@@ -1,5 +1,5 @@
 import type { ILogger } from "../../interfaces";
-import type { ServiceConstructor } from "../../types/ServiceTypes";
+// import type { ServiceConstructor } from "../../types/ServiceTypes";
 
 /**
  * GlobalStateManager - Kapselt globalen Zustand
