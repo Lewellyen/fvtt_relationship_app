@@ -1,5 +1,6 @@
 import type { ServicePlan } from "../../core/services/ServicePlanner";
 import type { IScopeChain } from "./IScopeChain";
+import type { ServiceConstructor, ServiceIdentifier } from "../../types/ServiceTypes";
 
 /**
  * Interface für Service Container
@@ -13,14 +14,14 @@ export interface IServiceContainer {
    * @param scope - Optionaler Scope für Scoped Services
    * @returns Service-Instanz
    */
-  getService<T>(ctor: new (...args: unknown[]) => T, scope?: string): T;
+  getService<T>(ctor: ServiceConstructor, scope?: string): T;
 
   /**
    * Service mit Dependencies erstellen
    * @param ctor - Service-Konstruktor
    * @returns Service-Instanz
    */
-  createService<T>(ctor: new (...args: unknown[]) => T): T;
+  createService<T>(ctor: ServiceConstructor): T;
 
   /**
    * Alle Services erstellen
@@ -29,9 +30,9 @@ export interface IServiceContainer {
 
   /**
    * Service aus Cache entfernen
-   * @param ctor - Service-Konstruktor
+   * @param identifier - Service-Identifier
    */
-  disposeService(ctor: new (...args: unknown[]) => any): void;
+  disposeService(identifier: ServiceIdentifier): void;
 
   /**
    * Alle Services aus Cache entfernen
@@ -40,10 +41,10 @@ export interface IServiceContainer {
 
   /**
    * Prüfen ob Service im Cache ist
-   * @param ctor - Service-Konstruktor
+   * @param identifier - Service-Identifier
    * @returns true wenn gecacht
    */
-  hasCachedService(ctor: new (...args: unknown[]) => any): boolean;
+  hasCachedService(identifier: ServiceIdentifier): boolean;
 
   /**
    * Anzahl gecachter Services
@@ -53,16 +54,16 @@ export interface IServiceContainer {
 
   /**
    * Service-Plan abrufen
-   * @param ctor - Service-Konstruktor
+   * @param identifier - Service-Identifier
    * @returns Service-Plan oder undefined
    */
-  getServicePlan(ctor: new (...args: unknown[]) => any): ServicePlan | undefined;
+  getServicePlan(identifier: ServiceConstructor): ServicePlan | undefined;
 
   /**
    * Alle Service-Pläne abrufen
    * @returns Map mit allen Service-Plänen
    */
-  getAllServicePlans(): Map<any, ServicePlan>;
+  getAllServicePlans(): Map<ServiceConstructor, ServicePlan>;
 
   /**
    * Aktuellen Scope setzen

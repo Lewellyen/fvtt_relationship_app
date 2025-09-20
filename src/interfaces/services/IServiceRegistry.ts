@@ -1,3 +1,5 @@
+import type { ServiceConstructor } from "../../types/ServiceTypes";
+
 /**
  * Interface für Service Registry
  *
@@ -8,34 +10,34 @@ export interface IServiceRegistry {
    * Alle Services aus einer Service-Quelle registrieren
    * @param serviceSource - Array von Service-Klassen
    */
-  registerAllServices(serviceSource: any[]): void;
+  registerAllServices(serviceSource: ServiceConstructor[]): void;
 
   /**
    * Einzelnen Service registrieren
    * @param identifier - Service-Identifier
    * @param constructor - Service-Konstruktor
    */
-  registerService(identifier: any, constructor: any): void;
+  registerService(identifier: ServiceConstructor, constructor: ServiceConstructor): void;
 
   /**
    * Service-Konstruktor abrufen
    * @param identifier - Service-Identifier
    * @returns Service-Konstruktor
    */
-  getServiceConstructor(identifier: any): any;
+  getServiceConstructor(identifier: ServiceConstructor): ServiceConstructor | undefined;
 
   /**
    * Alle registrierten Services abrufen
    * @returns Array aller Service-Klassen
    */
-  getAllServices(): any[];
+  getAllServices(): ServiceConstructor[];
 
   /**
    * Prüfen ob Service registriert ist
    * @param identifier - Service-Identifier
    * @returns true wenn registriert
    */
-  hasService(identifier: any): boolean;
+  hasService(identifier: ServiceConstructor): boolean;
 
   /**
    * Anzahl registrierter Services

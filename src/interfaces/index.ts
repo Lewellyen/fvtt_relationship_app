@@ -7,6 +7,7 @@ export type { IErrorHandler } from "./core/IErrorHandler";
 export type { IModuleInitializer } from "./core/IModuleInitializer";
 export type { ICSSManager } from "./core/ICSSManager";
 export type { ISvelteManager } from "./core/ISvelteManager";
+export type { IGlobalStateManager, GlobalStateDebugInfo } from "./core/IGlobalStateManager";
 
 // Service Interfaces
 export type { INotificationService } from "./services/INotificationService";

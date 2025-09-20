@@ -93,6 +93,10 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   const MODULE_ID_PREFIX = `[${MODULE_ID}] |`;
   const MODULE_NAME = "Relationship App";
   const MODULE_METADATA_KEY = "metadata";
+  const SETTINGS_KEYS = {
+    DEBUG_LOGS: "debugLogs",
+    METADATA: "metadata"
+  };
   const CSS_CLASSES = {
     // Haupt-Container
     mainContainer: "relationship-app",
@@ -220,7 +224,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
     debug(message, ...args) {
       let debugEnabled = false;
       try {
-        debugEnabled = game?.settings?.get("relationship-app", "debugLogs") === true;
+        debugEnabled = game?.settings?.get(MODULE_ID, SETTINGS_KEYS.DEBUG_LOGS) === true;
       } catch (error) {
         debugEnabled = false;
       }
@@ -290,10 +294,15 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
           return await document2.update(data);
         }
       } catch (error) {
-        const logger2 = globalThis.relationshipApp?.logger;
-        if (logger2) {
-          logger2.warn("Failed to reload document, using direct update:", error);
-        } else {
+        try {
+          const globalState = globalThis.relationshipApp?.globalStateManager;
+          if (globalState) {
+            const logger2 = globalState.getService("logger");
+            if (logger2) {
+              logger2.warn("Failed to reload document, using direct update:", error);
+            }
+          }
+        } catch {
         }
         return await document2.update(data);
       }
@@ -8605,7 +8614,7 @@ ${component_stack}
       this.cssReferenceCount = /* @__PURE__ */ new Map();
       let debugEnabled = false;
       try {
-        debugEnabled = game?.settings?.get("relationship-app", "debugLogs") === true;
+        debugEnabled = game?.settings?.get(MODULE_ID, SETTINGS_KEYS.DEBUG_LOGS) === true;
       } catch (error) {
         debugEnabled = false;
       }
@@ -10501,12 +10510,13 @@ ${component_stack}
     }
     /**
      * Service Discovery - Services auffindbar machen
+     * @deprecated Verwende GlobalStateManager statt globalThis
      */
     enableServiceDiscovery() {
-      this.logger.info(`[ServiceRegistrar] 🔍 Enabling service discovery`);
+      this.logger.warn(`[ServiceRegistrar] ⚠️ enableServiceDiscovery is deprecated. Use GlobalStateManager instead.`);
       globalThis.relationshipApp = globalThis.relationshipApp || {};
       globalThis.relationshipApp.serviceLocator = this;
-      this.logger.info(`[ServiceRegistrar] ✅ Service discovery enabled`);
+      this.logger.info(`[ServiceRegistrar] ✅ Service discovery enabled (deprecated method)`);
     }
     /**
      * Service Metadaten abrufen
@@ -13300,21 +13310,134 @@ ${component_stack}
     tag: "div"
   };
   let MetadataManagementApplication = _MetadataManagementApplication;
+  const _GlobalStateManager = class _GlobalStateManager {
+    constructor(logger2) {
+      this.globalState = /* @__PURE__ */ new Map();
+      this.logger = logger2;
+    }
+    static getInstance(logger2) {
+      if (!_GlobalStateManager.instance) {
+        _GlobalStateManager.instance = new _GlobalStateManager(logger2);
+      }
+      return _GlobalStateManager.instance;
+    }
+    /**
+     * Wert im globalen Zustand setzen
+     */
+    set(key, value) {
+      this.globalState.set(key, value);
+      this.logger.debug(`[GlobalStateManager] Set global state: ${key}`, { value });
+    }
+    /**
+     * Wert aus globalem Zustand abrufen
+     */
+    get(key) {
+      const value = this.globalState.get(key);
+      this.logger.debug(`[GlobalStateManager] Get global state: ${key}`, { value });
+      return value;
+    }
+    /**
+     * Prüfen ob Schlüssel existiert
+     */
+    has(key) {
+      return this.globalState.has(key);
+    }
+    /**
+     * Wert aus globalem Zustand entfernen
+     */
+    delete(key) {
+      const deleted = this.globalState.delete(key);
+      this.logger.debug(`[GlobalStateManager] Delete global state: ${key}`, { deleted });
+      return deleted;
+    }
+    /**
+     * Alle Schlüssel abrufen
+     */
+    keys() {
+      return Array.from(this.globalState.keys());
+    }
+    /**
+     * Globalen Zustand leeren
+     */
+    clear() {
+      this.globalState.clear();
+      this.logger.info(`[GlobalStateManager] Cleared all global state`);
+    }
+    /**
+     * Anzahl Einträge
+     */
+    size() {
+      return this.globalState.size;
+    }
+    /**
+     * Service-spezifische Methoden
+     */
+    /**
+     * Service im globalen Zustand registrieren
+     */
+    registerService(serviceName, service) {
+      this.set(`service.${serviceName}`, service);
+      this.logger.info(`[GlobalStateManager] Registered service: ${serviceName}`);
+    }
+    /**
+     * Service aus globalem Zustand abrufen
+     */
+    getService(serviceName) {
+      return this.get(`service.${serviceName}`);
+    }
+    /**
+     * Service aus globalem Zustand entfernen
+     */
+    unregisterService(serviceName) {
+      return this.delete(`service.${serviceName}`);
+    }
+    /**
+     * Alle Services abrufen
+     */
+    getAllServices() {
+      const services = /* @__PURE__ */ new Map();
+      for (const [key, value] of this.globalState.entries()) {
+        if (key.startsWith("service.")) {
+          const serviceName = key.substring(8);
+          services.set(serviceName, value);
+        }
+      }
+      return services;
+    }
+    /**
+     * Debug-Informationen
+     */
+    getDebugInfo() {
+      return {
+        totalEntries: this.globalState.size,
+        services: this.getAllServices().size,
+        keys: this.keys(),
+        serviceNames: Array.from(this.getAllServices().keys())
+      };
+    }
+  };
+  _GlobalStateManager.API_NAME = "globalStateManager";
+  _GlobalStateManager.SERVICE_TYPE = "singleton";
+  _GlobalStateManager.CLASS_NAME = "GlobalStateManager";
+  _GlobalStateManager.DEPENDENCIES = [];
+  let GlobalStateManager = _GlobalStateManager;
   const foundryAdapter = new FoundryAdapter();
   const logger = new FoundryLogger();
   const errorHandler = new ConsoleErrorHandler(logger, foundryAdapter);
   const notificationService = new NotificationService(logger, foundryAdapter);
   logger.info(`[SOLID Boot] 🚀 Phase 1: Early Bootstrap - Creating core services`);
-  globalThis.relationshipApp = {
-    foundryAdapter,
-    logger,
-    errorHandler,
-    notificationService
-  };
-  logger.info(`[SOLID Boot] ✅ Phase 1 completed - Core services available globally`);
+  const globalStateManager = GlobalStateManager.getInstance(logger);
+  globalStateManager.registerService("foundryAdapter", foundryAdapter);
+  globalStateManager.registerService("logger", logger);
+  globalStateManager.registerService("errorHandler", errorHandler);
+  globalStateManager.registerService("notificationService", notificationService);
+  logger.info(`[SOLID Boot] ✅ Phase 1 completed - Core services available via GlobalStateManager`);
   foundryAdapter.onInit(async () => {
-    const { logger: logger2, errorHandler: errorHandler2, notificationService: notificationService2 } = globalThis.relationshipApp;
-    logger2.info(`[SOLID Boot] 🚀 Phase 2: Service Registry Setup`);
+    const globalState = GlobalStateManager.getInstance(logger);
+    const loggerInstance = globalState.getService("logger");
+    const errorHandler2 = globalState.getService("errorHandler");
+    const notificationService2 = globalState.getService("notificationService");
+    loggerInstance.info(`[SOLID Boot] 🚀 Phase 2: Service Registry Setup`);
     try {
       const { ServiceRegistry: ServiceRegistry2 } = await __vitePreload(async () => {
         const { ServiceRegistry: ServiceRegistry3 } = await Promise.resolve().then(function() {
@@ -13322,35 +13445,35 @@ ${component_stack}
         });
         return { ServiceRegistry: ServiceRegistry3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceRegistry = new ServiceRegistry2(logger2);
+      const serviceRegistry = new ServiceRegistry2(loggerInstance);
       const { DependencyMapper: DependencyMapper2 } = await __vitePreload(async () => {
         const { DependencyMapper: DependencyMapper3 } = await Promise.resolve().then(function() {
           return DependencyMapper$1;
         });
         return { DependencyMapper: DependencyMapper3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const dependencyMapper = new DependencyMapper2(logger2, serviceRegistry);
+      const dependencyMapper = new DependencyMapper2(loggerInstance, serviceRegistry);
       const { ServicePlanner: ServicePlanner2 } = await __vitePreload(async () => {
         const { ServicePlanner: ServicePlanner3 } = await Promise.resolve().then(function() {
           return ServicePlanner$1;
         });
         return { ServicePlanner: ServicePlanner3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const servicePlanner = new ServicePlanner2(logger2, serviceRegistry, dependencyMapper);
+      const servicePlanner = new ServicePlanner2(loggerInstance, serviceRegistry, dependencyMapper);
       const { ServiceValidator: ServiceValidator2 } = await __vitePreload(async () => {
         const { ServiceValidator: ServiceValidator3 } = await Promise.resolve().then(function() {
           return ServiceValidator$1;
         });
         return { ServiceValidator: ServiceValidator3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceValidator = new ServiceValidator2(logger2);
-      logger2.info(`[SOLID Boot] 📚 Registering ${SERVICE_CONFIG.length} runtime services`);
+      const serviceValidator = new ServiceValidator2(loggerInstance);
+      loggerInstance.info(`[SOLID Boot] 📚 Registering ${SERVICE_CONFIG.length} runtime services`);
       serviceRegistry.registerAllServices([...SERVICE_CONFIG]);
-      logger2.info(`[SOLID Boot] 🗺️ Building dependency graph`);
+      loggerInstance.info(`[SOLID Boot] 🗺️ Building dependency graph`);
       const dependencyGraph = dependencyMapper.buildDependencyGraph();
-      logger2.info(`[SOLID Boot] 📋 Creating service plans`);
+      loggerInstance.info(`[SOLID Boot] 📋 Creating service plans`);
       const servicePlans = servicePlanner.createServicePlans();
-      logger2.info(`[SOLID Boot] 🔍 Validating dependencies and plans`);
+      loggerInstance.info(`[SOLID Boot] 🔍 Validating dependencies and plans`);
       const dependencyValidation = serviceValidator.validateDependencyGraph(dependencyGraph);
       const planValidation = serviceValidator.validateServicePlans(servicePlans);
       if (!dependencyValidation.isValid) {
@@ -13365,7 +13488,7 @@ ${component_stack}
         });
         return { ServiceContainer: ServiceContainer3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceContainer = new ServiceContainer2(logger2, servicePlans, serviceValidator);
+      const serviceContainer = new ServiceContainer2(loggerInstance, servicePlans, serviceValidator);
       const { ServiceFactory: ServiceFactory2 } = await __vitePreload(async () => {
         const { ServiceFactory: ServiceFactory3 } = await Promise.resolve().then(function() {
           return ServiceFactory$1;
@@ -13384,10 +13507,10 @@ ${component_stack}
         });
         return { ScopeManager: ScopeManager3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceCache = new ServiceCache2(logger2);
-      const scopeManager = new ScopeManager2(logger2);
+      const serviceCache = new ServiceCache2(loggerInstance);
+      const scopeManager = new ScopeManager2(loggerInstance);
       const serviceFactory = new ServiceFactory2(
-        logger2,
+        loggerInstance,
         servicePlans,
         serviceValidator,
         serviceContainer
@@ -13401,57 +13524,71 @@ ${component_stack}
         });
         return { ServiceRegistrar: ServiceRegistrar3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const serviceRegistrar = new ServiceRegistrar2(logger2, serviceContainer);
+      const serviceRegistrar = new ServiceRegistrar2(loggerInstance, serviceContainer);
       const { APIManager: APIManager2 } = await __vitePreload(async () => {
         const { APIManager: APIManager3 } = await Promise.resolve().then(function() {
           return APIManager$1;
         });
         return { APIManager: APIManager3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const apiManager = new APIManager2(logger2, serviceContainer);
-      logger2.info(`[SOLID Boot] 📝 Registering services as factories`);
+      const apiManager = new APIManager2(loggerInstance, serviceContainer);
+      loggerInstance.info(`[SOLID Boot] 📝 Registering services as factories`);
       serviceRegistrar.registerAllServices();
-      logger2.info(`[SOLID Boot] 🔧 Registering settings via SettingsService`);
+      loggerInstance.info(`[SOLID Boot] 🔧 Registering settings via SettingsService`);
       const { SettingsService: SettingsService2 } = await __vitePreload(async () => {
         const { SettingsService: SettingsService3 } = await Promise.resolve().then(function() {
           return SettingsService$1;
         });
         return { SettingsService: SettingsService3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const settingsService = new SettingsService2(logger2, foundryAdapter);
+      const settingsService = new SettingsService2(loggerInstance, foundryAdapter);
       settingsService.registerAll();
       setContainer(serviceContainer);
-      logger2.info(`[SOLID Boot] 🌐 Registering services in Foundry API`);
+      loggerInstance.info(`[SOLID Boot] 🌐 Registering services in Foundry API`);
       apiManager.registerInGlobalAPI();
       let debugEnabled = false;
       try {
-        debugEnabled = game?.settings?.get("relationship-app", "debugLogs") === true;
-      } catch (error) {
+        debugEnabled = game?.settings?.get(MODULE_ID, SETTINGS_KEYS.DEBUG_LOGS) === true;
+      } catch {
         debugEnabled = false;
       }
       if (debugEnabled) {
-        globalThis.relationshipApp = {
-          ...globalThis.relationshipApp,
-          serviceContainer,
-          // ← Für getService()
-          serviceRegistrar,
-          // ← Für getService()
-          apiManager
-          // ← Für API-Zugriff
+        globalState.registerService("serviceContainer", serviceContainer);
+        globalState.registerService("serviceRegistrar", serviceRegistrar);
+        globalState.registerService("apiManager", apiManager);
+        const debugHelpers = {
+          getLogger: () => globalState.getService("logger"),
+          getErrorHandler: () => globalState.getService("errorHandler"),
+          getNotificationService: () => globalState.getService("notificationService"),
+          getServiceContainer: () => globalState.getService("serviceContainer"),
+          getServiceRegistrar: () => globalState.getService("serviceRegistrar"),
+          getAPIManager: () => globalState.getService("apiManager"),
+          getAllServices: () => globalState.getAllServices(),
+          getDebugInfo: () => globalState.getDebugInfo(),
+          // Convenience-Methoden
+          log: (message, ...args) => globalState.getService("logger")?.info(message, ...args),
+          warn: (message, ...args) => globalState.getService("logger")?.warn(message, ...args),
+          error: (message, ...args) => globalState.getService("logger")?.error(message, ...args),
+          debug: (message, ...args) => globalState.getService("logger")?.debug(message, ...args)
         };
+        globalThis.relationshipAppDebug = debugHelpers;
+        loggerInstance.info(`[SOLID Boot] 🐛 Debug helpers available in globalThis.relationshipAppDebug`);
       }
-      logger2.info(
+      loggerInstance.info(
         `[SOLID Boot] ✅ Phase 2 completed - All services registered and available (on-demand)`
       );
     } catch (error) {
-      logger2.error(`[SOLID Boot] ❌ Phase 2 failed:`, error);
+      loggerInstance.error(`[SOLID Boot] ❌ Phase 2 failed:`, error);
       errorHandler2.handle(error, "SOLID Boot Phase 2");
       notificationService2.showError("Service registration failed. Check console for details.");
     }
   });
   foundryAdapter.onReady(async () => {
-    const { logger: logger2, errorHandler: errorHandler2, notificationService: notificationService2 } = globalThis.relationshipApp;
-    logger2.info(`[SOLID Boot] 🚀 Phase 3: Module Initialization`);
+    const globalState = GlobalStateManager.getInstance(logger);
+    const loggerInstance = globalState.getService("logger");
+    const errorHandler2 = globalState.getService("errorHandler");
+    const notificationService2 = globalState.getService("notificationService");
+    loggerInstance.info(`[SOLID Boot] 🚀 Phase 3: Module Initialization`);
     try {
       const { RegistrationService: RegistrationService2 } = await __vitePreload(async () => {
         const { RegistrationService: RegistrationService3 } = await Promise.resolve().then(function() {
@@ -13459,26 +13596,26 @@ ${component_stack}
         });
         return { RegistrationService: RegistrationService3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const registrationService = new RegistrationService2(logger2, errorHandler2);
+      const registrationService = new RegistrationService2(loggerInstance, errorHandler2);
       const { ModuleInitializer: ModuleInitializer2 } = await __vitePreload(async () => {
         const { ModuleInitializer: ModuleInitializer3 } = await Promise.resolve().then(function() {
           return ModuleInitializer$1;
         });
         return { ModuleInitializer: ModuleInitializer3 };
       }, false ? __VITE_PRELOAD__ : void 0);
-      const moduleInitializer = new ModuleInitializer2(logger2, errorHandler2, registrationService);
-      logger2.info(`[SOLID Boot] 🚀 Starting module initialization`);
+      const moduleInitializer = new ModuleInitializer2(loggerInstance, errorHandler2, registrationService);
+      loggerInstance.info(`[SOLID Boot] 🚀 Starting module initialization`);
       await moduleInitializer.initialize();
-      logger2.info(`[SOLID Boot] ✅ Phase 3 completed - Module initialized`);
+      loggerInstance.info(`[SOLID Boot] ✅ Phase 3 completed - Module initialized`);
       notificationService2.showSuccess("SOLID Boot completed successfully!");
     } catch (error) {
-      logger2.error(`[SOLID Boot] ❌ Phase 3 failed:`, error);
+      loggerInstance.error(`[SOLID Boot] ❌ Phase 3 failed:`, error);
       errorHandler2.handle(error, "SOLID Boot Phase 3");
       notificationService2.showError("Module initialization failed. Check console for details.");
     }
     const metadataManagementApplication = new MetadataManagementApplication();
     await metadataManagementApplication.render({ force: true });
-    logger2.info(`[SOLID Boot] Metadata Management Application rendered`);
+    loggerInstance.info(`[SOLID Boot] Metadata Management Application rendered`);
   });
 })();
 //# sourceMappingURL=relationship-app.js.map

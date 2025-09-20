@@ -1,7 +1,7 @@
 // Logger interface
 export interface ILogger {
-  info(message: any, ...args: any[]): void;
-  warn(message: any, ...args: any[]): void;
-  error(message: any, ...args: any[]): void;
-  debug(message: any, ...args: any[]): void;
+  info(message: string | object, ...args: unknown[]): void;
+  warn(message: string | object, ...args: unknown[]): void;
+  error(message: string | object, ...args: unknown[]): void;
+  debug(message: string | object, ...args: unknown[]): void;
 }

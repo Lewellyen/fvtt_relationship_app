@@ -119,15 +119,16 @@ export class ServiceRegistrar implements IServiceRegistrar {
 
   /**
    * Service Discovery - Services auffindbar machen
+   * @deprecated Verwende GlobalStateManager statt globalThis
    */
   enableServiceDiscovery(): void {
-    this.logger.info(`[ServiceRegistrar] 🔍 Enabling service discovery`);
-
-    // ServiceContainer in globalThis verfügbar machen
+    this.logger.warn(`[ServiceRegistrar] ⚠️ enableServiceDiscovery is deprecated. Use GlobalStateManager instead.`);
+    
+    // ServiceContainer in globalThis verfügbar machen (für Rückwärtskompatibilität)
     (globalThis as any).relationshipApp = (globalThis as any).relationshipApp || {};
     (globalThis as any).relationshipApp.serviceLocator = this;
 
-    this.logger.info(`[ServiceRegistrar] ✅ Service discovery enabled`);
+    this.logger.info(`[ServiceRegistrar] ✅ Service discovery enabled (deprecated method)`);
   }
 
   /**

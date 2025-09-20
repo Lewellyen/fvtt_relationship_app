@@ -1,5 +1,5 @@
 import type { ILogger } from "../../interfaces";
-import { MODULE_ID_PREFIX } from "../../constants";
+import { MODULE_ID_PREFIX, MODULE_ID, SETTINGS_KEYS } from "../../constants";
 
 export class FoundryLogger implements ILogger {
   // ✅ Metadaten für API-Registrierung
@@ -15,7 +15,7 @@ export class FoundryLogger implements ILogger {
 
   constructor() {}
 
-  info(message: any, ...args: any[]): void {
+  info(message: string | object, ...args: unknown[]): void {
     if (typeof message === "object" && message !== null) {
       console.log(`${MODULE_ID_PREFIX} ℹ️`, message, ...args);
     } else {
@@ -23,7 +23,7 @@ export class FoundryLogger implements ILogger {
     }
   }
 
-  warn(message: any, ...args: any[]): void {
+  warn(message: string | object, ...args: unknown[]): void {
     if (typeof message === "object" && message !== null) {
       console.warn(`${MODULE_ID_PREFIX} ⚠️`, message, ...args);
     } else {
@@ -31,7 +31,7 @@ export class FoundryLogger implements ILogger {
     }
   }
 
-  error(message: any, ...args: any[]): void {
+  error(message: string | object, ...args: unknown[]): void {
     if (typeof message === "object" && message !== null) {
       console.error(`${MODULE_ID_PREFIX} ❌`, message, ...args);
     } else {
@@ -39,12 +39,12 @@ export class FoundryLogger implements ILogger {
     }
   }
 
-  debug(message: any, ...args: any[]): void {
+  debug(message: string | object, ...args: unknown[]): void {
     // Debug-Logging nur wenn Setting aktiviert ist
     // Graceful handling: Wenn Setting noch nicht registriert ist, debug-Logging deaktivieren
     let debugEnabled = false;
     try {
-      debugEnabled = game?.settings?.get("relationship-app" as any, "debugLogs" as any) === true;
+      debugEnabled = game?.settings?.get(MODULE_ID, SETTINGS_KEYS.DEBUG_LOGS) === true;
     } catch (error) {
       // Setting noch nicht registriert - debug-Logging deaktivieren
       debugEnabled = false;

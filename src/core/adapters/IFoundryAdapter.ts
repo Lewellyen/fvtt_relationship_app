@@ -7,7 +7,7 @@
 export interface IFoundryAdapter {
   // Utils
   generateId(): string;
-  loadDocument(uuid: string): Promise<any>;
+  loadDocument(uuid: string): Promise<unknown>;
 
   // UI Notifications
   showInfo(message: string): void;
@@ -20,11 +20,11 @@ export interface IFoundryAdapter {
   onReady(callback: () => Promise<void>): void;
 
   // Document Operations
-  updateDocument(document: any, data: any): Promise<any>;
-  updateDocumentWithReload(document: any, data: any): Promise<any>;
+  updateDocument(document: unknown, data: unknown): Promise<unknown>;
+  updateDocumentWithReload(document: unknown, data: unknown): Promise<unknown>;
 
   // Settings Operations
-  registerSetting(key: string, config: any): void;
-  getSetting(key: string): any;
-  setSetting(key: string, value: any): Promise<any>;
+  registerSetting(key: string, config: ClientSettings.NumberConfig | ClientSettings.StringConfig | ClientSettings.BooleanConfig | ClientSettings.ObjectConfig): void;
+  getSetting(key: string): unknown;
+  setSetting(key: string, value: unknown): Promise<unknown>;
 }

@@ -17,6 +17,12 @@ export const MODULE_NAME = "Relationship App";
 // Modul-Metadata-Key
 export const MODULE_METADATA_KEY = "metadata";
 
+// Settings-Keys
+export const SETTINGS_KEYS = {
+  DEBUG_LOGS: "debugLogs",
+  METADATA: "metadata",
+} as const;
+
 // CSS-Klassen
 export const CSS_CLASSES = {
   // Haupt-Container

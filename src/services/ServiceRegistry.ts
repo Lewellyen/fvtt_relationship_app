@@ -1,4 +1,5 @@
 import type { IServiceRegistry, ILogger } from "../interfaces/index";
+import type { ServiceConstructor } from "../types/ServiceTypes";
 import { FoundryLogger } from "../core/services/FoundryLogger";
 
 /**
@@ -14,7 +15,7 @@ export class ServiceRegistry implements IServiceRegistry {
   static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Keine Dependencies erforderlich
 
   private static instance: ServiceRegistry;
-  private readonly serviceRegistry = new Map<any, any>();
+  private readonly serviceRegistry = new Map<ServiceConstructor, ServiceConstructor>();
 
   constructor(private logger: ILogger) {}
 
@@ -55,7 +56,7 @@ export class ServiceRegistry implements IServiceRegistry {
   /**
    * Einzelnen Service registrieren
    */
-  registerService(identifier: any, constructor: any): void {
+  registerService(identifier: ServiceConstructor, constructor: ServiceConstructor): void {
     this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - identifier:`, identifier);
     this.writeLog("debug", `[ServiceRegistry] 🔍 Debug - constructor:`, constructor);
 
@@ -73,7 +74,7 @@ export class ServiceRegistry implements IServiceRegistry {
   /**
    * Service-Konstruktor abrufen
    */
-  getServiceConstructor(identifier: any): any {
+  getServiceConstructor(identifier: ServiceConstructor): ServiceConstructor | undefined {
     const constructor = this.serviceRegistry.get(identifier);
     this.writeLog(
       "debug",
@@ -90,7 +91,7 @@ export class ServiceRegistry implements IServiceRegistry {
    * Alle registrierten Services abrufen
    * Wird von anderen Klassen verwendet (Single Source of Truth)
    */
-  getAllServices(): any[] {
+  getAllServices(): ServiceConstructor[] {
     const services = Array.from(this.serviceRegistry.keys());
     this.writeLog(
       "info",
@@ -102,7 +103,7 @@ export class ServiceRegistry implements IServiceRegistry {
   /**
    * Prüfen ob Service registriert ist
    */
-  hasService(identifier: any): boolean {
+  hasService(identifier: ServiceConstructor): boolean {
     return this.serviceRegistry.has(identifier);
   }
 

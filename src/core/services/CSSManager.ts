@@ -1,6 +1,7 @@
 import type { ICSSManager, ILogger } from "../../interfaces";
 // ✅ Services direkt importieren (zirkuläre Abhängigkeiten vermeiden)
 import { FoundryLogger } from "./FoundryLogger";
+import { MODULE_ID, SETTINGS_KEYS } from "../../constants";
 
 /**
  * CSS-Management-Service
@@ -23,7 +24,7 @@ export class CSSManager implements ICSSManager {
     // Graceful handling: Wenn Setting noch nicht registriert ist, debug-Logging deaktivieren
     let debugEnabled = false;
     try {
-      debugEnabled = game?.settings?.get("relationship-app" as any, "debugLogs" as any) === true;
+      debugEnabled = game?.settings?.get(MODULE_ID, SETTINGS_KEYS.DEBUG_LOGS) === true;
     } catch (error) {
       // Setting noch nicht registriert - debug-Logging deaktivieren
       debugEnabled = false;

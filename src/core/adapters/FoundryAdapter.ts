@@ -33,8 +33,8 @@ export class FoundryAdapter implements IFoundryAdapter {
     return foundry.utils.randomID();
   }
 
-  async loadDocument(uuid: string): Promise<any> {
-    return await foundry.utils.fromUuid(uuid as any);
+  async loadDocument(uuid: string): Promise<unknown> {
+    return await foundry.utils.fromUuid(uuid);
   }
 
   // UI Notifications
@@ -64,8 +64,8 @@ export class FoundryAdapter implements IFoundryAdapter {
   }
 
   // Document Operations
-  async updateDocument(document: any, data: any): Promise<any> {
-    return await document.update(data);
+  async updateDocument(document: unknown, data: unknown): Promise<unknown> {
+    return await (document as any).update(data);
   }
 
   /**
@@ -78,45 +78,51 @@ export class FoundryAdapter implements IFoundryAdapter {
    * @param data - Die zu speichernden Daten
    * @returns Promise mit dem aktualisierten Dokument
    */
-  async updateDocumentWithReload(document: any, data: any): Promise<any> {
+  async updateDocumentWithReload(document: unknown, data: unknown): Promise<unknown> {
     try {
       // Lade das Dokument neu für Datenkonsistenz
-      const documentUuid = document.uuid;
+      const documentUuid = (document as any).uuid;
       const freshDocument = await this.loadDocument(documentUuid);
 
       if (freshDocument) {
         // ✅ Update mit frischen Daten
-        return await freshDocument.update(data);
+        return await (freshDocument as any).update(data);
       } else {
         // ✅ Fallback: Direktes Update wenn Reload fehlschlägt
-        return await document.update(data);
+        return await (document as any).update(data);
       }
     } catch (error) {
       // ✅ Error Handling mit Fallback
-      const logger = (globalThis as any).relationshipApp?.logger;
-      if (logger) {
-        logger.warn("Failed to reload document, using direct update:", error);
-      } else {
+      // Logger über GlobalStateManager abrufen (falls verfügbar)
+      try {
+        const globalState = (globalThis as any).relationshipApp?.globalStateManager;
+        if (globalState) {
+          const logger = globalState.getService("logger");
+          if (logger) {
+            logger.warn("Failed to reload document, using direct update:", error);
+          }
+        }
+      } catch {
         // Fallback: Logger nicht verfügbar, aber trotzdem nicht console verwenden
         // In diesem Fall wird der Fehler stillschweigend ignoriert und direktes Update versucht
       }
-      return await document.update(data);
+      return await (document as any).update(data);
     }
   }
 
   // Settings Operations
-  registerSetting(key: string, config: any): void {
-    game?.settings?.register(MODULE_ID as any, key as any, config);
+  registerSetting(key: string, config: ClientSettings.NumberConfig | ClientSettings.StringConfig | ClientSettings.BooleanConfig | ClientSettings.ObjectConfig): void {
+    game?.settings?.register(MODULE_ID, key, config);
   }
 
   // Debug Setting registrieren - wird jetzt über SettingsService gemacht
   // registerDebugSetting(): void { ... } // Entfernt - zentralisiert in SettingsService
 
-  getSetting(key: string): any {
-    return game?.settings?.get(MODULE_ID as any, key as any);
+  getSetting(key: string): unknown {
+    return game?.settings?.get(MODULE_ID, key);
   }
 
-  async setSetting(key: string, value: any): Promise<any> {
-    return await game?.settings?.set(MODULE_ID as any, key as any, value);
+  async setSetting(key: string, value: unknown): Promise<unknown> {
+    return await game?.settings?.set(MODULE_ID, key, value);
   }
 }

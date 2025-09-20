@@ -2,6 +2,7 @@ import type { IServiceContainer } from "../interfaces/services/IServiceContainer
 import type { IScopeChain } from "../interfaces/services/IScopeChain";
 import type { ServicePlan } from "../core/services/ServicePlanner";
 import type { IServiceValidator, ILogger } from "../interfaces";
+import type { ServiceConstructor, ServiceIdentifier } from "../types/ServiceTypes";
 import { ServicePlanner } from "../core/services/ServicePlanner";
 import { ServiceValidator } from "../core/services/ServiceValidator";
 import { FoundryLogger } from "../core/services/FoundryLogger";
@@ -22,7 +23,7 @@ export class ServiceContainer implements IServiceContainer {
   static readonly DEPENDENCIES = [FoundryLogger, ServicePlanner, ServiceValidator]; // ✅ Dependencies explizit definiert
 
   private static instance: ServiceContainer;
-  private readonly servicePlans: Map<any, ServicePlan>;
+  private readonly servicePlans: Map<ServiceConstructor, ServicePlan>;
   private readonly serviceValidator: IServiceValidator;
   private readonly logger: ILogger;
 
@@ -33,7 +34,7 @@ export class ServiceContainer implements IServiceContainer {
 
   constructor(
     logger: ILogger,
-    servicePlans: Map<any, ServicePlan>,
+    servicePlans: Map<ServiceConstructor, ServicePlan>,
     serviceValidator: IServiceValidator
   ) {
     this.logger = logger;
@@ -67,7 +68,7 @@ export class ServiceContainer implements IServiceContainer {
 
   static getInstance(
     logger: ILogger,
-    servicePlans: Map<any, ServicePlan>,
+    servicePlans: Map<ServiceConstructor, ServicePlan>,
     serviceValidator: IServiceValidator
   ): ServiceContainer {
     if (!ServiceContainer.instance) {
@@ -79,7 +80,7 @@ export class ServiceContainer implements IServiceContainer {
   /**
    * Service über spezialisierte Services abrufen oder erstellen
    */
-  getService<T>(ctor: new (...args: unknown[]) => T, scope?: string): T {
+  getService<T>(ctor: ServiceConstructor, scope?: string): T {
     this.writeLog(
       "info",
       `[ServiceContainer] 🏪 Getting service: ${ctor.name || ctor}${scope ? ` (scope: ${scope})` : ""}`
@@ -143,7 +144,7 @@ export class ServiceContainer implements IServiceContainer {
   /**
    * Service mit Dependencies erstellen (delegiert an ServiceFactory)
    */
-  createService<T>(ctor: new (...args: unknown[]) => T): T {
+  createService<T>(ctor: ServiceConstructor): T {
     if (!this.serviceFactory) {
       throw new Error("ServiceFactory not injected. Call setServiceFactory() first.");
     }
@@ -189,11 +190,11 @@ export class ServiceContainer implements IServiceContainer {
   /**
    * Erstellungsreihenfolge berechnen (Topological Sort)
    */
-  private calculateCreationOrder(): any[] {
+  private calculateCreationOrder(): ServiceConstructor[] {
     this.writeLog("info", `[ServiceContainer] 🔄 Calculating creation order`);
 
-    const visited = new Set<any>();
-    const result: any[] = [];
+    const visited = new Set<ServiceConstructor>();
+    const result: ServiceConstructor[] = [];
 
     for (const serviceClass of this.servicePlans.keys()) {
       this.topologicalSort(serviceClass, visited, result);
@@ -207,7 +208,7 @@ export class ServiceContainer implements IServiceContainer {
     return result;
   }
 
-  private topologicalSort(service: any, visited: Set<any>, result: any[]): void {
+  private topologicalSort(service: ServiceConstructor, visited: Set<ServiceConstructor>, result: ServiceConstructor[]): void {
     if (visited.has(service)) {
       return;
     }
@@ -227,7 +228,7 @@ export class ServiceContainer implements IServiceContainer {
   /**
    * Service aus Cache entfernen (delegiert an ServiceCache)
    */
-  disposeService(identifier: any): void {
+  disposeService(identifier: ServiceIdentifier): void {
     if (!this.serviceCache) {
       throw new Error("ServiceCache not injected. Call setServiceCache() first.");
     }
@@ -247,7 +248,7 @@ export class ServiceContainer implements IServiceContainer {
   /**
    * Prüfen ob Service im Cache ist (delegiert an ServiceCache)
    */
-  hasCachedService(identifier: any): boolean {
+  hasCachedService(identifier: ServiceIdentifier): boolean {
     if (!this.serviceCache) {
       return false;
     }
@@ -267,14 +268,14 @@ export class ServiceContainer implements IServiceContainer {
   /**
    * Service-Plan abrufen
    */
-  getServicePlan(identifier: any): ServicePlan | undefined {
+  getServicePlan(identifier: ServiceConstructor): ServicePlan | undefined {
     return this.servicePlans.get(identifier);
   }
 
   /**
    * Alle Service-Pläne abrufen
    */
-  getAllServicePlans(): Map<any, ServicePlan> {
+  getAllServicePlans(): Map<ServiceConstructor, ServicePlan> {
     return this.servicePlans;
   }
 
