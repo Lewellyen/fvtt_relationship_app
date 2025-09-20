@@ -18,21 +18,21 @@ export class ServiceFactory {
   /**
    * Service mit Dependencies erstellen
    */
-  createService<T>(identifier: any): T {
-    this.writeLog("info", `[ServiceFactory] 🏗️ Creating service: ${identifier.name || identifier}`);
+  createService<T>(ctor: new (...args: unknown[]) => T): T {
+    this.writeLog("info", `[ServiceFactory] 🏗️ Creating service: ${ctor.name || ctor}`);
 
-    const plan = this.servicePlans.get(identifier);
+    const plan = this.servicePlans.get(ctor);
     if (!plan) {
       this.writeLog(
         "error",
-        `[ServiceFactory] ❌ No service plan found for ${identifier.name || identifier}`
+        `[ServiceFactory] ❌ No service plan found for ${ctor.name || ctor}`
       );
-      throw new Error(`No service plan found for ${identifier.name || identifier}`);
+      throw new Error(`No service plan found for ${ctor.name || ctor}`);
     }
 
     this.writeLog(
       "info",
-      `[ServiceFactory] 📋 Service plan for ${identifier.name || identifier}:`,
+      `[ServiceFactory] 📋 Service plan for ${ctor.name || ctor}:`,
       {
         dependencies: plan.dependencies.map((d) => d.name || d),
         isSingleton: plan.isSingleton,
@@ -47,7 +47,7 @@ export class ServiceFactory {
 
     this.writeLog(
       "info",
-      `[ServiceFactory] 🔗 Resolved dependencies for ${identifier.name || identifier}:`,
+      `[ServiceFactory] 🔗 Resolved dependencies for ${ctor.name || ctor}:`,
       {
         count: dependencies.length,
         dependencies: dependencies.map((d) => d.constructor.name),
@@ -58,17 +58,17 @@ export class ServiceFactory {
     const service = new plan.constructor(...dependencies);
 
     // Service-Erstellung validieren
-    if (!this.serviceValidator.validateServiceCreation(service, identifier)) {
+    if (!this.serviceValidator.validateServiceCreation(service, ctor)) {
       this.serviceValidator.handleServiceCreationError(
-        new Error(`Service creation validation failed for ${identifier.name || identifier}`),
-        identifier
+        new Error(`Service creation validation failed for ${ctor.name || ctor}`),
+        ctor
       );
-      throw new Error(`Service creation validation failed for ${identifier.name || identifier}`);
+      throw new Error(`Service creation validation failed for ${ctor.name || ctor}`);
     }
 
     this.writeLog(
       "info",
-      `[ServiceFactory] ✅ Service created successfully: ${identifier.name || identifier}`
+      `[ServiceFactory] ✅ Service created successfully: ${ctor.name || ctor}`
     );
     return service as T;
   }
@@ -116,8 +116,7 @@ export class ServiceFactory {
   private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
     if (this.logger) {
       this.logger[modus](message, ...args);
-    } else {
-      console[modus](message, ...args);
     }
+    // Kein Console-Fallback - Logger ist Pflicht
   }
 }

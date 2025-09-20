@@ -14,25 +14,25 @@ export class ServiceCache {
   /**
    * Singleton Service abrufen oder erstellen
    */
-  getSingleton<T>(identifier: any, factory: () => T): T {
-    this.writeLog("info", `[ServiceCache] 🔍 Getting singleton: ${identifier.name || identifier}`);
+  getSingleton<T>(ctor: new (...args: unknown[]) => T, factory: () => T): T {
+    this.writeLog("info", `[ServiceCache] 🔍 Getting singleton: ${ctor.name || ctor}`);
 
-    if (this.instances.has(identifier)) {
+    if (this.instances.has(ctor)) {
       this.writeLog(
         "info",
-        `[ServiceCache] ♻️ Returning cached singleton: ${identifier.name || identifier}`
+        `[ServiceCache] ♻️ Returning cached singleton: ${ctor.name || ctor}`
       );
-      return this.instances.get(identifier);
+      return this.instances.get(ctor);
     }
 
     this.writeLog(
       "info",
-      `[ServiceCache] 🏗️ Creating new singleton: ${identifier.name || identifier}`
+      `[ServiceCache] 🏗️ Creating new singleton: ${ctor.name || ctor}`
     );
     const service = factory();
-    this.instances.set(identifier, service);
+    this.instances.set(ctor, service);
 
-    this.writeLog("info", `[ServiceCache] 💾 Cached singleton: ${identifier.name || identifier}`);
+    this.writeLog("info", `[ServiceCache] 💾 Cached singleton: ${ctor.name || ctor}`);
     return service;
   }
 
@@ -206,8 +206,7 @@ export class ServiceCache {
   private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
     if (this.logger) {
       this.logger[modus](message, ...args);
-    } else {
-      console[modus](message, ...args);
     }
+    // Kein Console-Fallback - Logger ist Pflicht
   }
 }

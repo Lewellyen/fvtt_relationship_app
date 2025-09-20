@@ -6,7 +6,7 @@ import { NotificationService } from "../services/NotificationService";
 import { SERVICE_CONFIG } from "../services/index";
 import { setContainer } from "../core/edge/appContext";
 import MetadataManagementApplication from "../applications/MetadataManagementApplication";
-import { GraphService } from "../services/GraphService";
+// GraphService wird nicht mehr global erzeugt - ist scoped Service
 
 // ✅ SOLID-konformer Bootablauf
 
@@ -108,20 +108,37 @@ foundryAdapter.onInit(async () => {
     logger.info(`[SOLID Boot] 📝 Registering services as factories`);
     serviceRegistrar.registerAllServices();
 
-    // Services in globaler API registrieren (lazy)
-    logger.info(`[SOLID Boot] 🌐 Registering services in global API (lazy)`);
-    apiManager.registerInGlobalAPI();
+    // Settings über SettingsService registrieren
+    logger.info(`[SOLID Boot] 🔧 Registering settings via SettingsService`);
+    const { SettingsService } = await import("../services/SettingsService");
+    const settingsService = new SettingsService(logger, foundryAdapter);
+    settingsService.registerAll();
 
     // Container für Edge-Adapter setzen
     setContainer(serviceContainer); // ← WICHTIG: genau 1x setzen
 
-    // Runtime Services global verfügbar machen
-    (globalThis as any).relationshipApp = {
-      ...(globalThis as any).relationshipApp,
-      serviceContainer, // ← Für getService()
-      serviceRegistrar, // ← Für getService()
-      apiManager, // ← Für API-Zugriff
-    };
+    // Services in Foundry API registrieren (einzige API-Exposition)
+    logger.info(`[SOLID Boot] 🌐 Registering services in Foundry API`);
+    apiManager.registerInGlobalAPI();
+
+    // Debug: Globale API nur bei Debug-Logging
+    // Graceful handling: Wenn Setting noch nicht registriert ist, debug-Logging deaktivieren
+    let debugEnabled = false;
+    try {
+      debugEnabled = game?.settings?.get("relationship-app" as any, "debugLogs" as any) === true;
+    } catch (error) {
+      // Setting noch nicht registriert - debug-Logging deaktivieren
+      debugEnabled = false;
+    }
+    
+    if (debugEnabled) {
+      (globalThis as any).relationshipApp = {
+        ...(globalThis as any).relationshipApp,
+        serviceContainer, // ← Für getService()
+        serviceRegistrar, // ← Für getService()
+        apiManager, // ← Für API-Zugriff
+      };
+    }
 
     logger.info(
       `[SOLID Boot] ✅ Phase 2 completed - All services registered and available (on-demand)`
@@ -167,11 +184,4 @@ foundryAdapter.onReady(async () => {
   const metadataManagementApplication = new MetadataManagementApplication();
   await metadataManagementApplication.render({ force: true });
   logger.info(`[SOLID Boot] Metadata Management Application rendered`);
-
-  const container = (globalThis as any).relationshipApp.serviceContainer;
-  const graphService = container.getService(GraphService);
-  (globalThis as any).relationshipApp = {
-    ...(globalThis as any).relationshipApp,
-    graphService,
-  };
 });

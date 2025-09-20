@@ -1,5 +1,14 @@
 <script lang="ts">
-  console.log("MetadataManagementView");
+  let { logger, parentScope, parentApp }: { 
+    logger: any; 
+    parentScope?: string; 
+    parentApp?: any; 
+  } = $props();
+
+  // Debug-Logging über Logger
+  if (logger) {
+    logger.debug("MetadataManagementView");
+  }
 
   import { MODULE_ID, MODULE_METADATA_KEY } from '../constants';
   import { onMount } from 'svelte';
@@ -94,11 +103,10 @@
   let isLoading: boolean = $state(false);
   let errorMessage: string | null = $state(null);
   let successMessage: string | null = $state(null);
-  // Props von Parent App
-  let { parentScope, parentApp }: { parentScope?: string; parentApp?: any } = $props();
 
   // Neue Schema-Erstellung
-  let newSchema: Partial<ISchema> = $state({
+  let newSchema: ISchema = $state({
+    id: '',
     name: '',
     label: '',
     description: '',
@@ -109,7 +117,8 @@
   });
 
   // Neue Zeilen-Erstellung
-  let newRow: Partial<IMetadataRow> = $state({
+  let newRow: IMetadataRow = $state({
+    id: '',
     name: '',
     label: '',
     type: 'string',
@@ -118,7 +127,8 @@
     default: '',
     options: [],
     placeholder: '',
-    description: ''
+    description: '',
+    value: ''
   });
 
   // Konstanten
@@ -221,7 +231,7 @@
       return;
     }
 
-    metadata.schemas[schemaIndex] = { ...metadata.schemas[schemaIndex], ...updates };
+    metadata.schemas[schemaIndex] = { ...metadata.schemas[schemaIndex], ...updates } as ISchema;
     await saveMetadataToRegistry(metadata);
     
     editingSchema = null;
@@ -319,7 +329,21 @@
       return;
     }
 
-    schema.rows[rowIndex] = { ...schema.rows[rowIndex], ...updates };
+    const existingRow = schema.rows[rowIndex];
+    schema.rows[rowIndex] = {
+      id: existingRow.id,
+      name: existingRow.name,
+      label: existingRow.label,
+      type: existingRow.type,
+      required: existingRow.required,
+      default: existingRow.default,
+      options: existingRow.options,
+      placeholder: existingRow.placeholder,
+      description: existingRow.description,
+      category: existingRow.category,
+      value: existingRow.value,
+      ...updates
+    };
     await saveMetadataToRegistry(metadata);
     
     editingRow = null;
@@ -368,7 +392,10 @@
       : await DynamicDialogApp.show(config, parentScope);
     
     if (result) {
-      console.log('Neues Schema erstellt:', result);
+      // Debug-Logging über Logger
+      if (logger) {
+        logger.debug('Neues Schema erstellt:', result);
+      }
       // Hier würde die Schema-Erstellung implementiert
     }
     
@@ -388,7 +415,10 @@
       : await DynamicDialogApp.show(config, parentScope);
     
     if (result) {
-      console.log('Schema bearbeitet:', result);
+      // Debug-Logging über Logger
+      if (logger) {
+        logger.debug('Schema bearbeitet:', result);
+      }
       // Hier würde die Schema-Bearbeitung implementiert
     }
     
@@ -408,7 +438,10 @@
       : await DynamicDialogApp.show(config, parentScope);
     
     if (result) {
-      console.log('Metadaten-Zeile bearbeitet:', result);
+      // Debug-Logging über Logger
+      if (logger) {
+        logger.debug('Metadaten-Zeile bearbeitet:', result);
+      }
       // Hier würde die Metadaten-Zeile-Bearbeitung implementiert
     }
     
@@ -428,7 +461,10 @@
       : await DynamicDialogApp.show(config, parentScope);
     
     if (result) {
-      console.log('Neue Metadaten-Zeile erstellt:', result);
+      // Debug-Logging über Logger
+      if (logger) {
+        logger.debug('Neue Metadaten-Zeile erstellt:', result);
+      }
       // Hier würde die Metadaten-Zeile-Erstellung implementiert
     }
     

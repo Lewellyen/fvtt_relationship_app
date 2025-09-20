@@ -79,19 +79,19 @@ export class ServiceContainer implements IServiceContainer {
   /**
    * Service über spezialisierte Services abrufen oder erstellen
    */
-  getService<T>(identifier: any, scope?: string): T {
+  getService<T>(ctor: new (...args: unknown[]) => T, scope?: string): T {
     this.writeLog(
       "info",
-      `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}${scope ? ` (scope: ${scope})` : ""}`
+      `[ServiceContainer] 🏪 Getting service: ${ctor.name || ctor}${scope ? ` (scope: ${scope})` : ""}`
     );
 
-    const plan = this.servicePlans.get(identifier);
+    const plan = this.servicePlans.get(ctor);
     if (!plan) {
       this.writeLog(
         "error",
-        `[ServiceContainer] ❌ No service plan found for ${identifier.name || identifier}`
+        `[ServiceContainer] ❌ No service plan found for ${ctor.name || ctor}`
       );
-      throw new Error(`No service plan found for ${identifier.name || identifier}`);
+      throw new Error(`No service plan found for ${ctor.name || ctor}`);
     }
 
     // Prüfen ob spezialisierte Services injiziert wurden
@@ -102,15 +102,15 @@ export class ServiceContainer implements IServiceContainer {
     }
 
     // Factory-Funktion für Service-Erstellung
-    const factory = () => this.serviceFactory!.createService(identifier);
+    const factory = () => this.serviceFactory!.createService(ctor);
 
     // Transient: Immer neu erstellen (kein Caching)
     if (plan.isTransient) {
       this.writeLog(
         "info",
-        `[ServiceContainer] 🔄 Creating transient service: ${identifier.name || identifier}`
+        `[ServiceContainer] 🔄 Creating transient service: ${ctor.name || ctor}`
       );
-      return this.serviceCache.getTransient(identifier, factory) as T;
+      return this.serviceCache.getTransient(ctor, factory) as T;
     }
 
     // Scoped: Scope-basierte Instanzen
@@ -118,36 +118,36 @@ export class ServiceContainer implements IServiceContainer {
       const scopeKey = scope || this.scopeManager.getCurrentScope() || "default";
       this.writeLog(
         "info",
-        `[ServiceContainer] 🎯 Getting scoped service: ${identifier.name || identifier} (scope: ${scopeKey})`
+        `[ServiceContainer] 🎯 Getting scoped service: ${ctor.name || ctor} (scope: ${scopeKey})`
       );
-      return this.serviceCache.getScoped(identifier, scopeKey, factory) as T;
+      return this.serviceCache.getScoped(ctor, scopeKey, factory) as T;
     }
 
     // Singleton: Cached Instanzen
     if (plan.isSingleton) {
       this.writeLog(
         "info",
-        `[ServiceContainer] ♻️ Getting singleton service: ${identifier.name || identifier}`
+        `[ServiceContainer] ♻️ Getting singleton service: ${ctor.name || ctor}`
       );
-      return this.serviceCache.getSingleton(identifier, factory) as T;
+      return this.serviceCache.getSingleton(ctor, factory) as T;
     }
 
     // Fallback: Als Singleton behandeln
     this.writeLog(
       "warn",
-      `[ServiceContainer] ⚠️ Unknown service type for ${identifier.name || identifier}, treating as singleton`
+      `[ServiceContainer] ⚠️ Unknown service type for ${ctor.name || ctor}, treating as singleton`
     );
-    return this.serviceCache.getSingleton(identifier, factory) as T;
+    return this.serviceCache.getSingleton(ctor, factory) as T;
   }
 
   /**
    * Service mit Dependencies erstellen (delegiert an ServiceFactory)
    */
-  createService<T>(identifier: any): T {
+  createService<T>(ctor: new (...args: unknown[]) => T): T {
     if (!this.serviceFactory) {
       throw new Error("ServiceFactory not injected. Call setServiceFactory() first.");
     }
-    return this.serviceFactory.createService(identifier);
+    return this.serviceFactory.createService(ctor);
   }
 
   /**
@@ -321,9 +321,8 @@ export class ServiceContainer implements IServiceContainer {
   private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
     if (this.logger) {
       this.logger[modus](message, ...args);
-    } else {
-      console[modus](message, ...args);
     }
+    // Kein Console-Fallback - Logger ist Pflicht
   }
 
   // Scope Chain Management (delegiert an ScopeManager)

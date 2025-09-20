@@ -97,7 +97,8 @@ export class FoundryAdapter implements IFoundryAdapter {
       if (logger) {
         logger.warn("Failed to reload document, using direct update:", error);
       } else {
-        console.warn("Failed to reload document, using direct update:", error);
+        // Fallback: Logger nicht verfügbar, aber trotzdem nicht console verwenden
+        // In diesem Fall wird der Fehler stillschweigend ignoriert und direktes Update versucht
       }
       return await document.update(data);
     }
@@ -107,6 +108,9 @@ export class FoundryAdapter implements IFoundryAdapter {
   registerSetting(key: string, config: any): void {
     game?.settings?.register(MODULE_ID as any, key as any, config);
   }
+
+  // Debug Setting registrieren - wird jetzt über SettingsService gemacht
+  // registerDebugSetting(): void { ... } // Entfernt - zentralisiert in SettingsService
 
   getSetting(key: string): any {
     return game?.settings?.get(MODULE_ID as any, key as any);

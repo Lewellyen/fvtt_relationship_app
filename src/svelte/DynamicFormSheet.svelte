@@ -3,10 +3,11 @@
   import type { IDynamicFormConfig, IFormFieldDefinition } from '../types/DynamicFormTypes';
   import DynamicFormField from './DynamicFormField.svelte';
   
-  const { config, onSubmit, onCancel } = $props<{ 
+  const { config, onSubmit, onCancel, logger } = $props<{ 
     config: IDynamicFormConfig;
     onSubmit: (values: Record<string, any>) => void;
     onCancel: () => void;
+    logger?: any;
   }>();
   
   // Lokaler State für alle Formularwerte
@@ -196,7 +197,10 @@
       // Erfolgreich - Modal schließen
       closeModal();
     } catch (error) {
-      console.error('Fehler beim Absenden des Formulars:', error);
+      // Debug-Logging über Logger
+      if (logger) {
+        logger.error('Fehler beim Absenden des Formulars:', error);
+      }
       // Fehlerbehandlung hier implementieren
     } finally {
       isSubmitting = false;
@@ -210,7 +214,10 @@
     } else if (onCancel) {
       onCancel();
     } else {
-      console.log('Modal geschlossen');
+      // Debug-Logging über Logger
+      if (logger) {
+        logger.debug('Modal geschlossen');
+      }
     }
   }
   

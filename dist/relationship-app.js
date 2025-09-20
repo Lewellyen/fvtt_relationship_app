@@ -92,7 +92,6 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   const MODULE_ID = "relationship-app";
   const MODULE_ID_PREFIX = `[${MODULE_ID}] |`;
   const MODULE_NAME = "Relationship App";
-  const MODULE_VERSION = "0.10.0";
   const MODULE_METADATA_KEY = "metadata";
   const CSS_CLASSES = {
     // Haupt-Container
@@ -219,7 +218,13 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
       }
     }
     debug(message, ...args) {
-      return;
+      let debugEnabled = false;
+      try {
+        debugEnabled = game?.settings?.get("relationship-app", "debugLogs") === true;
+      } catch (error) {
+        debugEnabled = false;
+      }
+      if (!debugEnabled) return;
       if (typeof message === "object" && message !== null) {
         console.debug(`${MODULE_ID_PREFIX} 🐛`, message, ...args);
       } else {
@@ -289,7 +294,6 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
         if (logger2) {
           logger2.warn("Failed to reload document, using direct update:", error);
         } else {
-          console.warn("Failed to reload document, using direct update:", error);
         }
         return await document2.update(data);
       }
@@ -298,6 +302,8 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
     registerSetting(key, config) {
       game?.settings?.register(MODULE_ID, key, config);
     }
+    // Debug Setting registrieren - wird jetzt über SettingsService gemacht
+    // registerDebugSetting(): void { ... } // Entfernt - zentralisiert in SettingsService
     getSetting(key) {
       return game?.settings?.get(MODULE_ID, key);
     }
@@ -384,9 +390,7 @@ var __privateMethod = (obj, member, method) => (__accessCheck(obj, member, "acce
   }
   function createChildScope(parentScope, childType) {
     if (!_container) throw new Error("[Edge] Container not set. Call setContainer(...) in init.");
-    const timestamp = Date.now();
-    const randomId = foundry.utils.randomID();
-    const childScope = `${childType}-${timestamp}-${randomId}`;
+    const childScope = `${childType}-${foundry.utils.randomID()}`;
     _container.addChildScope(parentScope, childScope);
     return childScope;
   }
@@ -8503,21 +8507,29 @@ ${component_stack}
   }
   var root$4 = /* @__PURE__ */ from_html(`<div class="relationship-graph-view svelte-qaxdvx"><div class="graph-container svelte-qaxdvx"><div>Platzhalter für Graph</div></div> <div class="info-container svelte-qaxdvx"><div>Platzhalter für Info-Panel</div></div></div>`);
   function RelationshipGraphView($$anchor, $$props) {
-    console.log("RelationshipGraphView", $$props.elements);
-    console.log("RelationshipGraphView", $$props.interactive);
-    console.log("RelationshipGraphView", $$props.onNodeClick);
-    console.log("RelationshipGraphView", $$props.onEdgeClick);
+    push($$props, true);
+    if ($$props.logger) {
+      $$props.logger.debug("RelationshipGraphView", $$props.elements);
+      $$props.logger.debug("RelationshipGraphView", $$props.interactive);
+      $$props.logger.debug("RelationshipGraphView", $$props.onNodeClick);
+      $$props.logger.debug("RelationshipGraphView", $$props.onEdgeClick);
+    }
     var div = root$4();
     append($$anchor, div);
+    pop();
   }
   var root$3 = /* @__PURE__ */ from_html(`<div class="relationship-graph-view svelte-i1dhkx"><div class="graph-container"><div>Platzhalter für Graph</div></div> <div class="info-container"><div>Platzhalter für Info-Panel</div></div></div>`);
   function RelationshipGraphEdit($$anchor, $$props) {
-    console.log("RelationshipGraphView", $$props.elements);
-    console.log("RelationshipGraphView", $$props.interactive);
-    console.log("RelationshipGraphView", $$props.onNodeClick);
-    console.log("RelationshipGraphView", $$props.onEdgeClick);
+    push($$props, true);
+    if ($$props.logger) {
+      $$props.logger.debug("RelationshipGraphEdit", $$props.elements);
+      $$props.logger.debug("RelationshipGraphEdit", $$props.interactive);
+      $$props.logger.debug("RelationshipGraphEdit", $$props.onNodeClick);
+      $$props.logger.debug("RelationshipGraphEdit", $$props.onEdgeClick);
+    }
     var div = root$3();
     append($$anchor, div);
+    pop();
   }
   const _SvelteManager = class _SvelteManager {
     // ✅ Dependencies explizit definiert - FoundryLogger bereits an erster Stelle
@@ -8529,9 +8541,13 @@ ${component_stack}
      */
     async mountComponent(component2, target, props) {
       this.writeLog("info", `[SvelteManager] Mounting component: ${component2.name}`);
+      const propsWithLogger = {
+        ...props,
+        logger: this.logger
+      };
       const app = mount(component2, {
         target,
-        props
+        props: propsWithLogger
       });
       this.writeLog("info", "[SvelteManager] Component mounted successfully");
       return app;
@@ -8582,10 +8598,20 @@ ${component_stack}
   _SvelteManager.DEPENDENCIES = [FoundryLogger];
   let SvelteManager = _SvelteManager;
   const _CSSManager = class _CSSManager {
+    // Referenzzählung pro CSS-Pfad
     constructor(logger2) {
       this.logger = logger2;
       this.loadedCSS = /* @__PURE__ */ new Set();
-      this.testLoggerInjection();
+      this.cssReferenceCount = /* @__PURE__ */ new Map();
+      let debugEnabled = false;
+      try {
+        debugEnabled = game?.settings?.get("relationship-app", "debugLogs") === true;
+      } catch (error) {
+        debugEnabled = false;
+      }
+      if (debugEnabled) {
+        this.testLoggerInjection();
+      }
     }
     /**
      * Testet ob der FoundryLogger korrekt injiziert wurde und funktioniert
@@ -8625,11 +8651,13 @@ ${component_stack}
      * Lädt eine CSS-Datei, falls sie noch nicht geladen wurde
      */
     async loadCSS(cssPath) {
+      const currentCount = this.cssReferenceCount.get(cssPath) || 0;
+      this.cssReferenceCount.set(cssPath, currentCount + 1);
       if (this.isCSSLoaded(cssPath)) {
         if (this.logger) {
-          this.logger.info(`[CSSManager] CSS already loaded: ${cssPath}`);
+          this.logger.info(`[CSSManager] CSS already loaded: ${cssPath} (refs: ${currentCount + 1})`);
         } else {
-          this.writeLog("debug", `[CSSManager] CSS already loaded: ${cssPath}`);
+          this.writeLog("debug", `[CSSManager] CSS already loaded: ${cssPath} (refs: ${currentCount + 1})`);
         }
         return;
       }
@@ -8642,11 +8670,12 @@ ${component_stack}
         document.head.appendChild(link2);
         this.loadedCSS.add(cssPath);
         if (this.logger) {
-          this.logger.info(`[CSSManager] CSS loaded successfully: ${cssPath}`);
+          this.logger.info(`[CSSManager] CSS loaded successfully: ${cssPath} (refs: ${currentCount + 1})`);
         } else {
-          this.writeLog("info", `[CSSManager] CSS loaded successfully: ${cssPath}`);
+          this.writeLog("info", `[CSSManager] CSS loaded successfully: ${cssPath} (refs: ${currentCount + 1})`);
         }
       } catch (error) {
+        this.cssReferenceCount.set(cssPath, currentCount);
         if (this.logger) {
           this.logger.error(`[CSSManager] Failed to load CSS: ${cssPath}`, error);
         } else {
@@ -8659,15 +8688,27 @@ ${component_stack}
      * Entfernt eine CSS-Datei aus dem DOM
      */
     async unloadCSS(cssPath) {
-      const linkId = `css-${cssPath.replace(/[^a-zA-Z0-9]/g, "-")}`;
-      const link2 = document.getElementById(linkId);
-      if (link2) {
-        link2.remove();
-        this.loadedCSS.delete(cssPath);
+      const currentCount = this.cssReferenceCount.get(cssPath) || 0;
+      const newCount = Math.max(0, currentCount - 1);
+      if (newCount === 0) {
+        const linkId = `css-${cssPath.replace(/[^a-zA-Z0-9]/g, "-")}`;
+        const link2 = document.getElementById(linkId);
+        if (link2) {
+          link2.remove();
+          this.loadedCSS.delete(cssPath);
+          this.cssReferenceCount.delete(cssPath);
+          if (this.logger) {
+            this.logger.info(`[CSSManager] CSS unloaded: ${cssPath}`);
+          } else {
+            this.writeLog("info", `[CSSManager] CSS unloaded: ${cssPath}`);
+          }
+        }
+      } else {
+        this.cssReferenceCount.set(cssPath, newCount);
         if (this.logger) {
-          this.logger.info(`[CSSManager] CSS unloaded: ${cssPath}`);
+          this.logger.info(`[CSSManager] CSS reference count decreased: ${cssPath} (refs: ${newCount})`);
         } else {
-          this.writeLog("info", `[CSSManager] CSS unloaded: ${cssPath}`);
+          this.writeLog("info", `[CSSManager] CSS reference count decreased: ${cssPath} (refs: ${newCount})`);
         }
       }
     }
@@ -8703,38 +8744,49 @@ ${component_stack}
   _CSSManager.DEPENDENCIES = [FoundryLogger];
   let CSSManager = _CSSManager;
   const _GraphService = class _GraphService {
-    constructor(page) {
+    constructor(page, foundryAdapter2) {
+      this._initialized = false;
       this._page = page;
+      this._foundryAdapter = foundryAdapter2;
       this._snapshot = null;
       this._instanceId = foundry.utils.randomID();
     }
     // -- Public ----------------------------------------------------------------
     async init(page) {
       this._page = page;
+      if (!this._foundryAdapter) {
+        const api = globalThis.game?.modules?.get("relationship-app")?.api;
+        this._foundryAdapter = api?.foundryAdapter;
+      }
       this._snapshot = foundry.utils.deepClone(this._loadFromSystem());
+      this._initialized = true;
     }
     get instanceId() {
       return this._instanceId;
     }
     getSnapshot() {
-      if (!this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
+      if (!this._initialized || !this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
       return foundry.utils.deepClone(this._snapshot);
     }
     getNode(id) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       return this._snapshot?.nodes[id];
     }
     async addNode(node) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       const next2 = this._cloneCurrent();
       next2.nodes[node.id] = foundry.utils.deepClone(node);
       await this._write(next2);
     }
     async updateNode(id, patch) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       const next2 = this._cloneCurrent();
       const base = next2.nodes[id] ?? { id };
       next2.nodes[id] = { ...base, ...patch, id };
       await this._write(next2);
     }
     async removeNode(id) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       const next2 = this._cloneCurrent();
       delete next2.nodes[id];
       for (const [eid, e] of Object.entries(next2.edges)) {
@@ -8744,15 +8796,18 @@ ${component_stack}
       await this._write(next2);
     }
     getEdge(id) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       return this._snapshot?.edges[id];
     }
     async addEdge(edge) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       const next2 = this._cloneCurrent();
       this._assertEndpointsExist(next2, edge.source, edge.target);
       next2.edges[edge.id] = foundry.utils.deepClone(edge);
       await this._write(next2);
     }
     async updateEdge(id, patch) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       const next2 = this._cloneCurrent();
       const base = next2.edges[id] ?? { id };
       const newSource = patch.source ?? base.source;
@@ -8762,6 +8817,7 @@ ${component_stack}
       await this._write(next2);
     }
     async removeEdge(id) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       const next2 = this._cloneCurrent();
       delete next2.edges[id];
       await this._write(next2);
@@ -8769,6 +8825,7 @@ ${component_stack}
     // --- Policy API ------------------------------------------------------------
     /** GM-only: komplette Policy eines Nodes setzen/überschreiben */
     async setPolicy(nodeId, policy) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       if (!game.user?.isGM) throw new Error("Only GM can modify policies.");
       const next2 = this._cloneCurrent();
       if (!next2.policy) next2.policy = {};
@@ -8776,10 +8833,12 @@ ${component_stack}
       await this._write(next2);
     }
     getPolicy(nodeId) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       return this._snapshot?.policy?.[nodeId];
     }
     /** GM-only: Node-Sichtbarkeit (für Spieler) setzen */
     async setNodeVisible(nodeId, visible) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       if (!game.user?.isGM) throw new Error("Only GM can modify node visibility.");
       const next2 = this._cloneCurrent();
       if (!next2.policy) next2.policy = {};
@@ -8790,11 +8849,13 @@ ${component_stack}
     }
     /** Sichtbarkeitsstatus eines Nodes lesen (Default: false) */
     isNodeVisible(nodeId) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       const p = this._snapshot?.policy?.[nodeId];
       return p?.visible === true;
     }
     /** GM-only: komplette Policy eines Nodes entfernen */
     async removePolicy(nodeId) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       if (!game.user?.isGM) throw new Error("Only GM can remove policies.");
       const next2 = this._cloneCurrent();
       if (!next2.policy || !(nodeId in next2.policy)) return;
@@ -8803,6 +8864,7 @@ ${component_stack}
     }
     /** GM-only: nur Node-Visibility zurücksetzen (Policy-Eintrag bleibt sonst erhalten) */
     async clearNodeVisible(nodeId) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       if (!game.user?.isGM) throw new Error("Only GM can modify visibility.");
       const next2 = this._cloneCurrent();
       const p = next2.policy?.[nodeId];
@@ -8813,6 +8875,7 @@ ${component_stack}
     }
     /** GM-only: Feld-Visibilities zurücksetzen (alle oder ausgewählte Pfade) */
     async clearFieldVisibility(nodeId, paths) {
+      if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
       if (!game.user?.isGM) throw new Error("Only GM can modify field policies.");
       const next2 = this._cloneCurrent();
       const p = next2.policy?.[nodeId];
@@ -8827,6 +8890,7 @@ ${component_stack}
     }
     // -- Intern ----------------------------------------------------------------
     _loadFromSystem() {
+      if (!this._page) throw new Error("GraphService not initialized. Call init() first.");
       const sys = this._page.system;
       return {
         version: sys.version ?? 1,
@@ -8844,8 +8908,9 @@ ${component_stack}
       this._snapshot = foundry.utils.deepClone(next2);
     }
     async _writeToSystem(next2) {
-      if (!this._snapshot) throw new Error("init() first");
+      if (!this._initialized || !this._page) throw new Error("GraphService not initialized. Call init() first.");
       const prev = this._snapshot;
+      if (!prev) throw new Error("GraphService not initialized. Call init() first.");
       let patch = {};
       if (next2.version !== prev.version) {
         patch["system.version"] = next2.version;
@@ -8854,7 +8919,11 @@ ${component_stack}
       patch = { ...patch, ...this._dictDiff("system.edges", prev.edges, next2.edges) };
       patch = { ...patch, ...this._dictDiff("system.policy", prev.policy ?? {}, next2.policy ?? {}) };
       if (foundry.utils.isEmpty(patch)) return;
-      await this._page.update(patch, { _graphService: this._instanceId, render: false });
+      if (this._foundryAdapter) {
+        await this._foundryAdapter.updateDocumentWithReload(this._page, patch);
+      } else {
+        await this._page.update(patch, { _graphService: this._instanceId, render: false });
+      }
     }
     /**
      * Patch für Dictionary-Felder (Record<string, any>) erzeugen:
@@ -8885,7 +8954,7 @@ ${component_stack}
   _GraphService.API_NAME = "graphService";
   _GraphService.SERVICE_TYPE = "scoped";
   _GraphService.CLASS_NAME = "GraphService";
-  _GraphService.DEPENDENCIES = [];
+  _GraphService.DEPENDENCIES = [FoundryLogger];
   let GraphService = _GraphService;
   function bindFoundrySync(page, service) {
     Hooks.on("updateJournalEntryPage", async (doc, changes, options, userId) => {
@@ -9370,9 +9439,19 @@ ${component_stack}
       if (!plan.apiName || typeof plan.apiName !== "string") {
         result.warnings.push(`No valid API_NAME for service ${serviceClass.name || serviceClass}`);
       }
-      if (!["singleton", "factory", "transient"].includes(plan.serviceType)) {
+      if (!["singleton", "factory", "transient", "scoped"].includes(plan.serviceType)) {
         result.warnings.push(
           `Invalid service type '${plan.serviceType}' for service ${serviceClass.name || serviceClass}`
+        );
+      }
+      if (plan.dependencies.length === 0 && serviceClass.DEPENDENCIES && serviceClass.DEPENDENCIES.length > 0) {
+        result.warnings.push(
+          `Service ${serviceClass.name || serviceClass} has DEPENDENCIES defined but no dependencies were resolved`
+        );
+      }
+      if (serviceClass.DEPENDENCIES === void 0) {
+        result.warnings.push(
+          `Service ${serviceClass.name || serviceClass} has no DEPENDENCIES property defined. This should be explicitly declared as an empty array if no dependencies are needed.`
         );
       }
       return result;
@@ -9380,24 +9459,24 @@ ${component_stack}
     /**
      * Service-Erstellung validieren
      */
-    validateServiceCreation(service, identifier) {
+    validateServiceCreation(service, ctor) {
       this.logger.info(
-        `[ServiceValidator] 🔍 Validating service creation for: ${identifier.name || identifier}`
+        `[ServiceValidator] 🔍 Validating service creation for: ${ctor.name || ctor}`
       );
       if (!service) {
         this.logger.error(
-          `[ServiceValidator] ❌ Service is null or undefined for ${identifier.name || identifier}`
+          `[ServiceValidator] ❌ Service is null or undefined for ${ctor.name || ctor}`
         );
         return false;
       }
       if (typeof service !== "object") {
         this.logger.error(
-          `[ServiceValidator] ❌ Service is not an object for ${identifier.name || identifier}`
+          `[ServiceValidator] ❌ Service is not an object for ${ctor.name || ctor}`
         );
         return false;
       }
       this.logger.info(
-        `[ServiceValidator] ✅ Service creation valid for ${identifier.name || identifier}`
+        `[ServiceValidator] ✅ Service creation valid for ${ctor.name || ctor}`
       );
       return true;
     }
@@ -9473,12 +9552,12 @@ ${component_stack}
     /**
      * Fehlerbehandlung für Service-Erstellung
      */
-    handleServiceCreationError(error, identifier) {
+    handleServiceCreationError(error, ctor) {
       this.logger.error(
-        `[ServiceValidator] ❌ Service creation error for ${identifier.name || identifier}:`,
+        `[ServiceValidator] ❌ Service creation error for ${ctor.name || ctor}:`,
         error
       );
-      this.logger.error(`Service creation failed for ${identifier.name || identifier}:`, error);
+      this.logger.error(`Service creation failed for ${ctor.name || ctor}:`, error);
     }
   }
   var ServiceValidator$1 = /* @__PURE__ */ Object.freeze({
@@ -9495,19 +9574,19 @@ ${component_stack}
     /**
      * Service mit Dependencies erstellen
      */
-    createService(identifier) {
-      this.writeLog("info", `[ServiceFactory] 🏗️ Creating service: ${identifier.name || identifier}`);
-      const plan = this.servicePlans.get(identifier);
+    createService(ctor) {
+      this.writeLog("info", `[ServiceFactory] 🏗️ Creating service: ${ctor.name || ctor}`);
+      const plan = this.servicePlans.get(ctor);
       if (!plan) {
         this.writeLog(
           "error",
-          `[ServiceFactory] ❌ No service plan found for ${identifier.name || identifier}`
+          `[ServiceFactory] ❌ No service plan found for ${ctor.name || ctor}`
         );
-        throw new Error(`No service plan found for ${identifier.name || identifier}`);
+        throw new Error(`No service plan found for ${ctor.name || ctor}`);
       }
       this.writeLog(
         "info",
-        `[ServiceFactory] 📋 Service plan for ${identifier.name || identifier}:`,
+        `[ServiceFactory] 📋 Service plan for ${ctor.name || ctor}:`,
         {
           dependencies: plan.dependencies.map((d) => d.name || d),
           isSingleton: plan.isSingleton,
@@ -9519,23 +9598,23 @@ ${component_stack}
       const dependencies = this.resolveDependencies(plan);
       this.writeLog(
         "info",
-        `[ServiceFactory] 🔗 Resolved dependencies for ${identifier.name || identifier}:`,
+        `[ServiceFactory] 🔗 Resolved dependencies for ${ctor.name || ctor}:`,
         {
           count: dependencies.length,
           dependencies: dependencies.map((d) => d.constructor.name)
         }
       );
       const service = new plan.constructor(...dependencies);
-      if (!this.serviceValidator.validateServiceCreation(service, identifier)) {
+      if (!this.serviceValidator.validateServiceCreation(service, ctor)) {
         this.serviceValidator.handleServiceCreationError(
-          new Error(`Service creation validation failed for ${identifier.name || identifier}`),
-          identifier
+          new Error(`Service creation validation failed for ${ctor.name || ctor}`),
+          ctor
         );
-        throw new Error(`Service creation validation failed for ${identifier.name || identifier}`);
+        throw new Error(`Service creation validation failed for ${ctor.name || ctor}`);
       }
       this.writeLog(
         "info",
-        `[ServiceFactory] ✅ Service created successfully: ${identifier.name || identifier}`
+        `[ServiceFactory] ✅ Service created successfully: ${ctor.name || ctor}`
       );
       return service;
     }
@@ -9575,8 +9654,6 @@ ${component_stack}
     writeLog(modus, message, ...args) {
       if (this.logger) {
         this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
       }
     }
   }
@@ -9594,22 +9671,22 @@ ${component_stack}
     /**
      * Singleton Service abrufen oder erstellen
      */
-    getSingleton(identifier, factory) {
-      this.writeLog("info", `[ServiceCache] 🔍 Getting singleton: ${identifier.name || identifier}`);
-      if (this.instances.has(identifier)) {
+    getSingleton(ctor, factory) {
+      this.writeLog("info", `[ServiceCache] 🔍 Getting singleton: ${ctor.name || ctor}`);
+      if (this.instances.has(ctor)) {
         this.writeLog(
           "info",
-          `[ServiceCache] ♻️ Returning cached singleton: ${identifier.name || identifier}`
+          `[ServiceCache] ♻️ Returning cached singleton: ${ctor.name || ctor}`
         );
-        return this.instances.get(identifier);
+        return this.instances.get(ctor);
       }
       this.writeLog(
         "info",
-        `[ServiceCache] 🏗️ Creating new singleton: ${identifier.name || identifier}`
+        `[ServiceCache] 🏗️ Creating new singleton: ${ctor.name || ctor}`
       );
       const service = factory();
-      this.instances.set(identifier, service);
-      this.writeLog("info", `[ServiceCache] 💾 Cached singleton: ${identifier.name || identifier}`);
+      this.instances.set(ctor, service);
+      this.writeLog("info", `[ServiceCache] 💾 Cached singleton: ${ctor.name || ctor}`);
       return service;
     }
     /**
@@ -9762,8 +9839,6 @@ ${component_stack}
     writeLog(modus, message, ...args) {
       if (this.logger) {
         this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
       }
     }
   }
@@ -9905,8 +9980,6 @@ ${component_stack}
     writeLog(modus, message, ...args) {
       if (this.logger) {
         this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
       }
     }
   }
@@ -9950,61 +10023,61 @@ ${component_stack}
     /**
      * Service über spezialisierte Services abrufen oder erstellen
      */
-    getService(identifier, scope) {
+    getService(ctor, scope) {
       this.writeLog(
         "info",
-        `[ServiceContainer] 🏪 Getting service: ${identifier.name || identifier}${scope ? ` (scope: ${scope})` : ""}`
+        `[ServiceContainer] 🏪 Getting service: ${ctor.name || ctor}${scope ? ` (scope: ${scope})` : ""}`
       );
-      const plan = this.servicePlans.get(identifier);
+      const plan = this.servicePlans.get(ctor);
       if (!plan) {
         this.writeLog(
           "error",
-          `[ServiceContainer] ❌ No service plan found for ${identifier.name || identifier}`
+          `[ServiceContainer] ❌ No service plan found for ${ctor.name || ctor}`
         );
-        throw new Error(`No service plan found for ${identifier.name || identifier}`);
+        throw new Error(`No service plan found for ${ctor.name || ctor}`);
       }
       if (!this.serviceFactory || !this.serviceCache || !this.scopeManager) {
         throw new Error(
           "ServiceContainer not properly initialized. Missing ServiceFactory, ServiceCache, or ScopeManager."
         );
       }
-      const factory = () => this.serviceFactory.createService(identifier);
+      const factory = () => this.serviceFactory.createService(ctor);
       if (plan.isTransient) {
         this.writeLog(
           "info",
-          `[ServiceContainer] 🔄 Creating transient service: ${identifier.name || identifier}`
+          `[ServiceContainer] 🔄 Creating transient service: ${ctor.name || ctor}`
         );
-        return this.serviceCache.getTransient(identifier, factory);
+        return this.serviceCache.getTransient(ctor, factory);
       }
       if (plan.isScoped) {
         const scopeKey = scope || this.scopeManager.getCurrentScope() || "default";
         this.writeLog(
           "info",
-          `[ServiceContainer] 🎯 Getting scoped service: ${identifier.name || identifier} (scope: ${scopeKey})`
+          `[ServiceContainer] 🎯 Getting scoped service: ${ctor.name || ctor} (scope: ${scopeKey})`
         );
-        return this.serviceCache.getScoped(identifier, scopeKey, factory);
+        return this.serviceCache.getScoped(ctor, scopeKey, factory);
       }
       if (plan.isSingleton) {
         this.writeLog(
           "info",
-          `[ServiceContainer] ♻️ Getting singleton service: ${identifier.name || identifier}`
+          `[ServiceContainer] ♻️ Getting singleton service: ${ctor.name || ctor}`
         );
-        return this.serviceCache.getSingleton(identifier, factory);
+        return this.serviceCache.getSingleton(ctor, factory);
       }
       this.writeLog(
         "warn",
-        `[ServiceContainer] ⚠️ Unknown service type for ${identifier.name || identifier}, treating as singleton`
+        `[ServiceContainer] ⚠️ Unknown service type for ${ctor.name || ctor}, treating as singleton`
       );
-      return this.serviceCache.getSingleton(identifier, factory);
+      return this.serviceCache.getSingleton(ctor, factory);
     }
     /**
      * Service mit Dependencies erstellen (delegiert an ServiceFactory)
      */
-    createService(identifier) {
+    createService(ctor) {
       if (!this.serviceFactory) {
         throw new Error("ServiceFactory not injected. Call setServiceFactory() first.");
       }
-      return this.serviceFactory.createService(identifier);
+      return this.serviceFactory.createService(ctor);
     }
     /**
      * Alle Services erstellen (delegiert an ServiceFactory)
@@ -10155,8 +10228,6 @@ ${component_stack}
     writeLog(modus, message, ...args) {
       if (this.logger) {
         this.logger[modus](message, ...args);
-      } else {
-        console[modus](message, ...args);
       }
     }
     // Scope Chain Management (delegiert an ScopeManager)
@@ -10774,6 +10845,94 @@ ${component_stack}
     __proto__: null,
     APIManager
   });
+  const _SettingsService = class _SettingsService {
+    constructor(logger2, foundryAdapter2) {
+      this.foundryAdapter = foundryAdapter2;
+    }
+    /**
+     * Alle Settings registrieren
+     */
+    registerAll() {
+      if (!this.foundryAdapter) {
+        throw new Error("FoundryAdapter not available for settings registration");
+      }
+      this.foundryAdapter.registerSetting("debugLogs", {
+        name: "Debug Logging",
+        hint: "Enable detailed debug logging for development",
+        scope: "world",
+        config: true,
+        type: Boolean,
+        default: false
+      });
+      this.foundryAdapter.registerSetting("metadata", {
+        name: "Relationship App Metadata",
+        hint: "Metadata for the Relationship App",
+        scope: "world",
+        config: false,
+        type: Object
+      });
+    }
+    /**
+     * Boolean-Setting abrufen
+     */
+    getBoolean(key) {
+      return this.foundryAdapter?.getSetting(key) ?? false;
+    }
+    /**
+     * String-Setting abrufen
+     */
+    getString(key, defaultValue = "") {
+      return this.foundryAdapter?.getSetting(key) ?? defaultValue;
+    }
+    /**
+     * Number-Setting abrufen
+     */
+    getNumber(key, defaultValue = 0) {
+      return this.foundryAdapter?.getSetting(key) ?? defaultValue;
+    }
+    /**
+     * Object-Setting abrufen
+     */
+    getObject(key, defaultValue) {
+      return this.foundryAdapter?.getSetting(key) ?? defaultValue;
+    }
+    /**
+     * Setting setzen
+     */
+    async setSetting(key, value) {
+      if (!this.foundryAdapter) {
+        throw new Error("FoundryAdapter not available for setting update");
+      }
+      return await this.foundryAdapter.setSetting(key, value);
+    }
+    /**
+     * Debug-Logging aktiviert?
+     */
+    isDebugLoggingEnabled() {
+      return this.getBoolean("debugLogs");
+    }
+    /**
+     * Metadata abrufen
+     */
+    getMetadata() {
+      return this.getObject("metadata", {});
+    }
+    /**
+     * Metadata setzen
+     */
+    async setMetadata(metadata) {
+      return await this.setSetting("metadata", metadata);
+    }
+  };
+  _SettingsService.API_NAME = "settingsService";
+  _SettingsService.SERVICE_TYPE = "singleton";
+  _SettingsService.CLASS_NAME = "SettingsService";
+  _SettingsService.DEPENDENCIES = [];
+  let SettingsService = _SettingsService;
+  var SettingsService$1 = /* @__PURE__ */ Object.freeze({
+    __proto__: null,
+    SettingsService
+  });
   const SERVICE_CONFIG = [
     // 🏗️ Cross-Cutting Concerns (Grundbausteine)
     // Diese Services werden überall gebraucht
@@ -10791,7 +10950,8 @@ ${component_stack}
     { name: CSSManager, class: CSSManager },
     // Styling
     // 🔧 Application Services (Anwendungslogik)
-    { name: GraphService, class: GraphService }
+    { name: GraphService, class: GraphService },
+    { name: SettingsService, class: SettingsService }
     // Hier kommen später die Business-Services hin
   ];
   function createElement(config) {
@@ -11745,7 +11905,9 @@ ${component_stack}
         }
         closeModal();
       } catch (error) {
-        console.error("Fehler beim Absenden des Formulars:", error);
+        if ($$props.logger) {
+          $$props.logger.error("Fehler beim Absenden des Formulars:", error);
+        }
       } finally {
         set(isSubmitting, false);
       }
@@ -11756,7 +11918,9 @@ ${component_stack}
       } else if ($$props.onCancel) {
         $$props.onCancel();
       } else {
-        console.log("Modal geschlossen");
+        if ($$props.logger) {
+          $$props.logger.debug("Modal geschlossen");
+        }
       }
     }
     function handleKeydown(e) {
@@ -12290,7 +12454,9 @@ ${component_stack}
   var root = /* @__PURE__ */ from_html(`<div class="metadata-container svelte-qx734j"><div class="metadata-header svelte-qx734j"><h1 class="svelte-qx734j">Metadaten-Verwaltung</h1> <div class="header-actions svelte-qx734j"><button class="bright">Neues Schema</button></div></div> <!> <!> <div class="metadata-content svelte-qx734j"><!></div></div>`);
   function MetadataManagementView($$anchor, $$props) {
     push($$props, true);
-    console.log("MetadataManagementView");
+    if ($$props.logger) {
+      $$props.logger.debug("MetadataManagementView");
+    }
     let metadata = /* @__PURE__ */ state(proxy({ schemas: [] }));
     let editingSchema = /* @__PURE__ */ state(null);
     let editingRow = /* @__PURE__ */ state(null);
@@ -12301,6 +12467,7 @@ ${component_stack}
     let errorMessage = /* @__PURE__ */ state(null);
     let successMessage = /* @__PURE__ */ state(null);
     let newSchema = proxy({
+      id: "",
       name: "",
       label: "",
       description: "",
@@ -12310,6 +12477,7 @@ ${component_stack}
       rows: []
     });
     let newRow = proxy({
+      id: "",
       name: "",
       label: "",
       type: "string",
@@ -12318,7 +12486,8 @@ ${component_stack}
       default: "",
       options: [],
       placeholder: "",
-      description: ""
+      description: "",
+      value: ""
     });
     const FIELD_TYPES = [
       { value: "string", label: "Text" },
@@ -12478,7 +12647,21 @@ ${component_stack}
         set(errorMessage, errors.join(", "), true);
         return;
       }
-      schema.rows[rowIndex] = { ...schema.rows[rowIndex], ...updates };
+      const existingRow = schema.rows[rowIndex];
+      schema.rows[rowIndex] = {
+        id: existingRow.id,
+        name: existingRow.name,
+        label: existingRow.label,
+        type: existingRow.type,
+        required: existingRow.required,
+        default: existingRow.default,
+        options: existingRow.options,
+        placeholder: existingRow.placeholder,
+        description: existingRow.description,
+        category: existingRow.category,
+        value: existingRow.value,
+        ...updates
+      };
       await saveMetadataToRegistry(get$1(metadata));
       set(editingRow, null);
       set(successMessage, "Metadaten-Zeile erfolgreich aktualisiert");
@@ -12511,7 +12694,9 @@ ${component_stack}
       const config = createSchemaFormConfig();
       const result = $$props.parentApp ? await $$props.parentApp.openDynamicDialog(config) : await DynamicDialogApp.show(config, $$props.parentScope);
       if (result) {
-        console.log("Neues Schema erstellt:", result);
+        if ($$props.logger) {
+          $$props.logger.debug("Neues Schema erstellt:", result);
+        }
       }
       set(isCreatingNewSchema, false);
     }
@@ -12521,7 +12706,9 @@ ${component_stack}
       const config = createSchemaFormConfig();
       const result = $$props.parentApp ? await $$props.parentApp.openDynamicDialog(config) : await DynamicDialogApp.show(config, $$props.parentScope);
       if (result) {
-        console.log("Schema bearbeitet:", result);
+        if ($$props.logger) {
+          $$props.logger.debug("Schema bearbeitet:", result);
+        }
       }
       set(editingSchema, null);
     }
@@ -12531,7 +12718,9 @@ ${component_stack}
       const config = createRowFormConfig();
       const result = $$props.parentApp ? await $$props.parentApp.openDynamicDialog(config) : await DynamicDialogApp.show(config, $$props.parentScope);
       if (result) {
-        console.log("Metadaten-Zeile bearbeitet:", result);
+        if ($$props.logger) {
+          $$props.logger.debug("Metadaten-Zeile bearbeitet:", result);
+        }
       }
       set(editingRow, null);
     }
@@ -12541,7 +12730,9 @@ ${component_stack}
       const config = createRowFormConfig();
       const result = $$props.parentApp ? await $$props.parentApp.openDynamicDialog(config) : await DynamicDialogApp.show(config, $$props.parentScope);
       if (result) {
-        console.log("Neue Metadaten-Zeile erstellt:", result);
+        if ($$props.logger) {
+          $$props.logger.debug("Neue Metadaten-Zeile erstellt:", result);
+        }
       }
       set(isCreatingNewRow, false);
     }
@@ -13220,18 +13411,35 @@ ${component_stack}
       const apiManager = new APIManager2(logger2, serviceContainer);
       logger2.info(`[SOLID Boot] 📝 Registering services as factories`);
       serviceRegistrar.registerAllServices();
-      logger2.info(`[SOLID Boot] 🌐 Registering services in global API (lazy)`);
-      apiManager.registerInGlobalAPI();
+      logger2.info(`[SOLID Boot] 🔧 Registering settings via SettingsService`);
+      const { SettingsService: SettingsService2 } = await __vitePreload(async () => {
+        const { SettingsService: SettingsService3 } = await Promise.resolve().then(function() {
+          return SettingsService$1;
+        });
+        return { SettingsService: SettingsService3 };
+      }, false ? __VITE_PRELOAD__ : void 0);
+      const settingsService = new SettingsService2(logger2, foundryAdapter);
+      settingsService.registerAll();
       setContainer(serviceContainer);
-      globalThis.relationshipApp = {
-        ...globalThis.relationshipApp,
-        serviceContainer,
-        // ← Für getService()
-        serviceRegistrar,
-        // ← Für getService()
-        apiManager
-        // ← Für API-Zugriff
-      };
+      logger2.info(`[SOLID Boot] 🌐 Registering services in Foundry API`);
+      apiManager.registerInGlobalAPI();
+      let debugEnabled = false;
+      try {
+        debugEnabled = game?.settings?.get("relationship-app", "debugLogs") === true;
+      } catch (error) {
+        debugEnabled = false;
+      }
+      if (debugEnabled) {
+        globalThis.relationshipApp = {
+          ...globalThis.relationshipApp,
+          serviceContainer,
+          // ← Für getService()
+          serviceRegistrar,
+          // ← Für getService()
+          apiManager
+          // ← Für API-Zugriff
+        };
+      }
       logger2.info(
         `[SOLID Boot] ✅ Phase 2 completed - All services registered and available (on-demand)`
       );
@@ -13271,12 +13479,6 @@ ${component_stack}
     const metadataManagementApplication = new MetadataManagementApplication();
     await metadataManagementApplication.render({ force: true });
     logger2.info(`[SOLID Boot] Metadata Management Application rendered`);
-    const container = globalThis.relationshipApp.serviceContainer;
-    const graphService = container.getService(GraphService);
-    globalThis.relationshipApp = {
-      ...globalThis.relationshipApp,
-      graphService
-    };
   });
 })();
 //# sourceMappingURL=relationship-app.js.map

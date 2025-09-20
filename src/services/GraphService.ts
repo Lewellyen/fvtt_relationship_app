@@ -5,19 +5,24 @@ import type {
   NodePolicy,
   FieldPath,
 } from "../types/RelationshipGraphTypes";
+import type { IFoundryAdapter } from "../core/adapters/IFoundryAdapter";
+import { FoundryLogger } from "../core/services/FoundryLogger";
 
 export class GraphService {
   // ✅ Metadaten für Service Registration
   static readonly API_NAME = "graphService";
   static readonly SERVICE_TYPE = "scoped" as const;
   static readonly CLASS_NAME = "GraphService";
-  static readonly DEPENDENCIES = []; // ✅ Keine Dependencies erforderlich
-  private _page: JournalEntryPage;
+  static readonly DEPENDENCIES = [FoundryLogger]; // ✅ Dependencies werden über Container injiziert
+  private _page?: JournalEntryPage | undefined;
   private _snapshot: GraphModel | null;
   private _instanceId: string;
+  private _initialized: boolean = false;
+  private _foundryAdapter?: IFoundryAdapter | undefined;
 
-  constructor(page: JournalEntryPage) {
+  constructor(page?: JournalEntryPage, foundryAdapter?: IFoundryAdapter) {
     this._page = page;
+    this._foundryAdapter = foundryAdapter;
     this._snapshot = null;
     this._instanceId = foundry.utils.randomID();
   }
@@ -26,7 +31,15 @@ export class GraphService {
 
   async init(page: JournalEntryPage): Promise<void> {
     this._page = page;
+    
+    // FoundryAdapter über API abrufen, falls nicht injiziert
+    if (!this._foundryAdapter) {
+      const api = (globalThis as any).game?.modules?.get("relationship-app")?.api;
+      this._foundryAdapter = api?.foundryAdapter;
+    }
+    
     this._snapshot = foundry.utils.deepClone(this._loadFromSystem());
+    this._initialized = true;
   }
 
   get instanceId(): string {
@@ -34,21 +47,24 @@ export class GraphService {
   }
 
   getSnapshot(): Readonly<GraphModel> {
-    if (!this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
+    if (!this._initialized || !this._snapshot) throw new Error("GraphService not initialized. Call init() first.");
     return foundry.utils.deepClone(this._snapshot);
   }
 
   getNode(id: string): NodeData | undefined {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     return this._snapshot?.nodes[id];
   }
 
   async addNode(node: NodeData): Promise<void> {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     const next = this._cloneCurrent();
     next.nodes[node.id] = foundry.utils.deepClone(node);
     await this._write(next);
   }
 
   async updateNode(id: string, patch: Partial<NodeData>): Promise<void> {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     const next = this._cloneCurrent();
     const base = next.nodes[id] ?? ({ id } as NodeData);
     next.nodes[id] = { ...base, ...patch, id };
@@ -56,6 +72,7 @@ export class GraphService {
   }
 
   async removeNode(id: string): Promise<void> {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     const next = this._cloneCurrent();
     delete next.nodes[id];
     for (const [eid, e] of Object.entries(next.edges)) {
@@ -66,10 +83,12 @@ export class GraphService {
   }
 
   getEdge(id: string): EdgeData | undefined {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     return this._snapshot?.edges[id];
   }
 
   async addEdge(edge: EdgeData): Promise<void> {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     const next = this._cloneCurrent();
     this._assertEndpointsExist(next, edge.source, edge.target);
     next.edges[edge.id] = foundry.utils.deepClone(edge);
@@ -77,6 +96,7 @@ export class GraphService {
   }
 
   async updateEdge(id: string, patch: Partial<EdgeData>): Promise<void> {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     const next = this._cloneCurrent();
     const base = next.edges[id] ?? ({ id } as EdgeData);
     const newSource = patch.source ?? base.source;
@@ -87,6 +107,7 @@ export class GraphService {
   }
 
   async removeEdge(id: string): Promise<void> {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     const next = this._cloneCurrent();
     delete next.edges[id];
     await this._write(next);
@@ -96,6 +117,7 @@ export class GraphService {
 
   /** GM-only: komplette Policy eines Nodes setzen/überschreiben */
   async setPolicy(nodeId: string, policy: NodePolicy): Promise<void> {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     if (!game.user?.isGM) throw new Error("Only GM can modify policies.");
     const next = this._cloneCurrent();
     if (!next.policy) next.policy = {};
@@ -104,11 +126,13 @@ export class GraphService {
   }
 
   getPolicy(nodeId: string): NodePolicy | undefined {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     return this._snapshot?.policy?.[nodeId];
   }
 
   /** GM-only: Node-Sichtbarkeit (für Spieler) setzen */
   async setNodeVisible(nodeId: string, visible: boolean): Promise<void> {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     if (!game.user?.isGM) throw new Error("Only GM can modify node visibility.");
     const next = this._cloneCurrent();
     if (!next.policy) next.policy = {};
@@ -120,12 +144,14 @@ export class GraphService {
 
   /** Sichtbarkeitsstatus eines Nodes lesen (Default: false) */
   isNodeVisible(nodeId: string): boolean {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     const p = this._snapshot?.policy?.[nodeId];
     return p?.visible === true;
   }
 
   /** GM-only: komplette Policy eines Nodes entfernen */
   async removePolicy(nodeId: string): Promise<void> {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     if (!game.user?.isGM) throw new Error("Only GM can remove policies.");
     const next = this._cloneCurrent();
     if (!next.policy || !(nodeId in next.policy)) return;
@@ -135,6 +161,7 @@ export class GraphService {
 
   /** GM-only: nur Node-Visibility zurücksetzen (Policy-Eintrag bleibt sonst erhalten) */
   async clearNodeVisible(nodeId: string): Promise<void> {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     if (!game.user?.isGM) throw new Error("Only GM can modify visibility.");
     const next = this._cloneCurrent();
     const p = next.policy?.[nodeId];
@@ -146,6 +173,7 @@ export class GraphService {
 
   /** GM-only: Feld-Visibilities zurücksetzen (alle oder ausgewählte Pfade) */
   async clearFieldVisibility(nodeId: string, paths?: FieldPath[]): Promise<void> {
+    if (!this._initialized) throw new Error("GraphService not initialized. Call init() first.");
     if (!game.user?.isGM) throw new Error("Only GM can modify field policies.");
     const next = this._cloneCurrent();
     const p = next.policy?.[nodeId];
@@ -163,6 +191,7 @@ export class GraphService {
   // -- Intern ----------------------------------------------------------------
 
   private _loadFromSystem(): GraphModel {
+    if (!this._page) throw new Error("GraphService not initialized. Call init() first.");
     const sys = this._page.system as any;
     return {
       version: sys.version ?? 1,
@@ -183,9 +212,11 @@ export class GraphService {
   }
 
   private async _writeToSystem(next: GraphModel): Promise<void> {
-    if (!this._snapshot) throw new Error("init() first");
+    if (!this._initialized || !this._page) throw new Error("GraphService not initialized. Call init() first.");
 
     const prev = this._snapshot;
+    if (!prev) throw new Error("GraphService not initialized. Call init() first.");
+    
     let patch: Record<string, unknown> = {};
 
     // version (optional – setze nur, wenn geändert)
@@ -200,7 +231,13 @@ export class GraphService {
 
     if (foundry.utils.isEmpty(patch)) return;
 
-    await this._page.update(patch, { _graphService: this._instanceId, render: false } as any);
+    // FoundryAdapter verwenden für konsistente Updates mit Reload
+    if (this._foundryAdapter) {
+      await this._foundryAdapter.updateDocumentWithReload(this._page, patch);
+    } else {
+      // Fallback: Direktes Update (für Backward-Kompatibilität)
+      await this._page.update(patch, { _graphService: this._instanceId, render: false } as any);
+    }
   }
 
   /**

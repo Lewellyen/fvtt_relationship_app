@@ -40,7 +40,18 @@ export class FoundryLogger implements ILogger {
   }
 
   debug(message: any, ...args: any[]): void {
-    return;
+    // Debug-Logging nur wenn Setting aktiviert ist
+    // Graceful handling: Wenn Setting noch nicht registriert ist, debug-Logging deaktivieren
+    let debugEnabled = false;
+    try {
+      debugEnabled = game?.settings?.get("relationship-app" as any, "debugLogs" as any) === true;
+    } catch (error) {
+      // Setting noch nicht registriert - debug-Logging deaktivieren
+      debugEnabled = false;
+    }
+    
+    if (!debugEnabled) return;
+    
     if (typeof message === "object" && message !== null) {
       console.debug(`${MODULE_ID_PREFIX} 🐛`, message, ...args);
     } else {

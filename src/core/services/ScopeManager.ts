@@ -156,8 +156,7 @@ export class ScopeManager {
   private writeLog(modus: "info" | "warn" | "error" | "debug", message: string, ...args: any[]) {
     if (this.logger) {
       this.logger[modus](message, ...args);
-    } else {
-      console[modus](message, ...args);
     }
+    // Kein Console-Fallback - Logger ist Pflicht
   }
 }

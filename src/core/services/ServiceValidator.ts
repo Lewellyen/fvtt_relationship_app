@@ -123,9 +123,25 @@ export class ServiceValidator implements IServiceValidator {
     }
 
     // Prüfe Service Type
-    if (!["singleton", "factory", "transient"].includes(plan.serviceType)) {
+    if (!["singleton", "factory", "transient", "scoped"].includes(plan.serviceType)) {
       result.warnings.push(
         `Invalid service type '${plan.serviceType}' for service ${serviceClass.name || serviceClass}`
+      );
+    }
+
+    // Prüfe ob alle Dependencies in Registry sind
+    // Hinweis: Diese Prüfung wird in der ServicePlanner.validateServicePlan() gemacht
+    // Hier nur eine Warnung wenn Dependencies leer sind aber erwartet werden
+    if (plan.dependencies.length === 0 && serviceClass.DEPENDENCIES && serviceClass.DEPENDENCIES.length > 0) {
+      result.warnings.push(
+        `Service ${serviceClass.name || serviceClass} has DEPENDENCIES defined but no dependencies were resolved`
+      );
+    }
+
+    // Warnung wenn DEPENDENCIES fehlt
+    if (serviceClass.DEPENDENCIES === undefined) {
+      result.warnings.push(
+        `Service ${serviceClass.name || serviceClass} has no DEPENDENCIES property defined. This should be explicitly declared as an empty array if no dependencies are needed.`
       );
     }
 
@@ -135,27 +151,27 @@ export class ServiceValidator implements IServiceValidator {
   /**
    * Service-Erstellung validieren
    */
-  validateServiceCreation(service: any, identifier: any): boolean {
+  validateServiceCreation(service: any, ctor: new (...args: unknown[]) => any): boolean {
     this.logger.info(
-      `[ServiceValidator] 🔍 Validating service creation for: ${identifier.name || identifier}`
+      `[ServiceValidator] 🔍 Validating service creation for: ${ctor.name || ctor}`
     );
 
     if (!service) {
       this.logger.error(
-        `[ServiceValidator] ❌ Service is null or undefined for ${identifier.name || identifier}`
+        `[ServiceValidator] ❌ Service is null or undefined for ${ctor.name || ctor}`
       );
       return false;
     }
 
     if (typeof service !== "object") {
       this.logger.error(
-        `[ServiceValidator] ❌ Service is not an object for ${identifier.name || identifier}`
+        `[ServiceValidator] ❌ Service is not an object for ${ctor.name || ctor}`
       );
       return false;
     }
 
     this.logger.info(
-      `[ServiceValidator] ✅ Service creation valid for ${identifier.name || identifier}`
+      `[ServiceValidator] ✅ Service creation valid for ${ctor.name || ctor}`
     );
     return true;
   }
@@ -253,13 +269,13 @@ export class ServiceValidator implements IServiceValidator {
   /**
    * Fehlerbehandlung für Service-Erstellung
    */
-  handleServiceCreationError(error: Error, identifier: any): void {
+  handleServiceCreationError(error: Error, ctor: new (...args: unknown[]) => any): void {
     this.logger.error(
-      `[ServiceValidator] ❌ Service creation error for ${identifier.name || identifier}:`,
+      `[ServiceValidator] ❌ Service creation error for ${ctor.name || ctor}:`,
       error
     );
 
     // Hier könnte man Error Reporting, Logging, etc. hinzufügen
-    this.logger.error(`Service creation failed for ${identifier.name || identifier}:`, error);
+    this.logger.error(`Service creation failed for ${ctor.name || ctor}:`, error);
   }
 }

@@ -11,8 +11,8 @@ export const MODULE_ID_PREFIX = `[${MODULE_ID}] |`;
 // Modul-Name für Anzeige
 export const MODULE_NAME = "Relationship App";
 
-// Modul-Version
-export const MODULE_VERSION = "0.10.0";
+// Modul-Version - wird dynamisch aus module.json gelesen
+// Verwendung: game?.modules?.get(MODULE_ID)?.version
 
 // Modul-Metadata-Key
 export const MODULE_METADATA_KEY = "metadata";

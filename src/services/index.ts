@@ -49,6 +49,9 @@ export { APIManager } from "../core/services/APIManager";
 export { GraphService } from "./GraphService";
 import { GraphService } from "./GraphService";
 
+export { SettingsService } from "./SettingsService";
+import { SettingsService } from "./SettingsService";
+
 // 🔧 Application Services (Anwendungslogik)
 
 // SERVICE_CONFIG - Array mit allen Runtime Service-Klassen
@@ -68,6 +71,7 @@ export const SERVICE_CONFIG = [
 
   // 🔧 Application Services (Anwendungslogik)
   { name: GraphService, class: GraphService },
+  { name: SettingsService, class: SettingsService },
   // Hier kommen später die Business-Services hin
 ];
 

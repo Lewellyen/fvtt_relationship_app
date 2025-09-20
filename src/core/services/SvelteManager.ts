@@ -24,9 +24,15 @@ export class SvelteManager implements ISvelteManager {
   async mountComponent<T>(component: any, target: HTMLElement, props: any): Promise<T> {
     this.writeLog("info", `[SvelteManager] Mounting component: ${component.name}`);
 
+    // Logger in Props injizieren
+    const propsWithLogger = {
+      ...props,
+      logger: this.logger,
+    };
+
     const app = mount(component, {
       target,
-      props,
+      props: propsWithLogger,
     });
 
     this.writeLog("info", "[SvelteManager] Component mounted successfully");

@@ -9,18 +9,18 @@ import type { IScopeChain } from "./IScopeChain";
 export interface IServiceContainer {
   /**
    * Service aus Lagerhaus holen oder neu erstellen
-   * @param identifier - Service-Identifier
+   * @param ctor - Service-Konstruktor
    * @param scope - Optionaler Scope für Scoped Services
    * @returns Service-Instanz
    */
-  getService<T>(identifier: any, scope?: string): T;
+  getService<T>(ctor: new (...args: unknown[]) => T, scope?: string): T;
 
   /**
    * Service mit Dependencies erstellen
-   * @param identifier - Service-Identifier
+   * @param ctor - Service-Konstruktor
    * @returns Service-Instanz
    */
-  createService<T>(identifier: any): T;
+  createService<T>(ctor: new (...args: unknown[]) => T): T;
 
   /**
    * Alle Services erstellen
@@ -29,9 +29,9 @@ export interface IServiceContainer {
 
   /**
    * Service aus Cache entfernen
-   * @param identifier - Service-Identifier
+   * @param ctor - Service-Konstruktor
    */
-  disposeService(identifier: any): void;
+  disposeService(ctor: new (...args: unknown[]) => any): void;
 
   /**
    * Alle Services aus Cache entfernen
@@ -40,10 +40,10 @@ export interface IServiceContainer {
 
   /**
    * Prüfen ob Service im Cache ist
-   * @param identifier - Service-Identifier
+   * @param ctor - Service-Konstruktor
    * @returns true wenn gecacht
    */
-  hasCachedService(identifier: any): boolean;
+  hasCachedService(ctor: new (...args: unknown[]) => any): boolean;
 
   /**
    * Anzahl gecachter Services
@@ -53,10 +53,10 @@ export interface IServiceContainer {
 
   /**
    * Service-Plan abrufen
-   * @param identifier - Service-Identifier
+   * @param ctor - Service-Konstruktor
    * @returns Service-Plan oder undefined
    */
-  getServicePlan(identifier: any): ServicePlan | undefined;
+  getServicePlan(ctor: new (...args: unknown[]) => any): ServicePlan | undefined;
 
   /**
    * Alle Service-Pläne abrufen

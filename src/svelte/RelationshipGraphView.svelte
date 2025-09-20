@@ -4,17 +4,22 @@
     interactive,
     onNodeClick,
     onEdgeClick,
+    logger,
   }: {
     elements: any[];
     interactive: boolean;
     onNodeClick: (nodeId: string) => void;
     onEdgeClick: (edgeId: string) => void;
+    logger: any;
   } = $props();
 
-  console.log("RelationshipGraphView", elements);
-  console.log("RelationshipGraphView", interactive);
-  console.log("RelationshipGraphView", onNodeClick);
-  console.log("RelationshipGraphView", onEdgeClick);
+  // Debug-Logging über Logger
+  if (logger) {
+    logger.debug("RelationshipGraphView", elements);
+    logger.debug("RelationshipGraphView", interactive);
+    logger.debug("RelationshipGraphView", onNodeClick);
+    logger.debug("RelationshipGraphView", onEdgeClick);
+  }
 
 </script>
 
